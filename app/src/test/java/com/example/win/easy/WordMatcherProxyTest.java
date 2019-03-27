@@ -1,6 +1,6 @@
 package com.example.win.easy;
 
-import com.example.win.easy.filter.WordMatcherProxy;
+import com.example.win.easy.parser.matchers.WordMatcherProxy;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

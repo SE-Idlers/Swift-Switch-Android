@@ -1,6 +1,6 @@
 package com.example.win.easy;
 
-import com.example.win.easy.filter.RegulationFilenameParser;
+import com.example.win.easy.parser.RegulationFilenameParser;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

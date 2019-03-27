@@ -1,11 +1,13 @@
-package com.example.win.easy.filter;
+package com.example.win.easy.parser.interfaces;
+
+import com.example.win.easy.filter.FilterStrategy;
 
 import java.util.List;
 
 /**
  * 将单个文件名转化为一个结果序列，这个结果序列用来表述这个文件
  * @param <T> 与手写板识别结果一致的类型,参考{@link FilterStrategy}<br/>
- * 协作逻辑如: <img src="logic.png" height="800" width="1200" />
+ * 协作逻辑如: <img src="Parser-Logic.png" height="700" width="900" />
  */
 public interface FilenameParser<T> {
 

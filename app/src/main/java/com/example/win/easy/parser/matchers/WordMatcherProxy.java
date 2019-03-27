@@ -1,4 +1,6 @@
-package com.example.win.easy.filter;
+package com.example.win.easy.parser.matchers;
+
+import com.example.win.easy.parser.interfaces.MatcherProxy;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,9 +9,12 @@ import java.util.TreeMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import dagger.Module;
+
 /**
  * 将单词分为纯小写单词、纯大写单词、大写起头单词三类，提供了对英文单词的提取功能
  */
+@Module
 public class WordMatcherProxy implements MatcherProxy<Character> {
 
     static  final String nonWord="[^a-zA-Z]";//非单词字符
@@ -106,7 +111,6 @@ public class WordMatcherProxy implements MatcherProxy<Character> {
      */
     @Override
     public SortedMap<Integer,Character> extract() {
-        elements.clear();//清除上一次的结果
         Matcher matcher;
 
         //对每一种类型进行匹配
@@ -134,6 +138,7 @@ public class WordMatcherProxy implements MatcherProxy<Character> {
         //清除
         this.principal=" "+principal+" ";
         matchers.clear();
+        elements.clear();
 
         //重新生成匹配器
         for (Pattern pattern:patterns){
