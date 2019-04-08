@@ -37,5 +37,4 @@ public class RegulationFilenameParser implements FilenameParser<Character> {
         }
         return new ArrayList<>(result.values());//将结果集转化为字符序列
     }
-
 }

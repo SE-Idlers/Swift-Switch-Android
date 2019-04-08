@@ -33,9 +33,9 @@ dependencies {
     testImplementation group: 'org.powermock', name: 'powermock-module-junit4', version: '2.0.0'
 
     // https://mvnrepository.com/artifact/com.google.dagger/dagger
-    compile group: 'com.google.dagger', name: 'dagger', version: '2.21'
+    implementation group: 'com.google.dagger', name: 'dagger', version: '2.21'
 
     // https://mvnrepository.com/artifact/com.belerweb/pinyin4j
-    compile group: 'com.belerweb', name: 'pinyin4j', version: '2.5.1'
+    implementation group: 'com.belerweb', name: 'pinyin4j', version: '2.5.1'
 
 }
