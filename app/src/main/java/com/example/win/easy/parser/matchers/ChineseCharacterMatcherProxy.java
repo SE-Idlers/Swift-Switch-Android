@@ -29,20 +29,20 @@ public class ChineseCharacterMatcherProxy implements MatcherProxy<Character> {
 
     //对中文字的正则表达式
     static final String chineseCharacterRegex="[\\u2E80-\\u9FFF]";
-    static final Pattern pattern=Pattern.compile(chineseCharacterRegex);
+    static final Pattern pattern=Pattern.compile(chineseCharacterRegex);  //调用了static函数，预初始化matcher，先获取对应pattern
 
     private Matcher matcher;
-    private SortedMap<Integer,Character> elements=new TreeMap<>();
+    private SortedMap<Integer,Character> elements=new TreeMap<>();  //映射结果
 
     public ChineseCharacterMatcherProxy(){
         this("");
-    }
+    }  //无参构造函数
     public ChineseCharacterMatcherProxy(String principal){
         reset(principal);
-    }
+    }  //传入分解字符串的构造函数
 
     /**
-     * 从主体字符串中提取中文字、转化为首字母大写字符，并将结果存入{@code elements}中
+     * 从主体字符串中提取每个中文字、转化为首字母大写字符，并将结果存入{@code elements}中
      * @return
      */
     @Override
