@@ -17,7 +17,7 @@ import dagger.Module;
  * 则返回结果为{@code [0,2,3]}<br/>
  */
 @Module
-public class CharSequenceFilterStrategy implements FilterStrategy<Character> {
+public class CharSequenceFilterStrategy implements FilterStrategy<List<Character>> {
 
     @Override
     public List<Integer> filter(List<Character> basis, List<List<Character>> sequenceList) {
