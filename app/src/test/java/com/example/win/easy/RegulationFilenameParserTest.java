@@ -1,31 +1,43 @@
 package com.example.win.easy;
 
 import com.example.win.easy.parser.RegulationFilenameParser;
+import com.example.win.easy.parser.interfaces.MatcherProxy;
+import com.example.win.easy.parser.matchers.ChineseCharacterMatcherProxy;
+import com.example.win.easy.parser.matchers.NumberMatcherProxy;
+import com.example.win.easy.parser.matchers.WordMatcherProxy;
 
-import org.junit.Test;
 import org.junit.Before;
+import org.junit.Test;
 import org.junit.runner.RunWith;
-import static org.junit.Assert.assertEquals;
-
+import org.mockito.MockitoAnnotations;
+import org.mockito.Spy;
 import org.powermock.modules.junit4.PowerMockRunner;
 
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.verify;
-
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.ArrayList;
+
+import static org.junit.Assert.assertEquals;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 //没有Mock掉Proxy，因此是一个功能测试
 @RunWith(PowerMockRunner.class)
 public class RegulationFilenameParserTest {
-
+    @Spy
     RegulationFilenameParser parser=new RegulationFilenameParser();
+    List<MatcherProxy<Character>> matcherProxies=new ArrayList<>();
     List<String> toBeMatchedSamples=new ArrayList<String>();
     List<List<Character>> results=new ArrayList<List<Character>>();
 
     @Before
     public void injectTestSamples(){
+        MockitoAnnotations.initMocks(this);
+        matcherProxies.add(new ChineseCharacterMatcherProxy());
+        matcherProxies.add(new NumberMatcherProxy());
+        matcherProxies.add(new WordMatcherProxy());
+        parser.setMatcherProxies(matcherProxies);
         List<Character> tempForCharList;
         //        ////英文
         toBeMatchedSamples.add("Where are you");//空格分隔
@@ -109,7 +121,7 @@ public class RegulationFilenameParserTest {
         int samplesAmount=toBeMatchedSamples.size();
         for(int currentSample=0;currentSample<samplesAmount;++currentSample){
             assertEquals(results.get(currentSample),parser.parse(toBeMatchedSamples.get(currentSample)));
-            verify(parser).parse(anyString());
+            verify(parser,times(currentSample+1)).parse(anyString());
         }
     }
 }
