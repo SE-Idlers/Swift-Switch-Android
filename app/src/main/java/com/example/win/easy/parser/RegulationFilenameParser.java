@@ -8,19 +8,21 @@ import java.util.List;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
-import javax.inject.Inject;
-
-import dagger.Module;
-
 /**
  * 使用正则表示式将一个歌曲名用一个字符序列表达出来，具体描述见{@link #parse(String)}<br/>
  * 具体的序列生成委托给了一系列的{@link MatcherProxy},本类负责整合所有{@code MatcherProxy}的提取结果，将其转化为一个字符序列
  */
-@Module
 public class RegulationFilenameParser implements FilenameParser<Character> {
 
     //执行功能的一系列MatcherProxy
-    @Inject List<MatcherProxy<Character>> matcherProxies;
+    List<MatcherProxy<Character>> matcherProxies;
+
+    public RegulationFilenameParser(){this(new ArrayList<MatcherProxy<Character>>());}
+    public RegulationFilenameParser(List<MatcherProxy<Character>> matcherProxies){setMatcherProxies(matcherProxies);}
+
+    public void setMatcherProxies(List<MatcherProxy<Character>> matcherProxies) {
+        this.matcherProxies = matcherProxies;
+    }
 
     /**
      * 将文件名转化为字符序列<br/>
