@@ -1,6 +1,6 @@
 package com.example.win.easy;
 
-import com.example.win.easy.parser.matchers.WordMatcherProxy;
+import com.example.win.easy.song.convert.parser.matchers.WordMatcherProxy;
 
 import org.junit.Before;
 import org.junit.Test;

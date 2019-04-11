@@ -1,6 +1,6 @@
 package com.example.win.easy;
 
-import com.example.win.easy.parser.matchers.NumberMatcherProxy;
+import com.example.win.easy.song.convert.parser.matchers.NumberMatcherProxy;
 
 import org.junit.Before;
 import org.junit.Test;
