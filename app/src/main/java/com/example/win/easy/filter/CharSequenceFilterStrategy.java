@@ -17,20 +17,21 @@ import dagger.Module;
  * 则返回结果为{@code [0,2,3]}<br/>
  */
 @Module
-public class CharSequenceFilterStrategy implements FilterStrategy<Character> {
+public class CharSequenceFilterStrategy implements FilterStrategy<List<Character>> {
 
     @Override
     public List<Integer> filter(List<Character> basis, List<List<Character>> sequenceList) {
-        int sequenceSize=sequenceList.size();//获取序列数
+        final int sequenceSize=sequenceList.size();//获取序列数
         int basisSize=basis.size();//获取依据序列的字符个数
         List<Integer> result=new ArrayList<>(sequenceSize);//返回结果
 
-        List<Character> localSequence=null;//便利过程中当前操作的序列
+        List<Character> localSequence=null;//遍历过程中当前操作的序列
         int localSize=0;//遍历过程中当前序列的长度
 
         for (int sequenceIndex = 0; sequenceIndex <sequenceSize ; sequenceIndex++) {
             localSequence=sequenceList.get(sequenceIndex);//获取当前序列
             localSize=localSequence.size();//获取当前序列长度
+            //匹配原则
             if((basisSize>localSize&&basis.subList(0,localSize).equals(localSequence))||//basis比sequence长时，比较basis的前缀与sequence
                     (basisSize==localSize&&basis.equals(localSequence)) ||//basis与sequence等长时，直接比较两者
                     (basisSize<localSize&&basis.equals(localSequence.subList(0,basisSize)))){//basis比sequence短时，比较basis与sequence的前缀

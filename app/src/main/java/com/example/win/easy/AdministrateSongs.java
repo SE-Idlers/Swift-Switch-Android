@@ -5,13 +5,14 @@ import android.content.pm.PackageManager;
 import android.os.Environment;
 import android.support.v4.app.ActivityCompat;
 
-import com.example.win.easy.parser.interfaces.FilenameParser;
+
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AdministrateSongs  {
+
+public class  AdministrateSongs  {
 
     private static AdministrateSongs administrateSongs=new AdministrateSongs();
 
