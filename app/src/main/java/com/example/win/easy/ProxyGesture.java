@@ -5,7 +5,7 @@ import android.graphics.Color;
 
 public class ProxyGesture {
 
-    private  GestureOverlayView[] gestures=new GestureOverlayView[4];
+    private  GestureOverlayView[] gestures=new GestureOverlayView[Constants.NumberOfGesture];
     private Integer[] id=new Integer[]{R.id.gesture1,R.id.gesture2,R.id.gesture3,R.id.gesture4};
 
     public ProxyGesture(){
@@ -18,7 +18,6 @@ public class ProxyGesture {
     public void init(GestureOverlayView gesture) {
         ProxyGestureListener listener=new ProxyGestureListener();
         gesture.setGestureColor(Color.GREEN);
-        gesture.setBackgroundColor(Color.GRAY);
         gesture.setGestureStrokeWidth(5);
         gesture.addOnGesturePerformedListener(listener);
     }

@@ -14,5 +14,6 @@ public class MainActivity extends AppCompatActivity  {
         mainActivity=this;
         ProxyMediaPlayer proxyMediaPlayer=ProxyMediaPlayer.getProxyMediaPlayer();
         ProxyGesture proxyGestures=new ProxyGesture();
+        ProxyList proxyList=ProxyList.getProxyList();
     }
 }
