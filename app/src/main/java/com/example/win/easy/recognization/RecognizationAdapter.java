@@ -4,6 +4,6 @@ import java.util.SortedMap;
 
 public interface RecognizationAdapter {
 
-    SortedMap<Character,Double> recognize(Image image);
+    SortedMap<Character, Float> recognize(float[] Float_Array);
 
 }
