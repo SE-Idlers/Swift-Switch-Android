@@ -1,6 +1,7 @@
 package com.example.win.easy.persistence;
 
 import com.example.win.easy.display.SongList;
+import java.util.List;
 
 //阿里巴巴的fastjson框架
 import com.alibaba.fastjson.JSON;
@@ -8,9 +9,8 @@ import com.alibaba.fastjson.JSONObject;
 
 import java.io.FileWriter;
 import java.io.PrintWriter;
+import java.io.FileReader;
 import java.io.BufferedReader;
-
-import java.util.List;
 
 public class SongListConfigurationPersistence implements ConfigurationPersistence<List<SongList>> {//歌单
     static String fileDir="/SwiftSwitch/src/SongListConfig.json";//SD中的存储地址
@@ -41,7 +41,7 @@ public class SongListConfigurationPersistence implements ConfigurationPersistenc
         try{
             FileWriter fw=new FileWriter(getSDPath()+fileDir);
             PrintWriter out=new PrintWriter(fw);
-            out.write(entity);
+            out.write(jsonStr);
             out.println();//通过写入行分隔符字符串终止当前行。
             fw.close();
             out.close();

@@ -5,13 +5,16 @@ import java.io.File;
 import java.util.Map;
 import java.util.HashMap;
 
+//阿里巴巴的fastjson框架
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 
+import java.io.FileWriter;
+import java.io.PrintWriter;
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.IOException;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 
 public class FileSongMapConfigurationPersistence implements ConfigurationPersistence<Map<File, Song>>{
 
@@ -33,36 +36,21 @@ public class FileSongMapConfigurationPersistence implements ConfigurationPersist
     public String toJsonString(Map<File, Song> entity){
         String jsonStr=JSON.toJSONString(entity);
         return jsonStr;
-
-        /*
-        *         //拆解
-        Map<Integer,File> mapKey=new HashMap<>();
-        Map<Integer,File> mapVal=new HashMap<>();
-        int count=1;
-        for(Map.Entry<File,Song> m: entity.entrySet()){
-            mapKey.put(count,m.getKey());
-            mapVal.put(count,m.getValue());
-        }
-        //转换
-        JSONObject jsonKey=new JSONObject(mapKey);
-        JSONObject jsonVal=new JSONObject(mapVal);
-
-        //组合
-        JSONArray jsonArr=new JSONArray();
-        jsonArr.add(jsonKey);
-        jsonArr.add(jsonVal);*/
-
     }
 
     @Override
     public void save(Map<File, Song> entity)  {
         String jsonStr=toJsonString(entity);
-        FileWriter fw=new FileWriter(getSDPath()+fileDir);
-        PrintWriter out=new PrintWriter(fw);
-        out.write(entity);
-        out.println();
-        fw.close();
-        out.close();
+        try{
+            FileWriter fw=new FileWriter(getSDPath()+fileDir);
+            PrintWriter out=new PrintWriter(fw);
+            out.write(jsonStr);
+            out.println();//通过写入行分隔符字符串终止当前行。
+            fw.close();
+            out.close();
+        }catch (IOException e){
+            e.printTrackTrace();
+        }
     }
 
     @Override
