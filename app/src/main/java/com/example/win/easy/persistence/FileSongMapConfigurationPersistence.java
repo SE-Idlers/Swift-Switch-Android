@@ -1,21 +1,17 @@
 package com.example.win.easy.persistence;
 
 import com.example.win.easy.song.Song;
-
 import java.io.File;
 import java.util.Map;
 import java.util.HashMap;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 
 import java.io.IOException;
 
-import org.json.JSONObject;
-import org.json.JSCNArray;
-
-import org.apache.commons.io.FileUtils;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 
 public class FileSongMapConfigurationPersistence implements ConfigurationPersistence<Map<File, Song>>{
 
@@ -34,10 +30,10 @@ public class FileSongMapConfigurationPersistence implements ConfigurationPersist
         return sdpath;
     }
 
-    public JSONObject toJson(Map<File, Song> entity){
+    public String toJsonString(Map<File, Song> entity){
+        String jsonStr=JSON.toJSONString(entity);
+        return jsonStr;
 
-        JSONObject jsonObject=new JSONObject(entity);
-        return jsonObject;
         /*
         *         //拆解
         Map<Integer,File> mapKey=new HashMap<>();
@@ -59,30 +55,39 @@ public class FileSongMapConfigurationPersistence implements ConfigurationPersist
     }
 
     @Override
-    public void save(Map<File, Song> entity)throws IOException  {
-        JSONArray jsonArray=toJson(entity);
-
-        String sdpath=getSDPath();
-        File file=new File(sdpath+fileDir);
-        if (!file.exists()) {
-            file.createNewFile();
-        }
-        FileWriter fw=new FileWriter(file.getAbsoluteFIle());
-        BufferedWriter bw=new BufferedWriter(fw);
-        try {
-            json.write(bw);
-            bw.close();
-            fw.close();
-        }catch (IOException e) {
-            e.printStackTrace();
-        }
+    public void save(Map<File, Song> entity)  {
+        String jsonStr=toJsonString(entity);
+        FileWriter fw=new FileWriter(getSDPath()+fileDir);
+        PrintWriter out=new PrintWriter(fw);
+        out.write(entity);
+        out.println();
+        fw.close();
+        out.close();
     }
 
     @Override
     public Map<File, Song> load() {
-        String sdpath=getSDPath();
-        File file=new File(sdpath+fileDir);
-        String content=FileUtils.readFileToString(file);
+        File file=new File(getSDPath()+fileDir);
+        BufferedReader reader=null;
+        String content="";
+        try{
+            reader=new BufferedReader(new FileReader(file));
+            String tempString =null;
+            while((tempString=reader.readLine())!=null){
+                content=content+tempString;
+            }
+            reader.close();
+        }catch(IOException e){
+            e.printStackTrace();
+        }finally {
+            if (reader != null) {
+                try {
+                    reader.close();
+                } catch (IOException e1) {
+                }
+            }
+        }
+
         Map<File,Song> map=JSONObject.parseObject(content,Map.class);
         return map;
     }

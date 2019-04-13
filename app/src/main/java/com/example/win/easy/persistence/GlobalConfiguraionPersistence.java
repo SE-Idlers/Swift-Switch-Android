@@ -89,7 +89,7 @@ public class GlobalConfiguraionPersistence implements ConfigurationPersistence<G
 
 
     @Override
-    public void save(GlobalConfiguration entity)throws IOException {
+    public void save(GlobalConfiguration entity) {
         JSONObject json=toJson(entity);
 
         String sdpath=getSDPath();

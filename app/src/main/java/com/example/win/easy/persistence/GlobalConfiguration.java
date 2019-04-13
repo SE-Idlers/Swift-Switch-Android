@@ -4,6 +4,7 @@ import lombok.Data;
 
 @Data
 public class GlobalConfiguration {
-    /*待定
-    * */
+    public enum playerMode{AllRepeat,Order,Shuffle,RepeatOne,Once};
+    public enum UIMode{};
+    /*....tbc*/
 }
