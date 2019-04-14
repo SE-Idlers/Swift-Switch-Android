@@ -15,5 +15,5 @@ public interface FilenameParser<T> {
      * @param filename 输入的文件名
      * @return 转化后得到的结果序列
      */
-    List<T>  parse(String filename);
+    List<T> parse(String filename);
 }
