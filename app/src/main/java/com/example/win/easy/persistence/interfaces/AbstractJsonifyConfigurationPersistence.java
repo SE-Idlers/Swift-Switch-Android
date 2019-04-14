@@ -5,8 +5,6 @@ import android.content.pm.PackageManager;
 import android.os.Environment;
 import android.support.v4.app.ActivityCompat;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 import com.example.win.easy.MainActivity;
 
 import java.io.BufferedReader;
@@ -38,10 +36,9 @@ public abstract class AbstractJsonifyConfigurationPersistence<T> implements Conf
         return sdpath.getAbsolutePath();
     }
 
-    public String toJsonString(T entity){
-        String jsonStr= JSON.toJSONString(entity);
-        return jsonStr;
-    }
+    protected abstract String toJsonString(T entity);
+    protected abstract T fromJsonString(String json);
+    protected abstract void writeEmptyObject();
 
     @Override
     public void save(T entity) {
@@ -61,12 +58,11 @@ public abstract class AbstractJsonifyConfigurationPersistence<T> implements Conf
     @Override
     public T load() {
         File file=new File(getSDPath()+fileDir);
-        System.out.println(getSDPath());
-        System.out.println(file.getAbsolutePath());
         if(!file.exists()){
             try {
                 file.getParentFile().mkdirs();
                 file.createNewFile();
+                writeEmptyObject();
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -91,10 +87,7 @@ public abstract class AbstractJsonifyConfigurationPersistence<T> implements Conf
                 }
             }
         }
-        T entity= JSONObject.parseObject(content, getClassInformation());
+        T entity= fromJsonString(content);
         return entity;
-
     }
-
-    protected abstract Class<T> getClassInformation();
 }
