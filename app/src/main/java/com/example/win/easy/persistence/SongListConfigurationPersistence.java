@@ -2,16 +2,20 @@ package com.example.win.easy.persistence;
 
 import com.example.win.easy.display.SongList;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class SongListConfigurationPersistence implements ConfigurationPersistence<List<SongList>> {
-    @Override
-    public void save(List<SongList> entity) {
+//阿里巴巴的fastjson框架
 
+public class SongListConfigurationPersistence extends AbstractJsonifyConfigurationPersistence<List<SongList>> {//歌单
+    static String fileDir="/SwiftSwitch/src/SongListConfig.json";//SD中的存储地址
+
+    public SongListConfigurationPersistence(){
+        super(fileDir);
     }
 
     @Override
-    public List<SongList> load() {
-        return null;
+    Class<List<SongList>> getClassInformation() {
+        return (Class<List<SongList>>) new ArrayList<SongList>().getClass();
     }
 }

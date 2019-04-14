@@ -1,9 +1,9 @@
 package com.example.win.easy.recognization;
 
-import java.util.SortedMap;
+import java.util.HashMap;
 
 public interface Discriminator {
 
-    Character discriminate(SortedMap<Character,Double> softmaxProbability);
+    Character discriminate(HashMap<Character, Float> Probability);
 
 }
