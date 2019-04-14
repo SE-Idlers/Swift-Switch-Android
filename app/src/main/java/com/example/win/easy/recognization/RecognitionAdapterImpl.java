@@ -10,7 +10,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-public class Adapter implements RecognizationAdapter {
+public class RecognitionAdapterImpl implements RecognitionAdapter {
     public static final String model_file = "file:///android_asset/PBfile864.pb";
     public TensorFlowInferenceInterface inferenceInterface;
     private static final String input_node = "reshape_1_input";
@@ -69,5 +69,9 @@ public class Adapter implements RecognizationAdapter {
         }
         myMap = newMap;
         return myMap;
+    }
+
+    public RecognitionAdapterImpl(TensorFlowInferenceInterface tensorFlowInferenceInterface){
+        this.inferenceInterface=tensorFlowInferenceInterface;
     }
 }

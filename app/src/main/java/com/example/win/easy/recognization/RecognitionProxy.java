@@ -2,9 +2,9 @@ package com.example.win.easy.recognization;
 
 import java.util.List;
 
-public interface RecognizationProxy {
+public interface RecognitionProxy {
 
-    List<Character> receive(RecognizationUnit unit);
+    List<Character> receive(RecognitionUnit unit);
 
     void clear();
 

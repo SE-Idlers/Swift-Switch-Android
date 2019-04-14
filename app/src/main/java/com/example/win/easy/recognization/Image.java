@@ -4,7 +4,7 @@ import android.gesture.Gesture;
 import android.graphics.Bitmap;
 import android.graphics.Matrix;
 
-public class Image implements RecognizationUnit {
+public class Image implements RecognitionUnit {
 
     private static Bitmap bitmap = null;
     private static float[] Float_array;

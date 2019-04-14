@@ -62,7 +62,7 @@ dependencies {
 
     implementation 'org.tensorflow:tensorflow-android:+'
 
-    androidTestCompile 'com.android.support.test:runner:0.2'
+    androidTestImplementation 'com.android.support.test:runner:0.2'
 
     // Core library
     androidTestImplementation 'androidx.test:core:1.0.0'
