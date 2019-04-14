@@ -12,8 +12,8 @@ public class MainActivity extends AppCompatActivity  {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mainActivity=this;
-        ProxyMediaPlayer proxyMediaPlayer=ProxyMediaPlayer.getProxyMediaPlayer();
-        ProxyGesture proxyGestures=new ProxyGesture();
-        ProxyList proxyList=ProxyList.getProxyList();
+        ProxyMediaPlayer proxyMediaPlayer=ProxyMediaPlayer.getInstance();
+        ProxyGesture proxyGestures=new ProxyGesture(getAssets());
+        ProxyList proxyList=ProxyList.getInstance();
     }
 }

@@ -1,17 +1,31 @@
 package com.example.win.easy.display;
 
+import android.widget.ArrayAdapter;
+
+import com.example.win.easy.MainActivity;
 import com.example.win.easy.song.Song;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import lombok.Builder;
 import lombok.Data;
 
 @Data
+@Builder
 public class SongList {
 
     private String name;
     private List<Song> songList;
     private List<String> songNames;
+
+    public static ArrayAdapter<String> toArrayAdapter(SongList songList){
+        return new ArrayAdapter<>(
+                MainActivity.mainActivity,
+                android.R.layout.simple_list_item_single_choice,
+                songList.getSongNames()
+        );
+    }
 
     public Song getSongAt(int index){return songList.get(index);}
 
@@ -26,4 +40,12 @@ public class SongList {
         return songList.remove(song);
     }
 
+    public List<String> getSongNames(){
+        if (songNames==null){
+            songNames=new ArrayList<>();
+            for (Song song:songList)
+                songNames.add(song.getName());
+        }
+        return songNames;
+    }
 }

@@ -22,4 +22,6 @@ public interface SongManager {
     Boolean removeAll(List<File> files);
 
     List<Song> selectSongsByIndices(List<Integer> indices);
+
+    List<List<Character>> getAllSequences();
 }

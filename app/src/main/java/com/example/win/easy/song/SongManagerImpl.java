@@ -24,6 +24,7 @@ public class SongManagerImpl implements SongManager {
     private static Map<Song, File> songToFile;
     private static List<File> files;
     private static List<Song> songs;
+    private static List<List<Character>> sequences;
 
     private SongManagerImpl(){}
     public static SongManagerImpl getInstance(){return instance;}
@@ -33,9 +34,11 @@ public class SongManagerImpl implements SongManager {
             fileToSong=new HashMap<>();
         files=new ArrayList<>(fileToSong.keySet());
         songs=new ArrayList<>(fileToSong.values());
+        sequences=new ArrayList<>();
         songToFile=new HashMap<>();
         for(File file:files){
             songToFile.put(fileToSong.get(file),file);
+            sequences.add(fileToSong.get(file).getSequence());
         }
     }
 
@@ -100,12 +103,18 @@ public class SongManagerImpl implements SongManager {
         return songsToSelect;
     }
 
+    @Override
+    public List<List<Character>> getAllSequences() {
+        return null;
+    }
+
     private void update(){
         files=new ArrayList<>(fileToSong.keySet());
         songs=new ArrayList<>(fileToSong.values());
         songToFile=new HashMap<>();
         for(File file:files){
             songToFile.put(fileToSong.get(file),file);
+            sequences.add(fileToSong.get(file).getSequence());
         }
     }
 }

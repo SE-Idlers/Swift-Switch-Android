@@ -61,6 +61,17 @@ public abstract class AbstractJsonifyConfigurationPersistence<T> implements Conf
     @Override
     public T load() {
         File file=new File(getSDPath()+fileDir);
+        System.out.println(getSDPath());
+        System.out.println(file.getAbsolutePath());
+        if(!file.exists()){
+            try {
+                file.getParentFile().mkdirs();
+                file.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
         BufferedReader reader=null;
         String content="";
         try{

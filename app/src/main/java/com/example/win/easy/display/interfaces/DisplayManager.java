@@ -1,7 +1,6 @@
 package com.example.win.easy.display.interfaces;
 
 import android.media.MediaPlayer;
-import android.widget.ArrayAdapter;
 
 import com.example.win.easy.display.DisplayMode;
 import com.example.win.easy.display.SongList;
@@ -16,7 +15,7 @@ public interface DisplayManager {
 
     void setMode(DisplayMode mode);
 
-    ArrayAdapter<String> setDisplayList(SongList list);
+    void setDisplayList(SongList list);
 
-    void restartWith(String song_path,MediaPlayer mediaPlayer);//根据具体实现，我修改了一下参数
+    void restartWith(Song song, MediaPlayer mediaPlayer);//根据具体实现，我修改了一下参数
 }

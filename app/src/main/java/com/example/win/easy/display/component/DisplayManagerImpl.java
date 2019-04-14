@@ -1,18 +1,19 @@
 package com.example.win.easy.display.component;
 
 import android.media.MediaPlayer;
-import android.widget.ArrayAdapter;
 
-import com.example.win.easy.MainActivity;
 import com.example.win.easy.display.DisplayMode;
 import com.example.win.easy.display.SongList;
 import com.example.win.easy.display.interfaces.DisplayManager;
 import com.example.win.easy.song.Song;
+import com.example.win.easy.song.SongManager;
+import com.example.win.easy.song.SongManagerImpl;
 
 import java.io.IOException;
 
 public class DisplayManagerImpl implements DisplayManager {
 
+    private SongManager songManager=SongManagerImpl.getInstance();
     private static DisplayManagerImpl instance=new DisplayManagerImpl();
     public static DisplayManagerImpl getInstance(){return instance;}
     private DisplayManagerImpl(){}
@@ -29,7 +30,7 @@ public class DisplayManagerImpl implements DisplayManager {
             //最后一首的下一首
             songIndex = 0;
         }
-        restartWith(displayList.getSongAt(songIndex).getAbsolutePath().toString(),mediaPlayer);
+        restartWith(displayList.getSongAt(songIndex),mediaPlayer);
     }
 
     //这三个函数我先占个位，没想好怎么去实现
@@ -59,22 +60,17 @@ public class DisplayManagerImpl implements DisplayManager {
      * @param list
      */
     @Override
-    public   ArrayAdapter<String>  setDisplayList(SongList list) {
-
+    public void setDisplayList(SongList list) {
         displayList=list;
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(MainActivity.mainActivity,
-                android.R.layout.simple_list_item_single_choice,
-                list.getSongNames());
-        return adapter;
     }
 
     @Override
-    public void restartWith(String path,MediaPlayer mediaPlayer) {
+    public void restartWith(Song song,MediaPlayer mediaPlayer) {
         try {
             // 切歌之前先重置，释放掉之前的资源
             mediaPlayer.reset();
             // 设置播放源
-            mediaPlayer.setDataSource(path);
+            mediaPlayer.setDataSource(songManager.toFile(song).getAbsolutePath().toString());
             // 开始播放前的准备工作，加载多媒体资源，获取相关信息
             mediaPlayer.prepare();
             // 开始播放

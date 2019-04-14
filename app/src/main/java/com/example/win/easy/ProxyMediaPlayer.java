@@ -9,7 +9,7 @@ import com.example.win.easy.display.component.DisplayManagerImpl;
 import com.example.win.easy.song.Song;
 
 public class ProxyMediaPlayer  {
-    private  static  ProxyMediaPlayer proxyMediaPlayer=new ProxyMediaPlayer();
+    private  static  ProxyMediaPlayer instance =new ProxyMediaPlayer();
     private DisplayManagerImpl implementDisplayManager=DisplayManagerImpl.getInstance();
 
     private MediaPlayer mediaPlayer=new MediaPlayer();
@@ -57,8 +57,8 @@ public class ProxyMediaPlayer  {
         });
     }
 
-    public static ProxyMediaPlayer getProxyMediaPlayer(){
-       return proxyMediaPlayer;
+    public static ProxyMediaPlayer getInstance(){
+       return instance;
     }
 
     public int getCurrentPosition(){return currentPosition;}
