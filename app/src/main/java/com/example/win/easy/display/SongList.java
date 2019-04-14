@@ -2,7 +2,6 @@ package com.example.win.easy.display;
 
 import com.example.win.easy.song.Song;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import lombok.Data;
@@ -10,19 +9,21 @@ import lombok.Data;
 @Data
 public class SongList {
 
-    String name;
+    private String name;
+    private List<Song> songList;
+    private List<String> songNames;
 
-    List<Song> content;
-    private  String name;
-    List<Song> content;
+    public Song getSongAt(int index){return songList.get(index);}
 
-    //这个地方我不太理解为什么不直接用arraylist,而用list,
-    // ImplementListViewManager中有些函数要用这个，我先自己定义一下，不妥当的话，我在改。
-    ArrayList<Song> songs;
+    public boolean add(Song song){
+        songList.add(song);
+        songNames.add(song.getName());
+        return true;
+    }
 
-    //以下是我自己添加的函数
-    public ArrayList<String> getSongsName(){return null;}
-    public ArrayList<Song> getSongs(){return songs;}
-    public Song getSong(int index){return songs.get(index);}
-    public String getName(){return name;}
+    public boolean remove(Song song){
+        songNames.remove(song.getName());
+        return songList.remove(song);
+    }
+
 }

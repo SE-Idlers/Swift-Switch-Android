@@ -1,14 +1,9 @@
 package com.example.win.easy.display;
 
 import android.media.MediaPlayer;
-import android.view.View;
 import android.widget.ArrayAdapter;
-import android.widget.ImageButton;
-import android.widget.Toast;
 
-import com.example.win.easy.AdministrateSongs;
 import com.example.win.easy.MainActivity;
-import com.example.win.easy.ProxyMediaPlayer;
 import com.example.win.easy.song.Song;
 
 import java.io.IOException;
@@ -22,12 +17,12 @@ public class ImplementDisplayManager implements DisplayManager {
     private void changeSong(int songIndex ,MediaPlayer mediaPlayer) {
         if (songIndex < 0) {
             //比第一首在前一首
-            songIndex =displayList.getSongs().size()-1;
-        } else if (songIndex> displayList.getSongs().size()-1) {
+            songIndex =displayList.getSongList().size()-1;
+        } else if (songIndex> displayList.getSongList().size()-1) {
             //最后一首的下一首
             songIndex = 0;
         }
-        restartWith(displayList.getSong(songIndex).getAbsolutePath().toString(),mediaPlayer);
+        restartWith(displayList.getSongAt(songIndex).getAbsolutePath().toString(),mediaPlayer);
     }
 
     //这三个函数我先占个位，没想好怎么去实现
@@ -62,7 +57,7 @@ public class ImplementDisplayManager implements DisplayManager {
         displayList=list;
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(MainActivity.mainActivity,
                 android.R.layout.simple_list_item_single_choice,
-                list.getSongsName());
+                list.getSongNames());
         return adapter;
     }
 

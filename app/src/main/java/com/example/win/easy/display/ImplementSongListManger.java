@@ -1,17 +1,24 @@
 package com.example.win.easy.display;
 
-import com.example.win.easy.AdministrateSongs;
+import com.example.win.easy.persistence.SongListConfigurationPersistence;
 import com.example.win.easy.song.Song;
 
-import java.net.PortUnreachableException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class ImplementSongListManger implements SongListManager {
 
-    private ArrayList<SongList> songLists=new ArrayList<>();
+    private static SongListConfigurationPersistence songListConfigurationPersistence;
+    private static List<SongList> songLists;
 
-    public void AddSongList(SongList list){songLists.add(list);}
+    static {
+        songLists=songListConfigurationPersistence.load();
+        if (songLists==null)
+            songLists=new ArrayList<>();
+    }
+
+    public boolean add(SongList songList){return songLists.add(songList);}
+    public boolean remove(SongList songList){return songLists.remove(songList);}
 
     /**
      * 改变某个歌单在所有歌单中的优先级
@@ -19,20 +26,12 @@ public class ImplementSongListManger implements SongListManager {
      * @param indexTo
      */
     @Override
-    public void changePriority(SongList songList, int indexTo) {
-        int preIndex=songLists.indexOf(songList);
-        SongList templist=songList;
-        if(indexTo<preIndex){//前移
-            for(int i=preIndex;i>indexTo;i--) {
-                songLists.set(i, songLists.get(i - 1));
-            }
-        }
-        else {//后移
-            for(int i=preIndex;i<indexTo;i++){
-                songLists.set(i,songLists.get(i+1));
-            }
-        }
-        songLists.set(indexTo,templist);
+    public boolean changePriority(SongList songList, int indexTo) {
+        if(!songLists.contains(songList))
+            return false;
+        songLists.remove(songList);
+        songLists.add(indexTo,songList);
+        return true;
     }
 
     /**
@@ -41,10 +40,11 @@ public class ImplementSongListManger implements SongListManager {
      * @return
      */
     @Override
-    public List<SongList> apperanceListsOf(Song song) {
-        ArrayList<SongList> lists=new ArrayList<>();
+    public List<SongList> appearanceListsOf(Song song) {
+        List<SongList> lists=new ArrayList<>();
         for(SongList songList:songLists){
-            if(songList.getSongs().contains(song))lists.add(songList);
+            if(songList.getSongList().contains(song))
+                lists.add(songList);
         }
         return lists;
     }

@@ -2,7 +2,6 @@ package com.example.win.easy;
 
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TabHost;
 
@@ -10,9 +9,6 @@ import com.example.win.easy.display.ImplementDisplayManager;
 import com.example.win.easy.display.ImplementSongListManger;
 import com.example.win.easy.display.ImplementSongListView;
 import com.example.win.easy.display.SongList;
-import com.example.win.easy.display.SongListManager;
-
-import java.util.ArrayList;
 
 public class ProxyList {
 
@@ -65,15 +61,15 @@ public class ProxyList {
                 switch (tabId) {
                     case "tab1":
                         //在选中的歌单中，找到当前播放歌曲的索引，再在LISTVIEW中选中，但这个方法会让歌曲重新播放
-                        listView[0].setSelection(songLists[0].getSongs().indexOf(implementDisplayManager.getDisplayList().getSong(proxyMediaPlayer.getCurrentPosition())));
+                        listView[0].setSelection(songLists[0].getSongs().indexOf(implementDisplayManager.getDisplayList().getSongAt(proxyMediaPlayer.getCurrentPosition())));
                         implementDisplayManager.setDisplayList(songLists[0]);
                         break;
                     case "tab2":
-                        listView[1].setSelection(songLists[1].getSongs().indexOf(implementDisplayManager.getDisplayList().getSong(proxyMediaPlayer.getCurrentPosition())));
+                        listView[1].setSelection(songLists[1].getSongs().indexOf(implementDisplayManager.getDisplayList().getSongAt(proxyMediaPlayer.getCurrentPosition())));
                         implementDisplayManager.setDisplayList(songLists[1]);
                         break;
                     case "tab3":
-                        listView[2].setSelection(songLists[2].getSongs().indexOf(implementDisplayManager.getDisplayList().getSong(proxyMediaPlayer.getCurrentPosition())));
+                        listView[2].setSelection(songLists[2].getSongs().indexOf(implementDisplayManager.getDisplayList().getSongAt(proxyMediaPlayer.getCurrentPosition())));
                         implementDisplayManager.setDisplayList(songLists[2]);
                         break;
                 }
@@ -96,10 +92,10 @@ public class ProxyList {
                     if(ifSearchView)
                     {
                         //第一个参数，包含所选歌曲的所有列表，第二个参数，所选歌曲（在当前播放的歌曲列表中）
-                        implementSongListView.update(implementSongListManger.apperanceListsOf(implementDisplayManager.getDisplayList().getSong(position)),implementDisplayManager.getDisplayList().getSong(position),tabHost,tabs);
+                        implementSongListView.update(implementSongListManger.apperanceListsOf(implementDisplayManager.getDisplayList().getSongAt(position)),implementDisplayManager.getDisplayList().getSongAt(position),tabHost,tabs);
                         ifSearchView=false;
                     }
-                    implementDisplayManager.restartWith(implementDisplayManager.getDisplayList().getSong(position).getAbsolutePath().toString(),proxyMediaPlayer.getmediaPlayer());
+                    implementDisplayManager.restartWith(implementDisplayManager.getDisplayList().getSongAt(position).getAbsolutePath().toString(),proxyMediaPlayer.getmediaPlayer());
                 }
             });
         }
