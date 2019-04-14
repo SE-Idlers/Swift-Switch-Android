@@ -11,6 +11,8 @@ import com.example.win.easy.feature.InternalInformation;
 import java.util.List;
 
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 @Data
 public class Song {
@@ -50,4 +52,5 @@ public class Song {
     {
         return sequence;
     }
+
 }

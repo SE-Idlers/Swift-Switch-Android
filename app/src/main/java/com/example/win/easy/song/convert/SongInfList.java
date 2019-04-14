@@ -5,7 +5,9 @@ import com.example.win.easy.song.convert.parser.RegulationFilenameParser;
 import com.example.win.easy.song.convert.parser.interfaces.FilenameParser;
 
 import java.io.File;
-
+import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * 这是提取的歌曲信息的总列表
@@ -21,11 +23,7 @@ public class SongInfList implements File2SongConverter {
 
     public  Song convert(File file) {//得到歌曲全列表
 
-            //I just need song file
-            //an Interface should be here
             //delete prefix and postfix
-            //songInfList.add(file.getAbsolutePath().substring(file.getAbsolutePath().indexOf('c')+2,file.getAbsolutePath().indexOf('.')));
-            //真正需要的部分
             Song tmp = new Song();
             tmp.setName(file.getAbsolutePath().substring(file.getAbsolutePath().indexOf('-'), file.getAbsolutePath().indexOf('.')));
             tmp.setAuthor(file.getAbsolutePath().substring(file.getAbsolutePath().indexOf('c') + 2, file.getAbsolutePath().indexOf('-')));
