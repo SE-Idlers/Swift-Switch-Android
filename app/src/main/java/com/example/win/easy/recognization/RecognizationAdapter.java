@@ -1,9 +1,9 @@
 package com.example.win.easy.recognization;
 
-import java.util.SortedMap;
+import java.util.HashMap;
 
 public interface RecognizationAdapter {
 
-    SortedMap<Character, Float> recognize(float[] Float_Array);
+    HashMap<Character, Float> recognize(float[] Float_Array);
 
 }

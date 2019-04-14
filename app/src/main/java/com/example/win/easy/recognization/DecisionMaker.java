@@ -1,4 +1,4 @@
-package com.example.win.easy.recognization.recognization;
+package com.example.win.easy.recognization;
 
 import java.util.HashMap;
 import java.util.Set;
