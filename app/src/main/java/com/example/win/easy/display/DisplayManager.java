@@ -1,14 +1,20 @@
 package com.example.win.easy.display;
 
+import android.media.MediaPlayer;
+import android.widget.ArrayAdapter;
+
 import com.example.win.easy.song.Song;
 
 public interface DisplayManager {
 
-    void changeSong(int songIndex);
+    //我觉得next和previous应该为公有，而changesong应该为私有，改了一下
+    void next(int currentSongIndex, MediaPlayer mediaPlayer);
+
+    void previous(int currentSongIndex, MediaPlayer mediaPlayer);
 
     void setMode(DisplayMode mode);
 
-    void setDisplayList(SongList list);
+    ArrayAdapter<String> setDisplayList(SongList list);
 
-    void restartWith(Song song);
+    void restartWith(String song_path,MediaPlayer mediaPlayer);//根据具体实现，我修改了一下参数
 }
