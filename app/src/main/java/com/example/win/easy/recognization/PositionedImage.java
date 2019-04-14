@@ -3,8 +3,6 @@ package com.example.win.easy.recognization;
 import android.gesture.Gesture;
 import android.graphics.Bitmap;
 
-import lombok.Builder;
-
 
 public class PositionedImage implements RecognizationUnit {
 
@@ -15,9 +13,10 @@ public class PositionedImage implements RecognizationUnit {
     public Bitmap getBitmap(){
         return bitmap;
     }
-    public void setBitmap(Bitmap b) { bitmap = Bitmap.createBitmap(b); }//应改为private
-    public float[] getFloat_array(){ return Float_array; }
-    public void setFloat_array(float[] fa){ Float_array = fa; }//应改为private
+    private void setBitmap(Bitmap b) { bitmap = Bitmap.createBitmap(b); }//应改为private
+    public float[] getFloat_array() { return Float_array; }
+    private void setFloat_array(float[] fa) { Float_array = fa; }//应改为private
+    public int getGestureId() { return gestureId; }
 
     public static float[] Bitmap_to_FloatArray(){
         int width = bitmap.getWidth();
