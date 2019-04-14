@@ -59,7 +59,7 @@ public abstract class AbstractJsonifyConfigurationPersistence<T> implements Conf
     }
 
     @Override
-    public T load(Class<T> tClass) {
+    public T load() {
         File file=new File(getSDPath()+fileDir);
         BufferedReader reader=null;
         String content="";
@@ -80,9 +80,10 @@ public abstract class AbstractJsonifyConfigurationPersistence<T> implements Conf
                 }
             }
         }
-        T entity= JSONObject.parseObject(content, tClass);
+        T entity= JSONObject.parseObject(content, getClassInformation());
         return entity;
 
     }
 
+    abstract Class<T> getClassInformation();
 }

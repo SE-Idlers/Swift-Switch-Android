@@ -2,6 +2,7 @@ package com.example.win.easy.persistence;
 
 import com.example.win.easy.display.SongList;
 
+import java.util.ArrayList;
 import java.util.List;
 
 //阿里巴巴的fastjson框架
@@ -11,5 +12,10 @@ public class SongListConfigurationPersistence extends AbstractJsonifyConfigurati
 
     public SongListConfigurationPersistence(){
         super(fileDir);
+    }
+
+    @Override
+    Class<List<SongList>> getClassInformation() {
+        return (Class<List<SongList>>) new ArrayList<SongList>().getClass();
     }
 }

@@ -15,4 +15,8 @@ public class GlobalConfigurationPersistence extends AbstractJsonifyConfiguration
         super(fileDir);
     }
 
+    @Override
+    Class<GlobalConfiguration> getClassInformation() {
+        return GlobalConfiguration.class;
+    }
 }

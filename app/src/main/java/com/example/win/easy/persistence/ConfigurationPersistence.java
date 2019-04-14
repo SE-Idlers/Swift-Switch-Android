@@ -15,6 +15,6 @@ public interface ConfigurationPersistence<T>{
      * 从文件中读取
      * @return 配置类对象
      */
-    T load(Class<T> tClass);
+    T load();
 
 }
