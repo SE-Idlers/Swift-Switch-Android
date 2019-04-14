@@ -1,53 +1,50 @@
 package com.example.win.easy.persistence;
 
-import com.example.win.easy.persistence.GlobalConfiguration;
+import android.Manifest;
+import android.content.pm.PackageManager;
+import android.os.Environment;
+import android.support.v4.app.ActivityCompat;
 
-//阿里巴巴的fastjson框架
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.example.win.easy.MainActivity;
 
+import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileWriter;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 
-//import java.lang.reflect.Field;
-//import java.lang.NoSuchFieldExcption;
+public abstract class AbstractJsonifyConfigurationPersistence<T> implements ConfigurationPersistence<T> {
 
-import org.apache.commons.io.FileUtils;
+    private static String fileDir;
 
-public class GlobalConfiguraionPersistence implements ConfigurationPersistence<GlobalConfiguraion> {
+    public AbstractJsonifyConfigurationPersistence(String fileDir){
+        this.fileDir=fileDir;
+    }
 
-    /*
-    * 缺少单独一条配置更改的接口
-    * */
-
-    static String fileDir="/SwiftSwitch/src/globalConfiguration.json";
     public String getSDPath(){
         //更改权限的代码暂时放在这里
         if (ActivityCompat.checkSelfPermission(MainActivity.mainActivity, Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(MainActivity.mainActivity,
                     new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 123);
-            return;
+            return null;
         }
 
         //存储路径
-        String sdpath= Environment.getExternalStorageDirectory();
-        return sdpath;
+        File sdpath= Environment.getExternalStorageDirectory();
+        return sdpath.getAbsolutePath();
     }
 
-
-    public String toJsonString(GlobalConfiguraion entity){
-        String jsonStr=JSON.toJSONString(entity);
+    public String toJsonString(T entity){
+        String jsonStr= JSON.toJSONString(entity);
         return jsonStr;
-
     }
-
-
 
     @Override
-    public void save(GlobalConfiguration entity) {
+    public void save(T entity) {
         String jsonStr=toJsonString(entity);
         try{
             FileWriter fw=new FileWriter(getSDPath()+fileDir);
@@ -57,12 +54,12 @@ public class GlobalConfiguraionPersistence implements ConfigurationPersistence<G
             fw.close();
             out.close();
         }catch (IOException e){
-            e.printTrackTrace();
+            e.printStackTrace();
         }
     }
 
     @Override
-    public GlobalConfiguration load() {
+    public T load(Class<T> tClass) {
         File file=new File(getSDPath()+fileDir);
         BufferedReader reader=null;
         String content="";
@@ -83,9 +80,9 @@ public class GlobalConfiguraionPersistence implements ConfigurationPersistence<G
                 }
             }
         }
-
-        GlobalConfiguration config=JSONObject.parseObject(content, GlobalConfiguration.class);
-        return config;
+        T entity= JSONObject.parseObject(content, tClass);
+        return entity;
 
     }
+
 }
