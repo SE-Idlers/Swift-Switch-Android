@@ -5,9 +5,6 @@ import com.example.win.easy.song.convert.parser.RegulationFilenameParser;
 import com.example.win.easy.song.convert.parser.interfaces.FilenameParser;
 
 import java.io.File;
-import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
 
 /**
  * 这是提取的歌曲信息的总列表
@@ -17,20 +14,22 @@ import lombok.Setter;
 
 public class SongInfList implements File2SongConverter {
 
-    public SongInfList() {
-        //default constructor
-    }
+    private static FilenameParser filenameParser=new RegulationFilenameParser();
 
-    public  Song convert(File file) {//得到歌曲全列表
+    /**
+     * 将歌曲文件转化为歌曲对象
+     * @param file 输入的歌曲文件
+     * @return 转化后得到的歌曲
+     */
+    public  Song convert(File file) {
 
             //delete prefix and postfix
-            Song tmp = new Song();
-            tmp.setName(file.getAbsolutePath().substring(file.getAbsolutePath().indexOf('-'), file.getAbsolutePath().indexOf('.')));
-            tmp.setAuthor(file.getAbsolutePath().substring(file.getAbsolutePath().indexOf('c') + 2, file.getAbsolutePath().indexOf('-')));
-            //得到关键码,
-            //the datatype should be modified, and an instance needed here
-            FilenameParser instance = new RegulationFilenameParser();
-            tmp.setSequence(instance.parse(tmp.getName()));
-            return tmp;
+            Song song = new Song();
+            song.setName(file.getAbsolutePath().substring(file.getAbsolutePath().indexOf('-'), file.getAbsolutePath().indexOf('.')));
+            song.setAuthor(file.getAbsolutePath().substring(file.getAbsolutePath().indexOf('c') + 2, file.getAbsolutePath().indexOf('-')));
+
+            //得到关键码
+            song.setSequence(filenameParser.parse(song.getName()));
+            return song;
     }
 }
