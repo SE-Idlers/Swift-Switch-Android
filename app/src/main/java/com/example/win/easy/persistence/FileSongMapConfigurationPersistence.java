@@ -3,17 +3,22 @@ package com.example.win.easy.persistence;
 import com.example.win.easy.song.Song;
 
 import java.io.File;
+import java.util.HashMap;
 import java.util.Map;
 
-public class FileSongMapConfigurationPersistence implements ConfigurationPersistence<Map<File, Song>>{
+//阿里巴巴的fastjson框架
 
-    @Override
-    public void save(Map<File, Song> entity) {
-        
+
+public class FileSongMapConfigurationPersistence extends AbstractJsonifyConfigurationPersistence<Map<File,Song>>{
+
+    private static String fileDir="/SwiftSwitch/src/MapOfFileAndSong.json";
+
+    public FileSongMapConfigurationPersistence(){
+        super(fileDir);
     }
 
     @Override
-    public Map<File, Song> load() {
-        return null;
+    Class<Map<File, Song>> getClassInformation() {
+        return (Class<Map<File, Song>>) new HashMap<File,Song>().getClass();
     }
 }
