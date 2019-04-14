@@ -12,9 +12,12 @@ import java.io.File;
  * 我觉得用不到remove啊
  * */
 
-public class SongInfList implements File2SongConverter {
+public class File2SongConverterImpl implements File2SongConverter {
 
-    private static FilenameParser filenameParser=new RegulationFilenameParser();
+    private static FilenameParser filenameParser=RegulationFilenameParser.getInstance();
+    private static File2SongConverterImpl instance=new File2SongConverterImpl();
+    public static File2SongConverterImpl getInstance(){return instance;}
+    private File2SongConverterImpl(){}
 
     /**
      * 将歌曲文件转化为歌曲对象

@@ -1,14 +1,20 @@
-package com.example.win.easy.display;
+package com.example.win.easy.display.component;
 
-import com.example.win.easy.persistence.SongListConfigurationPersistence;
+import com.example.win.easy.display.SongList;
+import com.example.win.easy.display.interfaces.SongListManager;
+import com.example.win.easy.persistence.component.SongListConfigurationPersistence;
 import com.example.win.easy.song.Song;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ImplementSongListManger implements SongListManager {
+public class SongListMangerImpl implements SongListManager {
 
-    private static SongListConfigurationPersistence songListConfigurationPersistence;
+    private static SongListConfigurationPersistence songListConfigurationPersistence=SongListConfigurationPersistence.getInstance();
+    private static SongListMangerImpl instance=new SongListMangerImpl();
+    public static SongListMangerImpl getInstance(){return instance;}
+    private SongListMangerImpl(){}
+
     private static List<SongList> songLists;
 
     static {

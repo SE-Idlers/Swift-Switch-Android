@@ -1,4 +1,6 @@
-package com.example.win.easy.recognization;
+package com.example.win.easy.recognization.component;
+
+import com.example.win.easy.recognization.interfaces.Discriminator;
 
 import java.util.HashMap;
 import java.util.Set;

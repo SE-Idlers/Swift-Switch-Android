@@ -1,4 +1,4 @@
-package com.example.win.easy.recognization;
+package com.example.win.easy.recognization.interfaces;
 
 import java.util.List;
 

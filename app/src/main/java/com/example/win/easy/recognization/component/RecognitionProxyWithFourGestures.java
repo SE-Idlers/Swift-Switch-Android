@@ -1,5 +1,12 @@
-package com.example.win.easy.recognization;
+package com.example.win.easy.recognization.component;
 
+
+import com.example.win.easy.recognization.Image;
+import com.example.win.easy.recognization.PositionedImage;
+import com.example.win.easy.recognization.interfaces.Discriminator;
+import com.example.win.easy.recognization.interfaces.RecognitionAdapter;
+import com.example.win.easy.recognization.interfaces.RecognitionProxy;
+import com.example.win.easy.recognization.interfaces.RecognitionUnit;
 
 import org.tensorflow.contrib.android.TensorFlowInferenceInterface;
 

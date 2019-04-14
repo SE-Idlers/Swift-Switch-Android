@@ -1,9 +1,8 @@
 package com.example.win.easy.song;
 
-import com.example.win.easy.persistence.FileSongMapConfigurationPersistence;
-import com.example.win.easy.persistence.SongListConfigurationPersistence;
+import com.example.win.easy.persistence.component.FileSongMapConfigurationPersistence;
 import com.example.win.easy.song.convert.File2SongConverter;
-import com.example.win.easy.song.convert.SongInfList;
+import com.example.win.easy.song.convert.File2SongConverterImpl;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -15,19 +14,19 @@ import java.util.Map;
 /**
  * i think this should just input file, and use file2song, then implement hashmap
  */
-public class ImpleSongManager implements SongManager {
+public class SongManagerImpl implements SongManager {
 
-    private static FileSongMapConfigurationPersistence fileSongMapConfigurationPersistence;
-    private static File2SongConverter file2SongConverter = new SongInfList();
-    private static SongListConfigurationPersistence songListConfigurationPersistence;
+    private static FileSongMapConfigurationPersistence fileSongMapConfigurationPersistence=FileSongMapConfigurationPersistence.getInstance();
+    private static File2SongConverter file2SongConverter =File2SongConverterImpl.getInstance();
+    private static SongManagerImpl instance=new SongManagerImpl();
 
-    private static Map<File,Song> loadFileAndSong = fileSongMapConfigurationPersistence.load();
-    private static Map<File, Song> fileToSong = new HashMap<>();
-    private static Map<Song, File> songToFile = new HashMap<>();
+    private static Map<File, Song> fileToSong;
+    private static Map<Song, File> songToFile;
     private static List<File> files;
     private static List<Song> songs;
 
-
+    private SongManagerImpl(){}
+    public static SongManagerImpl getInstance(){return instance;}
     static {
         fileToSong=fileSongMapConfigurationPersistence.load();
         if(fileToSong==null)

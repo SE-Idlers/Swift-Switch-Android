@@ -4,6 +4,8 @@ import android.gesture.Gesture;
 import android.graphics.Bitmap;
 import android.graphics.Matrix;
 
+import com.example.win.easy.recognization.interfaces.RecognitionUnit;
+
 public class Image implements RecognitionUnit {
 
     private static Bitmap bitmap = null;

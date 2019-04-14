@@ -1,8 +1,10 @@
-package com.example.win.easy.display;
+package com.example.win.easy.display.interfaces;
 
 import android.media.MediaPlayer;
 import android.widget.ArrayAdapter;
 
+import com.example.win.easy.display.DisplayMode;
+import com.example.win.easy.display.SongList;
 import com.example.win.easy.song.Song;
 
 public interface DisplayManager {

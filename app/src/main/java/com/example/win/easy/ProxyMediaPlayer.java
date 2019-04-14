@@ -2,21 +2,15 @@ package com.example.win.easy;
 
 import android.media.MediaPlayer;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
-import com.example.win.easy.display.DisplayManager;
-import com.example.win.easy.display.DisplayMode;
-import com.example.win.easy.display.ImplementDisplayManager;
-import com.example.win.easy.display.SongList;
+import com.example.win.easy.display.component.DisplayManagerImpl;
 import com.example.win.easy.song.Song;
-
-import java.io.IOException;
 
 public class ProxyMediaPlayer  {
     private  static  ProxyMediaPlayer proxyMediaPlayer=new ProxyMediaPlayer();
-    private ImplementDisplayManager implementDisplayManager=new ImplementDisplayManager();
+    private DisplayManagerImpl implementDisplayManager=DisplayManagerImpl.getInstance();
 
     private MediaPlayer mediaPlayer=new MediaPlayer();
     private int currentPosition;//当前音乐播放的下标

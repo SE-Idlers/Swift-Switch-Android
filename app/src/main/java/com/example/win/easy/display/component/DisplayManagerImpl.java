@@ -1,14 +1,21 @@
-package com.example.win.easy.display;
+package com.example.win.easy.display.component;
 
 import android.media.MediaPlayer;
 import android.widget.ArrayAdapter;
 
 import com.example.win.easy.MainActivity;
+import com.example.win.easy.display.DisplayMode;
+import com.example.win.easy.display.SongList;
+import com.example.win.easy.display.interfaces.DisplayManager;
 import com.example.win.easy.song.Song;
 
 import java.io.IOException;
 
-public class ImplementDisplayManager implements DisplayManager {
+public class DisplayManagerImpl implements DisplayManager {
+
+    private static DisplayManagerImpl instance=new DisplayManagerImpl();
+    public static DisplayManagerImpl getInstance(){return instance;}
+    private DisplayManagerImpl(){}
 
     private SongList displayList;
     private DisplayMode displayMode;

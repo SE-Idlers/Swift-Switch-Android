@@ -2,8 +2,8 @@ package com.example.win.easy;
 
 import android.support.test.runner.AndroidJUnit4;
 
-import com.example.win.easy.recognization.RecognitionAdapterImpl;
-import com.example.win.easy.recognization.RecognitionAdapter;
+import com.example.win.easy.recognization.component.RecognitionAdapterImpl;
+import com.example.win.easy.recognization.interfaces.RecognitionAdapter;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

@@ -1,4 +1,4 @@
-package com.example.win.easy.persistence;
+package com.example.win.easy.persistence.interfaces;
 /**
  * 将一个配置类对象持久化到本地文件，每次启动App时读取，关闭app时写入
  * @param <T> 需要持久化的对象类型

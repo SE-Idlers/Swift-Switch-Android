@@ -1,4 +1,4 @@
-package com.example.win.easy.persistence;
+package com.example.win.easy.persistence.interfaces;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
@@ -85,5 +85,5 @@ public abstract class AbstractJsonifyConfigurationPersistence<T> implements Conf
 
     }
 
-    abstract Class<T> getClassInformation();
+    protected abstract Class<T> getClassInformation();
 }

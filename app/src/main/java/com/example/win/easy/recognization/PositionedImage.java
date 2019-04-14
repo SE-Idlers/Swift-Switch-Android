@@ -3,6 +3,8 @@ package com.example.win.easy.recognization;
 import android.gesture.Gesture;
 import android.graphics.Bitmap;
 
+import com.example.win.easy.recognization.interfaces.RecognitionUnit;
+
 
 public class PositionedImage implements RecognitionUnit {
 

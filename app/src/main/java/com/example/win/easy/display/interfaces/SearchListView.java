@@ -1,4 +1,4 @@
-package com.example.win.easy.display;
+package com.example.win.easy.display.interfaces;
 
 import java.util.List;
 

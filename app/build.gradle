@@ -63,10 +63,10 @@ dependencies {
     implementation group: 'com.belerweb', name: 'pinyin4j', version: '2.5.1'
 
     // https://mvnrepository.com/artifact/com.alibaba/fastjson
-    compile group: 'com.alibaba', name: 'fastjson', version: '1.2.57'
+    implementation group: 'com.alibaba', name: 'fastjson', version: '1.2.57'
 
 
-    compile 'org.apache.commons.io:commonsIO:2.5.0'
+    implementation 'org.apache.commons.io:commonsIO:2.5.0'
     implementation 'org.tensorflow:tensorflow-android:+'
 
     androidTestImplementation 'com.android.support.test:runner:0.2'
