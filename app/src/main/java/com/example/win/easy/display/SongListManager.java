@@ -6,8 +6,9 @@ import java.util.List;
 
 public interface SongListManager {
 
-    void changePriority(SongList songList,int indexTo);
 
-    List<SongList> apperanceListsOf(Song song);
+    boolean changePriority(SongList songList,int indexTo);
+
+    List<SongList> appearanceListsOf(Song song);
 
 }

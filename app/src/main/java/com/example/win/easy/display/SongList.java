@@ -9,7 +9,21 @@ import lombok.Data;
 @Data
 public class SongList {
 
-    String name;
+    private String name;
+    private List<Song> songList;
+    private List<String> songNames;
 
-    List<Song> content;
+    public Song getSongAt(int index){return songList.get(index);}
+
+    public boolean add(Song song){
+        songList.add(song);
+        songNames.add(song.getName());
+        return true;
+    }
+
+    public boolean remove(Song song){
+        songNames.remove(song.getName());
+        return songList.remove(song);
+    }
+
 }
