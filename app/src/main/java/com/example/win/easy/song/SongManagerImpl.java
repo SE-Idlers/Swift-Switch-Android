@@ -1,8 +1,9 @@
 package com.example.win.easy.song;
 
 import com.example.win.easy.persistence.component.FileSongMapConfigurationPersistence;
-import com.example.win.easy.song.convert.File2SongConverter;
+import com.example.win.easy.song.interfaces.File2SongConverter;
 import com.example.win.easy.song.convert.File2SongConverterImpl;
+import com.example.win.easy.song.interfaces.SongManager;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -105,7 +106,7 @@ public class SongManagerImpl implements SongManager {
 
     @Override
     public List<List<Character>> getAllSequences() {
-        return null;
+        return sequences;
     }
 
     private void update(){

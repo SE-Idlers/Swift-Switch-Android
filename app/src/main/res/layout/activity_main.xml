@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".MainActivity">
+    tools:context=".activity.MainActivity">
 
     <LinearLayout
         android:background="@color/gainsboro"
@@ -186,7 +186,7 @@ android:layout_marginRight="10dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:orientation="horizontal"
-            tools:context=".MainActivity">
+            tools:context=".activity.MainActivity">
             <!-- gestureStrokeType控制手势是否需要一笔完成,multiple表示允许多笔-->
             <android.gesture.GestureOverlayView
                 android:id="@+id/gesture1"
@@ -217,7 +217,7 @@ android:layout_marginRight="10dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:orientation="horizontal"
-            tools:context=".MainActivity">
+            tools:context=".activity.MainActivity">
 
             <android.gesture.GestureOverlayView
                 android:id="@+id/gesture3"

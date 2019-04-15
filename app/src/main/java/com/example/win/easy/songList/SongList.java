@@ -1,8 +1,8 @@
-package com.example.win.easy.display;
+package com.example.win.easy.songList;
 
 import android.widget.ArrayAdapter;
 
-import com.example.win.easy.MainActivity;
+import com.example.win.easy.activity.MainActivity;
 import com.example.win.easy.song.Song;
 
 import java.util.ArrayList;

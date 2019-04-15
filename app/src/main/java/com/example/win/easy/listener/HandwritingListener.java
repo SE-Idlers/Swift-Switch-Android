@@ -1,32 +1,31 @@
-package com.example.win.easy;
+package com.example.win.easy.listener;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
-import android.content.res.AssetManager;
 import android.gesture.Gesture;
 import android.gesture.GestureOverlayView;
 import android.support.v4.app.ActivityCompat;
 
+import com.example.win.easy.activity.MainActivity;
+import com.example.win.easy.view.DashboardView;
+import com.example.win.easy.view.interfaces.SearchingView;
 import com.example.win.easy.filter.CharSequenceFilterStrategy;
 import com.example.win.easy.filter.FilterStrategy;
 import com.example.win.easy.recognization.PositionedImage;
 import com.example.win.easy.recognization.component.RecognitionProxyWithFourGestures;
 import com.example.win.easy.recognization.interfaces.RecognitionProxy;
-import com.example.win.easy.song.SongManager;
+import com.example.win.easy.song.interfaces.SongManager;
 import com.example.win.easy.song.SongManagerImpl;
 
 import java.util.List;
 
-public class ProxyGestureListener implements GestureOverlayView.OnGesturePerformedListener {
+public class HandwritingListener implements GestureOverlayView.OnGesturePerformedListener {
 
 
-    RecognitionProxy recognitionProxy;
-    FilterStrategy filterStrategy= CharSequenceFilterStrategy.getInstance();
-    SongManager songManager= SongManagerImpl.getInstance();
-    ProxyList proxyList=ProxyList.getInstance();
-    public ProxyGestureListener(AssetManager assetManager){
-        recognitionProxy=new RecognitionProxyWithFourGestures(assetManager);
-    }
+    private RecognitionProxy recognitionProxy=RecognitionProxyWithFourGestures.getInstance();
+    private FilterStrategy<List<Character>> filterStrategy= CharSequenceFilterStrategy.getInstance();
+    private SongManager songManager= SongManagerImpl.getInstance();
+    private SearchingView searchingView= DashboardView.getInstance();
 
     public void onGesturePerformed(GestureOverlayView gestureOverlayView, final Gesture gesture) {
         //访问权限
@@ -37,10 +36,12 @@ public class ProxyGestureListener implements GestureOverlayView.OnGesturePerform
             return;
         }
 
+        //获得识别结果
         List<Character> result=recognitionProxy.receive(PositionedImage.create(gesture,gesture.getID()));
         System.out.println(result);
+        //过滤得到备选歌曲的下标
         List<Integer> candidates=filterStrategy.filter(result,songManager.getAllSequences());
-        proxyList.update(candidates);
-
+        //更新搜索结果视图
+        searchingView.update(candidates);
     }
 }

@@ -2,7 +2,7 @@ package com.example.win.easy.persistence.component;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.example.win.easy.display.SongList;
+import com.example.win.easy.songList.SongList;
 import com.example.win.easy.persistence.interfaces.AbstractJsonifyConfigurationPersistence;
 
 import java.util.ArrayList;

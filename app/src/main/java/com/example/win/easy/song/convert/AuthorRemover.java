@@ -1,5 +1,7 @@
 package com.example.win.easy.song.convert;
 
+import com.example.win.easy.song.interfaces.Remover;
+
 /**
  * 为啥remove，直接file2song就完事了。
  */

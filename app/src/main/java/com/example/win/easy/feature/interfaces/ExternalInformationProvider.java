@@ -1,4 +1,4 @@
-package com.example.win.easy.feature;
+package com.example.win.easy.feature.interfaces;
 
 public interface ExternalInformationProvider {
 }

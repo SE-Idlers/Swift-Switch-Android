@@ -1,9 +1,8 @@
-package com.example.win.easy.display.component;
+package com.example.win.easy.songList;
 
-import com.example.win.easy.display.SongList;
-import com.example.win.easy.display.interfaces.SongListManager;
 import com.example.win.easy.persistence.component.SongListConfigurationPersistence;
 import com.example.win.easy.song.Song;
+import com.example.win.easy.songList.interfaces.SongListManager;
 
 import java.util.ArrayList;
 import java.util.List;

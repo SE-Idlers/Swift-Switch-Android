@@ -5,7 +5,7 @@ import android.content.pm.PackageManager;
 import android.os.Environment;
 import android.support.v4.app.ActivityCompat;
 
-import com.example.win.easy.MainActivity;
+import com.example.win.easy.activity.MainActivity;
 
 import java.io.BufferedReader;
 import java.io.File;
