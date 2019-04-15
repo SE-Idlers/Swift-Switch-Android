@@ -1,7 +1,7 @@
-package com.example.win.easy.display.interfaces;
+package com.example.win.easy.songList.interfaces;
 
-import com.example.win.easy.display.SongList;
 import com.example.win.easy.song.Song;
+import com.example.win.easy.songList.SongList;
 
 import java.util.List;
 

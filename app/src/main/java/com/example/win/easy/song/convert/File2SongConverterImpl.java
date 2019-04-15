@@ -3,6 +3,7 @@ package com.example.win.easy.song.convert;
 import com.example.win.easy.song.Song;
 import com.example.win.easy.song.convert.parser.RegulationFilenameParser;
 import com.example.win.easy.song.convert.parser.interfaces.FilenameParser;
+import com.example.win.easy.song.interfaces.File2SongConverter;
 
 import java.io.File;
 

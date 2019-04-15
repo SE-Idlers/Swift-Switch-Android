@@ -1,8 +1,9 @@
 package com.example.win.easy.song;
 
 import com.example.win.easy.persistence.component.FileSongMapConfigurationPersistence;
-import com.example.win.easy.song.convert.File2SongConverter;
+import com.example.win.easy.song.interfaces.File2SongConverter;
 import com.example.win.easy.song.convert.File2SongConverterImpl;
+import com.example.win.easy.song.interfaces.SongManager;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -24,6 +25,7 @@ public class SongManagerImpl implements SongManager {
     private static Map<Song, File> songToFile;
     private static List<File> files;
     private static List<Song> songs;
+    private static List<List<Character>> sequences;
 
     private SongManagerImpl(){}
     public static SongManagerImpl getInstance(){return instance;}
@@ -33,9 +35,11 @@ public class SongManagerImpl implements SongManager {
             fileToSong=new HashMap<>();
         files=new ArrayList<>(fileToSong.keySet());
         songs=new ArrayList<>(fileToSong.values());
+        sequences=new ArrayList<>();
         songToFile=new HashMap<>();
         for(File file:files){
             songToFile.put(fileToSong.get(file),file);
+            sequences.add(fileToSong.get(file).getSequence());
         }
     }
 
@@ -100,12 +104,18 @@ public class SongManagerImpl implements SongManager {
         return songsToSelect;
     }
 
+    @Override
+    public List<List<Character>> getAllSequences() {
+        return sequences;
+    }
+
     private void update(){
         files=new ArrayList<>(fileToSong.keySet());
         songs=new ArrayList<>(fileToSong.values());
         songToFile=new HashMap<>();
         for(File file:files){
             songToFile.put(fileToSong.get(file),file);
+            sequences.add(fileToSong.get(file).getSequence());
         }
     }
 }

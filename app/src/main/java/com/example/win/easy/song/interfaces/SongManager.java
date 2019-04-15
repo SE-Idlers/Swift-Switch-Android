@@ -1,4 +1,6 @@
-package com.example.win.easy.song;
+package com.example.win.easy.song.interfaces;
+
+import com.example.win.easy.song.Song;
 
 import java.io.File;
 import java.util.List;
@@ -22,4 +24,6 @@ public interface SongManager {
     Boolean removeAll(List<File> files);
 
     List<Song> selectSongsByIndices(List<Integer> indices);
+
+    List<List<Character>> getAllSequences();
 }

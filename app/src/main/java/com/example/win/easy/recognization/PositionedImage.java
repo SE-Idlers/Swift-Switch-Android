@@ -5,7 +5,11 @@ import android.graphics.Bitmap;
 
 import com.example.win.easy.recognization.interfaces.RecognitionUnit;
 
+import lombok.Builder;
+import lombok.Data;
 
+@Builder
+@Data
 public class PositionedImage implements RecognitionUnit {
 
     private static Bitmap bitmap = null;
@@ -20,7 +24,7 @@ public class PositionedImage implements RecognitionUnit {
     private void setFloat_array(float[] fa) { Float_array = fa; }//应改为private
     public int getGestureId() { return gestureId; }
 
-    public static float[] Bitmap_to_FloatArray(){
+    private static float[] Bitmap_to_FloatArray(){
         int width = bitmap.getWidth();
         int height = bitmap.getHeight();
         int[] iarray = new int[28*28];
@@ -37,8 +41,9 @@ public class PositionedImage implements RecognitionUnit {
         return farray;
     }
 
-    public static float[] create(Gesture gesture, int g){
+    public static PositionedImage create(Gesture gesture, long g){
         bitmap = gesture.toBitmap(28, 28, 10, 0xffff0000);
-        return Float_array = Bitmap_to_FloatArray();
+        Float_array = Bitmap_to_FloatArray();
+        return new PositionedImage();
     }
 }

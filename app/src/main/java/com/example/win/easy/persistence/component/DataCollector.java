@@ -1,4 +1,4 @@
-package com.example.win.easy;
+package com.example.win.easy.persistence.component;
 
 import com.example.win.easy.recognization.Image;
 

@@ -1,52 +1,54 @@
 package com.example.win.easy.recognization.component;
 
 
-import com.example.win.easy.recognization.Image;
+import android.content.res.AssetManager;
+
 import com.example.win.easy.recognization.PositionedImage;
 import com.example.win.easy.recognization.interfaces.Discriminator;
-import com.example.win.easy.recognization.interfaces.RecognitionAdapter;
 import com.example.win.easy.recognization.interfaces.RecognitionProxy;
 import com.example.win.easy.recognization.interfaces.RecognitionUnit;
 
-import org.tensorflow.contrib.android.TensorFlowInferenceInterface;
-
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
 
 public class RecognitionProxyWithFourGestures implements RecognitionProxy {
     private static List<Character> myList = new ArrayList<>();
-    private static HashMap<Character, Float> myMap = new LinkedHashMap<>();
-    private static RecognitionAdapter myAdapter;
+    private static RecognitionAdapterImpl myAdapter;
     private static Discriminator myDecisionMaker = new DecisionMaker();
     private static int CurrentId = 0;
 
-    public RecognitionProxyWithFourGestures(TensorFlowInferenceInterface inferenceInterface){
-        myAdapter=new RecognitionAdapterImpl(inferenceInterface);
+    private static RecognitionProxyWithFourGestures instance=new RecognitionProxyWithFourGestures();
+    public static RecognitionProxyWithFourGestures getInstance(){return instance;}
+    private RecognitionProxyWithFourGestures(){}
+
+    @Override
+    public void setAssetManager(AssetManager assetManger){
+        myAdapter=new RecognitionAdapterImpl(assetManger);
     }
 
-    private RecognitionProxyWithFourGestures(){}
+    @Override
     public List<Character> receive(RecognitionUnit unit){
-        //需要在能调用getAssets()的地方加上下列语句
-        //adapter.inferenceInterface = new TensorFlowInferenceInterface(getAssets(),adapter.model_file);
-        myMap = myAdapter.recognize(((PositionedImage)unit).getFloat_array());
+
+        HashMap<Character, Float> myMap = myAdapter.recognize(((PositionedImage) unit).getFloat_array());
         Character character = myDecisionMaker.discriminate(myMap);
-        if(unit instanceof PositionedImage){
-            int index = ((PositionedImage)unit).getGestureId();
-            if(index != CurrentId){
-                myList.add(character);
-            }
-            else{
-                myList.set(index, character);
-            }
-            CurrentId = index;//更新Id
-        }
-        if(unit instanceof Image){
+//        if(unit instanceof PositionedImage){
+        int index = ((PositionedImage)unit).getGestureId();
+        if(index != CurrentId){
             myList.add(character);
         }
+        else{
+            myList.set(index, character);
+        }
+        CurrentId = index;//更新Id
+//        }
+//        if(unit instanceof Image){
+//            myList.add(character);
+//        }
         return myList;
     }
+
+    @Override
     public void clear(){
         myList.clear();
     }

@@ -1,5 +1,7 @@
 package com.example.win.easy.recognization.component;
 
+import android.content.res.AssetManager;
+
 import com.example.win.easy.recognization.interfaces.RecognitionAdapter;
 
 import org.tensorflow.contrib.android.TensorFlowInferenceInterface;
@@ -73,7 +75,7 @@ public class RecognitionAdapterImpl implements RecognitionAdapter {
         return myMap;
     }
 
-    public RecognitionAdapterImpl(TensorFlowInferenceInterface tensorFlowInferenceInterface){
-        this.inferenceInterface=tensorFlowInferenceInterface;
+    public RecognitionAdapterImpl(AssetManager assetManager){
+        this.inferenceInterface=new TensorFlowInferenceInterface(assetManager,model_file);
     }
 }
