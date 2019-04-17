@@ -21,7 +21,7 @@ public class PositionedImage implements RecognitionUnit {
     public long getGestureId() { return gestureId; }
 
     public PositionedImage(Bitmap b, long g) { bitmap = b; gestureId = g;}
-    public PositionedImage(){}
+    public PositionedImage(){}//
 
     private static float[] Bitmap_to_FloatArray(){
         int width = bitmap.getWidth();
