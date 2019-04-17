@@ -50,7 +50,7 @@ public class RecognitionAdapterImpl implements RecognitionAdapter {
             myMap.put(classes[(int)deal_result[i][0]], deal_result[i][1]);
         }
         //删除0-9，将a-z加至A-Z
-        for(int i = 0; i < 9; i++)
+        for(int i = 0; i < 10; i++)
             myMap.remove(classes[i]);
         for(int i = 36; i < 62; i++){
             float toAdd = myMap.get(classes[i]);
