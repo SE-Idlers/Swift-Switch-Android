@@ -32,6 +32,7 @@ public class RecognitionAdapterImpl implements RecognitionAdapter {
     private HashMap<Character, Float> myMap = new LinkedHashMap<>();
 
     public HashMap<Character, Float> recognize(float[] pb){
+
         //模型运算
         inferenceInterface.feed(input_node, pb, input_shape);
         inferenceInterface.run(new String[] {output_node});
@@ -60,6 +61,7 @@ public class RecognitionAdapterImpl implements RecognitionAdapter {
         }
         //排序
         List<Map.Entry<Character, Float>> list = new ArrayList<Map.Entry<Character, Float>>(myMap.entrySet());
+
         Collections.sort(list, new Comparator<Map.Entry<Character, Float>>() {
             @Override
             public int compare(Map.Entry<Character, Float> mapping1, Map.Entry<Character, Float> mapping2) {

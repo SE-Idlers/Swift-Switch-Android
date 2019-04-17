@@ -16,11 +16,10 @@ public class Image implements RecognitionUnit {
     public Image(Bitmap b) { bitmap = b; }
 
     public static float[] Bitmap_to_FloatArray(){
-        int m_width = (int) bitmap.getWidth();
-        int m_height = (int) bitmap.getHeight();
+        int width = bitmap.getWidth();
+        int height = bitmap.getHeight();
         int[] iarray = new int[28*28];
-        bitmap.getPixels(iarray, 0, m_width, 0, 0, m_width, m_height);
-
+        bitmap.getPixels(iarray, 0, width, 0, 0, width, height);
         float[] farray = new float[28*28];
         /***
          *      A  R  G  B

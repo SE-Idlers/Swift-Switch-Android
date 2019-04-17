@@ -20,7 +20,8 @@ public class PositionedImage implements RecognitionUnit {
     public float[] getFloat_array() { return Float_array; }
     public long getGestureId() { return gestureId; }
 
-    public PositionedImage(Bitmap b, long g) { bitmap = b; gestureId = 1;}
+    public PositionedImage(Bitmap b, long g) { bitmap = b; gestureId = g;}
+    public PositionedImage(){}
 
     private static float[] Bitmap_to_FloatArray(){
         int width = bitmap.getWidth();
@@ -38,7 +39,7 @@ public class PositionedImage implements RecognitionUnit {
          *  0x80000000 -> 0x7FFFFFFF
          *  故对源代码做以下改动以达到图片的正确处理
          */
-        for(int i =0;i<784;i++){
+        for(int i =0;i<28*28;i++){
             if((float)iarray[i]/0x80000000 > 0.001f){
                 farray[i] = (float)iarray[i] / 0x80000000;
             }
