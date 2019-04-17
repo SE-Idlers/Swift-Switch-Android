@@ -3,10 +3,6 @@ package com.example.win.easy.recognization;
 import android.gesture.Gesture;
 import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.graphics.ColorSpace;
-import android.graphics.Matrix;
-import android.os.Build;
-import android.support.annotation.RequiresApi;
 
 import com.example.win.easy.recognization.interfaces.RecognitionUnit;
 
@@ -21,16 +17,10 @@ public class PositionedImage implements RecognitionUnit {
     private static float[] Float_array;
     private static long gestureId = 1;//默认为1
 
-    public Bitmap getBitmap(){
-        return bitmap;
-    }
-    private void setBitmap(Bitmap b) { bitmap = Bitmap.createBitmap(b); }//应改为private
     public float[] getFloat_array() { return Float_array; }
-    private void setFloat_array(float[] fa) { Float_array = fa; }//应改为private
     public long getGestureId() { return gestureId; }
 
-    public PositionedImage(long g) { gestureId = g; }
-    public PositionedImage() { gestureId = 1;}
+    public PositionedImage(Bitmap b, long g) { bitmap = b; gestureId = 1;}
 
     private static float[] Bitmap_to_FloatArray(){
         int width = bitmap.getWidth();
@@ -65,6 +55,6 @@ public class PositionedImage implements RecognitionUnit {
     public static PositionedImage create(Gesture gesture, long g){
         bitmap = gesture.toBitmap(28, 28, 3, Color.WHITE);
         Float_array = Bitmap_to_FloatArray();
-        return new PositionedImage(g);
+        return new PositionedImage(bitmap, g);
     }
 }

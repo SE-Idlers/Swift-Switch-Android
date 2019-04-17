@@ -3,7 +3,6 @@ package com.example.win.easy.recognization;
 import android.gesture.Gesture;
 import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.graphics.Matrix;
 
 import com.example.win.easy.recognization.interfaces.RecognitionUnit;
 
@@ -12,12 +11,9 @@ public class Image implements RecognitionUnit {
     private static Bitmap bitmap = null;
     private static float[] Float_array;
 
-    public Bitmap getBitmap(){
-        return bitmap;
-    }
-    public void setBitmap(Bitmap b) { bitmap = Bitmap.createBitmap(b); }//应改为private
-    public float[] getFloat_array(){ return Float_array; }
-    public void setFloat_array(float[] fa){ Float_array = fa; }//应改为private
+    public float[] getFloat_array() { return Float_array; }
+
+    public Image(Bitmap b) { bitmap = b; }
 
     public static float[] Bitmap_to_FloatArray(){
         int m_width = (int) bitmap.getWidth();
@@ -49,8 +45,9 @@ public class Image implements RecognitionUnit {
         return farray;
     }
 
-    public static float[] create(Gesture gesture){
+    public static Image create(Gesture gesture){
         bitmap = gesture.toBitmap(28, 28, 3, Color.WHITE);
-        return Float_array = Bitmap_to_FloatArray();
+        Float_array = Bitmap_to_FloatArray();
+        return new Image(bitmap);
     }
 }

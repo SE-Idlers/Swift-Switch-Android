@@ -18,7 +18,7 @@ public class RecognitionAdapterImpl implements RecognitionAdapter {
     public static final String model_file = "file:///android_asset/PBfile864.pb";
     public TensorFlowInferenceInterface inferenceInterface;
     private static final String input_node = "reshape_1_input";
-    private static final long[] input_shape = {1,784};
+    private static final long[] input_shape = {1,28*28};
     private static final String output_node = "dense_3/Softmax";
 
     private char[] classes = {

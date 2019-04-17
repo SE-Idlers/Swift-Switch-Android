@@ -34,7 +34,7 @@ public class RecognitionProxyWithFourGestures implements RecognitionProxy {
         Character character = myDecisionMaker.discriminate(myMap);
 //        if(unit instanceof PositionedImage){
         long index = ((PositionedImage)unit).getGestureId();
-        if(index != CurrentId){
+        if(index > CurrentId) {//这里从!=改为>
             myList.add(character);
         }
         else{
