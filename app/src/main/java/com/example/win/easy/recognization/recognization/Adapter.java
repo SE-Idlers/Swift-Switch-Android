@@ -1,6 +1,5 @@
-package com.example.win.easy.recognization;
+package com.example.win.easy.recognization.recognization;
 
-<<<<<<< HEAD
 import org.tensorflow.contrib.android.TensorFlowInferenceInterface;
 
 import java.util.ArrayList;
@@ -13,20 +12,6 @@ import java.util.Map;
 
 public class Adapter implements RecognizationAdapter {
     public static final String model_file = "file:///android_asset/PBfile864.pb";
-=======
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
-import java.util.SortedMap;
-import java.util.TreeMap;
-
-import org.tensorflow.contrib.android.TensorFlowInferenceInterface;
-
-public class Adapter implements RecognizationAdapter {
-    private static final String model_file = "file:///android_asset/PBfile864.pb";
->>>>>>> 21d3885fdbc0e99edab5864a7a13221a78e189e6
     public TensorFlowInferenceInterface inferenceInterface;
     private static final String input_node = "reshape_1_input";
     private static final long[] input_shape = {1,784};
@@ -39,17 +24,10 @@ public class Adapter implements RecognizationAdapter {
             'a','b','c','d','e','f','g','h','i','j','k','l','m','n',
             'o','p','q','r','s','t','u','v','w','x','y','z'
     };
-<<<<<<< HEAD
     //使用LinkedHashMap为了使他不按Key排序
     private HashMap<Character, Float> myMap = new LinkedHashMap<>();
 
     public HashMap<Character, Float> recognize(float[] pb){
-=======
-
-    private SortedMap<Character, Float> myMap = new TreeMap<>();
-
-    public SortedMap<Character, Float> recognize(float[] pb){
->>>>>>> 21d3885fdbc0e99edab5864a7a13221a78e189e6
         //模型运算
         inferenceInterface.feed(input_node, pb, input_shape);
         inferenceInterface.run(new String[] {output_node});
@@ -63,7 +41,6 @@ public class Adapter implements RecognizationAdapter {
             deal_result[i][0] = i;
             deal_result[i][1] = result[i];
         }
-<<<<<<< HEAD
         //插入Map
         for(int i = 0; i < 62; i++){
             myMap.put(classes[(int)deal_result[i][0]], deal_result[i][1]);
@@ -79,44 +56,18 @@ public class Adapter implements RecognizationAdapter {
         }
         //排序
         List<Map.Entry<Character, Float>> list = new ArrayList<Map.Entry<Character, Float>>(myMap.entrySet());
-=======
-        //排序+插入Map
-
-        for(int i = 0; i < 62; i++){
-//            int low_index = i;
-//            for(int j = 62 - 1; j > i; j--) {
-//                if (deal_result[j][1] > deal_result[low_index][1]) {
-//                    low_index = j;
-//                }
-//                float temp = deal_result[low_index][1];
-//                float temp_key = deal_result[low_index][0];
-//                deal_result[low_index][1] = deal_result[i][1];
-//                deal_result[low_index][0] = deal_result[i][0];
-//                deal_result[i][1] = temp;
-//                deal_result[i][0] = temp_key;
-//            }
-            myMap.put(classes[(int)deal_result[i][0]], deal_result[i][1]);
-        }
-        // 通过ArrayList构造函数把map.entrySet()转换成list
-        List<Map.Entry<Character, Float>> list = new ArrayList<Map.Entry<Character, Float>>(myMap.entrySet());
-        // 通过比较器实现比较排序
->>>>>>> 21d3885fdbc0e99edab5864a7a13221a78e189e6
         Collections.sort(list, new Comparator<Map.Entry<Character, Float>>() {
             @Override
             public int compare(Map.Entry<Character, Float> mapping1, Map.Entry<Character, Float> mapping2) {
                 return mapping1.getValue().compareTo(mapping2.getValue());
             }
         });
-<<<<<<< HEAD
         //将排序后的list转化为newMap
         HashMap<Character, Float> newMap = new LinkedHashMap<>();
         for(int i = list.size() - 1 ; i >= 0; i--){
             newMap.put(list.get(i).getKey(), list.get(i).getValue());
         }
         myMap = newMap;
-=======
-        //筛选
->>>>>>> 21d3885fdbc0e99edab5864a7a13221a78e189e6
         return myMap;
     }
 }

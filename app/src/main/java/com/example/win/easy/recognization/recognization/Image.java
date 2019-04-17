@@ -1,11 +1,7 @@
-package com.example.win.easy.recognization;
+package com.example.win.easy.recognization.recognization;
 
 import android.gesture.Gesture;
 import android.graphics.Bitmap;
-<<<<<<< HEAD
-import android.graphics.Matrix;
-=======
->>>>>>> 21d3885fdbc0e99edab5864a7a13221a78e189e6
 
 public class Image implements RecognizationUnit {
 
@@ -20,27 +16,10 @@ public class Image implements RecognizationUnit {
     public void setFloat_array(float[] fa){ Float_array = fa; }//应改为private
 
     public static float[] Bitmap_to_FloatArray(){
-<<<<<<< HEAD
-        //重构大小
-        float width = bitmap.getWidth();
-        float height = bitmap.getHeight();
-        Matrix matrix = new Matrix();
-        float scaleWidth = ((float) 28) / width;
-        float scaleHeight = ((float) 28) / height;
-        matrix.postScale(scaleWidth, scaleHeight);
-        bitmap = Bitmap.createBitmap(bitmap, 0, 0, (int) width,
-                (int) height, matrix, true);
-        //转换
-        int m_width = (int) bitmap.getWidth();
-        int m_height = (int) bitmap.getHeight();
-        int[] iarray = new int[28*28];
-        bitmap.getPixels(iarray, 0, m_width, 0, 0, m_width, m_height);
-=======
         int width = bitmap.getWidth();
         int height = bitmap.getHeight();
         int[] iarray = new int[28*28];
         bitmap.getPixels(iarray, 0, width, 0, 0, width, height);
->>>>>>> 21d3885fdbc0e99edab5864a7a13221a78e189e6
         float[] farray = new float[28*28];
         for(int i =0;i<784;i++){
             if(((float)iarray[i]/-16777216.0f > 0.001f)){

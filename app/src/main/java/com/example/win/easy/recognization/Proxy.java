@@ -1,15 +1,20 @@
 package com.example.win.easy.recognization;
 
 
+<<<<<<< HEAD
 import android.gesture.Gesture;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+=======
+import java.util.ArrayList;
+>>>>>>> 21d3885fdbc0e99edab5864a7a13221a78e189e6
 import java.util.List;
 
 public class Proxy implements RecognizationProxy {
     private static List<Character> myList = new ArrayList<>();
+<<<<<<< HEAD
     private static HashMap<Character, Float> myMap = new LinkedHashMap<>();
     private static RecognizationAdapter myAdapter = new Adapter();
     private static Discriminator myDecisionMaker = new DecisionMaker();
@@ -43,6 +48,13 @@ public class Proxy implements RecognizationProxy {
             Character character = myDecisionMaker.discriminate(myMap);
             myList.add(character);
         }
+=======
+    private static RecognizationAdapter myAdapter = new Adapter();
+
+    public List<Character> receive(RecognizationUnit unit){
+        myAdapter.recognize(((PositionedImage)unit).getFloat_array());
+        //TODO
+>>>>>>> 21d3885fdbc0e99edab5864a7a13221a78e189e6
         return myList;
     }
     public void clear(){

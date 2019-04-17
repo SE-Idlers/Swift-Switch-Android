@@ -4,6 +4,10 @@ import android.gesture.Gesture;
 import android.graphics.Bitmap;
 
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 21d3885fdbc0e99edab5864a7a13221a78e189e6
 public class PositionedImage implements RecognizationUnit {
 
     private static Bitmap bitmap = null;
@@ -13,10 +17,16 @@ public class PositionedImage implements RecognizationUnit {
     public Bitmap getBitmap(){
         return bitmap;
     }
+<<<<<<< HEAD
     private void setBitmap(Bitmap b) { bitmap = Bitmap.createBitmap(b); }//应改为private
     public float[] getFloat_array() { return Float_array; }
     private void setFloat_array(float[] fa) { Float_array = fa; }//应改为private
     public int getGestureId() { return gestureId; }
+=======
+    public void setBitmap(Bitmap b) { bitmap = Bitmap.createBitmap(b); }//应改为private
+    public float[] getFloat_array(){ return Float_array; }
+    public void setFloat_array(float[] fa){ Float_array = fa; }//应改为private
+>>>>>>> 21d3885fdbc0e99edab5864a7a13221a78e189e6
 
     public static float[] Bitmap_to_FloatArray(){
         int width = bitmap.getWidth();
