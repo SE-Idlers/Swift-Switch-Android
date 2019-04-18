@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+
+    <color name="gainsboro">#dcdcdc</color><!--淡灰色 -->
+    <color name="darkgrey">#a9a9a9</color><!--暗灰色 -->
+    <color name="snow">#fffafa</color><!--雪白色 -->
+    <color name="floralwhite">#fffaf0</color><!--花白色 -->
+
+</resources>
