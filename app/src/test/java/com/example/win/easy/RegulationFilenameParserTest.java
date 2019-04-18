@@ -26,7 +26,7 @@ import static org.mockito.Mockito.verify;
 @RunWith(PowerMockRunner.class)
 public class RegulationFilenameParserTest {
     @Spy
-    RegulationFilenameParser parser=new RegulationFilenameParser();
+    RegulationFilenameParser parser=RegulationFilenameParser.getInstance();
     List<MatcherProxy<Character>> matcherProxies=new ArrayList<>();
     List<String> toBeMatchedSamples=new ArrayList<String>();
     List<List<Character>> results=new ArrayList<List<Character>>();
