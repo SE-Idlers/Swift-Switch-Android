@@ -2,7 +2,6 @@ package com.example.win.easy.filter;
 
 import java.util.ArrayList;
 import java.util.List;
-import dagger.Module;
 
 /**
  * 以输入的字符序列作为依据，对字符序列列表过滤，得到通过过滤的字符序列下标<br/>
@@ -16,8 +15,11 @@ import dagger.Module;
  * {@code [A,B,C,D,E]]}<br/>
  * 则返回结果为{@code [0,2,3]}<br/>
  */
-@Module
 public class CharSequenceFilterStrategy implements FilterStrategy<List<Character>> {
+
+    private static CharSequenceFilterStrategy instance=new CharSequenceFilterStrategy();
+    public static CharSequenceFilterStrategy getInstance(){return instance;}
+    private CharSequenceFilterStrategy(){}
 
     @Override
     public List<Integer> filter(List<Character> basis, List<List<Character>> sequenceList) {

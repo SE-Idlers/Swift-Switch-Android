@@ -2,8 +2,8 @@ package com.example.win.easy;
 
 import android.support.test.runner.AndroidJUnit4;
 
-import com.example.win.easy.recognization.Adapter;
-import com.example.win.easy.recognization.RecognizationAdapter;
+import com.example.win.easy.recognization.component.RecognitionAdapterImpl;
+import com.example.win.easy.recognization.interfaces.RecognitionAdapter;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -25,7 +25,7 @@ public class AdapterOnAndroidTest {
         for(int i = 0 ; i < 62; i++){
             ttt[i] = r.nextFloat();
         }
-        RecognizationAdapter test = new Adapter();
+        RecognitionAdapter test = new RecognitionAdapterImpl();
         Map<Character, Float> m = test.recognize(ttt);
         test.inferenceInterface = new TensorFlowInferenceInterface(getAssets(),test.model_file);
 

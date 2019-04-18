@@ -5,10 +5,12 @@ android {
     defaultConfig {
         applicationId "com.example.win.easy"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-        minSdkVersion 18
+        minSdkVersion 19
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        javaCompileOptions { annotationProcessorOptions { includeCompileClasspath = true } }
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         javaCompileOptions {
             annotationProcessorOptions {
@@ -60,9 +62,14 @@ dependencies {
     // https://mvnrepository.com/artifact/com.belerweb/pinyin4j
     implementation group: 'com.belerweb', name: 'pinyin4j', version: '2.5.1'
 
+    // https://mvnrepository.com/artifact/com.alibaba/fastjson
+    implementation group: 'com.alibaba', name: 'fastjson', version: '1.2.57'
+
+
+    implementation 'org.apache.commons.io:commonsIO:2.5.0'
     implementation 'org.tensorflow:tensorflow-android:+'
 
-    androidTestCompile 'com.android.support.test:runner:0.2'
+    androidTestImplementation 'com.android.support.test:runner:0.2'
 
     // Core library
     androidTestImplementation 'androidx.test:core:1.0.0'

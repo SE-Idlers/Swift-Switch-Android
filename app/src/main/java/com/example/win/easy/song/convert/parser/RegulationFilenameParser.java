@@ -17,8 +17,10 @@ public class RegulationFilenameParser implements FilenameParser<Character> {
     //执行功能的一系列MatcherProxy
     List<MatcherProxy<Character>> matcherProxies;
 
-    public RegulationFilenameParser(){this(new ArrayList<MatcherProxy<Character>>());}
-    public RegulationFilenameParser(List<MatcherProxy<Character>> matcherProxies){setMatcherProxies(matcherProxies);}
+    private static RegulationFilenameParser instance=new RegulationFilenameParser();
+    public static RegulationFilenameParser getInstance(){return instance;}
+    private RegulationFilenameParser(){this(new ArrayList<MatcherProxy<Character>>());}
+    private RegulationFilenameParser(List<MatcherProxy<Character>> matcherProxies){setMatcherProxies(matcherProxies);}
 
     public void setMatcherProxies(List<MatcherProxy<Character>> matcherProxies) {
         this.matcherProxies = matcherProxies;
