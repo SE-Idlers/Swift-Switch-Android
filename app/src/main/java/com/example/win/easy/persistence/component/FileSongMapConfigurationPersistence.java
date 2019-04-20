@@ -23,7 +23,7 @@ public class FileSongMapConfigurationPersistence extends AbstractJsonifyConfigur
 
     private static String fileDir="/SwiftSwitch/src/MapOfFileAndSong.json";
     private static FileSongMapConfigurationPersistence instance=new FileSongMapConfigurationPersistence();
-    public static FileSongMapConfigurationPersistence getInstance(){return  instance;}
+    public static FileSongMapConfigurationPersistence getInstance() { return  instance; }//线程安全
     private FileSongMapConfigurationPersistence(){
         super(fileDir);
     }
@@ -43,7 +43,8 @@ public class FileSongMapConfigurationPersistence extends AbstractJsonifyConfigur
 
     @Override
     protected Map<File, Song> fromJsonString(String json) {
-        FileSong[] shadow=JSONObject.parseObject(json,FileSong[].class);
+        List<FileSong> shadow=JSON.parseArray(json,FileSong.class);//含数组的String转为JSONArray
+        //FileSong[] shadow=JSONObject.parseObject(json,FileSong[].class);
         Map<File,Song> map=new HashMap<>();
         for(FileSong fileSong:shadow)
             map.put(fileSong.getFile(),fileSong.getSong());

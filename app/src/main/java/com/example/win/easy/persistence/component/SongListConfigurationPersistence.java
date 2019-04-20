@@ -27,7 +27,7 @@ public class SongListConfigurationPersistence extends AbstractJsonifyConfigurati
 
     @Override
     protected List<SongList> fromJsonString(String json) {
-        return new ArrayList<SongList>(Arrays.asList((SongList[]) JSONObject.parseObject(json, SongList[].class)));
+        return (ArrayList<SongList>)JSON.parseArray(json, SongList.class);
     }
 
     @Override
