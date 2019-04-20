@@ -27,7 +27,7 @@ public class SongListConfigurationPersistence extends AbstractJsonifyConfigurati
 
     @Override
     protected List<SongList> fromJsonString(String json) {
-        return (ArrayList<SongList>)JSON.parseArray(json, SongList.class);
+        return (ArrayList<SongList>)JSON.parseArray(json, SongList.class);//含数组的String转为JSONArray
     }
 
     @Override

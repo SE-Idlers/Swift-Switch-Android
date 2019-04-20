@@ -44,7 +44,6 @@ public class FileSongMapConfigurationPersistence extends AbstractJsonifyConfigur
     @Override
     protected Map<File, Song> fromJsonString(String json) {
         List<FileSong> shadow=JSON.parseArray(json,FileSong.class);//含数组的String转为JSONArray
-        //FileSong[] shadow=JSONObject.parseObject(json,FileSong[].class);
         Map<File,Song> map=new HashMap<>();
         for(FileSong fileSong:shadow)
             map.put(fileSong.getFile(),fileSong.getSong());

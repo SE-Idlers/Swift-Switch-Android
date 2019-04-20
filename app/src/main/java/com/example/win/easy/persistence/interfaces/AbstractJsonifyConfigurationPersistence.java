@@ -43,18 +43,17 @@ public abstract class AbstractJsonifyConfigurationPersistence<T> implements Conf
     @Override
     public void save(T entity) {
         String jsonStr = toJsonString(entity);
-        File file= new File(getSDPath() + fileDir);
+        File file= new File(getSDPath() + fileDir);//把地址传给file但并不打开，因此不会引发IOException
         if (!file.exists()) {
             try{
                 file.getParentFile().mkdirs();//创建多级目录，mkdir只创建一级
-                file.createNewFile();
+                file.createNewFile();//创建文件
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
         FileWriter fw=null;
         try {
-            //把地址传给file但并不打开，因此不会引发IOException
             fw = new FileWriter(file);
             PrintWriter out = new PrintWriter(fw);
             out.write(jsonStr);
