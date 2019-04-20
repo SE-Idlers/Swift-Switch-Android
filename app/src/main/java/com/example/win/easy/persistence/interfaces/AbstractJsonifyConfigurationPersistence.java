@@ -108,6 +108,39 @@ public abstract class AbstractJsonifyConfigurationPersistence<T> implements Conf
             }
         }
         T entity= fromJsonString(content);
+
+        if(entity==null)//如果文件内容为空，则创建一个空白文件，同时返回一个默认内容的实例
+        {
+            writeEmptyObject();//创建一个空白文件
+            //返回一个默认内容的实例的过程比较繁琐（几乎是将正常情况下的加载行为重复了一遍），因为泛型T难以直接获得实例
+            try{
+                freader=new FileReader(file);
+                breader=new BufferedReader(freader);
+                String tempString =null;
+                while((tempString=breader.readLine())!=null){
+                    content=content+tempString;
+                }
+                freader.close();
+                breader.close();
+            }catch(IOException e){
+                e.printStackTrace();
+            }finally {
+                if (freader != null ){
+                    try {
+                        freader.close();
+                    } catch (IOException e1) {
+                    }
+                }
+                if(breader!=null){
+                    try{
+                        breader.close();
+                    }catch (IOException e){
+                        e.printStackTrace();
+                    }
+                }
+            }
+            entity= fromJsonString(content);
+        }
         return entity;
     }
 }
