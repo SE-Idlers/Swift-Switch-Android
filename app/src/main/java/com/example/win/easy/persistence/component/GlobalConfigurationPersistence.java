@@ -29,7 +29,7 @@ public class GlobalConfigurationPersistence extends AbstractJsonifyConfiguration
 
     @Override
     protected GlobalConfiguration fromJsonString(String json) {
-        return JSONObject.parseObject(json,GlobalConfiguration.class);
+        return JSON.parseObject(json,GlobalConfiguration.class);
     }
 
     @Override

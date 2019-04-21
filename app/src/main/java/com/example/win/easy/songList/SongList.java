@@ -19,9 +19,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class SongList {
 
-    private String name;
-    private List<Song> songList;
-    private List<String> songNames;
+    private String name="";
+    private List<Song> songList=new ArrayList<>();
+    private List<String> songNames=new ArrayList<>();
 
     public static ArrayAdapter<String> toArrayAdapter(SongList songList){
         return new ArrayAdapter<>(
