@@ -20,23 +20,35 @@ import lombok.NoArgsConstructor;
 public class SongList {
 
     private String name;
-    private List<Song> songList;
-    private List<String> songNames;
+    private List<Song> songList=new ArrayList<>();
+    private List<String> songNames=new ArrayList<>();
 
-    public static ArrayAdapter<String> toArrayAdapter(SongList songList){
+    public  ArrayAdapter<String> toArrayAdapter(){
         return new ArrayAdapter<>(
                 MainActivity.mainActivity,
-                android.R.layout.simple_list_item_single_choice,
-                songList.getSongNames()
-        );
+                android.R.layout.simple_list_item_single_choice, songNames);
     }
 
+    public SongList(String SongListName){
+        name=SongListName;
+    }
+
+    public String getName(){return name; }
+    public List<Song> getSongList(){return songList;}
     public Song getSongAt(int index){return songList.get(index);}
 
     public boolean add(Song song){
         songList.add(song);
         songNames.add(song.getName());
         return true;
+    }
+
+    public boolean ifcontain(Song song){
+        for(Song song1:songList){
+            if(song1.getName().equals(song.getName()))
+                return true;
+        }
+      return false;
     }
 
     public boolean remove(Song song){

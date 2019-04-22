@@ -18,6 +18,8 @@ public class Song {
 
     private String author;
 
+    private String abpath;
+
     private List<Character> sequence;
 
     DataSource source;
@@ -25,6 +27,19 @@ public class Song {
     InternalInformation internalInformation;
 
     private File absolutePath;
+
+    public Song(){};
+
+    public Song(String sname){
+        name=sname;
+    }
+
+    public Song(String path,String sname){
+        abpath=path;
+        name=sname;
+    }
+
+    public String getName(){return name;}
 
     public File getAbsolutePath(){
         return absolutePath;
