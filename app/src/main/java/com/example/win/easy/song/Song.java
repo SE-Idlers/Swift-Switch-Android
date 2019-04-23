@@ -30,18 +30,12 @@ public class Song {
 
     public Song(){};
 
-    public Song(String sname){
-        name=sname;
+    public Song(String name){
+        this.name=name;
     }
 
-    public Song(String path,String sname){
-        abpath=path;
-        name=sname;
-    }
-
-    public String getName(){return name;}
-
-    public File getAbsolutePath(){
-        return absolutePath;
+    public Song(String abpath,String name){
+        this.abpath=abpath;
+        this.name=name;
     }
 }
