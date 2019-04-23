@@ -33,8 +33,6 @@ public class SongList {
         name=SongListName;
     }
 
-    public String getName(){return name; }
-    public List<Song> getSongList(){return songList;}
     public Song getSongAt(int index){return songList.get(index);}
 
     public boolean add(Song song){
