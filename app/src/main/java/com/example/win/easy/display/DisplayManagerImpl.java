@@ -71,11 +71,6 @@ public class DisplayManagerImpl implements DisplayManager {
         displayMode=mode;
     }
 
-    /**
-     *  更改list，即更改listview 的适配器
-     *   (listview的适配器，就是填充内容只能为String[],所以我需要一个可以返回歌曲列表中所有歌曲名字的函数)
-     * @param list
-     */
     @Override
     public boolean setDisplayList(SongList list) {
         List<Song> songs=list.getSongList();
