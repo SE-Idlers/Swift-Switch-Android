@@ -50,13 +50,12 @@ public class TemporaryListGenerator {
 
         for (int dataSourceIndex=0;dataSourceIndex<dataSourceAmount;dataSourceIndex++){
             //构建歌单
-            SongList candidate=SongList.builder()
+           SongList candidate=SongList.builder()
                     .name(dataSources.get(dataSourceIndex).toString())
                     .songList(dataSourceGroup.get(dataSources.get(dataSourceIndex)))
                     .build();
             songLists.add(candidate);
         }
-
         return songLists;
     }
 }
