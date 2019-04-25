@@ -19,7 +19,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class SongList {
 
-    private String name;
+    private String name="";
     private List<Song> songList=new ArrayList<>();
     private List<String> songNames=new ArrayList<>();
 
