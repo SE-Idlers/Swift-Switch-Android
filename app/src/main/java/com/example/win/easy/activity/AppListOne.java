@@ -13,8 +13,7 @@ public class AppListOne extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.applistone);
-        final Button btnplay1 = (Button) findViewById(R.id.play1);
-        final Button button;
+        final Button btnplay1 =  findViewById(R.id.play1);
         //切换到
         btnplay1.setOnClickListener(new View.OnClickListener() {
                                         @Override

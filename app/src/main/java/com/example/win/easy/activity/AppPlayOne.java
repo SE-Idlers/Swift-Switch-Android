@@ -12,7 +12,7 @@ public class AppPlayOne extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.appplayone);
-        final Button btnplay1 = (Button) findViewById(R.id.list);
+        final Button btnplay1 = findViewById(R.id.list);
         //切换到
         btnplay1.setOnClickListener(new View.OnClickListener() {
                                         @Override

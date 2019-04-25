@@ -26,4 +26,6 @@ public interface SongManager {
     List<Song> selectSongsByIndices(List<Integer> indices);
 
     List<List<Character>> getAllSequences();
+
+    List<Song> getAllSongs();
 }
