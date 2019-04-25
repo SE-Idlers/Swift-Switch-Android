@@ -1,9 +1,8 @@
 package com.example.win.easy.persistence.component;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
-import com.example.win.easy.songList.SongList;
 import com.example.win.easy.persistence.interfaces.AbstractJsonifyConfigurationPersistence;
+import com.example.win.easy.songList.SongList;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -27,11 +26,11 @@ public class SongListConfigurationPersistence extends AbstractJsonifyConfigurati
 
     @Override
     protected List<SongList> fromJsonString(String json) {
-        return (ArrayList<SongList>)JSON.parseArray(json, SongList.class);//含数组的String转为JSONArray
+        return JSON.parseArray(json, SongList.class);//含数组的String转为JSONArray
     }
 
     @Override
     protected void writeEmptyObject() {
-        save(new ArrayList<SongList>(Arrays.asList(new SongList[]{})));
+        save(new ArrayList<>(Arrays.asList(new SongList[]{})));
     }
 }

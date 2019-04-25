@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 
 import com.example.win.easy.Constants;
 import com.example.win.easy.R;
+import com.example.win.easy.SwiftSwitchClassLoader;
 import com.example.win.easy.gesture.GestureProxy;
 import com.example.win.easy.recognization.component.RecognitionProxyWithFourGestures;
 import com.example.win.easy.view.DashboardView;
@@ -21,6 +22,7 @@ public class MainActivity extends AppCompatActivity  {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mainActivity=this;
+        SwiftSwitchClassLoader.init();
         RecognitionProxyWithFourGestures.getInstance().setAssetManager(getAssets());
         GestureProxy gestureProxy=GestureProxy.getInstance();
         DashboardView dashboardView=DashboardView.getInstance();

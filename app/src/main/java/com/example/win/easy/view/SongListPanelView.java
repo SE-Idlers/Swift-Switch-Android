@@ -14,10 +14,12 @@ import com.example.win.easy.songList.SongList;
 import com.example.win.easy.songList.SongListMangerImpl;
 import com.example.win.easy.songList.interfaces.SongListManager;
 
+import java.util.List;
+
 public class SongListPanelView {
 
     private static SongListPanelView instance=new SongListPanelView();
-    public SongListPanelView getInstance(){return instance;}
+    public static SongListPanelView getInstance(){return instance;}
     private SongListPanelView(){}
 
     private SongListManager songListManager= SongListMangerImpl.getInstance();
@@ -43,9 +45,10 @@ public class SongListPanelView {
      * 查看歌单的对话框
      */
     private void createDialogSeeSongList(){
+        List<String> songListNames=songListManager.getNameOfAllSongLists();
         new AlertDialog.Builder(MainActivity.mainActivity)
                 .setItems(
-                        (String[])songListManager.getNameOfAllSongLists().toArray(),
+                        songListNames.toArray(new String[songListNames.size()]),
                         null
                 )
                 .show();
