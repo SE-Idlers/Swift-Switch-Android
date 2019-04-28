@@ -33,4 +33,9 @@ public class SongListConfigurationPersistence extends AbstractJsonifyConfigurati
     protected void writeEmptyObject() {
         save(new ArrayList<>(Arrays.asList(new SongList[]{})));
     }
+
+    @Override
+    protected List<SongList> getEmptyInstance() {
+        return new ArrayList<>();
+    }
 }

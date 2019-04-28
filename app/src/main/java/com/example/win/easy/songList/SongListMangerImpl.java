@@ -20,6 +20,8 @@ public class SongListMangerImpl implements SongListManager {
 
     static {
       songLists=SongListConfigurationPersistence.getInstance().load();
+      if (songLists==null)
+          songLists=new ArrayList<>();
       if (songLists.size()==0)
         songLists.add(new SongList("默认歌单",songManager.getAllSongs()));
     }

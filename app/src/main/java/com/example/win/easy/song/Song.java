@@ -28,7 +28,7 @@ public class Song {
 
     private File absolutePath;
 
-    public Song(){};
+    public Song(){}
 
     public Song(String name){
         this.name=name;

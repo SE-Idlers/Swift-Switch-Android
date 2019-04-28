@@ -39,6 +39,7 @@ public abstract class AbstractJsonifyConfigurationPersistence<T> implements Conf
     protected abstract String toJsonString(T entity);
     protected abstract T fromJsonString(String json);//FastJson有此接口
     protected abstract void writeEmptyObject();
+    protected abstract T getEmptyInstance();
 
     @Override
     public void save(T entity) {

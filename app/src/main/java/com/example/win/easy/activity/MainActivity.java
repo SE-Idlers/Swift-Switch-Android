@@ -27,6 +27,7 @@ public class MainActivity extends AppCompatActivity  {
         GestureProxy gestureProxy=GestureProxy.getInstance();
         DashboardView dashboardView=DashboardView.getInstance();
         getSupportFragmentManager();
+
       //  dashboardView.init();
 
        //File relative=new File("/ttt");
@@ -34,6 +35,19 @@ public class MainActivity extends AppCompatActivity  {
         //
         //SongListMangerImpl songListManger=SongListMangerImpl.getInstance();
 //      SongManagerImpl.getInstance().addAll(new ArrayList<>(Arrays.asList(files)));
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+//        SongListManager songListManager=SongListMangerImpl.getInstance();
+//        SongManager songManager= SongManagerImpl.getInstance();
+//        System.out.println("After switch all song lists: "+songListManager.getAllSongLists());
+//        System.out.println("After switch all songs: "+songManager.getMap());
+//        SongListConfigurationPersistence.getInstance().save(songListManager.getAllSongLists());
+//        FileSongMapConfigurationPersistence.getInstance().save(songManager.getMap());
+//        System.out.println(SongListConfigurationPersistence.getInstance().load());
+//        System.out.println(FileSongMapConfigurationPersistence.getInstance().load());
     }
 
     /**

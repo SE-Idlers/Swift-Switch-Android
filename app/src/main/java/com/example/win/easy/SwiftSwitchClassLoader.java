@@ -5,6 +5,7 @@ import com.example.win.easy.view.MediaPlayerView;
 import com.example.win.easy.view.SongListPanelView;
 import com.example.win.easy.view.SongPanelView;
 
+//防止部分类懒惰加载，提前实例化静态变量
 public class SwiftSwitchClassLoader {
 
     private static SwiftSwitchClassLoader instance=new SwiftSwitchClassLoader();

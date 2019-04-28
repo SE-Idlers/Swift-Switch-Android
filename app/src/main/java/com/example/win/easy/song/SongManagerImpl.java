@@ -4,6 +4,8 @@ import com.example.win.easy.persistence.component.FileSongMapConfigurationPersis
 import com.example.win.easy.song.convert.File2SongConverterImpl;
 import com.example.win.easy.song.interfaces.File2SongConverter;
 import com.example.win.easy.song.interfaces.SongManager;
+import com.example.win.easy.songList.SongList;
+import com.example.win.easy.songList.SongListMangerImpl;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -25,10 +27,8 @@ public class SongManagerImpl implements SongManager  {
     private static List<List<Character>> sequences;
 
     private static SongManagerImpl instance = new SongManagerImpl();
-    public static SongManagerImpl getInstance() {
-        return instance;
-    }
-    private SongManagerImpl() { }
+    public static SongManagerImpl getInstance() { return instance; }
+    private SongManagerImpl() {}
 
     static {
         fileToSong = FileSongMapConfigurationPersistence.getInstance().load();
@@ -40,6 +40,11 @@ public class SongManagerImpl implements SongManager  {
             songToFile.put(fileToSong.get(file), file);
             sequences.add(fileToSong.get(file).getSequence());
         }
+    }
+
+    @Override
+    public Map<File, Song> getMap() {
+        return fileToSong;
     }
 
     @Override
@@ -121,6 +126,12 @@ public class SongManagerImpl implements SongManager  {
             songToFile.put(fileToSong.get(file), file);
             sequences.add(fileToSong.get(file).getSequence());
         }
+        List<SongList> songLists=SongListMangerImpl.getInstance().getAllSongLists();
+        for (SongList songList:songLists)
+            if(songList.getName().equals("默认歌单")) {
+                songList.setSongList(songs);
+                break;
+            }
     }
 }
 

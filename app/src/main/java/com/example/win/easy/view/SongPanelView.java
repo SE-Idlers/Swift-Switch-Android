@@ -10,7 +10,6 @@ import android.os.Build;
 import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
-import android.provider.OpenableColumns;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AlertDialog;
 import android.view.View;
@@ -21,12 +20,18 @@ import com.example.win.easy.Constants;
 import com.example.win.easy.R;
 import com.example.win.easy.activity.MainActivity;
 import com.example.win.easy.song.Song;
+import com.example.win.easy.song.SongManagerImpl;
+import com.example.win.easy.song.interfaces.SongManager;
 import com.example.win.easy.songList.SongListMangerImpl;
 import com.example.win.easy.songList.interfaces.SongListManager;
+
+import java.io.File;
+import java.util.List;
 
 public class SongPanelView {
 
     private SongListManager songListManager= SongListMangerImpl.getInstance();
+    private SongManager songManager= SongManagerImpl.getInstance();
     private int songListToAddTheSong;
 
     private static SongPanelView instance=new SongPanelView();
@@ -47,27 +52,28 @@ public class SongPanelView {
      * @param uri 将添加的音乐文件的URI
      */
     public void createDialogAddSongToSongList(final Uri uri){
-        final String[] songListNames = (String[]) songListManager.getNameOfAllSongLists().toArray();//所有歌单名字的列表
+        List<String> songListNames=songListManager.getNameOfAllSongLists();
+        final String[] songListNamesInArray = songListNames.toArray(new String[songListNames.size()]);//所有歌单名字的列表
+
         songListToAddTheSong = 0;//默认加入第一个歌单
 
         new AlertDialog.Builder(MainActivity.mainActivity)
                 .setTitle("加入歌单")
-                .setSingleChoiceItems(songListNames, songListToAddTheSong, new DialogInterface.OnClickListener() {
+                .setSingleChoiceItems(songListNamesInArray, songListToAddTheSong, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         songListToAddTheSong = which;
                     }
                 })//选择歌单
                 .setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                        String path= "";
-                        String name= "";
                         @RequiresApi(api = Build.VERSION_CODES.KITKAT)
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             //获得歌曲名字和绝对路径，初始化一个歌，并放进歌单
-                            path=getPathByUri4kitkat(MainActivity.mainActivity,uri);
-                            name= songNameFrom(uri);
-                            songListManager.getAllSongLists().get(songListToAddTheSong).add(new Song(path,name));
+                            File songFile=new File(getPathByUri4kitkat(MainActivity.mainActivity,uri));
+                            songManager.add(songFile);
+                            Song song=songManager.toSong(songFile);
+                            songListManager.getAllSongLists().get(songListToAddTheSong).add(song);
                             Toast.makeText(MainActivity.mainActivity,"添加成功", Toast.LENGTH_SHORT).show();
                         }
                     })
@@ -84,24 +90,6 @@ public class SongPanelView {
         intent.setType("audio/*");
         MainActivity.mainActivity.startActivityForResult(intent, Constants.READ_REQUEST_CODE);
     }
-
-    /**
-     * 从歌曲文件的URI中提取歌曲文件名
-     * @param uri 歌曲文件的URI
-     * @return 歌曲文件名
-     */
-    private String songNameFrom(Uri uri) {
-        String displayName=null;
-        Cursor cursor = MainActivity.mainActivity.getContentResolver()
-                .query(uri, null, null, null, null, null);
-        if (cursor!=null){
-            cursor.moveToFirst();
-            displayName= cursor.getString(cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME));
-            cursor.close();
-        }
-        return displayName;
-    }
-
 
     //以下是我百度到的对URI的处理函数们，我对他的机制不是完全掌握，不要乱动。
     //但有挺多有用的信息。

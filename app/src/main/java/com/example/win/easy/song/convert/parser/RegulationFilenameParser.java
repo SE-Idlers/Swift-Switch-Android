@@ -2,6 +2,8 @@ package com.example.win.easy.song.convert.parser;
 
 import com.example.win.easy.song.convert.parser.interfaces.FilenameParser;
 import com.example.win.easy.song.convert.parser.interfaces.MatcherProxy;
+import com.example.win.easy.song.convert.parser.matchers.ChineseCharacterMatcherProxy;
+import com.example.win.easy.song.convert.parser.matchers.WordMatcherProxy;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,11 +17,15 @@ import java.util.TreeMap;
 public class RegulationFilenameParser implements FilenameParser<Character> {
 
     //执行功能的一系列MatcherProxy
-    List<MatcherProxy<Character>> matcherProxies;
+    private List<MatcherProxy<Character>> matcherProxies;
 
     private static RegulationFilenameParser instance=new RegulationFilenameParser();
     public static RegulationFilenameParser getInstance(){return instance;}
-    private RegulationFilenameParser(){this(new ArrayList<MatcherProxy<Character>>());}
+    private RegulationFilenameParser(){
+        matcherProxies=new ArrayList<>();
+        matcherProxies.add(new WordMatcherProxy());
+        matcherProxies.add(new ChineseCharacterMatcherProxy());
+    }
     private RegulationFilenameParser(List<MatcherProxy<Character>> matcherProxies){setMatcherProxies(matcherProxies);}
 
     public void setMatcherProxies(List<MatcherProxy<Character>> matcherProxies) {

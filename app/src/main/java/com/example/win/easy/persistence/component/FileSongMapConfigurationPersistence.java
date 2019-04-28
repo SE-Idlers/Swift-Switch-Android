@@ -1,7 +1,6 @@
 package com.example.win.easy.persistence.component;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 import com.example.win.easy.persistence.interfaces.AbstractJsonifyConfigurationPersistence;
 import com.example.win.easy.song.Song;
 
@@ -53,6 +52,11 @@ public class FileSongMapConfigurationPersistence extends AbstractJsonifyConfigur
     @Override
     protected void writeEmptyObject() {
         save(new HashMap<File, Song>());
+    }
+
+    @Override
+    protected Map<File, Song> getEmptyInstance() {
+        return new HashMap<>();
     }
 }
 @Data
