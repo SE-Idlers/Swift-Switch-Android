@@ -15,7 +15,7 @@ import java.io.File;
 
 public class File2SongConverterImpl implements File2SongConverter {
 
-    private static FilenameParser filenameParser=RegulationFilenameParser.getInstance();
+    private FilenameParser<Character> filenameParser=RegulationFilenameParser.getInstance();
     private static File2SongConverterImpl instance=new File2SongConverterImpl();
     public static File2SongConverterImpl getInstance(){return instance;}
     private File2SongConverterImpl(){}

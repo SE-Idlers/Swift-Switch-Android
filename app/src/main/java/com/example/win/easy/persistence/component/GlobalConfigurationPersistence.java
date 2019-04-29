@@ -5,7 +5,6 @@ package com.example.win.easy.persistence.component;
 //import java.lang.NoSuchFieldExcption;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 import com.example.win.easy.persistence.GlobalConfiguration;
 import com.example.win.easy.persistence.interfaces.AbstractJsonifyConfigurationPersistence;
 
@@ -29,11 +28,16 @@ public class GlobalConfigurationPersistence extends AbstractJsonifyConfiguration
 
     @Override
     protected GlobalConfiguration fromJsonString(String json) {
-        return JSONObject.parseObject(json,GlobalConfiguration.class);
+        return JSON.parseObject(json,GlobalConfiguration.class);
     }
 
     @Override
     protected void writeEmptyObject() {
         save(new GlobalConfiguration());
+    }
+
+    @Override
+    protected GlobalConfiguration getEmptyInstance() {
+        return new GlobalConfiguration();
     }
 }
