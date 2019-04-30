@@ -4,8 +4,6 @@ import com.example.win.easy.persistence.component.FileSongMapConfigurationPersis
 import com.example.win.easy.song.convert.File2SongConverterImpl;
 import com.example.win.easy.song.interfaces.File2SongConverter;
 import com.example.win.easy.song.interfaces.SongManager;
-import com.example.win.easy.songList.SongList;
-import com.example.win.easy.songList.SongListMangerImpl;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -59,6 +57,8 @@ public class SongManagerImpl implements SongManager  {
 
     @Override
     public Boolean add(File file) {
+        if (fileToSong.containsKey(file))
+            return true;
         fileToSong.put(file, file2SongConverter.convert(file));
         update();
         return true;
@@ -122,16 +122,11 @@ public class SongManagerImpl implements SongManager  {
         files = new ArrayList<>(fileToSong.keySet());
         songs = new ArrayList<>(fileToSong.values());
         songToFile = new HashMap<>();
+        sequences=new ArrayList<>();
         for (File file : files) {
             songToFile.put(fileToSong.get(file), file);
             sequences.add(fileToSong.get(file).getSequence());
         }
-        List<SongList> songLists=SongListMangerImpl.getInstance().getAllSongLists();
-        for (SongList songList:songLists)
-            if(songList.getName().equals("默认歌单")) {
-                songList.setSongList(songs);
-                break;
-            }
     }
 }
 

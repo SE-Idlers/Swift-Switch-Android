@@ -22,7 +22,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
-            android:background="@mipmap/ic_launcher" />
+            android:background="@mipmap/ic_launcher"
+            tools:ignore="ContentDescription" />
         <LinearLayout
             android:id="@+id/line1"
             android:layout_width="match_parent"
@@ -32,12 +33,14 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                tools:ignore="UselessParent">
                 <LinearLayout
                     android:id="@+id/scrollAndButtons"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    tools:ignore="UselessParent">
 
                     <LinearLayout
                         android:id="@+id/threeButtons"
@@ -54,7 +57,8 @@
                             android:layout_weight="1"
                             android:background="#00000000"
                             android:layout_gravity="bottom"
-                            android:src="@android:drawable/ic_media_previous" />
+                            android:src="@android:drawable/ic_media_previous"
+                            tools:ignore="ContentDescription" />
                         <ImageButton
                             android:id="@+id/start"
                             android:layout_width="0dp"
@@ -62,7 +66,8 @@
                             android:layout_weight="1"
                             android:background="#00000000"
                             android:layout_gravity="bottom"
-                            android:src="@android:drawable/ic_media_play" />
+                            android:src="@android:drawable/ic_media_play"
+                            tools:ignore="ContentDescription" />
                         <ImageButton
                             android:id="@+id/next"
                             android:layout_width="0dp"
@@ -70,7 +75,8 @@
                             android:layout_weight="1"
                             android:layout_gravity="bottom"
                             android:background="#00000000"
-                            android:src="@android:drawable/ic_media_next" />
+                            android:src="@android:drawable/ic_media_next"
+                            tools:ignore="ContentDescription" />
                     </LinearLayout>
                     <SeekBar
                         android:layout_width="250dp"

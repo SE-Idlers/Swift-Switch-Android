@@ -10,6 +10,7 @@ import android.widget.Toast;
 
 import com.example.win.easy.R;
 import com.example.win.easy.activity.MainActivity;
+import com.example.win.easy.recognization.component.RecognitionProxyWithFourGestures;
 import com.example.win.easy.songList.SongList;
 import com.example.win.easy.songList.SongListMangerImpl;
 import com.example.win.easy.songList.interfaces.SongListManager;
@@ -36,6 +37,7 @@ public class SongListPanelView {
         btnSeeSongList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                RecognitionProxyWithFourGestures.getInstance().clear();
                 instance.createDialogSeeSongList();
             }
         });

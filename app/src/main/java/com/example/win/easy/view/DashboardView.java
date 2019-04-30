@@ -35,17 +35,17 @@ public class DashboardView extends Activity
 
     @Override
     public void update(Song song,List<SongList> appearanceLists) {
-        updateDashboardView(appearanceLists);
         updateTabListener(new OnTabSelectedListenerForSwitchingSongList(appearanceLists,contents));
         updateItemListener(new OnItemClickListenerForSwitchingSongList());
+        updateDashboardView(appearanceLists);
     }
 
     @Override
     public void update(List<Integer> sortedIndices) {
         List<SongList> candidates = tool.toSearchResult(sortedIndices);//获得按来源得到的结果列表
-        updateDashboardView(candidates);//更新视图
         updateTabListener(new OnTabSelectedListenerForSelectingSong(candidates,contents));//更新Tab监听
         updateItemListener(new OnItemClickListenerForSelectingSong());//更新Item监听
+        updateDashboardView(candidates);//更新视图
     }
 
     @Override
@@ -61,9 +61,10 @@ public class DashboardView extends Activity
     private void updateDashboardView(List<SongList> newContents) {
         contents.clear();
         tabLayout.removeAllTabs();
+
         for (SongList songList : newContents) {
-            tabLayout.addTab(new TabLayout.Tab().setText(songList.getName()));
             contents.add(songList.toArrayAdapter());
+            tabLayout.addTab(tabLayout.newTab().setText(songList.getName()));
         }
     }
 

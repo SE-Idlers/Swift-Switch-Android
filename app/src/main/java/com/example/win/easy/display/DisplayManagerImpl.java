@@ -75,6 +75,7 @@ public class DisplayManagerImpl implements DisplayManager {
     public boolean setDisplayList(SongList list) {
         List<Song> songs=list.getSongList();
         if(songs.contains(currentSong)){
+            this.displayList=list;
             currentSongIndex=songs.indexOf(currentSong);
             return true;
         }
