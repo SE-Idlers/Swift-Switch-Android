@@ -10,6 +10,7 @@ import android.widget.Toast;
 
 import com.example.win.easy.R;
 import com.example.win.easy.activity.MainActivity;
+import com.example.win.easy.persistence.component.SongListConfigurationPersistence;
 import com.example.win.easy.recognization.component.RecognitionProxyWithFourGestures;
 import com.example.win.easy.songList.SongList;
 import com.example.win.easy.songList.SongListMangerImpl;
@@ -71,6 +72,8 @@ public class SongListPanelView {
                         //按下确定键后的事件
                         songListManager.add(new SongList(editText.getText().toString()));
                         Toast.makeText(MainActivity.mainActivity.getApplicationContext(),"歌单 "+ editText.getText().toString()+"已创建",Toast.LENGTH_LONG).show();
+                        SongListConfigurationPersistence.getInstance()
+                                .save(SongListMangerImpl.getInstance().getAllSongLists());
                     }
                 })
                 .setNegativeButton("取消",null)

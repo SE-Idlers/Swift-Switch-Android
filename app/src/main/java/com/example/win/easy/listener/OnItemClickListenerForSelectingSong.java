@@ -10,6 +10,7 @@ import com.example.win.easy.songList.SongList;
 import com.example.win.easy.songList.SongListMangerImpl;
 import com.example.win.easy.songList.interfaces.SongListManager;
 import com.example.win.easy.view.DashboardView;
+import com.example.win.easy.view.MediaPlayerView;
 import com.example.win.easy.view.interfaces.SearchingView;
 import com.example.win.easy.view.interfaces.SongListView;
 
@@ -21,6 +22,7 @@ public class OnItemClickListenerForSelectingSong implements AdapterView.OnItemCl
     private SongListView songListView=DashboardView.getInstance();
     private SearchingView searchingView=DashboardView.getInstance();
     private DisplayManager displayManager=DisplayManagerImpl.getInstance();
+    private MediaPlayerView mediaPlayerView=MediaPlayerView.getInstance();
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -28,5 +30,6 @@ public class OnItemClickListenerForSelectingSong implements AdapterView.OnItemCl
         List<SongList> appearanceLists= songListManager.appearanceListsOf(songToDisplay);
         songListView.update(songToDisplay,appearanceLists);
         displayManager.restartWith(songToDisplay,appearanceLists.get(0));
+        mediaPlayerView.updatePauseView();
     }
 }

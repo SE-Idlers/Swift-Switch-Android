@@ -19,6 +19,8 @@ import android.widget.Toast;
 import com.example.win.easy.Constants;
 import com.example.win.easy.R;
 import com.example.win.easy.activity.MainActivity;
+import com.example.win.easy.persistence.component.FileSongMapConfigurationPersistence;
+import com.example.win.easy.persistence.component.SongListConfigurationPersistence;
 import com.example.win.easy.song.Song;
 import com.example.win.easy.song.SongManagerImpl;
 import com.example.win.easy.song.interfaces.SongManager;
@@ -26,6 +28,7 @@ import com.example.win.easy.songList.SongListMangerImpl;
 import com.example.win.easy.songList.interfaces.SongListManager;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 public class SongPanelView {
@@ -45,6 +48,29 @@ public class SongPanelView {
                 performFileSearch();
             }
         });
+    }
+
+    static {
+        Button buttonSeeAllSongs=MainActivity.mainActivity.findViewById(R.id.SeeAllSongs);
+        buttonSeeAllSongs.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                instance.createDialogSeeAllSongs();
+            }
+        });
+    }
+
+    public void createDialogSeeAllSongs(){
+        List<Song> allSongs=songManager.getAllSongs();
+        List<String> songNames=new ArrayList<>();
+        for (Song song:allSongs)
+            songNames.add(song.getName());
+        new AlertDialog.Builder(MainActivity.mainActivity)
+                .setItems(
+                        songNames.toArray(new String[songNames.size()]),
+                        null
+                )
+                .show();
     }
 
     /**
@@ -75,6 +101,10 @@ public class SongPanelView {
                             Song song=songManager.toSong(songFile);
                             songListManager.getAllSongLists().get(songListToAddTheSong).add(song);
                             Toast.makeText(MainActivity.mainActivity,"添加成功", Toast.LENGTH_SHORT).show();
+                            FileSongMapConfigurationPersistence.getInstance()
+                                    .save(SongManagerImpl.getInstance().getMap());
+                            SongListConfigurationPersistence.getInstance()
+                                    .save(SongListMangerImpl.getInstance().getAllSongLists());
                         }
                     })
                 .show();
