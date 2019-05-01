@@ -17,12 +17,12 @@ import dagger.Module;
 @Module
 public class WordMatcherProxy implements MatcherProxy<Character> {
 
-    static  final String nonWord="[^a-zA-Z]";//非单词字符
-    static  final String lowerWord="[a-z]+";//纯小写单词
-    static  final String upperWord="[A-Z]+";//纯大写单词
-    static  final String normalWord="[A-Z][a-z]+";//大写起头的单词
-    static  final String upperLetter="[A-Z]";//大写字母
-    static  final String lowerLetter="[a-z]";//小写字母
+    private static  final String nonWord="[^a-zA-Z]";//非单词字符
+    private static  final String lowerWord="[a-z]+";//纯小写单词
+    private static  final String upperWord="[A-Z]+";//纯大写单词
+    private static  final String normalWord="[A-Z][a-z]+";//大写起头的单词
+    private static  final String upperLetter="[A-Z]";//大写字母
+    private static  final String lowerLetter="[a-z]";//小写字母
 
     /**
      * 用于表示matcher的类型，注意这个类型指的是：
@@ -38,11 +38,11 @@ public class WordMatcherProxy implements MatcherProxy<Character> {
      * “2”对应的是前移offset大小，目前取值有1，2，3，比如“L1”、“U3”分别指
      *  offset为1和3
      */
-    static final int L1=0;
-    static final int L2=1;
-    static final int U1=2;
-    static final int U2=3;
-    static final int U3=4;
+    private static final int L1=0;
+    private static final int L2=1;
+    private static final int U1=2;
+    private static final int U2=3;
+    private static final int U3=4;
 
     /**
      * 这里直接列出了了所有小写词、大写词、正常词前后

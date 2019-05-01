@@ -1,10 +1,9 @@
 package com.example.win.easy.songList;
 
-import com.example.win.easy.Constants;
 import com.example.win.easy.song.DataSource;
 import com.example.win.easy.song.Song;
-import com.example.win.easy.song.interfaces.SongManager;
 import com.example.win.easy.song.SongManagerImpl;
+import com.example.win.easy.song.interfaces.SongManager;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -40,23 +39,15 @@ public class TemporaryListGenerator {
 
     private List<SongList> generateSongLists(Map<DataSource,List<Song>> dataSourceGroup){
         List<DataSource> dataSources=new ArrayList<>(dataSourceGroup.keySet());
+        List<SongList> songLists=new ArrayList<>();//即将生成的歌单list
 
-        //来源超过可显示tab上限时截断，保留最靠前的
-        if(dataSources.size()> Constants.NumberOfList)
-            dataSources=dataSources.subList(0,Constants.NumberOfList);
-
-        int dataSourceAmount=dataSources.size();//来源数量
-        List<SongList> songLists=new ArrayList<>(dataSourceAmount);//即将生成的歌单list
-
-        for (int dataSourceIndex=0;dataSourceIndex<dataSourceAmount;dataSourceIndex++){
-            //构建歌单
-            SongList candidate=SongList.builder()
-                    .name(dataSources.get(dataSourceIndex).toString())
-                    .songList(dataSourceGroup.get(dataSources.get(dataSourceIndex)))
-                    .build();
-            songLists.add(candidate);
-        }
-
+        for (DataSource dataSource:dataSources)
+            songLists.add(
+                    new SongList(
+                        dataSource.toString(),
+                        dataSourceGroup.get(dataSource)
+                    )
+            );
         return songLists;
     }
 }

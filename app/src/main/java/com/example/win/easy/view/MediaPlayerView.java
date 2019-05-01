@@ -1,30 +1,30 @@
 package com.example.win.easy.view;
 
-import android.media.MediaPlayer;
 import android.view.View;
 import android.widget.ImageButton;
 
-import com.example.win.easy.activity.MainActivity;
 import com.example.win.easy.R;
+import com.example.win.easy.activity.MainActivity;
 import com.example.win.easy.display.DisplayManagerImpl;
 import com.example.win.easy.display.interfaces.DisplayManager;
 
+/**
+ * 控制播放器视图及监听
+ */
 public class MediaPlayerView {
+
     private DisplayManager displayManager=DisplayManagerImpl.getInstance();
 
-    private MediaPlayer mediaPlayer=new MediaPlayer();
-
-    private static ImageButton btnPause= MainActivity.mainActivity.findViewById(R.id.start);
-    private static ImageButton btnPrevious=MainActivity.mainActivity.findViewById(R.id.previous);
-    private static ImageButton btnNext=MainActivity.mainActivity.findViewById(R.id.next);
     private static MediaPlayerView instance =new MediaPlayerView();
     public static MediaPlayerView getInstance(){return instance;}
-    private MediaPlayerView(){}
-    static {
+    /**
+     * 设置按钮监听
+     */
+    private MediaPlayerView() {
+        final ImageButton btnPause= MainActivity.mainActivity.findViewById(R.id.start);
+        final ImageButton btnPrevious=MainActivity.mainActivity.findViewById(R.id.previous);
+        final ImageButton btnNext=MainActivity.mainActivity.findViewById(R.id.next);
 
-    }
-
-    private  void AdministrateButton() {
         //播放、暂停
         btnPause.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -56,6 +56,15 @@ public class MediaPlayerView {
                 displayManager.next();
             }
         });
+    }
+
+    public void updateBeginView(){
+        final ImageButton btnPause= MainActivity.mainActivity.findViewById(R.id.start);
+        btnPause.setImageResource(android.R.drawable.ic_media_play);
+    }
+    public void updatePauseView(){
+        final ImageButton btnPause= MainActivity.mainActivity.findViewById(R.id.start);
+        btnPause.setImageResource(android.R.drawable.ic_media_pause);
     }
 }
 

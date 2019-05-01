@@ -4,9 +4,12 @@ import android.Manifest;
 import android.content.pm.PackageManager;
 import android.gesture.Gesture;
 import android.gesture.GestureOverlayView;
+import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.support.v4.app.ActivityCompat;
 
 import com.example.win.easy.activity.MainActivity;
+import com.example.win.easy.gesture.GestureProxy;
 import com.example.win.easy.view.DashboardView;
 import com.example.win.easy.view.interfaces.SearchingView;
 import com.example.win.easy.filter.CharSequenceFilterStrategy;
@@ -17,6 +20,7 @@ import com.example.win.easy.recognization.interfaces.RecognitionProxy;
 import com.example.win.easy.song.interfaces.SongManager;
 import com.example.win.easy.song.SongManagerImpl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class HandwritingListener implements GestureOverlayView.OnGesturePerformedListener {
@@ -26,6 +30,7 @@ public class HandwritingListener implements GestureOverlayView.OnGesturePerforme
     private FilterStrategy<List<Character>> filterStrategy= CharSequenceFilterStrategy.getInstance();
     private SongManager songManager= SongManagerImpl.getInstance();
     private SearchingView searchingView= DashboardView.getInstance();
+    private List<GestureOverlayView> OnPerformedView = GestureProxy.getInstance().getAllGestures();
 
     public void onGesturePerformed(GestureOverlayView gestureOverlayView, final Gesture gesture) {
         //访问权限
@@ -35,9 +40,11 @@ public class HandwritingListener implements GestureOverlayView.OnGesturePerforme
                     new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 123);
             return;
         }
-
         //获得识别结果
-        List<Character> result=recognitionProxy.receive(PositionedImage.create(gesture,gesture.getID()));
+        //获取当前正在输入的板的坐标: 0-3
+        long index = OnPerformedView.indexOf(gestureOverlayView);
+        List<Character> result=recognitionProxy.receive(PositionedImage.create(gesture, index));
+        //TODO: 输出识别结果
         System.out.println(result);
         //过滤得到备选歌曲的下标
         List<Integer> candidates=filterStrategy.filter(result,songManager.getAllSequences());
