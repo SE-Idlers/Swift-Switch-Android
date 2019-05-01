@@ -37,20 +37,31 @@ public abstract class AbstractJsonifyConfigurationPersistence<T> implements Conf
     }
 
     protected abstract String toJsonString(T entity);
-    protected abstract T fromJsonString(String json);
+    protected abstract T fromJsonString(String json);//FastJson有此接口
     protected abstract void writeEmptyObject();
+    protected abstract T getEmptyInstance();
 
     @Override
     public void save(T entity) {
-        String jsonStr=toJsonString(entity);
-        try{
-            FileWriter fw=new FileWriter(getSDPath()+fileDir);
-            PrintWriter out=new PrintWriter(fw);
+        String jsonStr = toJsonString(entity);
+        File file= new File(getSDPath() + fileDir);//把地址传给file但并不打开，因此不会引发IOException
+        if (!file.exists()) {
+            try{
+                file.getParentFile().mkdirs();//创建多级目录，mkdir只创建一级
+                file.createNewFile();//创建文件
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        FileWriter fw=null;
+        try {
+            fw = new FileWriter(file);
+            PrintWriter out = new PrintWriter(fw);
             out.write(jsonStr);
             out.println();//通过写入行分隔符字符串终止当前行。
             fw.close();
             out.close();
-        }catch (IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
@@ -62,32 +73,75 @@ public abstract class AbstractJsonifyConfigurationPersistence<T> implements Conf
             try {
                 file.getParentFile().mkdirs();
                 file.createNewFile();
-                writeEmptyObject();
+                writeEmptyObject(); //是否需要设置SerializerFeature呢？
             } catch (IOException e) {
                 e.printStackTrace();
             }
             return null;
         }
-        BufferedReader reader=null;
+        BufferedReader breader=null;
+        FileReader freader=null;
         String content="";
         try{
-            reader=new BufferedReader(new FileReader(file));
+            freader=new FileReader(file);
+            breader=new BufferedReader(freader);
             String tempString =null;
-            while((tempString=reader.readLine())!=null){
+            while((tempString=breader.readLine())!=null){
                 content=content+tempString;
             }
-            reader.close();
+            freader.close();
+            breader.close();
         }catch(IOException e){
             e.printStackTrace();
         }finally {
-            if (reader != null) {
+            if (freader != null ){
                 try {
-                    reader.close();
+                    freader.close();
                 } catch (IOException e1) {
+                }
+            }
+            if(breader!=null){
+                try{
+                    breader.close();
+                }catch (IOException e){
+                    e.printStackTrace();
                 }
             }
         }
         T entity= fromJsonString(content);
+
+        if(entity==null)//如果文件内容为空，则创建一个空白文件，同时返回一个默认内容的实例
+        {
+            writeEmptyObject();//创建一个空白文件
+            //返回一个默认内容的实例的过程比较繁琐（几乎是将正常情况下的加载行为重复了一遍），因为泛型T难以直接获得实例
+            try{
+                freader=new FileReader(file);
+                breader=new BufferedReader(freader);
+                String tempString =null;
+                while((tempString=breader.readLine())!=null){
+                    content=content+tempString;
+                }
+                freader.close();
+                breader.close();
+            }catch(IOException e){
+                e.printStackTrace();
+            }finally {
+                if (freader != null ){
+                    try {
+                        freader.close();
+                    } catch (IOException e1) {
+                    }
+                }
+                if(breader!=null){
+                    try{
+                        breader.close();
+                    }catch (IOException e){
+                        e.printStackTrace();
+                    }
+                }
+            }
+            entity= fromJsonString(content);
+        }
         return entity;
     }
 }

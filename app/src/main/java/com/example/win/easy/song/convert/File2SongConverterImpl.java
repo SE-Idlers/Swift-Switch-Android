@@ -1,5 +1,6 @@
 package com.example.win.easy.song.convert;
 
+import com.example.win.easy.song.DataSource;
 import com.example.win.easy.song.Song;
 import com.example.win.easy.song.convert.parser.RegulationFilenameParser;
 import com.example.win.easy.song.convert.parser.interfaces.FilenameParser;
@@ -15,7 +16,7 @@ import java.io.File;
 
 public class File2SongConverterImpl implements File2SongConverter {
 
-    private static FilenameParser filenameParser=RegulationFilenameParser.getInstance();
+    private FilenameParser<Character> filenameParser=RegulationFilenameParser.getInstance();
     private static File2SongConverterImpl instance=new File2SongConverterImpl();
     public static File2SongConverterImpl getInstance(){return instance;}
     private File2SongConverterImpl(){}
@@ -31,7 +32,7 @@ public class File2SongConverterImpl implements File2SongConverter {
             Song song = new Song();
             song.setName(file.getAbsolutePath().substring(file.getAbsolutePath().indexOf('-'), file.getAbsolutePath().indexOf('.')));
             song.setAuthor(file.getAbsolutePath().substring(file.getAbsolutePath().indexOf('c') + 2, file.getAbsolutePath().indexOf('-')));
-
+            song.setSource(DataSource.Local);
             //得到关键码
             song.setSequence(filenameParser.parse(song.getName()));
             return song;

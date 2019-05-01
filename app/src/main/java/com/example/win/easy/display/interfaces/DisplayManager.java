@@ -6,7 +6,6 @@ import com.example.win.easy.song.Song;
 
 public interface DisplayManager {
 
-    //我觉得next和previous应该为公有，而changesong应该为私有，改了一下
     void next();
 
     void previous();
@@ -16,6 +15,7 @@ public interface DisplayManager {
     void start();
 
     boolean isPlaying();
+
     void setMode(DisplayMode mode);
 
     boolean setDisplayList(SongList songList);

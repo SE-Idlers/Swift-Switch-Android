@@ -3,6 +3,8 @@ package com.example.win.easy.recognization;
 import android.gesture.Gesture;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 
 import com.example.win.easy.recognization.interfaces.RecognitionUnit;
 
@@ -44,6 +46,7 @@ public class Image implements RecognitionUnit {
         return farray;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.DONUT)
     public static Image create(Gesture gesture){
         bitmap = gesture.toBitmap(28, 28, 3, Color.WHITE);
         Float_array = Bitmap_to_FloatArray();
