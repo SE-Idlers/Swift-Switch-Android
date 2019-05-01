@@ -26,22 +26,13 @@ public class Image implements RecognitionUnit {
         /***
          *      A  R  G  B
          *  0x xx xx xx xx
-         *  第一位符号位(binary)
-         *  由于该bitmap中的RGB值均为0x000000（黑）或0xFFFFFF（白）
-         *  有变化的只有A值，变化区间为
-         *  0x80000000 -> 0x7FFFFFFF
-         *  故对源代码做以下改动以达到图片的正确处理
+         *  由于该bitmap中的RGB值仅有0x000000（黑）或0xFFFFFF（白）
+         *  变化的只有透明度A值，00 - FF
+         *  故做以下处理
          */
-        for(int i =0;i<784;i++){
-            if((float)iarray[i]/0x80000000 > 0.001f){
-                farray[i] = (float)iarray[i] / 0x80000000;
-            }
-            else if((float)iarray[i]/0x7fffffff > 0.001f){
-                farray[i] = (float)iarray[i] / 0x7fffffff;
-            }
-            else{
-                farray[i] = 0.0f;
-            }
+        for(int i =0;i<28*28;i++){
+            float dealIt = iarray[i]>>>24;//舍弃RGB值，空位补0
+            farray[i] = dealIt / 0x000000FF;
         }
         return farray;
     }
