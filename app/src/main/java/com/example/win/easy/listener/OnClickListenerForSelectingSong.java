@@ -1,35 +1,32 @@
 package com.example.win.easy.listener;
 
 import android.view.View;
-import android.widget.AdapterView;
 
 import com.example.win.easy.display.DisplayManagerImpl;
 import com.example.win.easy.display.interfaces.DisplayManager;
 import com.example.win.easy.song.Song;
-import com.example.win.easy.songList.SongList;
 import com.example.win.easy.songList.SongListMangerImpl;
 import com.example.win.easy.songList.interfaces.SongListManager;
 import com.example.win.easy.view.DashboardView;
 import com.example.win.easy.view.MediaPlayerView;
-import com.example.win.easy.view.interfaces.SearchingView;
 import com.example.win.easy.view.interfaces.SongListView;
 
-import java.util.List;
-
-public class OnItemClickListenerForSelectingSong implements AdapterView.OnItemClickListener {
+public class OnClickListenerForSelectingSong implements View.OnClickListener {
 
     private SongListManager songListManager=SongListMangerImpl.getInstance();
     private SongListView songListView=DashboardView.getInstance();
-    private SearchingView searchingView=DashboardView.getInstance();
     private DisplayManager displayManager=DisplayManagerImpl.getInstance();
     private MediaPlayerView mediaPlayerView=MediaPlayerView.getInstance();
 
+    private Song song;
+    public OnClickListenerForSelectingSong(Song song){
+        this.song=song;
+    }
+
     @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        Song songToDisplay=searchingView.getPrincipal().getSongAt(position);
-        List<SongList> appearanceLists= songListManager.appearanceListsOf(songToDisplay);
-        songListView.update(songToDisplay,appearanceLists);
-        displayManager.restartWith(songToDisplay,appearanceLists.get(0));
+    public void onClick(View v) {
+        songListView.update(song);
+        displayManager.restartWith(song,songListManager.appearanceListsOf(song).get(0));
         mediaPlayerView.updatePauseView();
     }
 }

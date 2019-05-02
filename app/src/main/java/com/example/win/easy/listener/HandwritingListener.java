@@ -4,18 +4,19 @@ import android.Manifest;
 import android.content.pm.PackageManager;
 import android.gesture.Gesture;
 import android.gesture.GestureOverlayView;
-import android.support.v4.app.ActivityCompat;
+
+import androidx.core.app.ActivityCompat;
 
 import com.example.win.easy.activity.MainActivity;
-import com.example.win.easy.view.DashboardView;
-import com.example.win.easy.view.interfaces.SearchingView;
 import com.example.win.easy.filter.CharSequenceFilterStrategy;
 import com.example.win.easy.filter.FilterStrategy;
 import com.example.win.easy.recognization.PositionedImage;
 import com.example.win.easy.recognization.component.RecognitionProxyWithFourGestures;
 import com.example.win.easy.recognization.interfaces.RecognitionProxy;
-import com.example.win.easy.song.interfaces.SongManager;
 import com.example.win.easy.song.SongManagerImpl;
+import com.example.win.easy.song.interfaces.SongManager;
+import com.example.win.easy.view.DashboardView;
+import com.example.win.easy.view.interfaces.SearchingView;
 
 import java.util.List;
 

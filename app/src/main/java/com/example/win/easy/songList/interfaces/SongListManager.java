@@ -22,11 +22,19 @@ public interface SongListManager {
      */
     List<SongList> appearanceListsOf(Song song);
 
+    SongList getDefaultSongList();
+
     List<SongList> getAllSongLists();
+
+    List<SongList> getAllSelfDefinedSongLists();
 
     List<String> getNameOfAllSongLists();
 
+    List<String> getNameOfAllSelfDefinedSongLists();
+
     SongList getSongListAt(int index);
+
+    boolean containsSongListWithName(String songListName);
 
     boolean add(SongList songList);
 

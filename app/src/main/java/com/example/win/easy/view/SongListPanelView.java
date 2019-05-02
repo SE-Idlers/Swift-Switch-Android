@@ -2,11 +2,12 @@ package com.example.win.easy.view;
 
 
 import android.content.DialogInterface;
-import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AlertDialog;
 
 import com.example.win.easy.R;
 import com.example.win.easy.activity.MainActivity;
@@ -70,8 +71,13 @@ public class SongListPanelView {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         //按下确定键后的事件
-                        songListManager.add(new SongList(editText.getText().toString()));
-                        Toast.makeText(MainActivity.mainActivity.getApplicationContext(),"歌单 "+ editText.getText().toString()+"已创建",Toast.LENGTH_LONG).show();
+                        String songListName=editText.getText().toString();
+                        if (songListManager.containsSongListWithName(songListName)){
+                            Toast.makeText(MainActivity.mainActivity.getApplicationContext(),"歌单 "+ songListName+"已存在",Toast.LENGTH_LONG).show();
+                            return;
+                        }
+                        songListManager.add(new SongList(songListName));
+                        Toast.makeText(MainActivity.mainActivity.getApplicationContext(),"歌单 "+ songListName+"已创建",Toast.LENGTH_LONG).show();
                         SongListConfigurationPersistence.getInstance()
                                 .save(SongListMangerImpl.getInstance().getAllSongLists());
                     }

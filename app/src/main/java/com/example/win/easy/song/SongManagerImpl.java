@@ -4,6 +4,7 @@ import com.example.win.easy.persistence.component.FileSongMapConfigurationPersis
 import com.example.win.easy.song.convert.File2SongConverterImpl;
 import com.example.win.easy.song.interfaces.File2SongConverter;
 import com.example.win.easy.song.interfaces.SongManager;
+import com.example.win.easy.songList.SongListMangerImpl;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -30,6 +31,8 @@ public class SongManagerImpl implements SongManager  {
 
     static {
         fileToSong = FileSongMapConfigurationPersistence.getInstance().load();
+        if (fileToSong==null)
+            fileToSong=new HashMap<>();
         files = new ArrayList<>(fileToSong.keySet());
         songs = new ArrayList<>(fileToSong.values());
         sequences = new ArrayList<>();
@@ -38,7 +41,7 @@ public class SongManagerImpl implements SongManager  {
             songToFile.put(fileToSong.get(file), file);
             sequences.add(fileToSong.get(file).getSequence());
         }
-    }
+   }
 
     @Override
     public Map<File, Song> getMap() {
@@ -127,6 +130,7 @@ public class SongManagerImpl implements SongManager  {
             songToFile.put(fileToSong.get(file), file);
             sequences.add(fileToSong.get(file).getSequence());
         }
+        SongListMangerImpl.getInstance().getDefaultSongList().setSongList(songs);
     }
 }
 

@@ -3,7 +3,8 @@ package com.example.win.easy.persistence.interfaces;
 import android.Manifest;
 import android.content.pm.PackageManager;
 import android.os.Environment;
-import android.support.v4.app.ActivityCompat;
+
+import androidx.core.app.ActivityCompat;
 
 import com.example.win.easy.activity.MainActivity;
 

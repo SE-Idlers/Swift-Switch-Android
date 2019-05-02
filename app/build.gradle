@@ -108,4 +108,7 @@ dependencies {
     androidTestImplementation 'androidx.test.uiautomator:uiautomator:2.2.0'
 
     implementation 'com.qmuiteam:qmui:1.2.0'
+    // https://mvnrepository.com/artifact/androidx.viewpager/viewpager
+    implementation group: 'androidx.viewpager', name: 'viewpager', version: '1.0.0'
+
 }

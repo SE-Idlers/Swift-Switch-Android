@@ -10,11 +10,12 @@ import android.os.Build;
 import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
-import android.support.annotation.RequiresApi;
-import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
+
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AlertDialog;
 
 import com.example.win.easy.Constants;
 import com.example.win.easy.R;
@@ -78,10 +79,10 @@ public class SongPanelView {
      * @param uri 将添加的音乐文件的URI
      */
     public void createDialogAddSongToSongList(final Uri uri){
-        List<String> songListNames=songListManager.getNameOfAllSongLists();
+        List<String> songListNames=songListManager.getNameOfAllSelfDefinedSongLists();
         final String[] songListNamesInArray = songListNames.toArray(new String[songListNames.size()]);//所有歌单名字的列表
 
-        songListToAddTheSong = 0;//默认加入第一个歌单
+        songListToAddTheSong = -1;//默认加入第一个歌单
 
         new AlertDialog.Builder(MainActivity.mainActivity)
                 .setTitle("加入歌单")
@@ -98,9 +99,10 @@ public class SongPanelView {
                             //获得歌曲名字和绝对路径，初始化一个歌，并放进歌单
                             File songFile=new File(getPathByUri4kitkat(MainActivity.mainActivity,uri));
                             songManager.add(songFile);
-                            Song song=songManager.toSong(songFile);
-                            songListManager.getAllSongLists().get(songListToAddTheSong).add(song);
                             Toast.makeText(MainActivity.mainActivity,"添加成功", Toast.LENGTH_SHORT).show();
+                            if (songListToAddTheSong>=0){
+                                songListManager.getAllSongLists().get(songListToAddTheSong+1).add(songManager.toSong(songFile));
+                            }
                             FileSongMapConfigurationPersistence.getInstance()
                                     .save(SongManagerImpl.getInstance().getMap());
                             SongListConfigurationPersistence.getInstance()
