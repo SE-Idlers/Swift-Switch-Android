@@ -25,6 +25,7 @@ public class GestureProxy {
 
     private static void init(GestureOverlayView gesture) {
         gesture.setGestureColor(Color.GREEN);
+        gesture.setBackgroundColor(MainActivity.mainActivity.getResources().getColor(R.color.app_color_blue));
         gesture.setGestureStrokeWidth(15);
         gesture.addOnGesturePerformedListener(new HandwritingListener());
     }

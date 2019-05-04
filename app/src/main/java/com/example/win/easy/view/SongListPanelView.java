@@ -9,6 +9,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 
+import com.example.win.easy.DialogTool;
 import com.example.win.easy.R;
 import com.example.win.easy.activity.MainActivity;
 import com.example.win.easy.persistence.component.SongListConfigurationPersistence;
@@ -16,8 +17,6 @@ import com.example.win.easy.recognization.component.RecognitionProxyWithFourGest
 import com.example.win.easy.songList.SongList;
 import com.example.win.easy.songList.SongListMangerImpl;
 import com.example.win.easy.songList.interfaces.SongListManager;
-
-import java.util.List;
 
 public class SongListPanelView {
 
@@ -49,13 +48,13 @@ public class SongListPanelView {
      * 查看歌单的对话框
      */
     private void createDialogSeeSongList(){
-        List<String> songListNames=songListManager.getNameOfAllSongLists();
-        new AlertDialog.Builder(MainActivity.mainActivity)
-                .setItems(
-                        songListNames.toArray(new String[songListNames.size()]),
-                        null
-                )
-                .show();
+        DialogTool.createMenuDialog(
+                MainActivity.mainActivity,
+                "所有歌单",
+                songListManager.getNameOfAllSongLists().toArray(new String[0]),
+                new CheckSongListListener(),
+                com.qmuiteam.qmui.R.style.QMUI_Dialog
+        );
     }
 
     /**
@@ -84,5 +83,19 @@ public class SongListPanelView {
                 })
                 .setNegativeButton("取消",null)
                 .show();
+    }
+
+    class CheckSongListListener implements DialogInterface.OnClickListener{
+        @Override
+        public void onClick(DialogInterface dialog, int which) {
+            dialog.dismiss();
+            SongList songList=SongListMangerImpl.getInstance().getAllSongLists().get(which);
+            DialogTool.createMenuDialog(
+                    MainActivity.mainActivity,
+                    songList.getName(),
+                    songList.getSongNames().toArray(new String[0]),null,
+                    com.qmuiteam.qmui.R.style.QMUI_Dialog
+            );
+        }
     }
 }

@@ -24,6 +24,7 @@ public class SongManagerImpl implements SongManager  {
     private static List<File> files;
     private static List<Song> songs;
     private static List<List<Character>> sequences;
+    private static List<String> songNames;
 
     private static SongManagerImpl instance = new SongManagerImpl();
     public static SongManagerImpl getInstance() { return instance; }
@@ -33,14 +34,7 @@ public class SongManagerImpl implements SongManager  {
         fileToSong = FileSongMapConfigurationPersistence.getInstance().load();
         if (fileToSong==null)
             fileToSong=new HashMap<>();
-        files = new ArrayList<>(fileToSong.keySet());
-        songs = new ArrayList<>(fileToSong.values());
-        sequences = new ArrayList<>();
-        songToFile = new HashMap<>();
-        for (File file : files) {
-            songToFile.put(fileToSong.get(file), file);
-            sequences.add(fileToSong.get(file).getSequence());
-        }
+        update();
    }
 
     @Override
@@ -117,18 +111,26 @@ public class SongManagerImpl implements SongManager  {
     }
 
     @Override
+    public List<String> getNamesOfAllSongs() {
+        return songNames;
+    }
+
+    @Override
     public List<Song> getAllSongs() {
         return songs;
     }
 
-    private void update() {
+    private static void update() {
         files = new ArrayList<>(fileToSong.keySet());
         songs = new ArrayList<>(fileToSong.values());
         songToFile = new HashMap<>();
         sequences=new ArrayList<>();
+        songNames=new ArrayList<>();
         for (File file : files) {
-            songToFile.put(fileToSong.get(file), file);
-            sequences.add(fileToSong.get(file).getSequence());
+            Song song=fileToSong.get(file);
+            songToFile.put(song, file);
+            sequences.add(song.getSequence());
+            songNames.add(song.getName());
         }
         SongListMangerImpl.getInstance().getDefaultSongList().setSongList(songs);
     }

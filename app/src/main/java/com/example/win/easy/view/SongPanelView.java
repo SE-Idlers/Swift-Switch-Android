@@ -2,7 +2,6 @@ package com.example.win.easy.view;
 
 import android.content.ContentUris;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
@@ -15,28 +14,26 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AlertDialog;
 
 import com.example.win.easy.Constants;
+import com.example.win.easy.DialogTool;
 import com.example.win.easy.R;
 import com.example.win.easy.activity.MainActivity;
 import com.example.win.easy.persistence.component.FileSongMapConfigurationPersistence;
 import com.example.win.easy.persistence.component.SongListConfigurationPersistence;
-import com.example.win.easy.song.Song;
 import com.example.win.easy.song.SongManagerImpl;
 import com.example.win.easy.song.interfaces.SongManager;
 import com.example.win.easy.songList.SongListMangerImpl;
 import com.example.win.easy.songList.interfaces.SongListManager;
+import com.qmuiteam.qmui.widget.dialog.QMUIDialog;
+import com.qmuiteam.qmui.widget.dialog.QMUIDialogAction;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
 
 public class SongPanelView {
 
     private SongListManager songListManager= SongListMangerImpl.getInstance();
     private SongManager songManager= SongManagerImpl.getInstance();
-    private int songListToAddTheSong;
 
     private static SongPanelView instance=new SongPanelView();
     public static SongPanelView getInstance(){return instance;}
@@ -62,16 +59,13 @@ public class SongPanelView {
     }
 
     public void createDialogSeeAllSongs(){
-        List<Song> allSongs=songManager.getAllSongs();
-        List<String> songNames=new ArrayList<>();
-        for (Song song:allSongs)
-            songNames.add(song.getName());
-        new AlertDialog.Builder(MainActivity.mainActivity)
-                .setItems(
-                        songNames.toArray(new String[songNames.size()]),
-                        null
-                )
-                .show();
+        DialogTool.createMenuDialog(
+                MainActivity.mainActivity,
+                "所有歌曲",
+                songManager.getNamesOfAllSongs().toArray(new String[0]),
+                null,
+                com.qmuiteam.qmui.R.style.QMUI_Dialog
+        );
     }
 
     /**
@@ -79,37 +73,44 @@ public class SongPanelView {
      * @param uri 将添加的音乐文件的URI
      */
     public void createDialogAddSongToSongList(final Uri uri){
-        List<String> songListNames=songListManager.getNameOfAllSelfDefinedSongLists();
-        final String[] songListNamesInArray = songListNames.toArray(new String[songListNames.size()]);//所有歌单名字的列表
+        final QMUIDialog.MultiCheckableDialogBuilder builder=new QMUIDialog.MultiCheckableDialogBuilder(MainActivity.mainActivity);
+        DialogTool.createMultiCheckDialog(
+                builder,
+                "添加到歌单..",
+                songListManager.getNameOfAllSelfDefinedSongLists().toArray(new String[0]),
+                null,
+                "确定",
+                new AddSongToSongListListener(uri,builder),
+                null,
+                null,
+                com.qmuiteam.qmui.R.style.QMUI_Dialog
+        );
+    }
 
-        songListToAddTheSong = -1;//默认加入第一个歌单
+    class AddSongToSongListListener implements QMUIDialogAction.ActionListener {
 
-        new AlertDialog.Builder(MainActivity.mainActivity)
-                .setTitle("加入歌单")
-                .setSingleChoiceItems(songListNamesInArray, songListToAddTheSong, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        songListToAddTheSong = which;
-                    }
-                })//选择歌单
-                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                        @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            //获得歌曲名字和绝对路径，初始化一个歌，并放进歌单
-                            File songFile=new File(getPathByUri4kitkat(MainActivity.mainActivity,uri));
-                            songManager.add(songFile);
-                            Toast.makeText(MainActivity.mainActivity,"添加成功", Toast.LENGTH_SHORT).show();
-                            if (songListToAddTheSong>=0){
-                                songListManager.getAllSongLists().get(songListToAddTheSong+1).add(songManager.toSong(songFile));
-                            }
-                            FileSongMapConfigurationPersistence.getInstance()
-                                    .save(SongManagerImpl.getInstance().getMap());
-                            SongListConfigurationPersistence.getInstance()
-                                    .save(SongListMangerImpl.getInstance().getAllSongLists());
-                        }
-                    })
-                .show();
+        private Uri uri;
+        private QMUIDialog.MultiCheckableDialogBuilder builder;
+        private SongManager songManager=SongManagerImpl.getInstance();
+        private SongListManager songListManager=SongListMangerImpl.getInstance();
+        AddSongToSongListListener(Uri uri, QMUIDialog.MultiCheckableDialogBuilder builder){
+            this.uri=uri;
+            this.builder=builder;
+        }
+        @Override
+        public void onClick(QMUIDialog dialog, int index) {
+            File songFile=new File(getPathByUri4kitkat(builder.getBaseContext(),uri));
+            songManager.add(songFile);
+            Toast.makeText(builder.getBaseContext(),"添加成功", Toast.LENGTH_SHORT).show();
+            int[] indices=builder.getCheckedItemIndexes();
+            for (int checkedIndex:indices)
+                songListManager.getAllSongLists().get(checkedIndex+1).add(songManager.toSong(songFile));
+            FileSongMapConfigurationPersistence.getInstance()
+                    .save(SongManagerImpl.getInstance().getMap());
+            SongListConfigurationPersistence.getInstance()
+                    .save(SongListMangerImpl.getInstance().getAllSongLists());
+            dialog.dismiss();
+        }
     }
 
     /**
