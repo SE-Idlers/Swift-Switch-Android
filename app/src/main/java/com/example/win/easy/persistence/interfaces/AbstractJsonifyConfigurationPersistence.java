@@ -40,34 +40,7 @@ public abstract class AbstractJsonifyConfigurationPersistence<T> implements Conf
     protected abstract T fromJsonString(String json);//FastJson有此接口
     protected abstract void writeEmptyObject();
     protected abstract T getEmptyInstance();
-
-    @Override
-    public void save(T entity) {
-        String jsonStr = toJsonString(entity);
-        File file= new File(getSDPath() + fileDir);//把地址传给file但并不打开，因此不会引发IOException
-        if (!file.exists()) {
-            try{
-                file.getParentFile().mkdirs();//创建多级目录，mkdir只创建一级
-                file.createNewFile();//创建文件
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        FileWriter fw=null;
-        try {
-            fw = new FileWriter(file);
-            PrintWriter out = new PrintWriter(fw);
-            out.write(jsonStr);
-            out.println();//通过写入行分隔符字符串终止当前行。
-            fw.close();
-            out.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    @Override
-    public T load() {
+    protected String loadFromFile(){
         File file=new File(getSDPath()+fileDir);
         if(!file.exists()){
             try {
@@ -108,40 +81,41 @@ public abstract class AbstractJsonifyConfigurationPersistence<T> implements Conf
                 }
             }
         }
-        T entity= fromJsonString(content);
+        return content;
+    }
 
-        if(entity==null)//如果文件内容为空，则创建一个空白文件，同时返回一个默认内容的实例
-        {
-            writeEmptyObject();//创建一个空白文件
-            //返回一个默认内容的实例的过程比较繁琐（几乎是将正常情况下的加载行为重复了一遍），因为泛型T难以直接获得实例
+    @Override
+    public void save(T entity) {
+        String jsonStr = toJsonString(entity);
+        File file= new File(getSDPath() + fileDir);//把地址传给file但并不打开，因此不会引发IOException
+        if (!file.exists()) {
             try{
-                freader=new FileReader(file);
-                breader=new BufferedReader(freader);
-                String tempString =null;
-                while((tempString=breader.readLine())!=null){
-                    content=content+tempString;
-                }
-                freader.close();
-                breader.close();
-            }catch(IOException e){
+                file.getParentFile().mkdirs();//创建多级目录，mkdir只创建一级
+                file.createNewFile();//创建文件
+            } catch (IOException e) {
                 e.printStackTrace();
-            }finally {
-                if (freader != null ){
-                    try {
-                        freader.close();
-                    } catch (IOException e1) {
-                    }
-                }
-                if(breader!=null){
-                    try{
-                        breader.close();
-                    }catch (IOException e){
-                        e.printStackTrace();
-                    }
-                }
             }
-            entity= fromJsonString(content);
         }
-        return entity;
+        FileWriter fw=null;
+        try {
+            fw = new FileWriter(file);
+            PrintWriter out = new PrintWriter(fw);
+            out.write(jsonStr);
+            out.println();//通过写入行分隔符字符串终止当前行。
+            fw.close();
+            out.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public T load() {
+        String content=loadFromFile();
+        if(content.length()==0){
+            writeEmptyObject();
+            return getEmptyInstance();
+        }
+        return fromJsonString(content);
     }
 }
