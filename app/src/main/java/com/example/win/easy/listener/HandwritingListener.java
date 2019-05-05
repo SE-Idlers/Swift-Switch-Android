@@ -10,6 +10,7 @@ import androidx.core.app.ActivityCompat;
 import com.example.win.easy.activity.MainActivity;
 import com.example.win.easy.filter.CharSequenceFilterStrategy;
 import com.example.win.easy.filter.FilterStrategy;
+import com.example.win.easy.gesture.GestureProxy;
 import com.example.win.easy.recognization.PositionedImage;
 import com.example.win.easy.recognization.component.RecognitionProxyWithFourGestures;
 import com.example.win.easy.recognization.interfaces.RecognitionProxy;
@@ -27,6 +28,7 @@ public class HandwritingListener implements GestureOverlayView.OnGesturePerforme
     private FilterStrategy<List<Character>> filterStrategy= CharSequenceFilterStrategy.getInstance();
     private SongManager songManager= SongManagerImpl.getInstance();
     private SearchingView searchingView= DashboardView.getInstance();
+    private List<GestureOverlayView> onPerformedView = GestureProxy.getInstance().getAllGestures();
 
     public void onGesturePerformed(GestureOverlayView gestureOverlayView, final Gesture gesture) {
         //访问权限
@@ -38,7 +40,9 @@ public class HandwritingListener implements GestureOverlayView.OnGesturePerforme
         }
 
         //获得识别结果
-        List<Character> result=recognitionProxy.receive(PositionedImage.create(gesture,gesture.getID()));
+        //获取当前正在输入的板的坐标: 0-3
+        long index = onPerformedView.indexOf(gestureOverlayView);
+        List<Character> result=recognitionProxy.receive(PositionedImage.create(gesture, index));
         System.out.println(result);
         //过滤得到备选歌曲的下标
         List<Integer> candidates=filterStrategy.filter(result,songManager.getAllSequences());
