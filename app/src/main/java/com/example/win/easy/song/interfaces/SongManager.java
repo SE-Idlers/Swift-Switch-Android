@@ -30,5 +30,7 @@ public interface SongManager {
 
     List<List<Character>> getAllSequences();
 
+    List<String> getNamesOfAllSongs();
+
     List<Song> getAllSongs();
 }

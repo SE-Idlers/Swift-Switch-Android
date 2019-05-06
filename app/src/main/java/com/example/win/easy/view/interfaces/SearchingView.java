@@ -1,7 +1,5 @@
 package com.example.win.easy.view.interfaces;
 
-import com.example.win.easy.songList.SongList;
-
 import java.util.List;
 
 /**
@@ -14,9 +12,5 @@ public interface SearchingView {
      * @param sortedIndices 所有搜索结果的下标列表
      */
     void update(List<Integer> sortedIndices );
-
-    SongList getPrincipal();
-
-    void setPrincipal(SongList principal);
 
 }

@@ -18,9 +18,10 @@ public class RecognitionAdapterImpl implements RecognitionAdapter {
     public static final String model_file = "file:///android_asset/PBfile864.pb";
     public TensorFlowInferenceInterface inferenceInterface;
     private static final String input_node = "reshape_1_input";
-    private static final long[] input_shape = {1,784};
+    private static final long[] input_shape = {1,28*28};
     private static final String output_node = "dense_3/Softmax";
 
+    //TODO: 这里暂时用62个种类，之后有更好的模型会换成26个
     private char[] classes = {
         '0','1','2','3','4','5','6','7','8','9',
             'A','B','C','D','E','F','G','H','I','J','K','L','M','N',
@@ -32,6 +33,7 @@ public class RecognitionAdapterImpl implements RecognitionAdapter {
     private HashMap<Character, Float> myMap = new LinkedHashMap<>();
 
     public HashMap<Character, Float> recognize(float[] pb){
+
         //模型运算
         inferenceInterface.feed(input_node, pb, input_shape);
         inferenceInterface.run(new String[] {output_node});
@@ -50,7 +52,7 @@ public class RecognitionAdapterImpl implements RecognitionAdapter {
             myMap.put(classes[(int)deal_result[i][0]], deal_result[i][1]);
         }
         //删除0-9，将a-z加至A-Z
-        for(int i = 0; i < 9; i++)
+        for(int i = 0; i < 10; i++)
             myMap.remove(classes[i]);
         for(int i = 36; i < 62; i++){
             float toAdd = myMap.get(classes[i]);
@@ -60,6 +62,7 @@ public class RecognitionAdapterImpl implements RecognitionAdapter {
         }
         //排序
         List<Map.Entry<Character, Float>> list = new ArrayList<Map.Entry<Character, Float>>(myMap.entrySet());
+
         Collections.sort(list, new Comparator<Map.Entry<Character, Float>>() {
             @Override
             public int compare(Map.Entry<Character, Float> mapping1, Map.Entry<Character, Float> mapping2) {

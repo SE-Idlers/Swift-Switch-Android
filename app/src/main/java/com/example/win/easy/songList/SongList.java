@@ -53,4 +53,11 @@ public class SongList {
         for (Song song:songList)
             songNames.add(song.getName());
     }
+
+    public void setSongList(List<Song> songList){
+        this.songList=songList;
+        songNames.clear();
+        for (Song song:songList)
+            songNames.add(song.getName());
+    }
 }

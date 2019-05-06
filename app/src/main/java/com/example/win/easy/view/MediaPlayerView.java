@@ -57,5 +57,14 @@ public class MediaPlayerView {
             }
         });
     }
+
+    public void updateBeginView(){
+        final ImageButton btnPause= MainActivity.mainActivity.findViewById(R.id.start);
+        btnPause.setImageResource(android.R.drawable.ic_media_play);
+    }
+    public void updatePauseView(){
+        final ImageButton btnPause= MainActivity.mainActivity.findViewById(R.id.start);
+        btnPause.setImageResource(android.R.drawable.ic_media_pause);
+    }
 }
 
