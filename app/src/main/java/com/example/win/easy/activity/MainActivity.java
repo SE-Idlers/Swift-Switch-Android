@@ -4,7 +4,8 @@ import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.win.easy.Constants;
 import com.example.win.easy.R;
@@ -14,7 +15,7 @@ import com.example.win.easy.recognization.component.RecognitionProxyWithFourGest
 import com.example.win.easy.view.DashboardView;
 import com.example.win.easy.view.SongPanelView;
 
-public class MainActivity extends AppCompatActivity  {
+public class MainActivity extends AppCompatActivity {
 
     public static MainActivity mainActivity;
     @Override
