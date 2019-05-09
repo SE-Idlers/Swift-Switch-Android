@@ -105,7 +105,7 @@ public class OurDatabaseTest {
         songPojo1.setAuthor("陈奕迅");
         songPojo1.setSequence(sequence1);
         songPojo1.setSource(DataSource.Local);
-        songPojo1.setAbsolutePath("here");
+        songPojo1.setSongPath("here");
 
         List<Character> sequence2=new ArrayList<>();
         sequence2.add('H');
@@ -116,7 +116,7 @@ public class OurDatabaseTest {
         songPojo2.setAuthor("陈奕迅");
         songPojo2.setSequence(sequence2);
         songPojo2.setSource(DataSource.Local);
-        songPojo2.setAbsolutePath("there");
+        songPojo2.setSongPath("there");
 
     }
 

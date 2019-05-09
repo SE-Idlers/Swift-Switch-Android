@@ -10,6 +10,7 @@ import com.example.win.easy.repository.db.pojo.SongListPojo;
 import com.example.win.easy.repository.db.pojo.SongPojo;
 import com.example.win.easy.repository.db.pojo.SongXSongList;
 
+import java.util.Collection;
 import java.util.List;
 
 @Dao
@@ -17,6 +18,9 @@ public interface SongXSongListDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insert(SongXSongList songXSongList);
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    void insert(Collection<SongXSongList> songXSongLists);
 
     @Query("SELECT * " +
             "FROM songpojo INNER JOIN songxsonglist " +
