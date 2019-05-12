@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="DashBoard">
+        <attr name="tab_segment_background_color" format="color" />
+        <attr name="view_pager_background_color" format="color" />
+        <attr name="tab_selected_text_color" format="color" />
+        <attr name="tab_unselected_text_color" format="color" />
+        <attr name="has_tab_indicator" format="boolean" />
+        <!--<attr name="item_background_color" format="color" />-->
+    </declare-styleable>
+</resources>
