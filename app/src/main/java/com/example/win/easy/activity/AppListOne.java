@@ -14,14 +14,6 @@ public class AppListOne extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.applistone);
         final Button btnplay1 =  findViewById(R.id.play1);
-        //切换到
-        btnplay1.setOnClickListener(new View.OnClickListener() {
-                                        @Override
-                                        public void onClick(View v) {
-                                            Intent intent=new Intent(AppListOne.this,AppPlayOne.class);
-                                            startActivity(intent);
-                                        }
-                                    }
-        );
+
     }
 }
