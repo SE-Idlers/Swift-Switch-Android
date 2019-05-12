@@ -30,7 +30,11 @@ public class SongListRepository extends Repository<SongListPojo, NetworkSongList
 
     @Override
     public void insert(SongListPojo localData) {
-        diskIO.execute(()-> songListPojoDao.insert(localData));
+        diskIO.execute(()-> {
+            List<SongListPojo> result=songListPojoDao.findAllByNameAndSource(localData.getName(),localData.getSource().toString());
+            if (result==null||result.size()==0)
+                songListPojoDao.insert(localData);
+        });
     }
 
     @Override

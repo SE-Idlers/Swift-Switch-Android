@@ -7,6 +7,7 @@ import com.example.win.easy.repository.web.domain.NetworkSong;
 import com.example.win.easy.song.DataSource;
 import com.example.win.easy.song.convert.parser.RegulationFilenameParser;
 
+import java.io.File;
 import java.util.List;
 
 import lombok.Data;
@@ -73,4 +74,12 @@ public class SongPojo {
         this.sequence= RegulationFilenameParser.getInstance().parse(networkSong.name);
     }
 
+    public SongPojo(File songFile){
+        String abPath=songFile.getAbsolutePath();
+        this.name=abPath.substring(abPath.lastIndexOf('/')+1, abPath.lastIndexOf('.'));
+        this.author=abPath.substring(abPath.lastIndexOf('/')+1,abPath.indexOf('-'));
+        this.source=DataSource.Local;
+        this.sequence=RegulationFilenameParser.getInstance().parse(abPath.substring(abPath.indexOf('-')+1,abPath.lastIndexOf('.')));
+        this.songPath=abPath;
+    }
 }

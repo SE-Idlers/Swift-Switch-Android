@@ -1,6 +1,7 @@
 package com.example.win.easy.repository.db.dao;
 
 import androidx.room.Dao;
+import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
@@ -38,5 +39,7 @@ public interface SongXSongListDao {
     List<SongListPojo> findAllSongListsForSongById(long songId);
 //    LiveData<List<SongListPojo>> findAllSongListsForSongById(long songId);
 
+    @Delete
+    void delete(SongXSongList songXSongList);
 
 }

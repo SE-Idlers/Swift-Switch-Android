@@ -1,10 +1,5 @@
 package com.example.win.easy;
 
-import android.content.Context;
-
-import androidx.room.Room;
-
-import com.example.win.easy.activity.MainActivity;
 import com.example.win.easy.repository.LoginManager;
 import com.example.win.easy.repository.db.database.OurDatabase;
 import com.example.win.easy.repository.web.BackendResourceWebService;
@@ -26,8 +21,6 @@ public class SwiftSwitchClassLoader {
         SongManagerImpl.getInstance();
         SongListMangerImpl.getInstance();
         AppExecutors.getInstance();
-        Context context=MainActivity.mainActivity.getApplicationContext();
-        ourDatabase=Room.databaseBuilder(context,OurDatabase.class,"ourDatabase").build();
         Retrofit retrofit=new Retrofit.Builder()
                 .baseUrl("http://guohere.com:9000/")
                 .addConverterFactory(GsonConverterFactory.create())
@@ -35,6 +28,10 @@ public class SwiftSwitchClassLoader {
         backendResourceWebService=retrofit.create(BackendResourceWebService.class);
         LoginManager.init(backendResourceWebService);
         LoginManager.loginByPhone("15564278737","zxc486251379");
+    }
+
+    public static void setOurDatabase(OurDatabase _ourDatabase){
+        ourDatabase=_ourDatabase;
     }
 
     public static OurDatabase getOurDatabase(){

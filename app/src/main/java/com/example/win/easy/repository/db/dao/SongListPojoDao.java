@@ -39,6 +39,9 @@ public interface SongListPojoDao {
     @Query("SELECT * FROM songlistpojo WHERE name=:name AND source=:source AND uid=:uid AND remoteId=:remoteId")
     SongListPojo findLocalRecordOfNetworkSongList(String name,String source,String uid,String remoteId);
 
+    @Query("SELECT * FROM songlistpojo WHERE name=:name AND source=:source")
+    List<SongListPojo> findAllByNameAndSource(String name,String source);
+
     @Delete
     void delete(SongListPojo songListPojo);
 

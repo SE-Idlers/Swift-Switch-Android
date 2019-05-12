@@ -23,8 +23,10 @@ public interface SongPojoDao {
     long[] insert(Collection<SongPojo> songPojos);
 
     @Query("SELECT * FROM songpojo")
-    List<SongPojo> findAllSongPojos();
-//    LiveData<List<SongPojo>> findAllSongPojos();
+    LiveData<List<SongPojo>> findAllSongPojos();
+
+    @Query("SELECT * FROM songpojo")
+    List<SongPojo> findAllDataSongPojos();
 
     @Query("SELECT * FROM songpojo WHERE id=:songId")
 //    SongPojo findById(long songId);
@@ -43,6 +45,9 @@ public interface SongPojoDao {
 
     @Query("SELECT * FROM songpojo WHERE name=:name AND author=:author AND source=:source AND uid=:uid AND remoteId=:remoteId")
     SongPojo findLocalRecordOfNetworkSong(String name,String author,String source,String uid,String remoteId);
+
+    @Query("SELECT * FROM songpojo WHERE songPath=:songPath")
+    SongPojo findAllBySongPath(String songPath);
 
     @Delete
     void delete(SongPojo songPojo);
