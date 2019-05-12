@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.WindowManager;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -28,6 +29,9 @@ public class MainActivity extends AppCompatActivity {
         GestureProxy gestureProxy=GestureProxy.getInstance();
         DashboardView dashboardView=DashboardView.getInstance();
         getSupportFragmentManager();
+
+        startService(new Intent(this,MyService.class));
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED|WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
 
       //  dashboardView.init();
 
