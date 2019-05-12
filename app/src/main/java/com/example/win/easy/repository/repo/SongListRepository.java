@@ -2,10 +2,14 @@ package com.example.win.easy.repository.repo;
 
 import androidx.lifecycle.LiveData;
 
+import com.example.win.easy.SwiftSwitchClassLoader;
 import com.example.win.easy.repository.LoginManager;
 import com.example.win.easy.repository.db.dao.SongListPojoDao;
 import com.example.win.easy.repository.db.pojo.SongListPojo;
+import com.example.win.easy.repository.web.BackendResourceWebService;
+import com.example.win.easy.repository.web.callback.SongListBatchFetchCallBack;
 import com.example.win.easy.repository.web.domain.NetworkSongList;
+import com.example.win.easy.thread.AppExecutors;
 
 import java.util.List;
 import java.util.concurrent.Executor;
@@ -14,12 +18,15 @@ public class SongListRepository extends Repository<SongListPojo, NetworkSongList
 
     private Executor diskIO;
     private SongListPojoDao songListPojoDao;
-    private LoginManager loginManager;
+    private BackendResourceWebService webService;
 
-    public SongListRepository(Executor diskIO){
-        this.diskIO=diskIO;
+    private static SongListRepository instance=new SongListRepository();
+    public static SongListRepository getInstance(){return instance;}
+    private SongListRepository(){
+        this.diskIO= AppExecutors.getInstance().diskIO();
+        this.songListPojoDao= SwiftSwitchClassLoader.getOurDatabase().songListPojoDao();
+        this.webService=SwiftSwitchClassLoader.getBackendResourceWebService();
     }
-
 
     @Override
     public void insert(SongListPojo localData) {
@@ -44,6 +51,8 @@ public class SongListRepository extends Repository<SongListPojo, NetworkSongList
         //     而网络请求完成后，回调函数的执行是在主线程，但是回调函数的任务只是
         //     发起一个异步的在子线程执行的歌单同步任务，不会造成主线程的阻塞
         //TODO 根据uid发起网络请求抓取歌曲
+        if(LoginManager.hasLogin())
+            webService.getAllSongListsByUid(uid).enqueue(new SongListBatchFetchCallBack());
     }
 
     @Override
@@ -55,6 +64,6 @@ public class SongListRepository extends Repository<SongListPojo, NetworkSongList
     @Override
     protected LiveData<List<SongListPojo>> loadAll() {
         //TODO 从本地数据库加载数据，异步或同步有待考虑
-        return null;
+        return songListPojoDao.findAllSongListPojos();
     }
 }

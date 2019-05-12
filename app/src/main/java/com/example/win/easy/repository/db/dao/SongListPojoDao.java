@@ -23,7 +23,9 @@ public interface SongListPojoDao {
     long[] insert(Collection<SongListPojo> songListPojos);
 
     @Query("SELECT * FROM songlistpojo")
-//    List<SongListPojo> findAllSongListPojos();
+    List<SongListPojo> findAllDataSongListPojos();
+
+    @Query("SELECT * FROM songlistpojo")
     LiveData<List<SongListPojo>> findAllSongListPojos();
 
     @Query("SELECT * FROM songlistpojo WHERE id=:songListId")

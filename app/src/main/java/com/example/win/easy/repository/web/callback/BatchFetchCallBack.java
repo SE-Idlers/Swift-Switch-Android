@@ -2,7 +2,7 @@ package com.example.win.easy.repository.web.callback;
 
 import java.util.List;
 
-public abstract class BatchFetchCallBack<NetworkType> extends FetchCallBack<NetworkType> {
+public abstract class BatchFetchCallBack<NetworkType> extends CustomCallBack {
 
     public BatchFetchCallBack(){ super(); }
 

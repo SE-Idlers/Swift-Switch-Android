@@ -1,6 +1,7 @@
 package com.example.win.easy.repository;
 
 import com.example.win.easy.repository.web.BackendResourceWebService;
+import com.example.win.easy.repository.web.callback.LoginCallBack;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -29,19 +30,22 @@ public class LoginManager {
     }
 
     public static void loginByPhone(String phone,String password){
-        /*
-          TODO 发起异步网络请求，获取uid
-         */
-        String uid="";
-        stateHolder=new LoginStateHolder(phone,password,uid,LoginType.Phone);
+        if (isLogining)
+            return;
+        isLogining=true;
+        backendResourceWebService.getUidByEmail(phone,password).enqueue(new LoginCallBack(LoginType.Phone));
     }
 
     public static void loginByEmail(String email,String password){
-        /*
-          TODO 发起异步网络请求，获取uid
-         */
-        String uid="";
-        stateHolder=new LoginStateHolder(email,password,uid,LoginType.Email);
+        if (isLogining)
+            return;
+        isLogining=true;
+        backendResourceWebService.getUidByEmail(email,password).enqueue(new LoginCallBack(LoginType.Email));
+    }
+
+    public static void success(String uid,LoginType loginType){
+        isLogining=false;
+        stateHolder=new LoginStateHolder(uid,loginType);
     }
 
     private LoginManager(){ }
@@ -49,8 +53,6 @@ public class LoginManager {
     @AllArgsConstructor
     @Data
     private static class LoginStateHolder{
-        private String account;
-        private String password;
         private String uid;
         private LoginType loginType;
     }

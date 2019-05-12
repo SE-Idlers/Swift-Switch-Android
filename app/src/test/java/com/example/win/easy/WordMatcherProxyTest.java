@@ -152,11 +152,11 @@ public class WordMatcherProxyTest {
     public void testStandardCharacter(){
         try{
             String principal="~the openingT T HEMe OvO";
-            assertEquals('T',Whitebox.invokeMethod(proxy,"standardCharacter",0,0,principal));//L1
-            assertEquals('O',Whitebox.invokeMethod(proxy,"standardCharacter",4,1,principal));//L2
-            assertEquals('T',Whitebox.invokeMethod(proxy,"standardCharacter",13,2,principal));//U1
-            assertEquals('H',Whitebox.invokeMethod(proxy,"standardCharacter",15,3,principal));//U2
-            assertEquals('O',Whitebox.invokeMethod(proxy,"standardCharacter",20,4,principal));//U3
+            assertEquals(java.util.Optional.of('T'),Whitebox.invokeMethod(proxy,"standardCharacter",0,0,principal));//L1
+            assertEquals(java.util.Optional.of('O'),Whitebox.invokeMethod(proxy,"standardCharacter",4,1,principal));//L2
+            assertEquals(java.util.Optional.of('T'),Whitebox.invokeMethod(proxy,"standardCharacter",13,2,principal));//U1
+            assertEquals(java.util.Optional.of('H'),Whitebox.invokeMethod(proxy,"standardCharacter",15,3,principal));//U2
+            assertEquals(java.util.Optional.of('O'),Whitebox.invokeMethod(proxy,"standardCharacter",20,4,principal));//U3
         }catch(Exception e){
             e.printStackTrace();
         }

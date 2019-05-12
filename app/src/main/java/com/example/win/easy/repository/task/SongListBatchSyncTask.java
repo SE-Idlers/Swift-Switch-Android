@@ -1,13 +1,17 @@
 package com.example.win.easy.repository.task;
 
+import com.example.win.easy.SwiftSwitchClassLoader;
 import com.example.win.easy.repository.db.dao.SongListPojoDao;
 import com.example.win.easy.repository.db.dao.SongPojoDao;
 import com.example.win.easy.repository.db.dao.SongXSongListDao;
+import com.example.win.easy.repository.db.database.OurDatabase;
 import com.example.win.easy.repository.db.pojo.SongListPojo;
 import com.example.win.easy.repository.db.pojo.SongPojo;
 import com.example.win.easy.repository.db.pojo.SongXSongList;
 import com.example.win.easy.repository.web.domain.NetworkSong;
 import com.example.win.easy.repository.web.domain.NetworkSongList;
+import com.example.win.easy.repository.web.download.PictureDownloadManager;
+import com.example.win.easy.repository.web.download.SongDownloadManager;
 import com.example.win.easy.thread.AppExecutors;
 
 import java.util.ArrayList;
@@ -21,6 +25,8 @@ public class SongListBatchSyncTask implements Runnable {
     private SongListPojoDao songListPojoDao;
     private SongPojoDao songPojoDao;
     private SongXSongListDao songXSongListDao;
+    private SongDownloadManager songDownloadManager=SongDownloadManager.getInstance();
+    private PictureDownloadManager pictureDownloadManager=PictureDownloadManager.getInstance();
 
     private List<NetworkSongList> networkNewData;
     private List<SongPojo> songLocalRecords=new ArrayList<>();
@@ -32,6 +38,11 @@ public class SongListBatchSyncTask implements Runnable {
 
     public SongListBatchSyncTask(List<NetworkSongList> networkNewData){
         this.networkNewData=networkNewData;
+        appExecutors=AppExecutors.getInstance();
+        OurDatabase ourDatabase= SwiftSwitchClassLoader.getOurDatabase();
+        songListPojoDao=ourDatabase.songListPojoDao();
+        songPojoDao=ourDatabase.songPojoDao();
+        songXSongListDao=ourDatabase.songXSongListDao();
     }
 
     @Override
@@ -102,10 +113,20 @@ public class SongListBatchSyncTask implements Runnable {
     }
 
     private void initiateDownloadTask(){
-        for (SongPojo songPojo:songLocalRecords){
-            if (songPojo.songPath ==null)
-                return;
-//                appExecutors.songDownloadExecutor().execute();
+        int songAmount=songLocalRecords.size();
+        for (int index=0;index<songAmount;index++){
+            NetworkSong networkSong=networkSongs.get(index);
+            long songId=songIds.get(index);
+            songDownloadManager.download(new SongDownloadTask(networkSong,songId));
+            pictureDownloadManager.download(new SongPictureDownloadTask(networkSong,songId));
         }
+
+        int songListAmount=songListIds.size();
+        for (int index=0;index<songListAmount;index++){
+            NetworkSongList networkSongList=networkNewData.get(index);
+            long songListId=songListIds.get(index);
+            pictureDownloadManager.download(new SongListPictureDownloadTask(networkSongList,songListId));
+        }
+
     }
 }

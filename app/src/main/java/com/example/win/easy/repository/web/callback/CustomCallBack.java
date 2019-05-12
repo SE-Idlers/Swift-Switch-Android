@@ -7,7 +7,7 @@ import com.example.win.easy.repository.web.domain.Response;
 import retrofit2.Call;
 import retrofit2.Callback;
 
-public abstract class FetchCallBack<NetworkType> implements Callback<Response> {
+public abstract class CustomCallBack implements Callback<Response> {
 
     @Override
     public void onResponse(@NonNull Call<Response> call, @NonNull retrofit2.Response<Response> response) {

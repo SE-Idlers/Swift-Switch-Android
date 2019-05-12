@@ -9,19 +9,19 @@ import retrofit2.http.Query;
 
 public interface BackendResourceWebService {
 
-    @POST("/uid/phone")
+    @POST("resource/uid/phone")
     Call<Response> getUidByPhone(@Query("account") String phone, @Query("password") String password);
 
-    @POST("/uid/email")
+    @POST("resource/uid/email")
     Call<Response> getUidByEmail(@Query("account")String email,@Query("password")String password);
 
-    @GET("/songlist/uid")
+    @GET("resource/songlist/uid")
     Call<Response> getAllSongListsByUid(@Query("uid") String uid);
 
-    @POST("/songlist/phone")
+    @POST("resource/songlist/phone")
     Call<Response> getAllSongListsByPhone(@Query("account")String phone,@Query("password")String password);
 
-    @POST("/songlist/email")
+    @POST("resource/songlist/email")
     Call<Response> getAllSongListsByEmail(@Query("account")String email,@Query("password")String password);
 
 }
