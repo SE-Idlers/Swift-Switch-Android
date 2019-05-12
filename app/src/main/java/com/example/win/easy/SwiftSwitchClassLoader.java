@@ -2,10 +2,6 @@ package com.example.win.easy;
 
 import com.example.win.easy.song.SongManagerImpl;
 import com.example.win.easy.songList.SongListMangerImpl;
-import com.example.win.easy.view.DashboardView;
-import com.example.win.easy.view.MediaPlayerView;
-import com.example.win.easy.view.SongListPanelView;
-import com.example.win.easy.view.SongPanelView;
 
 //防止部分类懒惰加载，提前实例化静态变量
 public class SwiftSwitchClassLoader {
@@ -17,9 +13,5 @@ public class SwiftSwitchClassLoader {
     public static void init(){
         SongManagerImpl.getInstance();
         SongListMangerImpl.getInstance();
-        DashboardView.getInstance();
-        MediaPlayerView.getInstance();
-        SongListPanelView.getInstance();
-        SongPanelView.getInstance();
     }
 }

@@ -7,6 +7,7 @@ import android.os.Environment;
 import androidx.core.app.ActivityCompat;
 
 import com.example.win.easy.activity.LockActivity;
+import com.example.win.easy.activity.MainActivity;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -25,7 +26,7 @@ public abstract class AbstractJsonifyConfigurationPersistence<T> implements Conf
 
     public String getSDPath(){
         //更改权限的代码暂时放在这里
-        if (ActivityCompat.checkSelfPermission(LockActivity.lockActivity, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+        if (ActivityCompat.checkSelfPermission(MainActivity.mainActivity, Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(LockActivity.lockActivity,
                     new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 123);

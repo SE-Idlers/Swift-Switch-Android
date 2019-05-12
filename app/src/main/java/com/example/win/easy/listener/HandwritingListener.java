@@ -16,7 +16,6 @@ import com.example.win.easy.recognization.component.RecognitionProxyWithFourGest
 import com.example.win.easy.recognization.interfaces.RecognitionProxy;
 import com.example.win.easy.song.SongManagerImpl;
 import com.example.win.easy.song.interfaces.SongManager;
-import com.example.win.easy.view.DashboardView;
 import com.example.win.easy.view.interfaces.SearchingView;
 
 import java.util.List;
@@ -27,7 +26,7 @@ public class HandwritingListener implements GestureOverlayView.OnGesturePerforme
     private RecognitionProxy recognitionProxy=RecognitionProxyWithFourGestures.getInstance();
     private FilterStrategy<List<Character>> filterStrategy= CharSequenceFilterStrategy.getInstance();
     private SongManager songManager= SongManagerImpl.getInstance();
-    private SearchingView searchingView= DashboardView.getInstance();
+    private SearchingView searchingView= LockActivity.lockActivity;
     private List<GestureOverlayView> onPerformedView = GestureProxy.getInstance().getAllGestures();
 
     public void onGesturePerformed(GestureOverlayView gestureOverlayView, final Gesture gesture) {
