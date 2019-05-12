@@ -7,7 +7,7 @@ import android.gesture.GestureOverlayView;
 
 import androidx.core.app.ActivityCompat;
 
-import com.example.win.easy.activity.MainActivity;
+import com.example.win.easy.activity.LockActivity;
 import com.example.win.easy.filter.CharSequenceFilterStrategy;
 import com.example.win.easy.filter.FilterStrategy;
 import com.example.win.easy.gesture.GestureProxy;
@@ -32,9 +32,9 @@ public class HandwritingListener implements GestureOverlayView.OnGesturePerforme
 
     public void onGesturePerformed(GestureOverlayView gestureOverlayView, final Gesture gesture) {
         //访问权限
-        if (ActivityCompat.checkSelfPermission(MainActivity.mainActivity, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+        if (ActivityCompat.checkSelfPermission(LockActivity.lockActivity, Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(MainActivity.mainActivity,
+            ActivityCompat.requestPermissions(LockActivity.lockActivity,
                     new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 123);
             return;
         }

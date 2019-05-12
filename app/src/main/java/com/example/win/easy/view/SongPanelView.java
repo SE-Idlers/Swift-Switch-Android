@@ -18,7 +18,7 @@ import androidx.annotation.RequiresApi;
 import com.example.win.easy.Constants;
 import com.example.win.easy.DialogTool;
 import com.example.win.easy.R;
-import com.example.win.easy.activity.MainActivity;
+import com.example.win.easy.activity.LockActivity;
 import com.example.win.easy.persistence.component.FileSongMapConfigurationPersistence;
 import com.example.win.easy.persistence.component.SongListConfigurationPersistence;
 import com.example.win.easy.song.SongManagerImpl;
@@ -38,7 +38,7 @@ public class SongPanelView {
     private static SongPanelView instance=new SongPanelView();
     public static SongPanelView getInstance(){return instance;}
     private SongPanelView() {
-        Button btnAddSong = MainActivity.mainActivity.findViewById(R.id.AddSong);
+        Button btnAddSong = LockActivity.lockActivity.findViewById(R.id.AddSong);
         btnAddSong.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
@@ -49,7 +49,7 @@ public class SongPanelView {
     }
 
     static {
-        Button buttonSeeAllSongs=MainActivity.mainActivity.findViewById(R.id.SeeAllSongs);
+        Button buttonSeeAllSongs=LockActivity.lockActivity.findViewById(R.id.SeeAllSongs);
         buttonSeeAllSongs.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -60,7 +60,7 @@ public class SongPanelView {
 
     public void createDialogSeeAllSongs(){
         DialogTool.createMenuDialog(
-                MainActivity.mainActivity,
+                LockActivity.lockActivity,
                 "所有歌曲",
                 songManager.getNamesOfAllSongs().toArray(new String[0]),
                 null,
@@ -73,7 +73,7 @@ public class SongPanelView {
      * @param uri 将添加的音乐文件的URI
      */
     public void createDialogAddSongToSongList(final Uri uri){
-        final QMUIDialog.MultiCheckableDialogBuilder builder=new QMUIDialog.MultiCheckableDialogBuilder(MainActivity.mainActivity);
+        final QMUIDialog.MultiCheckableDialogBuilder builder=new QMUIDialog.MultiCheckableDialogBuilder(LockActivity.lockActivity);
         DialogTool.createMultiCheckDialog(
                 builder,
                 "添加到歌单..",
@@ -121,7 +121,7 @@ public class SongPanelView {
         Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
         intent.addCategory(Intent.CATEGORY_OPENABLE);
         intent.setType("audio/*");
-        MainActivity.mainActivity.startActivityForResult(intent, Constants.READ_REQUEST_CODE);
+        LockActivity.lockActivity.startActivityForResult(intent, Constants.READ_REQUEST_CODE);
     }
 
     //以下是我百度到的对URI的处理函数们，我对他的机制不是完全掌握，不要乱动。

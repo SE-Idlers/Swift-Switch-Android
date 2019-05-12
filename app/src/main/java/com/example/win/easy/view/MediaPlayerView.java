@@ -4,7 +4,7 @@ import android.view.View;
 import android.widget.ImageButton;
 
 import com.example.win.easy.R;
-import com.example.win.easy.activity.MainActivity;
+import com.example.win.easy.activity.LockActivity;
 import com.example.win.easy.display.DisplayManagerImpl;
 import com.example.win.easy.display.interfaces.DisplayManager;
 
@@ -21,9 +21,9 @@ public class MediaPlayerView {
      * 设置按钮监听
      */
     private MediaPlayerView() {
-        final ImageButton btnPause= MainActivity.mainActivity.findViewById(R.id.start);
-        final ImageButton btnPrevious=MainActivity.mainActivity.findViewById(R.id.previous);
-        final ImageButton btnNext=MainActivity.mainActivity.findViewById(R.id.next);
+        final ImageButton btnPause= LockActivity.lockActivity.findViewById(R.id.start);
+        final ImageButton btnPrevious=LockActivity.lockActivity.findViewById(R.id.previous);
+        final ImageButton btnNext=LockActivity.lockActivity.findViewById(R.id.next);
 
         //播放、暂停
         btnPause.setOnClickListener(new View.OnClickListener() {
@@ -59,11 +59,11 @@ public class MediaPlayerView {
     }
 
     public void updateBeginView(){
-        final ImageButton btnPause= MainActivity.mainActivity.findViewById(R.id.start);
+        final ImageButton btnPause= LockActivity.lockActivity.findViewById(R.id.start);
         btnPause.setImageResource(android.R.drawable.ic_media_play);
     }
     public void updatePauseView(){
-        final ImageButton btnPause= MainActivity.mainActivity.findViewById(R.id.start);
+        final ImageButton btnPause= LockActivity.lockActivity.findViewById(R.id.start);
         btnPause.setImageResource(android.R.drawable.ic_media_pause);
     }
 }

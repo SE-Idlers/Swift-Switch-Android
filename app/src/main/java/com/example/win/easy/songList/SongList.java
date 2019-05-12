@@ -2,7 +2,7 @@ package com.example.win.easy.songList;
 
 import android.widget.ArrayAdapter;
 
-import com.example.win.easy.activity.MainActivity;
+import com.example.win.easy.activity.LockActivity;
 import com.example.win.easy.song.Song;
 
 import java.util.ArrayList;
@@ -19,7 +19,7 @@ public class SongList {
 
     public  ArrayAdapter<String> toArrayAdapter(){
         return new ArrayAdapter<>(
-                MainActivity.mainActivity,
+                LockActivity.lockActivity,
                 android.R.layout.simple_list_item_single_choice, songNames
         );
     }

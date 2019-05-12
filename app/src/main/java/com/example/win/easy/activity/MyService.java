@@ -21,7 +21,7 @@ public class MyService extends Service {
         @Override
         public void onReceive(Context context, Intent intent) {
             System.out.println("BeforeStartActivity");
-            Intent mLockIntent=new Intent(context,MainActivity.class);
+            Intent mLockIntent=new Intent(context,LockActivity.class);
             mLockIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
             startActivity(mLockIntent);
             System.out.println("StartActivitySuccess");

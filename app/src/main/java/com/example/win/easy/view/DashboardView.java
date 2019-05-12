@@ -4,7 +4,7 @@ import android.app.Activity;
 
 import com.example.win.easy.DashBoard;
 import com.example.win.easy.R;
-import com.example.win.easy.activity.MainActivity;
+import com.example.win.easy.activity.LockActivity;
 import com.example.win.easy.song.Song;
 import com.example.win.easy.songList.SongList;
 import com.example.win.easy.songList.SongListMangerImpl;
@@ -20,7 +20,7 @@ public class DashboardView extends Activity
 
     private TemporaryListGenerator tool = TemporaryListGenerator.getInstance();
     private SongListManager songListManager=SongListMangerImpl.getInstance();
-    private DashBoard dashBoard = MainActivity.mainActivity.findViewById(R.id.dash_board);
+    private DashBoard dashBoard = LockActivity.lockActivity.findViewById(R.id.dash_board);
 
     private static DashboardView instance = new DashboardView();
 

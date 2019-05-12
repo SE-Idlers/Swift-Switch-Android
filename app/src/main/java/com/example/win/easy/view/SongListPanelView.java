@@ -11,7 +11,7 @@ import androidx.appcompat.app.AlertDialog;
 
 import com.example.win.easy.DialogTool;
 import com.example.win.easy.R;
-import com.example.win.easy.activity.MainActivity;
+import com.example.win.easy.activity.LockActivity;
 import com.example.win.easy.persistence.component.SongListConfigurationPersistence;
 import com.example.win.easy.recognization.component.RecognitionProxyWithFourGestures;
 import com.example.win.easy.songList.SongList;
@@ -27,8 +27,8 @@ public class SongListPanelView {
     private SongListManager songListManager= SongListMangerImpl.getInstance();
 
     static {
-        Button btnAddSongList = MainActivity.mainActivity.findViewById(R.id.AddSongList);
-        Button btnSeeSongList = MainActivity.mainActivity.findViewById(R.id.SeeSongList);
+        Button btnAddSongList = LockActivity.lockActivity.findViewById(R.id.AddSongList);
+        Button btnSeeSongList = LockActivity.lockActivity.findViewById(R.id.SeeSongList);
         btnAddSongList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -49,7 +49,7 @@ public class SongListPanelView {
      */
     private void createDialogSeeSongList(){
         DialogTool.createMenuDialog(
-                MainActivity.mainActivity,
+                LockActivity.lockActivity,
                 "所有歌单",
                 songListManager.getNameOfAllSongLists().toArray(new String[0]),
                 new CheckSongListListener(),
@@ -61,8 +61,8 @@ public class SongListPanelView {
      * 创建歌单的对话框
      */
     private void createDialogAddSong(){
-        final EditText editText = new EditText(MainActivity.mainActivity);
-        new AlertDialog.Builder(MainActivity.mainActivity)
+        final EditText editText = new EditText(LockActivity.lockActivity);
+        new AlertDialog.Builder(LockActivity.lockActivity)
                 .setTitle("歌单名称")
                 .setIcon(android.R.drawable.sym_def_app_icon)
                 .setView(editText)
@@ -72,11 +72,11 @@ public class SongListPanelView {
                         //按下确定键后的事件
                         String songListName=editText.getText().toString();
                         if (songListManager.containsSongListWithName(songListName)){
-                            Toast.makeText(MainActivity.mainActivity.getApplicationContext(),"歌单 "+ songListName+"已存在",Toast.LENGTH_LONG).show();
+                            Toast.makeText(LockActivity.lockActivity.getApplicationContext(),"歌单 "+ songListName+"已存在",Toast.LENGTH_LONG).show();
                             return;
                         }
                         songListManager.add(new SongList(songListName));
-                        Toast.makeText(MainActivity.mainActivity.getApplicationContext(),"歌单 "+ songListName+"已创建",Toast.LENGTH_LONG).show();
+                        Toast.makeText(LockActivity.lockActivity.getApplicationContext(),"歌单 "+ songListName+"已创建",Toast.LENGTH_LONG).show();
                         SongListConfigurationPersistence.getInstance()
                                 .save(SongListMangerImpl.getInstance().getAllSongLists());
                     }
@@ -91,7 +91,7 @@ public class SongListPanelView {
             dialog.dismiss();
             SongList songList=SongListMangerImpl.getInstance().getAllSongLists().get(which);
             DialogTool.createMenuDialog(
-                    MainActivity.mainActivity,
+                    LockActivity.lockActivity,
                     songList.getName(),
                     songList.getSongNames().toArray(new String[0]),null,
                     com.qmuiteam.qmui.R.style.QMUI_Dialog
