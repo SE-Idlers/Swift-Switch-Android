@@ -33,6 +33,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".activity.LockActivity">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
