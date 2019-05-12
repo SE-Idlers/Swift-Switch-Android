@@ -20,12 +20,9 @@ public class MyService extends Service {
     private BroadcastReceiver mScreenOffReceiver=new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            System.out.println("BeforeStartActivity");
             Intent mLockIntent=new Intent(context,LockActivity.class);
             mLockIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
             startActivity(mLockIntent);
-            System.out.println("StartActivitySuccess");
-            //if(intent.getAction().equals(NOTIFY_SCREEN_OFF))
         }
     };
 
@@ -34,7 +31,6 @@ public class MyService extends Service {
         System.out.println("ServiceSuccess");
         IntentFilter mScreenOffFilter=new IntentFilter();
         mScreenOffFilter.addAction(Intent.ACTION_SCREEN_OFF);
-
         registerReceiver(mScreenOffReceiver,mScreenOffFilter);
 
         return super.onStartCommand(intent, flags, startId);
