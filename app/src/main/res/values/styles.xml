@@ -15,9 +15,9 @@
  limitations under the License.
 -->
 
-<resources xmlns:android="http://schemas.android.com/apk/res/android">
+<resources xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools">
 
-    <style name="AppTheme" parent="QMUI.Compat">
+    <style name="AppTheme" parent="QMUI.Compat.NoActionBar">
         <!-- 配置Android提供的theme -->
         <item name="android:textAppearanceListItemSmall">@style/QDTextAppearanceListItemSmall</item>
         <item name="android:textAppearanceListItem">@style/QDtextAppearanceListItem</item>
@@ -36,8 +36,9 @@
 
         <!-- 配置app自己的theme -->
         <item name="app_primary_color">?attr/qmui_config_color_blue</item>
-        <item name="app_content_bg_color">@color/qmui_config_color_white</item>
 
+        <item name="colorAccent">@color/app_color_blue</item>
+        <item name="android:colorAccent" tools:targetApi="lollipop">@color/app_color_blue</item>
     </style>
 
     <style name="QDtextAppearanceListItem">

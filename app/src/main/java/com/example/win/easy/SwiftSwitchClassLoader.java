@@ -11,19 +11,12 @@ import com.example.win.easy.repository.web.BackendResourceWebService;
 import com.example.win.easy.song.SongManagerImpl;
 import com.example.win.easy.songList.SongListMangerImpl;
 import com.example.win.easy.thread.AppExecutors;
-import com.example.win.easy.view.DashboardView;
-import com.example.win.easy.view.MediaPlayerView;
-import com.example.win.easy.view.SongListPanelView;
-import com.example.win.easy.view.SongPanelView;
 
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 //防止部分类懒惰加载，提前实例化静态变量
 public class SwiftSwitchClassLoader {
-
-    private static SwiftSwitchClassLoader instance=new SwiftSwitchClassLoader();
-    public static SwiftSwitchClassLoader getInstance(){return instance;}
     private SwiftSwitchClassLoader(){}
 
     private static OurDatabase ourDatabase;
@@ -32,10 +25,6 @@ public class SwiftSwitchClassLoader {
     public static void init(){
         SongManagerImpl.getInstance();
         SongListMangerImpl.getInstance();
-        DashboardView.getInstance();
-        MediaPlayerView.getInstance();
-        SongListPanelView.getInstance();
-        SongPanelView.getInstance();
         AppExecutors.getInstance();
         Context context=MainActivity.mainActivity.getApplicationContext();
         ourDatabase=Room.databaseBuilder(context,OurDatabase.class,"ourDatabase").build();

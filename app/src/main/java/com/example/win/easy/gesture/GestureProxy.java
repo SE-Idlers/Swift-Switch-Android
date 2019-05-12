@@ -5,7 +5,7 @@ import android.graphics.Color;
 
 import com.example.win.easy.Constants;
 import com.example.win.easy.R;
-import com.example.win.easy.activity.MainActivity;
+import com.example.win.easy.activity.LockActivity;
 import com.example.win.easy.listener.HandwritingListener;
 
 import java.util.ArrayList;
@@ -22,7 +22,7 @@ public class GestureProxy {
 
     static {
         for(int i=0;i<Constants.NumberOfGesture;i++){
-            gestures[i]= MainActivity.mainActivity.findViewById(id[i]);
+            gestures[i]= LockActivity.lockActivity.findViewById(id[i]);
             Gestures.add(i, gestures[i]);//add, set使用不规范可能会有bug
             init(gestures[i]);
         }
@@ -30,7 +30,7 @@ public class GestureProxy {
 
     private static void init(GestureOverlayView gesture) {
         gesture.setGestureColor(Color.GREEN);
-        gesture.setBackgroundColor(MainActivity.mainActivity.getResources().getColor(R.color.app_color_blue));
+        gesture.setBackgroundColor(LockActivity.lockActivity.getResources().getColor(R.color.app_color_blue));
         gesture.setGestureStrokeWidth(15);
         gesture.addOnGesturePerformedListener(new HandwritingListener());
     }

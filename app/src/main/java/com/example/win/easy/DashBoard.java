@@ -28,7 +28,7 @@ import java.util.List;
 import lombok.Getter;
 import lombok.experimental.Accessors;
 
-public class DashBoard extends QMUILinearLayout  {
+public class  DashBoard extends QMUILinearLayout  {
 
     private QMUITabSegment tabSegment;
     private ViewPager viewPager;
