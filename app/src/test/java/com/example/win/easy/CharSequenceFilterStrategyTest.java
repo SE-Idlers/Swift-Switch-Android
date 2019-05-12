@@ -4,12 +4,12 @@ import com.example.win.easy.filter.CharSequenceFilterStrategy;
 
 import org.junit.Before;
 import org.junit.Test;
-import static org.junit.Assert.assertEquals;
 
-import java.io.File;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Arrays;
+import java.util.List;
+
+import static org.junit.Assert.assertEquals;
 
 /*
  * *注意* 此类没有外界依赖，暂时没有用到Mockito
@@ -18,7 +18,7 @@ import java.util.Arrays;
 
 public class CharSequenceFilterStrategyTest {
 
-    CharSequenceFilterStrategy filterStrategy=new CharSequenceFilterStrategy();
+    CharSequenceFilterStrategy filterStrategy=CharSequenceFilterStrategy.getInstance();
 
     List<List<Character>> sequenceListInResp;//库内已有的序列
     List<Character> toBeMatchedSample;//单个用例序列
