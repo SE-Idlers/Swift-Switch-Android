@@ -3,6 +3,7 @@ package com.example.win.easy.activity;
 import android.app.Activity;
 import android.content.ContentUris;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
@@ -56,7 +57,9 @@ public class MainActivity extends AppCompatActivity {
     private SimpleViewModel viewModel;
     private LiveData<Integer> songAmount;
     private LiveData<Integer> songListAmount;
+    private LiveData<List<SongPojo>> allSongs;
     private LiveData<List<SongListPojo>> allSongLists;
+    private List<LiveData<List<SongPojo>>> recordTable;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,6 +81,7 @@ public class MainActivity extends AppCompatActivity {
         viewModel= ViewModelProviders.of(this).get(SimpleViewModel.class);
         songAmount=viewModel.getSongAmount();
         songListAmount=viewModel.getSongListAmount();
+        allSongs=viewModel.getAllSongs();
         allSongLists=viewModel.getAllSongLists();
         songAmount.observe(this, integer -> {
             allSongItem.setDetailText(integer.toString());
@@ -85,6 +89,15 @@ public class MainActivity extends AppCompatActivity {
         songListAmount.observe(this,integer -> {
             allSongListItem.setDetailText(integer.toString());
         });
+        allSongs.observe(this,songPojos -> {});
+        allSongLists.observe(this, songListPojos -> { });
+        recordTable=new ArrayList<>();
+        if (allSongLists.getValue()!=null)
+            for (SongListPojo songListPojo:allSongLists.getValue()){
+                LiveData<List<SongPojo>> record=viewModel.getAllSongsForSongList(songListPojo);
+                record.observe(this, songPojos -> { });
+                recordTable.add(record);
+            }
     }
 
 
@@ -104,6 +117,20 @@ public class MainActivity extends AppCompatActivity {
             Uri uri = resultData.getData();
             createDialogAddSongToSongList(uri);
         }
+    }
+
+    public void createDialogSeeAllSongs(){
+        List<String> songNames=new ArrayList<>();
+        if (allSongs.getValue()!=null)
+            for (SongPojo songPojo:allSongs.getValue())
+                songNames.add(songPojo.getName());
+        DialogTool.createMenuDialog(
+                this,
+                "所有歌曲",
+                songNames.toArray(new String[0]),
+                null,
+                com.qmuiteam.qmui.R.style.QMUI_Dialog
+        );
     }
 
     /**
@@ -132,6 +159,23 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
+     * 查看歌单的对话框
+     */
+    private void createDialogSeeSongList(){
+        List<String> songListNames=new ArrayList<>();
+        if(allSongLists.getValue()!=null)
+            for (SongListPojo songListPojo:allSongLists.getValue())
+                songListNames.add(songListPojo.getName());
+        DialogTool.createMenuDialog(
+                this,
+                "所有歌单",
+                songListNames.toArray(new String[0]),
+                new CheckSongListListener(),
+                com.qmuiteam.qmui.R.style.QMUI_Dialog
+        );
+    }
+
+    /**
      * 绑定视图
      */
     private void bindView(){
@@ -151,9 +195,9 @@ public class MainActivity extends AppCompatActivity {
         allSongItem.setAccessoryType(QMUICommonListItemView.ACCESSORY_TYPE_CUSTOM);
         allSongListItem.setAccessoryType(QMUICommonListItemView.ACCESSORY_TYPE_CUSTOM);
         allSongItem.addAccessoryCustomView(addSongBtn);
-        allSongItem.setOnClickListener(v -> Toast.makeText(getApplicationContext(),"点击歌单 ",Toast.LENGTH_LONG).show());
+        allSongItem.setOnClickListener(v -> createDialogSeeAllSongs());
         allSongListItem.addAccessoryCustomView(addSongListBtn);
-        allSongListItem.setOnClickListener(v -> Toast.makeText(getApplicationContext(),"点击歌曲 ",Toast.LENGTH_LONG).show());
+        allSongListItem.setOnClickListener(v -> createDialogSeeSongList());
         QMUIGroupListView.newSection(this)
                 .addItemView(allSongItem,null)
                 .addItemView(allSongListItem,null)
@@ -338,5 +382,22 @@ public class MainActivity extends AppCompatActivity {
      */
     private static boolean isMediaDocument(Uri uri) {
         return "com.android.providers.media.documents".equals(uri.getAuthority());
+    }
+
+    class CheckSongListListener implements DialogInterface.OnClickListener{
+        @Override
+        public void onClick(DialogInterface dialog, int which) {
+            dialog.dismiss();
+            SongListPojo songListPojo=allSongLists.getValue().get(which);
+            List<String> songNames=new ArrayList<>();
+            for (SongPojo songPojo:recordTable.get(which).getValue())
+                songNames.add(songPojo.getName());
+            DialogTool.createMenuDialog(
+                    getApplicationContext(),
+                    songListPojo.getName(),
+                    songNames.toArray(new String[0]),null,
+                    com.qmuiteam.qmui.R.style.QMUI_Dialog
+            );
+        }
     }
 }

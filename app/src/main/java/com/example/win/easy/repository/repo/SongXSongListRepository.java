@@ -26,6 +26,10 @@ public class SongXSongListRepository extends Repository<SongXSongList,Void> {
     private Executor diskIO;
     private SongXSongListDao songXSongListDao;
 
+    public LiveData<List<SongPojo>> getAllSongsForSongList(SongListPojo songListPojo){
+        return songXSongListDao.findAllSongsForSongListById(songListPojo.getId());
+    }
+
     @Override
     public void insert(SongXSongList localData) {
         diskIO.execute(()->songXSongListDao.insert(localData));
@@ -41,7 +45,7 @@ public class SongXSongListRepository extends Repository<SongXSongList,Void> {
     }
 
     @Override
-    protected void fetchAllByUid(String uid) {
+    public void fetchAllByUid(String uid) {
 
     }
 

@@ -36,7 +36,7 @@ public abstract class Repository<LocalType,NetworkType> {
         fetchAllByUid(LoginManager.getCurrentUid());
     }
 
-    protected abstract void fetchAllByUid(String uid);
+    public abstract void fetchAllByUid(String uid);
 
     protected abstract boolean shouldFetch();
 

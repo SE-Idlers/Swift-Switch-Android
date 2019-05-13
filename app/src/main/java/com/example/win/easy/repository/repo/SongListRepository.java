@@ -3,7 +3,6 @@ package com.example.win.easy.repository.repo;
 import androidx.lifecycle.LiveData;
 
 import com.example.win.easy.SwiftSwitchClassLoader;
-import com.example.win.easy.repository.LoginManager;
 import com.example.win.easy.repository.db.dao.SongListPojoDao;
 import com.example.win.easy.repository.db.pojo.SongListPojo;
 import com.example.win.easy.repository.web.BackendResourceWebService;
@@ -48,15 +47,14 @@ public class SongListRepository extends Repository<SongListPojo, NetworkSongList
     }
 
     @Override
-    protected void fetchAllByUid(String uid) {
+    public void fetchAllByUid(String uid) {
         //根据Uid抓取歌单，获得网络数据后设定同步歌单的异步IO任务
         //-----------------------------------------------------
         //tips:发起网络请求是在主线程，网络请求的处理是在子线程
         //     而网络请求完成后，回调函数的执行是在主线程，但是回调函数的任务只是
         //     发起一个异步的在子线程执行的歌单同步任务，不会造成主线程的阻塞
         //TODO 根据uid发起网络请求抓取歌曲
-        if(LoginManager.hasLogin())
-            webService.getAllSongListsByUid(uid).enqueue(new SongListBatchFetchCallBack());
+        webService.getAllSongListsByUid(uid).enqueue(new SongListBatchFetchCallBack());
     }
 
     @Override

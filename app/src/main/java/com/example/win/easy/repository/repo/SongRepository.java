@@ -44,7 +44,7 @@ public class SongRepository extends Repository<SongPojo, NetworkSong> {
     }
 
     @Override
-    protected void fetchAllByUid(String uid) {
+    public void fetchAllByUid(String uid) {
 
     }
 

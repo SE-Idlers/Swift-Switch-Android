@@ -10,7 +10,9 @@ import com.example.win.easy.repository.repo.SongListRepository;
 import com.example.win.easy.repository.repo.SongRepository;
 import com.example.win.easy.repository.repo.SongXSongListRepository;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class SimpleViewModel extends ViewModel {
 
@@ -21,6 +23,7 @@ public class SimpleViewModel extends ViewModel {
     private LiveData<List<SongListPojo>> allSongLists;
     private LiveData<Integer> songAmount;
     private LiveData<Integer> songListAmount;
+    private Map<Long,LiveData<List<SongPojo>>> recordMap;
 
     public LiveData<List<SongPojo>> getAllSongs(){
         if (allSongs==null)
@@ -44,6 +47,14 @@ public class SimpleViewModel extends ViewModel {
         if (songListAmount==null)
             songListAmount=Transformations.map(getAllSongLists(),List::size);
         return songListAmount;
+    }
+
+    public LiveData<List<SongPojo>> getAllSongsForSongList(SongListPojo songListPojo){
+        if (recordMap==null)
+            recordMap=new HashMap<>();
+        if (recordMap.get(songListPojo.getId())==null)
+            recordMap.put(songListPojo.getId(),songXSongListRepository.getAllSongsForSongList(songListPojo));
+        return recordMap.get(songListPojo.getId());
     }
 
     public void insert(SongPojo songPojo){songRepository.insert(songPojo);}

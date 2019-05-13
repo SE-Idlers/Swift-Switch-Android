@@ -1,5 +1,6 @@
 package com.example.win.easy.repository.db.dao;
 
+import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
@@ -28,8 +29,15 @@ public interface SongXSongListDao {
             "ON songpojo.id=songxsonglist.songId " +
             "WHERE songxsonglist.songListId=:songListId")
     @SuppressWarnings(RoomWarnings.CURSOR_MISMATCH)
-    List<SongPojo> findAllSongsForSongListById(long songListId);
-//    LiveData<List<SongPojo>> findAllSongsForSongListById(long songListId);
+    List<SongPojo> findAllSongsDataForSongListById(long songListId);
+//    LiveData<List<SongPojo>> findAllSongsDataForSongListById(long songListId);
+
+    @Query("SELECT * " +
+            "FROM songpojo INNER JOIN songxsonglist " +
+            "ON songpojo.id=songxsonglist.songId " +
+            "WHERE songxsonglist.songListId=:songListId")
+    @SuppressWarnings(RoomWarnings.CURSOR_MISMATCH)
+    LiveData<List<SongPojo>> findAllSongsForSongListById(long songListId);
 
     @Query("SELECT * " +
             "FROM songlistpojo INNER JOIN songxsonglist " +

@@ -13,6 +13,7 @@ import com.example.win.easy.repository.web.domain.NetworkSongList;
 import com.example.win.easy.repository.web.download.PictureDownloadManager;
 import com.example.win.easy.repository.web.download.SongDownloadManager;
 import com.example.win.easy.thread.AppExecutors;
+import com.google.gson.internal.LinkedTreeMap;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -28,7 +29,7 @@ public class SongListBatchSyncTask implements Runnable {
     private SongDownloadManager songDownloadManager=SongDownloadManager.getInstance();
     private PictureDownloadManager pictureDownloadManager=PictureDownloadManager.getInstance();
 
-    private List<NetworkSongList> networkNewData;
+    private List<NetworkSongList> networkSongLists;
     private List<SongPojo> songLocalRecords=new ArrayList<>();
     private List<NetworkSong> networkSongs=new ArrayList<>();
     private List<Long> songIds=new ArrayList<>();
@@ -36,8 +37,10 @@ public class SongListBatchSyncTask implements Runnable {
     private List<SongXSongList> relations=new ArrayList<>();
 
 
-    public SongListBatchSyncTask(List<NetworkSongList> networkNewData){
-        this.networkNewData=networkNewData;
+    public SongListBatchSyncTask(List<LinkedTreeMap<String,Object>> networkNewData){
+        this.networkSongLists = new ArrayList<>();
+        for (LinkedTreeMap<String,Object> treeMap:networkNewData)
+                networkSongLists.add(new NetworkSongList(treeMap));
         appExecutors=AppExecutors.getInstance();
         OurDatabase ourDatabase= SwiftSwitchClassLoader.getOurDatabase();
         songListPojoDao=ourDatabase.songListPojoDao();
@@ -56,7 +59,7 @@ public class SongListBatchSyncTask implements Runnable {
     private void updateSongs(){
         //去重
         Set<NetworkSong> uniqueNetworkSongs=new HashSet<>();
-        for (NetworkSongList networkSongList:networkNewData)
+        for (NetworkSongList networkSongList: networkSongLists)
             uniqueNetworkSongs.addAll(networkSongList.getNetworkSongs());
         for (NetworkSong networkSong:uniqueNetworkSongs){
             //查找本地记录
@@ -80,7 +83,7 @@ public class SongListBatchSyncTask implements Runnable {
     }
 
     private void updateSongLists(){
-        for (NetworkSongList networkSongList:networkNewData){
+        for (NetworkSongList networkSongList: networkSongLists){
             //查找本地记录
             SongListPojo localRecord=songListPojoDao.findLocalRecordOfNetworkSongList(
                     networkSongList.name,
@@ -97,9 +100,9 @@ public class SongListBatchSyncTask implements Runnable {
     }
 
     private void updateSongXSongLists(){
-        for (NetworkSongList networkSongList:networkNewData){
+        for (NetworkSongList networkSongList: networkSongLists){
             //获取歌单id
-            long songListId=songListIds.get(networkNewData.indexOf(networkSongList));
+            long songListId=songListIds.get(networkSongLists.indexOf(networkSongList));
             List<NetworkSong> contents=networkSongList.networkSongs;
             for (NetworkSong networkSong:contents){
                 //获取歌曲id
@@ -123,7 +126,7 @@ public class SongListBatchSyncTask implements Runnable {
 
         int songListAmount=songListIds.size();
         for (int index=0;index<songListAmount;index++){
-            NetworkSongList networkSongList=networkNewData.get(index);
+            NetworkSongList networkSongList= networkSongLists.get(index);
             long songListId=songListIds.get(index);
             pictureDownloadManager.download(new SongListPictureDownloadTask(networkSongList,songListId));
         }

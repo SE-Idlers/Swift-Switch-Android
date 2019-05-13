@@ -1,5 +1,6 @@
 package com.example.win.easy.repository;
 
+import com.example.win.easy.repository.repo.SongListRepository;
 import com.example.win.easy.repository.web.BackendResourceWebService;
 import com.example.win.easy.repository.web.callback.LoginCallBack;
 
@@ -33,7 +34,7 @@ public class LoginManager {
         if (isLogining)
             return;
         isLogining=true;
-        backendResourceWebService.getUidByEmail(phone,password).enqueue(new LoginCallBack(LoginType.Phone));
+        backendResourceWebService.getUidByPhone(phone,password).enqueue(new LoginCallBack(LoginType.Phone));
     }
 
     public static void loginByEmail(String email,String password){
@@ -46,6 +47,7 @@ public class LoginManager {
     public static void success(String uid,LoginType loginType){
         isLogining=false;
         stateHolder=new LoginStateHolder(uid,loginType);
+        SongListRepository.getInstance().fetchAllByUid(uid);
     }
 
     private LoginManager(){ }

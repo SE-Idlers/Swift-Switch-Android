@@ -103,18 +103,10 @@ public class LockActivity extends AppCompatActivity implements SongListView, Sea
 
         ///////////////////////////////////////////
         Button btnAddSongList = LockActivity.lockActivity.findViewById(R.id.AddSongList);
-        Button btnSeeSongList = LockActivity.lockActivity.findViewById(R.id.SeeSongList);
         btnAddSongList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 LockActivity.lockActivity.createDialogAddSong();
-            }
-        });
-        btnSeeSongList.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                RecognitionProxyWithFourGestures.getInstance().clear();
-                LockActivity.lockActivity.createDialogSeeSongList();
             }
         });
 
@@ -203,18 +195,7 @@ public class LockActivity extends AppCompatActivity implements SongListView, Sea
 
     ////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////
-    /**
-     * 查看歌单的对话框
-     */
-    private void createDialogSeeSongList(){
-        DialogTool.createMenuDialog(
-                LockActivity.lockActivity,
-                "所有歌单",
-                songListManager.getNameOfAllSongLists().toArray(new String[0]),
-                new CheckSongListListener(),
-                com.qmuiteam.qmui.R.style.QMUI_Dialog
-        );
-    }
+
 
     /**
      * 创建歌单的对话框
@@ -244,17 +225,5 @@ public class LockActivity extends AppCompatActivity implements SongListView, Sea
                 .show();
     }
 
-    class CheckSongListListener implements DialogInterface.OnClickListener{
-        @Override
-        public void onClick(DialogInterface dialog, int which) {
-            dialog.dismiss();
-            SongList songList=SongListMangerImpl.getInstance().getAllSongLists().get(which);
-            DialogTool.createMenuDialog(
-                    LockActivity.lockActivity,
-                    songList.getName(),
-                    songList.getSongNames().toArray(new String[0]),null,
-                    com.qmuiteam.qmui.R.style.QMUI_Dialog
-            );
-        }
-    }
+
 }

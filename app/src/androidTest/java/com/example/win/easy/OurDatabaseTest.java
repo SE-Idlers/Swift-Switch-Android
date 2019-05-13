@@ -84,7 +84,7 @@ public class OurDatabaseTest {
             System.out.println("Appearance of "+songPojo+" ::: "+songXSongListDao.findAllSongListsForSongById(songPojo.getId()));
         System.out.println("Find songs of certain SongList:");
         for (SongListPojo songListPojo:songListPojos)
-            System.out.println("Songs of "+songListPojo+" ::: "+songXSongListDao.findAllSongsForSongListById(songListPojo.getId()));
+            System.out.println("Songs of "+songListPojo+" ::: "+songXSongListDao.findAllSongsDataForSongListById(songListPojo.getId()));
     }
 
     private void insert(SongPojo songPojo, SongListPojo songListPojo){
