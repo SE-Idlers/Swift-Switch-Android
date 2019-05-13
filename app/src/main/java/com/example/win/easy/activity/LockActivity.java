@@ -1,142 +1,92 @@
 package com.example.win.easy.activity;
 
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.os.Build;
+import android.Manifest;
+import android.content.pm.PackageManager;
+import android.gesture.Gesture;
+import android.gesture.GestureOverlayView;
+import android.graphics.Color;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
+import android.view.WindowManager;
 import android.widget.ImageButton;
-import android.widget.Toast;
 
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Transformations;
+import androidx.lifecycle.ViewModelProviders;
 
+import com.example.win.easy.ActivityHolder;
 import com.example.win.easy.Constants;
 import com.example.win.easy.DashBoard;
-import com.example.win.easy.DialogTool;
 import com.example.win.easy.R;
 import com.example.win.easy.display.DisplayManagerImpl;
 import com.example.win.easy.display.interfaces.DisplayManager;
-import com.example.win.easy.gesture.GestureProxy;
-import com.example.win.easy.persistence.component.SongListConfigurationPersistence;
+import com.example.win.easy.filter.CharSequenceFilterStrategy;
+import com.example.win.easy.filter.FilterStrategy;
+import com.example.win.easy.recognization.PositionedImage;
 import com.example.win.easy.recognization.component.RecognitionProxyWithFourGestures;
+import com.example.win.easy.recognization.interfaces.RecognitionProxy;
+import com.example.win.easy.repository.db.pojo.SongListPojo;
+import com.example.win.easy.repository.db.pojo.SongPojo;
+import com.example.win.easy.repository.db.pojo.SongXSongList;
 import com.example.win.easy.song.Song;
-import com.example.win.easy.song.SongManagerImpl;
-import com.example.win.easy.song.interfaces.SongManager;
 import com.example.win.easy.songList.SongList;
 import com.example.win.easy.songList.SongListMangerImpl;
 import com.example.win.easy.songList.TemporaryListGenerator;
 import com.example.win.easy.songList.interfaces.SongListManager;
 import com.example.win.easy.view.interfaces.SearchingView;
 import com.example.win.easy.view.interfaces.SongListView;
+import com.example.win.easy.viewmodel.SimpleViewModel;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class LockActivity extends AppCompatActivity implements SongListView, SearchingView {
 
-    public static LockActivity lockActivity;
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        lockActivity =this;
-        RecognitionProxyWithFourGestures.getInstance().setAssetManager(getAssets());
-        GestureProxy gestureProxy=GestureProxy.getInstance();
-        getSupportFragmentManager();
-
-        /////////////////////////
-        final ImageButton btnPause= LockActivity.lockActivity.findViewById(R.id.start);
-        final ImageButton btnPrevious=LockActivity.lockActivity.findViewById(R.id.previous);
-        final ImageButton btnNext=LockActivity.lockActivity.findViewById(R.id.next);
-
-        //播放、暂停
-        btnPause.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (displayManager.isPlaying()){
-                    displayManager.pause();
-                    btnPause.setImageResource(android.R.drawable.ic_media_play);
-                }else {
-                    displayManager.start();
-                    btnPause.setImageResource(android.R.drawable.ic_media_pause);
-                }
-            }
-        });
-        //前一首
-        btnPrevious.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(!displayManager.isPlaying())
-                    btnPause.setImageResource(android.R.drawable.ic_media_pause);
-                displayManager.previous();
-            }
-        });
-        //后一首
-        btnNext.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(!displayManager.isPlaying())
-                    btnPause.setImageResource(android.R.drawable.ic_media_pause);
-                displayManager.next();
-            }
-        });
-
-        ///////////////////////////////////////////
-        Button btnAddSong = LockActivity.lockActivity.findViewById(R.id.AddSong);
-        btnAddSong.setOnClickListener(new View.OnClickListener() {
-            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-            @Override
-            public void onClick(View v) {
-                performFileSearch();
-            }
-        });
-        Button buttonSeeAllSongs=LockActivity.lockActivity.findViewById(R.id.SeeAllSongs);
-        buttonSeeAllSongs.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                LockActivity.lockActivity.createDialogSeeAllSongs();
-            }
-        });
-
-        ///////////////////////////////////////////
-        Button btnAddSongList = LockActivity.lockActivity.findViewById(R.id.AddSongList);
-        btnAddSongList.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                LockActivity.lockActivity.createDialogAddSong();
-            }
-        });
-
-      //  dashboardView.init();
-
-       //File relative=new File("/ttt");
-        //        File[] files=relative.listFiles();
-        //
-        //SongListMangerImpl songListManger=SongListMangerImpl.getInstance();
-//      SongManagerImpl.getInstance().addAll(new ArrayList<>(Arrays.asList(files)));
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-//        SongListManager songListManager=SongListMangerImpl.getInstance();
-//        SongManager songManager= SongManagerImpl.getInstance();
-//        System.out.println("After switch all song lists: "+songListManager.getAllSongLists());
-//        System.out.println("After switch all songs: "+songManager.getMap());
-//        SongListConfigurationPersistence.getInstance().save(songListManager.getAllSongLists());
-//        FileSongMapConfigurationPersistence.getInstance().save(songManager.getMap());
-//        System.out.println(SongListConfigurationPersistence.getInstance().load());
-//        System.out.println(FileSongMapConfigurationPersistence.getInstance().load());
-    }
-
+    private DashBoard dashBoard = findViewById(R.id.dash_board);
+    private ImageButton btnPause= findViewById(R.id.start);
+    private ImageButton btnPrevious=findViewById(R.id.previous);
+    private ImageButton btnNext=findViewById(R.id.next);
+    private GestureOverlayView[] gestures=new GestureOverlayView[Constants.NumberOfGesture];
+    private List<GestureOverlayView> Gestures = new ArrayList<>(Constants.NumberOfGesture);//to use indexOf
+    private Integer[] id=new Integer[]{R.id.gesture1,R.id.gesture2,R.id.gesture3,R.id.gesture4};
 
 
     private TemporaryListGenerator tool = TemporaryListGenerator.getInstance();
     private SongListManager songListManager=SongListMangerImpl.getInstance();
-    private DashBoard dashBoard = LockActivity.lockActivity.findViewById(R.id.dash_board);
+    private DisplayManager displayManager=DisplayManagerImpl.getInstance();
+    private SimpleViewModel viewModel;
+    private LiveData<List<List<Character>>> sequences;
+    private LiveData<List<SongPojo>> allSongs;
+    private LiveData<List<SongListPojo>> allSongLists;
+    private LiveData<List<SongXSongList>> allRelation;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED|WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
+        ActivityHolder.update(this);
+        setContentView(R.layout.activity_main);
+        RecognitionProxyWithFourGestures.getInstance().setAssetManager(getAssets());
+        initButtons();
+        initGestures();
+        viewModel= ViewModelProviders.of(this).get(SimpleViewModel.class);
+        LiveData<List<SongPojo>> allSongs=viewModel.getAllSongs();
+        sequences= Transformations.map(allSongs, input -> {
+            List<List<Character>> seqs=new ArrayList<>();
+            for (SongPojo songPojo:input)
+                seqs.add(songPojo.getSequence());
+            return seqs;
+        });
+        sequences.observe(this, lists -> {});
+        allSongs=viewModel.getAllSongs();
+        allSongs.observe(this, songPojos -> {});
+        allSongLists=viewModel.getAllSongLists();
+        allSongLists.observe(this, songListPojos -> {});
+        allRelation=viewModel.getAllRelation();
+        allRelation.observe(this,songXSongLists -> {});
+    }
+
 
     @Override
     public void update(Song song) {
@@ -154,76 +104,103 @@ public class LockActivity extends AppCompatActivity implements SongListView, Sea
         dashBoard.setup(candidates, DashBoard.DashBoardType.SelectingSong);
     }
 
-
-    ///////////////////////////////////////////////
-    private DisplayManager displayManager=DisplayManagerImpl.getInstance();
-
+    /**
+     * 更新到开始形状
+     */
     public void updateBeginView(){
-        final ImageButton btnPause= LockActivity.lockActivity.findViewById(R.id.start);
         btnPause.setImageResource(android.R.drawable.ic_media_play);
     }
+
+    /**
+     * 更新到暂停形状
+     */
     public void updatePauseView(){
-        final ImageButton btnPause= LockActivity.lockActivity.findViewById(R.id.start);
         btnPause.setImageResource(android.R.drawable.ic_media_pause);
     }
 
-    ///////////////////////////////////////////////
-    ///////////////////////////////////////////////
-    private SongManager songManager= SongManagerImpl.getInstance();
-
-    public void createDialogSeeAllSongs(){
-        DialogTool.createMenuDialog(
-                LockActivity.lockActivity,
-                "所有歌曲",
-                songManager.getNamesOfAllSongs().toArray(new String[0]),
-                null,
-                com.qmuiteam.qmui.R.style.QMUI_Dialog
-        );
+    /**
+     * 初始化播放控制的按钮
+     */
+    private void initButtons(){
+        //播放、暂停
+        btnPause.setOnClickListener(v -> {
+            if (displayManager.isPlaying()){
+                displayManager.pause();
+                updateBeginView();
+            }else {
+                displayManager.start();
+                updatePauseView();
+            }
+        });
+        //前一首
+        btnPrevious.setOnClickListener(v -> {
+            if(!displayManager.isPlaying())
+                updatePauseView();
+            displayManager.previous();
+        });
+        //后一首
+        btnNext.setOnClickListener(v -> {
+            if(!displayManager.isPlaying())
+                updatePauseView();
+            displayManager.next();
+        });
     }
 
     /**
-     * 跳转到文件浏览页面，用于选择要添加的音乐文件
+     * 初始化手写板
      */
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-    private void performFileSearch() {
-        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
-        intent.addCategory(Intent.CATEGORY_OPENABLE);
-        intent.setType("audio/*");
-        LockActivity.lockActivity.startActivityForResult(intent, Constants.READ_REQUEST_CODE);
+    private void initGestures(){
+        for(int i=0;i<Constants.NumberOfGesture;i++){
+            gestures[i]= ActivityHolder.getLockActivity().get().findViewById(id[i]);
+            Gestures.add(i, gestures[i]);//add, set使用不规范可能会有bug
+            gestures[i].setGestureColor(Color.GREEN);
+            gestures[i].setBackgroundColor(getResources().getColor(R.color.app_color_blue));
+            gestures[i].setGestureStrokeWidth(15);
+            gestures[i].addOnGesturePerformedListener(new HandwritingListener(this,this));
+        }
     }
-
-
-    ////////////////////////////////////////////////////////
-    ////////////////////////////////////////////////////////
-
-
-    /**
-     * 创建歌单的对话框
-     */
-    private void createDialogAddSong(){
-        final EditText editText = new EditText(LockActivity.lockActivity);
-        new AlertDialog.Builder(LockActivity.lockActivity)
-                .setTitle("歌单名称")
-                .setIcon(android.R.drawable.sym_def_app_icon)
-                .setView(editText)
-                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        //按下确定键后的事件
-                        String songListName=editText.getText().toString();
-                        if (songListManager.containsSongListWithName(songListName)){
-                            Toast.makeText(LockActivity.lockActivity.getApplicationContext(),"歌单 "+ songListName+"已存在",Toast.LENGTH_LONG).show();
-                            return;
-                        }
-                        songListManager.add(new SongList(songListName));
-                        Toast.makeText(LockActivity.lockActivity.getApplicationContext(),"歌单 "+ songListName+"已创建",Toast.LENGTH_LONG).show();
-                        SongListConfigurationPersistence.getInstance()
-                                .save(SongListMangerImpl.getInstance().getAllSongLists());
-                    }
-                })
-                .setNegativeButton("取消",null)
-                .show();
+    public List<GestureOverlayView> getAllGestures(){return Gestures;}
+    private List<SongListPojo> appearanceListsOf(SongPojo songPojo){
+        List<Long> songListIds=new ArrayList<>();
+        List<SongListPojo> result=new ArrayList<>();
+        if (allSongs.getValue()!=null&&allSongLists.getValue()!=null&&allRelation.getValue()!=null){
+            for (SongXSongList songXSongList:allRelation.getValue())
+                if (songXSongList.songId==songPojo.id)
+                    songListIds.add(songXSongList.songListId);
+            for (SongListPojo songListPojo:allSongLists.getValue())
+                if (songListIds.contains(songListPojo.id))
+                    result.add(songListPojo);
+        }
+        return result;
     }
+    public class HandwritingListener implements GestureOverlayView.OnGesturePerformedListener {
+        private RecognitionProxy recognitionProxy=RecognitionProxyWithFourGestures.getInstance();
+        private FilterStrategy<List<Character>> filterStrategy= CharSequenceFilterStrategy.getInstance();
+        private SearchingView searchingView;
+        private List<GestureOverlayView> onPerformedView = getAllGestures();
+        private LockActivity lockActivity;
 
-
+        HandwritingListener(SearchingView searchingView, LockActivity lockActivity){
+            this.searchingView=searchingView;
+            this.lockActivity=lockActivity;
+        }
+        public void onGesturePerformed(GestureOverlayView gestureOverlayView, final Gesture gesture) {
+            //访问权限
+            if (ActivityCompat.checkSelfPermission(lockActivity, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                    != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(lockActivity,
+                        new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 123);
+                return;
+            }
+            //获得识别结果
+            //获取当前正在输入的板的坐标: 0-3
+            long index = onPerformedView.indexOf(gestureOverlayView);
+            List<Character> result=recognitionProxy.receive(PositionedImage.create(gesture, index));
+            System.out.println(result);
+            //过滤得到备选歌曲的下标
+            List<Integer> candidates=filterStrategy.filter(result,sequences.getValue());
+            //更新搜索结果视图
+            searchingView.update(candidates);
+        }
+    }
 }

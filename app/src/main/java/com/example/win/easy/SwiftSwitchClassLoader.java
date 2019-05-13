@@ -22,7 +22,7 @@ public class SwiftSwitchClassLoader {
         SongListMangerImpl.getInstance();
         AppExecutors.getInstance();
         Retrofit retrofit=new Retrofit.Builder()
-                .baseUrl("http://localhost:9000/")
+                .baseUrl("http://guohere.com:9000/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         backendResourceWebService=retrofit.create(BackendResourceWebService.class);
@@ -33,7 +33,6 @@ public class SwiftSwitchClassLoader {
     public static void setOurDatabase(OurDatabase _ourDatabase){
         ourDatabase=_ourDatabase;
     }
-
     public static OurDatabase getOurDatabase(){
         return ourDatabase;
     }

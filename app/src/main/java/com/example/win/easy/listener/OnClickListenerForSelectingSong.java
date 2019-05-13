@@ -2,6 +2,7 @@ package com.example.win.easy.listener;
 
 import android.view.View;
 
+import com.example.win.easy.ActivityHolder;
 import com.example.win.easy.activity.LockActivity;
 import com.example.win.easy.display.DisplayManagerImpl;
 import com.example.win.easy.display.interfaces.DisplayManager;
@@ -13,9 +14,9 @@ import com.example.win.easy.view.interfaces.SongListView;
 public class OnClickListenerForSelectingSong implements View.OnClickListener {
 
     private SongListManager songListManager=SongListMangerImpl.getInstance();
-    private SongListView songListView=LockActivity.lockActivity;
+    private SongListView songListView= ActivityHolder.getLockActivity().get();
     private DisplayManager displayManager=DisplayManagerImpl.getInstance();
-    private LockActivity lockActivity=LockActivity.lockActivity;
+    private LockActivity lockActivity=ActivityHolder.getLockActivity().get();
 
     private Song song;
     public OnClickListenerForSelectingSong(Song song){

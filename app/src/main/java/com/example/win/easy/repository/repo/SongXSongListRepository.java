@@ -56,7 +56,7 @@ public class SongXSongListRepository extends Repository<SongXSongList,Void> {
 
     @Override
     protected LiveData<List<SongXSongList>> loadAll() {
-        return null;
+        return songXSongListDao.findAllSongXSongLists();
     }
 
     public void insertNewSongAndToSongLists(SongPojo newSong, List<SongListPojo> songListPojos){

@@ -24,6 +24,9 @@ public interface SongXSongListDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insert(Collection<SongXSongList> songXSongLists);
 
+    @Query("SELECT * FROM songxsonglist")
+    LiveData<List<SongXSongList>> findAllSongXSongLists();
+
     @Query("SELECT * " +
             "FROM songpojo INNER JOIN songxsonglist " +
             "ON songpojo.id=songxsonglist.songId " +

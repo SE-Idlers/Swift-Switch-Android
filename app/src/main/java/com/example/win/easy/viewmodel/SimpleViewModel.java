@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel;
 
 import com.example.win.easy.repository.db.pojo.SongListPojo;
 import com.example.win.easy.repository.db.pojo.SongPojo;
+import com.example.win.easy.repository.db.pojo.SongXSongList;
 import com.example.win.easy.repository.repo.SongListRepository;
 import com.example.win.easy.repository.repo.SongRepository;
 import com.example.win.easy.repository.repo.SongXSongListRepository;
@@ -21,6 +22,7 @@ public class SimpleViewModel extends ViewModel {
     private SongXSongListRepository songXSongListRepository=SongXSongListRepository.getInstance();
     private LiveData<List<SongPojo>> allSongs;
     private LiveData<List<SongListPojo>> allSongLists;
+    private LiveData<List<SongXSongList>> allRelation;
     private LiveData<Integer> songAmount;
     private LiveData<Integer> songListAmount;
     private Map<Long,LiveData<List<SongPojo>>> recordMap;
@@ -35,6 +37,12 @@ public class SimpleViewModel extends ViewModel {
         if (allSongLists==null)
             allSongLists=songListRepository.getAll();
         return allSongLists;
+    }
+
+    public LiveData<List<SongXSongList>> getAllRelation(){
+        if (allRelation==null)
+            allRelation=songXSongListRepository.getAll();
+        return allRelation;
     }
 
     public LiveData<Integer> getSongAmount(){

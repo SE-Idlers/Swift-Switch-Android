@@ -6,6 +6,7 @@ import androidx.room.Index;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * 用于表示Song与SongList多对多关系的表
@@ -36,6 +37,7 @@ import lombok.Data;
 )
 @Data
 @AllArgsConstructor
+@NoArgsConstructor
 public class SongXSongList {
 
     /**

@@ -1,5 +1,6 @@
 package com.example.win.easy.repository.task;
 
+import com.example.win.easy.SwiftSwitchClassLoader;
 import com.example.win.easy.repository.db.dao.SongPojoDao;
 import com.example.win.easy.repository.db.pojo.SongPojo;
 import com.example.win.easy.repository.web.DownloadFilenameResolver;
@@ -15,7 +16,7 @@ public class SongPictureDownloadTask extends DownloadTask {
     private String finishName;
     private File tempFile;
     private File finishFile;
-    public SongPojoDao songPojoDao;
+    private SongPojoDao songPojoDao;
 
     public SongPictureDownloadTask(NetworkSong networkSong,long songId){
         this.networkSong=networkSong;
@@ -24,6 +25,7 @@ public class SongPictureDownloadTask extends DownloadTask {
         this.finishName= DownloadFilenameResolver.finishPictureFilePath(networkSong);
         this.tempFile=new File(tempName);
         this.finishFile=new File(finishName);
+        this.songPojoDao= SwiftSwitchClassLoader.getOurDatabase().songPojoDao();
     }
 
     @Override

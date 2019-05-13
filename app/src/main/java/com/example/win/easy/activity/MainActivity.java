@@ -12,7 +12,6 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
-import android.view.WindowManager;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
@@ -22,6 +21,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.room.Room;
 
+import com.example.win.easy.ActivityHolder;
 import com.example.win.easy.Constants;
 import com.example.win.easy.DialogTool;
 import com.example.win.easy.R;
@@ -45,7 +45,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
-    public static MainActivity mainActivity;
     private QMUIGroupListView mGroupListContact;
     private QMUITopBar qmuiTopBar;
     private QMUICommonListItemView allSongItem;
@@ -64,42 +63,17 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mainActivity=this;
+        ActivityHolder.update(this);
         //加载类
         SwiftSwitchClassLoader.init();
         SwiftSwitchClassLoader.setOurDatabase(Room.databaseBuilder(getApplicationContext(), OurDatabase.class,"ourDatabase").build());
         //初始化界面
-        setContentView(R.layout.main);
-        bindView();
-        initTopBar();
-        initItems();
-        initButtons();
+        initView();
         //开启锁屏后台服务
         startService(new Intent(this,MyService.class));
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED|WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
         //注册数据监听
-        viewModel= ViewModelProviders.of(this).get(SimpleViewModel.class);
-        songAmount=viewModel.getSongAmount();
-        songListAmount=viewModel.getSongListAmount();
-        allSongs=viewModel.getAllSongs();
-        allSongLists=viewModel.getAllSongLists();
-        songAmount.observe(this, integer -> {
-            allSongItem.setDetailText(integer.toString());
-        });
-        songListAmount.observe(this,integer -> {
-            allSongListItem.setDetailText(integer.toString());
-        });
-        allSongs.observe(this,songPojos -> {});
-        allSongLists.observe(this, songListPojos -> { });
-        recordTable=new ArrayList<>();
-        if (allSongLists.getValue()!=null)
-            for (SongListPojo songListPojo:allSongLists.getValue()){
-                LiveData<List<SongPojo>> record=viewModel.getAllSongsForSongList(songListPojo);
-                record.observe(this, songPojos -> { });
-                recordTable.add(record);
-            }
+        registerData();
     }
-
 
     /**
      * 添加歌曲文件且选取好要添加的歌曲文件后，会触发该函数，该函数用于跳转，让用户选择添加歌曲到哪一个歌单
@@ -119,6 +93,9 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * 查看所有歌曲的对话框
+     */
     public void createDialogSeeAllSongs(){
         List<String> songNames=new ArrayList<>();
         if (allSongs.getValue()!=null)
@@ -134,7 +111,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * 展示一个页面，让用户选择将音乐添加到哪一个歌单
+     * 添加歌曲到歌单的对话框
      * @param uri 将添加的音乐文件的URI
      */
     public void createDialogAddSongToSongList(final Uri uri){
@@ -170,10 +147,23 @@ public class MainActivity extends AppCompatActivity {
                 this,
                 "所有歌单",
                 songListNames.toArray(new String[0]),
-                new CheckSongListListener(),
+                null,
+//                new CheckSongListListener(),
                 com.qmuiteam.qmui.R.style.QMUI_Dialog
         );
     }
+
+    /**
+     * 初始化界面及其相应监听
+     */
+    private void initView(){
+        setContentView(R.layout.main);
+        bindView();
+        initTopBar();
+        initItems();
+        initButtons();
+    }
+
 
     /**
      * 绑定视图
@@ -211,7 +201,6 @@ public class MainActivity extends AppCompatActivity {
         addSongBtn.setImageResource(R.drawable.ic_action_name);
         addSongListBtn.setImageResource(R.drawable.ic_action_name);
         addSongBtn.setOnClickListener(v -> {
-            Toast.makeText(getApplicationContext(),"歌曲 ",Toast.LENGTH_LONG).show();
             Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
             intent.addCategory(Intent.CATEGORY_OPENABLE);
             intent.setType("audio/*");
@@ -259,7 +248,33 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * 监听器类
+     * 注册MVVM数据
+     */
+    private void registerData(){
+        viewModel= ViewModelProviders.of(this).get(SimpleViewModel.class);
+        songAmount=viewModel.getSongAmount();
+        songListAmount=viewModel.getSongListAmount();
+        allSongs=viewModel.getAllSongs();
+        allSongLists=viewModel.getAllSongLists();
+        songAmount.observe(this, integer -> {
+            allSongItem.setDetailText(integer.toString());
+        });
+        songListAmount.observe(this,integer -> {
+            allSongListItem.setDetailText(integer.toString());
+        });
+        allSongs.observe(this,songPojos -> {});
+        allSongLists.observe(this, songListPojos -> { });
+        recordTable=new ArrayList<>();
+        if (allSongLists.getValue()!=null)
+            for (SongListPojo songListPojo:allSongLists.getValue()){
+                LiveData<List<SongPojo>> record=viewModel.getAllSongsForSongList(songListPojo);
+                record.observe(this, songPojos -> { });
+                recordTable.add(record);
+            }
+    }
+
+    /**
+     * 添加歌曲到歌单的监听器类
      */
     class AddSongToSongListListener implements QMUIDialogAction.ActionListener {
 
@@ -281,6 +296,26 @@ public class MainActivity extends AppCompatActivity {
             viewModel.insertNewSongAndToSongLists(new SongPojo(songFile),songListPojos);
             Toast.makeText(builder.getBaseContext(),"添加成功", Toast.LENGTH_SHORT).show();
             dialog.dismiss();
+        }
+    }
+
+    /**
+     * 选择歌单的监听类
+     */
+    class CheckSongListListener implements DialogInterface.OnClickListener{
+        @Override
+        public void onClick(DialogInterface dialog, int which) {
+            dialog.dismiss();
+            SongListPojo songListPojo=allSongLists.getValue().get(which);
+            List<String> songNames=new ArrayList<>();
+            for (SongPojo songPojo:recordTable.get(which).getValue())
+                songNames.add(songPojo.getName());
+            DialogTool.createMenuDialog(
+                    getApplicationContext(),
+                    songListPojo.getName(),
+                    songNames.toArray(new String[0]),null,
+                    com.qmuiteam.qmui.R.style.QMUI_Dialog
+            );
         }
     }
 
@@ -384,20 +419,4 @@ public class MainActivity extends AppCompatActivity {
         return "com.android.providers.media.documents".equals(uri.getAuthority());
     }
 
-    class CheckSongListListener implements DialogInterface.OnClickListener{
-        @Override
-        public void onClick(DialogInterface dialog, int which) {
-            dialog.dismiss();
-            SongListPojo songListPojo=allSongLists.getValue().get(which);
-            List<String> songNames=new ArrayList<>();
-            for (SongPojo songPojo:recordTable.get(which).getValue())
-                songNames.add(songPojo.getName());
-            DialogTool.createMenuDialog(
-                    getApplicationContext(),
-                    songListPojo.getName(),
-                    songNames.toArray(new String[0]),null,
-                    com.qmuiteam.qmui.R.style.QMUI_Dialog
-            );
-        }
-    }
 }
