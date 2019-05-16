@@ -1,9 +1,7 @@
 package com.example.win.easy.activity.component;
 
-import com.example.win.easy.R;
-
-import android.util.Log;
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +9,8 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import com.example.win.easy.repository.db.pojo.SongPojo;
+import com.example.win.easy.R;
 
 import java.util.List;
 
@@ -29,13 +29,11 @@ public class SongAdapter extends BaseAdapter {
             name=new TextView(m);
             times=new TextView(m);
             order=new TextView(m);
-            singer_album=new TextView(m);
             downloaded=new ImageView(m);
         }
         public TextView name;
         public  TextView times;//播放次数，*可更改
         public TextView order;//序号，*可更改
-        public TextView singer_album;
         public ImageView downloaded;//下载状态，*可更改
     }
 
@@ -71,7 +69,6 @@ public class SongAdapter extends BaseAdapter {
             mHolder.name=(TextView)view.findViewById(R.id.tv_song_name);
             mHolder.times=(TextView)view.findViewById(R.id.tv_song_replaytimes);
             mHolder.order=(TextView)view.findViewById(R.id.tv_song_order);
-            mHolder.singer_album=(TextView)view.findViewById(R.id.tv_song_singger_album);
             mHolder.downloaded=(ImageView)view.findViewById(R.id.img_downloaded);
 
             view.setTag(mHolder);
@@ -83,13 +80,10 @@ public class SongAdapter extends BaseAdapter {
         //歌曲名
         mHolder.name.setText(mdata.getName());
         //播放次数
-        mHolder.times.setText(mdata.getTimes()+"");
+        mHolder.times.setText(0+"");
         //歌曲序号
-        mHolder.order.setText( mdata.getOrder()+"");
-        //歌手-专辑
-        mHolder.singer_album.setText(((SongPojo) mdata).getSinger()+" "+ mdata.getAlbum());
         //是否显示 已下载的标记
-        if(mdata.getDownLoaded())//已下载
+        if(mdata.getSongPath()!=null)//已下载
             mHolder.downloaded.setImageDrawable(mContext.getResources().getDrawable(R.drawable.ase16));
         else
             mHolder.downloaded.setImageDrawable(null);

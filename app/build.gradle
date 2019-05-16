@@ -131,4 +131,10 @@ dependencies {
 
     implementation 'androidx.appcompat:appcompat:1.0.2'
     implementation 'androidx.lifecycle:lifecycle-livedata:2.0.0'
+    // https://mvnrepository.com/artifact/com.jakewharton/butterknife
+    implementation group: 'com.jakewharton', name: 'butterknife', version: '10.1.0'
+    // https://mvnrepository.com/artifact/com.jakewharton/butterknife-compiler
+    annotationProcessor group: 'com.jakewharton', name: 'butterknife-compiler', version: '10.1.0'
+    implementation 'androidx.lifecycle:lifecycle-viewmodel:2.0.0'
+
 }

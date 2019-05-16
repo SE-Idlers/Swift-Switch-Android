@@ -1,7 +1,6 @@
 package com.example.win.easy.activity.component;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,13 +10,10 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.example.win.easy.activity.component.SongListPojo;
-
 import com.example.win.easy.R;
+import com.example.win.easy.repository.db.pojo.SongListPojo;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /*数据域：
  * 歌单图片* 歌单名 播放次数* 来源
@@ -52,7 +48,7 @@ public class SongListAdapter extends BaseAdapter {
         public long position;
     }
 
-    public SongListAdapter(List<SongListPojo> data,Context context){
+    public SongListAdapter(List<com.example.win.easy.repository.db.pojo.SongListPojo> data, Context context){
         this.mData=data;
         this.mContext=context;
         inflater=(LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -102,12 +98,10 @@ public class SongListAdapter extends BaseAdapter {
 
         //歌单名
         mHolder.tv_songlist_name.setText(mdata.getName());
-        //播放次数
-        mHolder.tv_songlist_replaytimes.setText(mdata.getTimes()+"");
         //来源
-        mHolder.tv_source.setText(mdata.getSource());
+        mHolder.tv_source.setText(mdata.getSource().toString());
         //图片初始化为null
-        mHolder.img_songlist.setImageDrawable(mdata.getPic());
+//        mHolder.img_songlist.setImageDrawable(mdata.getPic());
 
         return view;
     }
@@ -121,7 +115,7 @@ public class SongListAdapter extends BaseAdapter {
             View view=listView.getChildAt(index);
             ViewHolder vHolder=(ViewHolder)view.getTag();
             SongListPojo mdata=mData.get(index);
-            vHolder.img_songlist.setImageDrawable(mdata.getPic());
+//            vHolder.img_songlist.setImageDrawable(mdata.getPic());
             //Log.d("SongList","SongListItenPhoto"+index);
         }
     }
