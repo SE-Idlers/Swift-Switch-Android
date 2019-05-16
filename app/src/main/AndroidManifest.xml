@@ -16,14 +16,15 @@
         <uses-library android:name="android.test.runner" android:required="false"/>
         <uses-library android:name="android.test.base" android:required="false"/>
         <uses-library android:name="android.test.mock" android:required="false"/>
-        <activity android:name=".activity.MainActivity">
+
+        <activity android:name=".activity.AppListOne">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.AppListOne">
+        <activity android:name=".activity.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
