@@ -2,12 +2,14 @@ package com.example.win.easy.view;
 
 
 import android.content.DialogInterface;
-import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
+
+import com.example.win.easy.DialogTool;
 import com.example.win.easy.R;
 import com.example.win.easy.activity.MainActivity;
 import com.example.win.easy.persistence.component.SongListConfigurationPersistence;
@@ -15,8 +17,6 @@ import com.example.win.easy.recognization.component.RecognitionProxyWithFourGest
 import com.example.win.easy.songList.SongList;
 import com.example.win.easy.songList.SongListMangerImpl;
 import com.example.win.easy.songList.interfaces.SongListManager;
-
-import java.util.List;
 
 public class SongListPanelView {
 
@@ -48,13 +48,13 @@ public class SongListPanelView {
      * 查看歌单的对话框
      */
     private void createDialogSeeSongList(){
-        List<String> songListNames=songListManager.getNameOfAllSongLists();
-        new AlertDialog.Builder(MainActivity.mainActivity)
-                .setItems(
-                        songListNames.toArray(new String[songListNames.size()]),
-                        null
-                )
-                .show();
+        DialogTool.createMenuDialog(
+                MainActivity.mainActivity,
+                "所有歌单",
+                songListManager.getNameOfAllSongLists().toArray(new String[0]),
+                new CheckSongListListener(),
+                com.qmuiteam.qmui.R.style.QMUI_Dialog
+        );
     }
 
     /**
@@ -70,13 +70,32 @@ public class SongListPanelView {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         //按下确定键后的事件
-                        songListManager.add(new SongList(editText.getText().toString()));
-                        Toast.makeText(MainActivity.mainActivity.getApplicationContext(),"歌单 "+ editText.getText().toString()+"已创建",Toast.LENGTH_LONG).show();
+                        String songListName=editText.getText().toString();
+                        if (songListManager.containsSongListWithName(songListName)){
+                            Toast.makeText(MainActivity.mainActivity.getApplicationContext(),"歌单 "+ songListName+"已存在",Toast.LENGTH_LONG).show();
+                            return;
+                        }
+                        songListManager.add(new SongList(songListName));
+                        Toast.makeText(MainActivity.mainActivity.getApplicationContext(),"歌单 "+ songListName+"已创建",Toast.LENGTH_LONG).show();
                         SongListConfigurationPersistence.getInstance()
                                 .save(SongListMangerImpl.getInstance().getAllSongLists());
                     }
                 })
                 .setNegativeButton("取消",null)
                 .show();
+    }
+
+    class CheckSongListListener implements DialogInterface.OnClickListener{
+        @Override
+        public void onClick(DialogInterface dialog, int which) {
+            dialog.dismiss();
+            SongList songList=SongListMangerImpl.getInstance().getAllSongLists().get(which);
+            DialogTool.createMenuDialog(
+                    MainActivity.mainActivity,
+                    songList.getName(),
+                    songList.getSongNames().toArray(new String[0]),null,
+                    com.qmuiteam.qmui.R.style.QMUI_Dialog
+            );
+        }
     }
 }

@@ -13,6 +13,8 @@ public class SongListMangerImpl implements SongListManager {
 
     private static SongManager songManager= SongManagerImpl.getInstance();
     private static List<SongList> songLists;
+    private static List<String> songListNames;
+    private static SongList defaultSongList;
 
     private static SongListMangerImpl instance=new SongListMangerImpl();
     public static SongListMangerImpl getInstance(){return instance;}
@@ -22,27 +24,60 @@ public class SongListMangerImpl implements SongListManager {
       songLists=SongListConfigurationPersistence.getInstance().load();
       if (songLists==null)
           songLists=new ArrayList<>();
-      if (songLists.size()==0)
-        songLists.add(new SongList("默认歌单",songManager.getAllSongs()));
+      if (songLists.size()==0){
+          defaultSongList=new SongList("默认歌单");
+          defaultSongList.setSongList(songManager.getAllSongs());
+          songLists.add(defaultSongList);
+      }else
+          defaultSongList=songLists.get(0);
+      update();
     }
 
 
     @Override
     public List<String> getNameOfAllSongLists(){
-        List<String> names=new ArrayList<>();
-        for (SongList songList : songLists) {
-           names.add(songList.getName());
-        }
-        return names;
+        return songListNames;
     }
+
+    @Override
+    public List<String> getNameOfAllSelfDefinedSongLists() {
+        return songListNames.subList(1,songListNames.size());
+    }
+
     @Override
     public List<SongList> getAllSongLists(){ return songLists; }
+
+    @Override
+    public List<SongList> getAllSelfDefinedSongLists() {
+        return songLists.subList(1,songLists.size());
+    }
+
     @Override
     public SongList getSongListAt(int index){ return songLists.get(index); }
+
     @Override
-    public boolean add(SongList songList){return songLists.add(songList);}
+    public boolean containsSongListWithName(String songListName) {
+        for (SongList songList:songLists){
+            if (songList.getName().equals(songListName))
+                return true;
+        }
+        return false;
+    }
+
     @Override
-    public boolean remove(SongList songList){return songLists.remove(songList);}
+    public boolean add(SongList songList){
+        if(songLists.contains(songList))
+            return true;
+        songListNames.add(songList.getName());
+        return songLists.add(songList);
+    }
+    @Override
+    public boolean remove(SongList songList){
+        if(!songLists.contains(songList))
+            return false;
+        songListNames.remove(songList.getName());
+        return songLists.remove(songList);
+    }
     @Override
     public int size() { return songLists.size(); }
     @Override
@@ -51,6 +86,7 @@ public class SongListMangerImpl implements SongListManager {
             return false;
         songLists.remove(songList);
         songLists.add(indexTo,songList);
+        update();
         return true;
     }
     @Override
@@ -63,5 +99,18 @@ public class SongListMangerImpl implements SongListManager {
         return lists;
     }
 
+    @Override
+    public SongList getDefaultSongList() {
+        return defaultSongList;
+    }
+
+    private static void update(){
+        if(songListNames==null)
+            songListNames=new ArrayList<>();
+        songListNames.clear();
+        for (SongList songList : songLists) {
+            songListNames.add(songList.getName());
+        }
+    }
 
 }
