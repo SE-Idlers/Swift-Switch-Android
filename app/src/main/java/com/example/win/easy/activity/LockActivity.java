@@ -152,7 +152,7 @@ public class LockActivity extends AppCompatActivity implements SongListView, Sea
     private void initGestures(){
         for(int i=0;i<Constants.NumberOfGesture;i++){
             gestures[i]= ActivityHolder.getLockActivity().get().findViewById(id[i]);
-            Gestures.add(i, gestures[i]);//add, set使用不规范可能会有bug
+            Gestures.add(i, gestures[i]);//addBtn, set使用不规范可能会有bug
             gestures[i].setGestureColor(Color.GREEN);
             gestures[i].setBackgroundColor(getResources().getColor(R.color.app_color_blue));
             gestures[i].setGestureStrokeWidth(15);
