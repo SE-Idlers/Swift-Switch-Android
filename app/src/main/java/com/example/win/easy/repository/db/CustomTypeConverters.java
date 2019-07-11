@@ -3,7 +3,7 @@ package com.example.win.easy.repository.db;
 import androidx.room.TypeConverter;
 
 import com.example.win.easy.repository.db.database.OurDatabase;
-import com.example.win.easy.song.DataSource;
+import com.example.win.easy.DataSource;
 
 import java.util.ArrayList;
 import java.util.Date;

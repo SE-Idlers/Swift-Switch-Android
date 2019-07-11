@@ -1,6 +1,6 @@
-package com.example.win.easy.song.convert.parser.matchers;
+package com.example.win.easy.parser.matchers;
 
-import com.example.win.easy.song.convert.parser.interfaces.MatcherProxy;
+import com.example.win.easy.parser.interfaces.MatcherProxy;
 
 import net.sourceforge.pinyin4j.PinyinHelper;
 

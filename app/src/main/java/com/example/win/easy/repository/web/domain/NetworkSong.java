@@ -1,6 +1,6 @@
 package com.example.win.easy.repository.web.domain;
 
-import com.example.win.easy.song.DataSource;
+import com.example.win.easy.DataSource;
 import com.google.gson.internal.LinkedTreeMap;
 
 import java.io.Serializable;

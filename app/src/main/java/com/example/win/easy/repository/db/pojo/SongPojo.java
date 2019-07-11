@@ -4,8 +4,8 @@ import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
 import com.example.win.easy.repository.web.domain.NetworkSong;
-import com.example.win.easy.song.DataSource;
-import com.example.win.easy.song.convert.parser.RegulationFilenameParser;
+import com.example.win.easy.DataSource;
+import com.example.win.easy.parser.RegulationFilenameParser;
 
 import java.io.File;
 import java.util.List;

@@ -19,6 +19,7 @@ import com.example.win.easy.ActivityHolder;
 import com.example.win.easy.Constants;
 import com.example.win.easy.DashBoard;
 import com.example.win.easy.R;
+import com.example.win.easy.tool.SongList;
 import com.example.win.easy.display.DisplayManagerImpl;
 import com.example.win.easy.display.interfaces.DisplayManager;
 import com.example.win.easy.filter.CharSequenceFilterStrategy;
@@ -29,13 +30,9 @@ import com.example.win.easy.recognization.interfaces.RecognitionProxy;
 import com.example.win.easy.repository.db.pojo.SongListPojo;
 import com.example.win.easy.repository.db.pojo.SongPojo;
 import com.example.win.easy.repository.db.pojo.SongXSongList;
-import com.example.win.easy.song.Song;
-import com.example.win.easy.songList.SongList;
-import com.example.win.easy.songList.SongListMangerImpl;
-import com.example.win.easy.songList.TemporaryListGenerator;
-import com.example.win.easy.songList.interfaces.SongListManager;
-import com.example.win.easy.view.interfaces.SearchingView;
-import com.example.win.easy.view.interfaces.SongListView;
+import com.example.win.easy.tool.SongListTool;
+import com.example.win.easy.activity.interfaces.SearchingView;
+import com.example.win.easy.activity.interfaces.SongListView;
 import com.example.win.easy.viewmodel.SimpleViewModel;
 
 import java.util.ArrayList;
@@ -52,8 +49,7 @@ public class LockActivity extends AppCompatActivity implements SongListView, Sea
     private Integer[] id=new Integer[]{R.id.gesture1,R.id.gesture2,R.id.gesture3,R.id.gesture4};
 
 
-    private TemporaryListGenerator tool = TemporaryListGenerator.getInstance();
-    private SongListManager songListManager=SongListMangerImpl.getInstance();
+    private SongListTool tool = SongListTool.getInstance();
     private DisplayManager displayManager=DisplayManagerImpl.getInstance();
     private SimpleViewModel viewModel;
     private LiveData<List<List<Character>>> sequences;
@@ -85,21 +81,22 @@ public class LockActivity extends AppCompatActivity implements SongListView, Sea
         allSongLists.observe(this, songListPojos -> {});
         allRelation=viewModel.getAllRelation();
         allRelation.observe(this,songXSongLists -> {});
+        dashBoard.setData(allSongs,allSongLists,allRelation);
     }
 
 
     @Override
-    public void update(Song song) {
-        //获取歌曲出现过的所有歌单
-        List<SongList> appearanceLists =songListManager.appearanceListsOf(song);
+    public void updateToSwitchingSongList(List<SongList> appearanceLists) {
         //设置dashBoard
         dashBoard.setup(appearanceLists, DashBoard.DashBoardType.SwitchSongList);
+        //更新播放器效果
+        updatePauseView();
     }
 
     @Override
-    public void update(List<Integer> sortedIndices) {
+    public void updateToSelectingSong(List<Integer> sortedIndices) {
         //获得按来源得到的结果列表
-        List<SongList> candidates = tool.toSearchResult(sortedIndices);
+        List<SongList> candidates = tool.generateTempList(sortedIndices,allSongs.getValue());
         //设置dashBoard
         dashBoard.setup(candidates, DashBoard.DashBoardType.SelectingSong);
     }
@@ -200,7 +197,7 @@ public class LockActivity extends AppCompatActivity implements SongListView, Sea
             //过滤得到备选歌曲的下标
             List<Integer> candidates=filterStrategy.filter(result,sequences.getValue());
             //更新搜索结果视图
-            searchingView.update(candidates);
+            searchingView.updateToSelectingSong(candidates);
         }
     }
 }

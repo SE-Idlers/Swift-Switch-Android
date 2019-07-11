@@ -2,18 +2,15 @@ package com.example.win.easy.display;
 
 import android.media.MediaPlayer;
 
-import com.example.win.easy.songList.SongList;
+import com.example.win.easy.tool.SongList;
 import com.example.win.easy.display.interfaces.DisplayManager;
-import com.example.win.easy.song.Song;
-import com.example.win.easy.song.interfaces.SongManager;
-import com.example.win.easy.song.SongManagerImpl;
+import com.example.win.easy.repository.db.pojo.SongPojo;
 
 import java.io.IOException;
 import java.util.List;
 
 public class DisplayManagerImpl implements DisplayManager {
 
-    private SongManager songManager=SongManagerImpl.getInstance();
     private static DisplayManagerImpl instance=new DisplayManagerImpl();
     public static DisplayManagerImpl getInstance(){return instance;}
     private DisplayManagerImpl(){
@@ -23,7 +20,7 @@ public class DisplayManagerImpl implements DisplayManager {
     private MediaPlayer mediaPlayer;
     private SongList displayList;
     private DisplayMode displayMode;
-    private Song currentSong;
+    private SongPojo currentSong;
     private int currentSongIndex;
 
     public void setMediaPlayer(MediaPlayer mediaPlayer) {
@@ -73,10 +70,10 @@ public class DisplayManagerImpl implements DisplayManager {
 
     @Override
     public boolean setDisplayList(SongList list) {
-        List<Song> songs=list.getSongList();
-        if(songs.contains(currentSong)){
+        List<SongPojo> songPojos=list.getSongPojos();
+        if(songPojos.contains(currentSong)){
             this.displayList=list;
-            currentSongIndex=songs.indexOf(currentSong);
+            currentSongIndex=songPojos.indexOf(currentSong);
             return true;
         }
         return false;
@@ -89,21 +86,21 @@ public class DisplayManagerImpl implements DisplayManager {
     }
 
     @Override
-    public boolean restartWith(Song song,SongList listSongAt) {
+    public boolean restartWith(SongPojo songPojo, SongList listSongAt) {
         //设置当前歌曲
-        currentSong=song;
+        currentSong=songPojo;
         //开始播放
-        display(song,mediaPlayer);
+        display(songPojo,mediaPlayer);
         //设置播放列表，同时更新index
         return setDisplayList(listSongAt);
     }
 
-    private void display(Song song,MediaPlayer mediaPlayer){
+    private void display(SongPojo songPojo,MediaPlayer mediaPlayer){
         try {
             // 切歌之前先重置，释放掉之前的资源
             mediaPlayer.reset();
             // 设置播放源
-            mediaPlayer.setDataSource(songManager.toFile(song).getAbsolutePath());
+            mediaPlayer.setDataSource(songPojo.songPath);
             // 开始播放前的准备工作，加载多媒体资源，获取相关信息
             mediaPlayer.prepare();
             // 开始播放
@@ -114,19 +111,19 @@ public class DisplayManagerImpl implements DisplayManager {
     }
 
     private void next(MediaPlayer mediaPlayer){
-        currentSongIndex=++currentSongIndex%displayList.getSongList().size();
+        currentSongIndex=++currentSongIndex%displayList.getSongPojos().size();
         displayByIndex(currentSongIndex,mediaPlayer);
     }
 
 
     private void previous(MediaPlayer mediaPlayer){
-        currentSongIndex=--currentSongIndex%displayList.getSongList().size();
+        currentSongIndex=--currentSongIndex%displayList.getSongPojos().size();
         displayByIndex(currentSongIndex,mediaPlayer);
     }
 
     private void displayByIndex(int songIndex , MediaPlayer mediaPlayer) {
         //设置当前主体
-        currentSong=displayList.getSongAt(songIndex);
+        currentSong=displayList.getSongPojos().get(songIndex);
         //播放
         display(currentSong,mediaPlayer);
     }

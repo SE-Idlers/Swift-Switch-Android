@@ -15,7 +15,6 @@ import com.example.win.easy.repository.db.pojo.IInformation;
 import com.example.win.easy.repository.db.pojo.SongListPojo;
 import com.example.win.easy.repository.db.pojo.SongPojo;
 import com.example.win.easy.repository.db.pojo.SongXSongList;
-import com.example.win.easy.song.DataSource;
 
 import org.junit.After;
 import org.junit.Before;
@@ -82,7 +81,7 @@ public class OurDatabaseTest {
         System.out.println("Find appearance SongLists of certain song:");
         for (SongPojo songPojo:songPojos)
             System.out.println("Appearance of "+songPojo+" ::: "+songXSongListDao.findAllSongListsForSongById(songPojo.getId()));
-        System.out.println("Find songs of certain SongList:");
+        System.out.println("Find songs of certain _SongList:");
         for (SongListPojo songListPojo:songListPojos)
             System.out.println("Songs of "+songListPojo+" ::: "+songXSongListDao.findAllSongsDataForSongListById(songListPojo.getId()));
     }

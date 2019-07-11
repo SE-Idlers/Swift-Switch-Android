@@ -4,7 +4,7 @@ import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
 import com.example.win.easy.repository.web.domain.NetworkSongList;
-import com.example.win.easy.song.DataSource;
+import com.example.win.easy.DataSource;
 
 import lombok.Data;
 
@@ -50,5 +50,9 @@ public class SongListPojo {
         this.source=networkSongList.source;
         this.uid=networkSongList.uid;
         this.remoteId=networkSongList.remoteId;
+    }
+    public SongListPojo(DataSource dataSource){
+        this.source=dataSource;
+        this.name=source.toString();
     }
 }

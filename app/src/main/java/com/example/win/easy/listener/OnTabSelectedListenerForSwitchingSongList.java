@@ -1,8 +1,8 @@
 package com.example.win.easy.listener;
 
+import com.example.win.easy.tool.SongList;
 import com.example.win.easy.display.DisplayManagerImpl;
 import com.example.win.easy.display.interfaces.DisplayManager;
-import com.example.win.easy.songList.SongList;
 import com.qmuiteam.qmui.widget.QMUITabSegment;
 
 import java.util.List;

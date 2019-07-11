@@ -1,7 +1,7 @@
-package com.example.win.easy.song.convert.parser.interfaces;
+package com.example.win.easy.parser.interfaces;
 
 import com.example.win.easy.filter.FilterStrategy;
-import com.example.win.easy.song.convert.parser.matchers.WordMatcherProxy;
+import com.example.win.easy.parser.matchers.WordMatcherProxy;
 
 import java.util.SortedMap;
 

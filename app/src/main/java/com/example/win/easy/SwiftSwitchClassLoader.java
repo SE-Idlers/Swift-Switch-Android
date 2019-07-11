@@ -3,8 +3,6 @@ package com.example.win.easy;
 import com.example.win.easy.repository.LoginManager;
 import com.example.win.easy.repository.db.database.OurDatabase;
 import com.example.win.easy.repository.web.BackendResourceWebService;
-import com.example.win.easy.song.SongManagerImpl;
-import com.example.win.easy.songList.SongListMangerImpl;
 import com.example.win.easy.thread.AppExecutors;
 
 import retrofit2.Retrofit;
@@ -18,8 +16,6 @@ public class SwiftSwitchClassLoader {
     private static BackendResourceWebService backendResourceWebService;
 
     public static void init(){
-        SongManagerImpl.getInstance();
-        SongListMangerImpl.getInstance();
         AppExecutors.getInstance();
         Retrofit retrofit=new Retrofit.Builder()
                 .baseUrl("http://guohere.com:9000/")

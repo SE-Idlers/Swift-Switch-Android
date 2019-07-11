@@ -38,7 +38,7 @@ public class SongPictureDownloadTask extends DownloadTask {
 //            if (download(networkSong.songUrl,tempName)){
 //                tempFile.renameTo(finishFile);
 //                songPojo.setSongPath(finishName);
-//                songPojoDao.update(songPojo);
+//                songPojoDao.updateToSelectingSong(songPojo);
 //            }
         }
     }

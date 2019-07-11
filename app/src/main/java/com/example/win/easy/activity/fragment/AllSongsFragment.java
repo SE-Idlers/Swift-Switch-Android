@@ -15,7 +15,7 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.example.win.easy.Constants;
 import com.example.win.easy.R;
-import com.example.win.easy.UriProcessTool;
+import com.example.win.easy.tool.UriProcessTool;
 import com.example.win.easy.repository.db.CustomTypeConverters;
 import com.example.win.easy.repository.db.pojo.SongPojo;
 import com.example.win.easy.viewmodel.SimpleViewModel;

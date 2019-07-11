@@ -1,4 +1,4 @@
-package com.example.win.easy;
+package com.example.win.easy.tool;
 
 import android.content.Context;
 import android.content.DialogInterface;

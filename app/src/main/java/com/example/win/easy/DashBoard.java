@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.LiveData;
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
@@ -15,8 +16,10 @@ import com.example.win.easy.listener.OnClickListenerForSelectingSong;
 import com.example.win.easy.listener.OnClickListenerForSwitchingSongList;
 import com.example.win.easy.listener.OnTabSelectedListenerForSelectingSong;
 import com.example.win.easy.listener.OnTabSelectedListenerForSwitchingSongList;
-import com.example.win.easy.song.Song;
-import com.example.win.easy.songList.SongList;
+import com.example.win.easy.repository.db.pojo.SongListPojo;
+import com.example.win.easy.repository.db.pojo.SongPojo;
+import com.example.win.easy.repository.db.pojo.SongXSongList;
+import com.example.win.easy.tool.SongList;
 import com.qmuiteam.qmui.layout.QMUILinearLayout;
 import com.qmuiteam.qmui.widget.QMUITabSegment;
 import com.qmuiteam.qmui.widget.grouplist.QMUICommonListItemView;
@@ -35,6 +38,9 @@ public class  DashBoard extends QMUILinearLayout  {
     private PagerAdapter pagerAdapter;
     private List<View> pages=new ArrayList<>();
     private List<QMUITabSegment.OnTabSelectedListener> tabListeners =new ArrayList<>();
+    private LiveData<List<SongPojo>> allSongs;
+    private LiveData<List<SongListPojo>> allSongLists;
+    private LiveData<List<SongXSongList>> allRelation;
 
     @Getter private int tabSegmentBackgroundColor;
     @Getter private int viewPagerBackgroundColor;
@@ -156,7 +162,7 @@ public class  DashBoard extends QMUILinearLayout  {
      * @param lists 传入的List<歌单>
      * @param dashBoardType 用于指定{@code Dashboard}的用途，见{@link DashBoardType}
      */
-    public void setup(List<SongList> lists,DashBoardType dashBoardType){
+    public void setup(List<SongList> lists, DashBoardType dashBoardType){
         //清除
         clear();
 
@@ -178,6 +184,18 @@ public class  DashBoard extends QMUILinearLayout  {
 
         //同时内容更改，刷新内容
         notifyContentChange();
+    }
+
+    /**
+     * 向DashBoard传递数据
+     * @param allSongs
+     * @param allSongLists
+     * @param allRelation
+     */
+    public void setData(LiveData<List<SongPojo>> allSongs,LiveData<List<SongListPojo>> allSongLists,LiveData<List<SongXSongList>> allRelation){
+        this.allSongs=allSongs;
+        this.allSongLists=allSongLists;
+        this.allRelation=allRelation;
     }
 
     /**
@@ -232,25 +250,25 @@ public class  DashBoard extends QMUILinearLayout  {
      */
     private QMUIGroupListView getGroupListView(SongList songList, DashBoardType dashBoardType){
         //获取这个歌单的歌曲列表
-        List<Song> songs=songList.getSongList();
+        List<SongPojo> songPojos=songList.getSongPojos();
 
         //用于返回的GroupListView
         QMUIGroupListView groupListView=new QMUIGroupListView(getContext());
         QMUIGroupListView.Section section=QMUIGroupListView.newSection(getContext());
 
         //为这个歌单每一首歌构建一个Item，并把它们放入同一个Section中
-        for(Song song:songs){
+        for(SongPojo songPojo:songPojos){
             //构建Item
             QMUICommonListItemView commonListItemView=groupListView.createItemView(
                     null,
-                    song.getName(),
+                    songPojo.getName(),
                     null,
                     QMUICommonListItemView.HORIZONTAL,
                     QMUICommonListItemView.ACCESSORY_TYPE_NONE
             );
             commonListItemView.setBackgroundColor(getResources().getColor(R.color.app_color_blue_2));
             //将Item放入Section中
-            section.addItemView(commonListItemView,getItemListener(song,dashBoardType));
+            section.addItemView(commonListItemView,getItemListener(songPojo,dashBoardType));
         }
 
         //将这个Section放入GroupListView中（每个GroupListView只设置一个Section，虽然实际上允许放多个Section）
@@ -265,7 +283,7 @@ public class  DashBoard extends QMUILinearLayout  {
      * @param dashBoardType 搜索还是切换歌单
      * @return 构建的Tab监听
      */
-    private QMUITabSegment.OnTabSelectedListener getTabListener(List<SongList> appearanceLists,DashBoardType dashBoardType){
+    private QMUITabSegment.OnTabSelectedListener getTabListener(List<SongList> appearanceLists, DashBoardType dashBoardType){
         QMUITabSegment.OnTabSelectedListener listener;
         switch (dashBoardType){
             case SelectingSong: listener=new OnTabSelectedListenerForSelectingSong();
@@ -283,14 +301,14 @@ public class  DashBoard extends QMUILinearLayout  {
 
     /**
      * 根据搜索还是切换歌单，构建Item监听
-     * @param song 这个Item所对应的歌曲
+     * @param songPojo 这个Item所对应的歌曲
      * @param dashBoardType 搜索还是切换歌单
      * @return 构建的Item监听
      */
-    private OnClickListener getItemListener(Song song,DashBoardType dashBoardType){
+    private OnClickListener getItemListener(SongPojo songPojo,DashBoardType dashBoardType){
         switch (dashBoardType){
-            case SelectingSong: return new OnClickListenerForSelectingSong(song);
-            case SwitchSongList:return new OnClickListenerForSwitchingSongList(song);
+            case SelectingSong: return new OnClickListenerForSelectingSong(songPojo,allSongs.getValue(),allSongLists.getValue(),allRelation.getValue());
+            case SwitchSongList:return new OnClickListenerForSwitchingSongList(songPojo);
             default: return null;
         }
     }

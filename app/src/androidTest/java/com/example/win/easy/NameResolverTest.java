@@ -6,7 +6,6 @@ import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner;
 
 import com.example.win.easy.repository.web.DownloadFilenameResolver;
 import com.example.win.easy.repository.web.domain.NetworkSong;
-import com.example.win.easy.song.DataSource;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

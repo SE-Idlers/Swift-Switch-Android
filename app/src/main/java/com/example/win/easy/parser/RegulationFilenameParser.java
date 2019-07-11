@@ -1,9 +1,9 @@
-package com.example.win.easy.song.convert.parser;
+package com.example.win.easy.parser;
 
-import com.example.win.easy.song.convert.parser.interfaces.FilenameParser;
-import com.example.win.easy.song.convert.parser.interfaces.MatcherProxy;
-import com.example.win.easy.song.convert.parser.matchers.ChineseCharacterMatcherProxy;
-import com.example.win.easy.song.convert.parser.matchers.WordMatcherProxy;
+import com.example.win.easy.parser.interfaces.FilenameParser;
+import com.example.win.easy.parser.interfaces.MatcherProxy;
+import com.example.win.easy.parser.matchers.ChineseCharacterMatcherProxy;
+import com.example.win.easy.parser.matchers.WordMatcherProxy;
 
 import java.util.ArrayList;
 import java.util.List;

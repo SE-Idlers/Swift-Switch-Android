@@ -14,18 +14,14 @@ import androidx.room.Room;
 
 import com.example.win.easy.ActivityHolder;
 import com.example.win.easy.Constants;
-import com.example.win.easy.DialogTool;
+import com.example.win.easy.tool.DialogTool;
 import com.example.win.easy.R;
 import com.example.win.easy.SwiftSwitchClassLoader;
-import com.example.win.easy.UriProcessTool;
+import com.example.win.easy.tool.UriProcessTool;
 import com.example.win.easy.activity.fragment.ListFragment;
 import com.example.win.easy.repository.db.database.OurDatabase;
 import com.example.win.easy.repository.db.pojo.SongListPojo;
 import com.example.win.easy.repository.db.pojo.SongPojo;
-import com.example.win.easy.song.SongManagerImpl;
-import com.example.win.easy.song.interfaces.SongManager;
-import com.example.win.easy.songList.SongListMangerImpl;
-import com.example.win.easy.songList.interfaces.SongListManager;
 import com.example.win.easy.viewmodel.SimpleViewModel;
 import com.qmuiteam.qmui.widget.QMUITopBar;
 import com.qmuiteam.qmui.widget.dialog.QMUIDialog;
@@ -261,8 +257,6 @@ public class MainActivity extends AppCompatActivity {
 
         private Uri uri;
         private QMUIDialog.MultiCheckableDialogBuilder builder;
-        private SongManager songManager= SongManagerImpl.getInstance();
-        private SongListManager songListManager=SongListMangerImpl.getInstance();
         AddSongToSongListListener(Uri uri, QMUIDialog.MultiCheckableDialogBuilder builder){
             this.uri=uri;
             this.builder=builder;

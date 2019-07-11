@@ -11,7 +11,6 @@ import com.example.win.easy.repository.db.database.OurDatabase;
 import com.example.win.easy.repository.db.pojo.SongPojo;
 import com.example.win.easy.repository.task.SongDownloadTask;
 import com.example.win.easy.repository.web.domain.NetworkSong;
-import com.example.win.easy.song.DataSource;
 
 import org.junit.Before;
 import org.junit.Test;
