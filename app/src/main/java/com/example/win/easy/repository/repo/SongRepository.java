@@ -51,11 +51,6 @@ public class SongRepository extends Repository<SongPojo, NetworkSong> {
     }
 
     @Override
-    public void fetchAllByUid(String uid) {
-
-    }
-
-    @Override
     protected boolean shouldFetch() {
         return true;
     }

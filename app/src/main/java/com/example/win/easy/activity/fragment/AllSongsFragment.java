@@ -17,6 +17,7 @@ import androidx.lifecycle.ViewModelProviders;
 import com.example.win.easy.Constants;
 import com.example.win.easy.R;
 import com.example.win.easy.application.SwiftSwitchApplication;
+import com.example.win.easy.factory.SongFactory;
 import com.example.win.easy.tool.UriProcessTool;
 import com.example.win.easy.repository.db.CustomTypeConverters;
 import com.example.win.easy.repository.db.pojo.SongPojo;
@@ -36,6 +37,7 @@ import javax.inject.Inject;
 public class AllSongsFragment extends ListFragment {
 
     @Inject ViewModelProvider.Factory factory;
+    @Inject SongFactory songFactory;
     private SimpleViewModel viewModel;
     private LiveData<List<SongPojo>> allSongs;
     private QMUIGroupListView.Section section;
@@ -62,7 +64,7 @@ public class AllSongsFragment extends ListFragment {
                 && resultCode == Activity.RESULT_OK
                 &&resultData!=null) {
             //添加歌曲到本地数据库
-            viewModel.insert(new SongPojo(new File(UriProcessTool.getPathByUri4kitkat(getContext(),resultData.getData()))));
+            viewModel.insert(songFactory.create(new File(UriProcessTool.getPathByUri4kitkat(getContext(),resultData.getData()))));
             //提示添加成功
             Toast.makeText(getContext(),"歌曲添加成功",Toast.LENGTH_SHORT).show();
         }

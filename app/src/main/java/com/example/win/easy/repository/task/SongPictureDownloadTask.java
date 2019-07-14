@@ -1,13 +1,14 @@
 package com.example.win.easy.repository.task;
 
-import com.example.win.easy.application.SwiftSwitchApplication;
 import com.example.win.easy.repository.db.dao.SongPojoDao;
 import com.example.win.easy.repository.db.pojo.SongPojo;
-import com.example.win.easy.repository.web.DownloadFilenameResolver;
 import com.example.win.easy.repository.web.domain.NetworkSong;
 
 import java.io.File;
 
+import lombok.Builder;
+
+@Builder
 public class SongPictureDownloadTask extends DownloadTask {
 
     private NetworkSong networkSong;
@@ -17,16 +18,6 @@ public class SongPictureDownloadTask extends DownloadTask {
     private File tempFile;
     private File finishFile;
     private SongPojoDao songPojoDao;
-
-    public SongPictureDownloadTask(NetworkSong networkSong,long songId){
-        this.networkSong=networkSong;
-        this.songId=songId;
-        this.tempName= DownloadFilenameResolver.tempPictureFilePath(networkSong);
-        this.finishName= DownloadFilenameResolver.finishPictureFilePath(networkSong);
-        this.tempFile=new File(tempName);
-        this.finishFile=new File(finishName);
-        this.songPojoDao= SwiftSwitchApplication.application.getAppComponent().getSongPojoDao();
-    }
 
     @Override
     public void run() {

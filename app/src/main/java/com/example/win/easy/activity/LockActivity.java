@@ -13,20 +13,20 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Transformations;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.example.win.easy.ActivityHolder;
 import com.example.win.easy.Constants;
-import com.example.win.easy.DashBoard;
+import com.example.win.easy.Dashboard;
 import com.example.win.easy.R;
-import com.example.win.easy.application.SwiftSwitchApplication;
 import com.example.win.easy.activity.interfaces.SearchingView;
 import com.example.win.easy.activity.interfaces.SongListView;
+import com.example.win.easy.application.SwiftSwitchApplication;
 import com.example.win.easy.display.interfaces.DisplayManager;
-import com.example.win.easy.parser.filter.CharSequenceFilterStrategy;
+import com.example.win.easy.factory.ListenerFactory;
 import com.example.win.easy.parser.filter.FilterStrategy;
 import com.example.win.easy.recognization.PositionedImage;
-import com.example.win.easy.recognization.component.RecognitionProxyWithFourGestures;
 import com.example.win.easy.recognization.interfaces.RecognitionProxy;
 import com.example.win.easy.repository.db.pojo.SongListPojo;
 import com.example.win.easy.repository.db.pojo.SongPojo;
@@ -38,19 +38,26 @@ import com.example.win.easy.viewmodel.SimpleViewModel;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
+import butterknife.BindView;
+import lombok.AllArgsConstructor;
+
 public class LockActivity extends AppCompatActivity implements SongListView, SearchingView {
 
-    private DashBoard dashBoard = findViewById(R.id.dash_board);
-    private ImageButton btnPause= findViewById(R.id.start);
-    private ImageButton btnPrevious=findViewById(R.id.previous);
-    private ImageButton btnNext=findViewById(R.id.next);
+    @BindView(R.id.dash_board) Dashboard dashboard;
+    @BindView(R.id.start) ImageButton btnPause;
+    @BindView(R.id.previous) ImageButton btnPrevious;
+    @BindView(R.id.next) ImageButton btnNext;
     private GestureOverlayView[] gestures=new GestureOverlayView[Constants.NumberOfGesture];
     private List<GestureOverlayView> Gestures = new ArrayList<>(Constants.NumberOfGesture);//to use indexOf
     private Integer[] id=new Integer[]{R.id.gesture1,R.id.gesture2,R.id.gesture3,R.id.gesture4};
 
-
-    private SongListTool tool = SongListTool.getInstance();
-    private DisplayManager displayManager= SwiftSwitchApplication.application.getAppComponent().getDisplayManager();
+    @Inject DisplayManager displayManager;
+    @Inject ViewModelProvider.Factory factory;
+    @Inject RecognitionProxy recognitionProxy;
+    @Inject FilterStrategy<List<Character>> filterStrategy;
+    @Inject ListenerFactory listenerFactory;
     private SimpleViewModel viewModel;
     private LiveData<List<List<Character>>> sequences;
     private LiveData<List<SongPojo>> allSongs;
@@ -63,10 +70,14 @@ public class LockActivity extends AppCompatActivity implements SongListView, Sea
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED|WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
         ActivityHolder.update(this);
         setContentView(R.layout.activity_main);
-        RecognitionProxyWithFourGestures.getInstance().setAssetManager(getAssets());
+        SwiftSwitchApplication.application.getDashboardComponent(this).inject(this);
+        viewModel= ViewModelProviders.of(this,factory).get(SimpleViewModel.class);
+        recognitionProxy.setAssetManager(getAssets());
+        dashboard.setListenerFactory(listenerFactory);
+
         initButtons();
         initGestures();
-        viewModel= ViewModelProviders.of(this).get(SimpleViewModel.class);
+
         LiveData<List<SongPojo>> allSongs=viewModel.getAllSongs();
         sequences= Transformations.map(allSongs, input -> {
             List<List<Character>> seqs=new ArrayList<>();
@@ -81,14 +92,20 @@ public class LockActivity extends AppCompatActivity implements SongListView, Sea
         allSongLists.observe(this, songListPojos -> {});
         allRelation=viewModel.getAllRelation();
         allRelation.observe(this,songXSongLists -> {});
-        dashBoard.setData(allSongs,allSongLists,allRelation);
+        dashboard.setData(allSongs,allSongLists,allRelation);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        SwiftSwitchApplication.application.clearDashboardComponent();
     }
 
 
     @Override
     public void updateToSwitchingSongList(List<SongList> appearanceLists) {
         //设置dashBoard
-        dashBoard.setup(appearanceLists, DashBoard.DashBoardType.SwitchSongList);
+        dashboard.setup(appearanceLists, Dashboard.DashboardType.SwitchSongList);
         //更新播放器效果
         updatePauseView();
     }
@@ -96,9 +113,9 @@ public class LockActivity extends AppCompatActivity implements SongListView, Sea
     @Override
     public void updateToSelectingSong(List<Integer> sortedIndices) {
         //获得按来源得到的结果列表
-        List<SongList> candidates = tool.generateTempList(sortedIndices,allSongs.getValue());
+        List<SongList> candidates = SongListTool.generateTempList(sortedIndices,allSongs.getValue());
         //设置dashBoard
-        dashBoard.setup(candidates, DashBoard.DashBoardType.SelectingSong);
+        dashboard.setup(candidates, Dashboard.DashboardType.SelectingSong);
     }
 
     /**
@@ -148,39 +165,23 @@ public class LockActivity extends AppCompatActivity implements SongListView, Sea
      */
     private void initGestures(){
         for(int i=0;i<Constants.NumberOfGesture;i++){
-            gestures[i]= ActivityHolder.getLockActivity().get().findViewById(id[i]);
+            gestures[i]= findViewById(id[i]);
             Gestures.add(i, gestures[i]);//addBtn, set使用不规范可能会有bug
             gestures[i].setGestureColor(Color.GREEN);
             gestures[i].setBackgroundColor(getResources().getColor(R.color.app_color_blue));
             gestures[i].setGestureStrokeWidth(15);
-            gestures[i].addOnGesturePerformedListener(new HandwritingListener(this,this));
+            gestures[i].addOnGesturePerformedListener(create());
         }
     }
-    public List<GestureOverlayView> getAllGestures(){return Gestures;}
-    private List<SongListPojo> appearanceListsOf(SongPojo songPojo){
-        List<Long> songListIds=new ArrayList<>();
-        List<SongListPojo> result=new ArrayList<>();
-        if (allSongs.getValue()!=null&&allSongLists.getValue()!=null&&allRelation.getValue()!=null){
-            for (SongXSongList songXSongList:allRelation.getValue())
-                if (songXSongList.songId==songPojo.id)
-                    songListIds.add(songXSongList.songListId);
-            for (SongListPojo songListPojo:allSongLists.getValue())
-                if (songListIds.contains(songListPojo.id))
-                    result.add(songListPojo);
-        }
-        return result;
-    }
+
+    @AllArgsConstructor
     public class HandwritingListener implements GestureOverlayView.OnGesturePerformedListener {
-        private RecognitionProxy recognitionProxy=RecognitionProxyWithFourGestures.getInstance();
-        private FilterStrategy<List<Character>> filterStrategy= CharSequenceFilterStrategy.getInstance();
+        private RecognitionProxy recognitionProxy;
+        private FilterStrategy<List<Character>> filterStrategy;
         private SearchingView searchingView;
-        private List<GestureOverlayView> onPerformedView = getAllGestures();
+        private List<GestureOverlayView> onPerformedView;
         private LockActivity lockActivity;
 
-        HandwritingListener(SearchingView searchingView, LockActivity lockActivity){
-            this.searchingView=searchingView;
-            this.lockActivity=lockActivity;
-        }
         public void onGesturePerformed(GestureOverlayView gestureOverlayView, final Gesture gesture) {
             //访问权限
             if (ActivityCompat.checkSelfPermission(lockActivity, Manifest.permission.WRITE_EXTERNAL_STORAGE)
@@ -199,5 +200,9 @@ public class LockActivity extends AppCompatActivity implements SongListView, Sea
             //更新搜索结果视图
             searchingView.updateToSelectingSong(candidates);
         }
+    }
+
+    private HandwritingListener create(){
+        return new HandwritingListener(recognitionProxy,filterStrategy,this,Gestures,this);
     }
 }

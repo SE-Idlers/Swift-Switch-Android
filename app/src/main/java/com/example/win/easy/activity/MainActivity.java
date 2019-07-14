@@ -17,6 +17,7 @@ import com.example.win.easy.Constants;
 import com.example.win.easy.R;
 import com.example.win.easy.application.SwiftSwitchApplication;
 import com.example.win.easy.activity.fragment.ListFragment;
+import com.example.win.easy.factory.SongFactory;
 import com.example.win.easy.repository.db.pojo.SongListPojo;
 import com.example.win.easy.repository.db.pojo.SongPojo;
 import com.example.win.easy.tool.DialogTool;
@@ -47,6 +48,7 @@ public class MainActivity extends AppCompatActivity {
     ImageButton cloud;
     ImageButton music;
     @Inject ViewModelProvider.Factory factory;
+    @Inject SongFactory songFactory;
     private SimpleViewModel viewModel;
     private LiveData<Integer> songAmount;
     private LiveData<Integer> songListAmount;
@@ -229,7 +231,7 @@ public class MainActivity extends AppCompatActivity {
                     com.qmuiteam.qmui.R.style.QMUI_Dialog
             );
         }else
-            viewModel.insert(new SongPojo(new File(UriProcessTool.getPathByUri4kitkat(this,uri))));
+            viewModel.insert(songFactory.create(new File(UriProcessTool.getPathByUri4kitkat(this,uri))));
     }
 
     /**
@@ -268,7 +270,7 @@ public class MainActivity extends AppCompatActivity {
             int[] indices=builder.getCheckedItemIndexes();
             for (int checkedIndex:indices)
                 songListPojos.add(allSongLists.getValue().get(checkedIndex));
-            viewModel.insertNewSongAndToSongLists(new SongPojo(songFile),songListPojos);
+            viewModel.insertNewSongAndToSongLists(songFactory.create(songFile),songListPojos);
             Toast.makeText(builder.getBaseContext(),"添加成功", Toast.LENGTH_SHORT).show();
             dialog.dismiss();
         }

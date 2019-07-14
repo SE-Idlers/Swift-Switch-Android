@@ -1,10 +1,13 @@
 package com.example.win.easy.repository.web.download;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
+@Singleton
 public class PictureDownloadManager extends DownloadManager {
 
-    private static PictureDownloadManager instance=new PictureDownloadManager();
-    public static PictureDownloadManager getInstance(){return instance;}
-    private PictureDownloadManager(){
+    @Inject
+    public PictureDownloadManager(){
         super();
     }
 }

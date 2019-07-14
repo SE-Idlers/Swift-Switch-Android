@@ -12,10 +12,7 @@ import androidx.lifecycle.LiveData;
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
-import com.example.win.easy.listener.OnClickListenerForSelectingSong;
-import com.example.win.easy.listener.OnClickListenerForSwitchingSongList;
-import com.example.win.easy.listener.OnTabSelectedListenerForSelectingSong;
-import com.example.win.easy.listener.OnTabSelectedListenerForSwitchingSongList;
+import com.example.win.easy.factory.ListenerFactory;
 import com.example.win.easy.repository.db.pojo.SongListPojo;
 import com.example.win.easy.repository.db.pojo.SongPojo;
 import com.example.win.easy.repository.db.pojo.SongXSongList;
@@ -29,9 +26,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import lombok.Getter;
+import lombok.Setter;
 import lombok.experimental.Accessors;
 
-public class  DashBoard extends QMUILinearLayout  {
+public class Dashboard extends QMUILinearLayout  {
 
     private QMUITabSegment tabSegment;
     private ViewPager viewPager;
@@ -49,17 +47,19 @@ public class  DashBoard extends QMUILinearLayout  {
     @Getter private boolean hasTabIndicator;
     @Accessors private int itemBackgroundColor;
 
-    public DashBoard(Context context) {
+    @Setter ListenerFactory listenerFactory;
+
+    public Dashboard(Context context) {
         super(context);
         init(context,null,0);
     }
 
-    public DashBoard(Context context, AttributeSet attrs) {
+    public Dashboard(Context context, AttributeSet attrs) {
         super(context, attrs);
         init(context,attrs,0);
     }
 
-    public DashBoard(Context context, AttributeSet attrs, int defStyleAttr) {
+    public Dashboard(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init(context,attrs,defStyleAttr);
     }
@@ -112,15 +112,15 @@ public class  DashBoard extends QMUILinearLayout  {
      * @param defStyleAttr Style属性
      */
     private void initAttrs(Context context, AttributeSet attrs, int defStyleAttr){
-        TypedArray typedArray=context.getTheme().obtainStyledAttributes(attrs,R.styleable.DashBoard,defStyleAttr,0);
+        TypedArray typedArray=context.getTheme().obtainStyledAttributes(attrs,R.styleable.Dashboard,defStyleAttr,0);
 
         //获取并配置属性
         try {
-            setTabSegmentBackgroundColor(typedArray.getColor(R.styleable.DashBoard_tab_segment_background_color,getResources().getColor(R.color.default_tab_segment_background_color)));
-            setViewPagerBackgroundColor(typedArray.getColor(R.styleable.DashBoard_view_pager_background_color,getResources().getColor(R.color.default_view_pager_background_color)));
-            setTabSelectedTextColor(typedArray.getColor(R.styleable.DashBoard_tab_selected_text_color,getResources().getColor(R.color.default_tab_selected_text_color)));
-            setTabUnselectedTextColor(typedArray.getColor(R.styleable.DashBoard_tab_unselected_text_color,getResources().getColor(R.color.default_tab_unselected_text_color)));
-            setHasTabIndicator(typedArray.getBoolean(R.styleable.DashBoard_has_tab_indicator,getResources().getBoolean(R.bool.default_has_tab_indicator)));
+            setTabSegmentBackgroundColor(typedArray.getColor(R.styleable.Dashboard_tab_segment_background_color,getResources().getColor(R.color.default_tab_segment_background_color)));
+            setViewPagerBackgroundColor(typedArray.getColor(R.styleable.Dashboard_view_pager_background_color,getResources().getColor(R.color.default_view_pager_background_color)));
+            setTabSelectedTextColor(typedArray.getColor(R.styleable.Dashboard_tab_selected_text_color,getResources().getColor(R.color.default_tab_selected_text_color)));
+            setTabUnselectedTextColor(typedArray.getColor(R.styleable.Dashboard_tab_unselected_text_color,getResources().getColor(R.color.default_tab_unselected_text_color)));
+            setHasTabIndicator(typedArray.getBoolean(R.styleable.Dashboard_has_tab_indicator,getResources().getBoolean(R.bool.default_has_tab_indicator)));
 //            setItemBackgroundColor(typedArray.getColor(R.styleable.DashBoard_item_background_color,getResources().getColor(R.color.default_item_background_color)));
         }finally {
             //刷新TypeArray，供其他线程使用
@@ -158,11 +158,11 @@ public class  DashBoard extends QMUILinearLayout  {
 
     /**
      * 根据传入的List<歌单>及指定的用途，设置整个视图，包括更新内容，重新设置监听等等
-     * @see DashBoardType
+     * @see DashboardType
      * @param lists 传入的List<歌单>
-     * @param dashBoardType 用于指定{@code Dashboard}的用途，见{@link DashBoardType}
+     * @param dashboardType 用于指定{@code Dashboard}的用途，见{@link DashboardType}
      */
-    public void setup(List<SongList> lists, DashBoardType dashBoardType){
+    public void setup(List<SongList> lists, DashboardType dashboardType){
         //清除
         clear();
 
@@ -174,11 +174,11 @@ public class  DashBoard extends QMUILinearLayout  {
             );
             //设置Tab切换监听
             tabSegment.addOnTabSelectedListener(
-                    getTabListener(lists,dashBoardType)
+                    getTabListener(lists,dashboardType)
             );
             //设置相应的GroupListView列表视图
             pages.add(
-                    getGroupListView(songList,dashBoardType)
+                    getGroupListView(songList,dashboardType)
             );
         }
 
@@ -248,7 +248,7 @@ public class  DashBoard extends QMUILinearLayout  {
      * @param dashBoardType 搜索还是切换歌单
      * @return 生成的GroupListView
      */
-    private QMUIGroupListView getGroupListView(SongList songList, DashBoardType dashBoardType){
+    private QMUIGroupListView getGroupListView(SongList songList, DashboardType dashBoardType){
         //获取这个歌单的歌曲列表
         List<SongPojo> songPojos=songList.getSongPojos();
 
@@ -283,12 +283,12 @@ public class  DashBoard extends QMUILinearLayout  {
      * @param dashBoardType 搜索还是切换歌单
      * @return 构建的Tab监听
      */
-    private QMUITabSegment.OnTabSelectedListener getTabListener(List<SongList> appearanceLists, DashBoardType dashBoardType){
+    private QMUITabSegment.OnTabSelectedListener getTabListener(List<SongList> appearanceLists, DashboardType dashBoardType){
         QMUITabSegment.OnTabSelectedListener listener;
         switch (dashBoardType){
-            case SelectingSong: listener=new OnTabSelectedListenerForSelectingSong();
+            case SelectingSong: listener=listenerFactory.create();
                 break;
-            case SwitchSongList:listener=new OnTabSelectedListenerForSwitchingSongList(appearanceLists);
+            case SwitchSongList:listener=listenerFactory.create(appearanceLists);
                 break;
             default: listener=null;
         }
@@ -305,19 +305,19 @@ public class  DashBoard extends QMUILinearLayout  {
      * @param dashBoardType 搜索还是切换歌单
      * @return 构建的Item监听
      */
-    private OnClickListener getItemListener(SongPojo songPojo,DashBoardType dashBoardType){
+    private OnClickListener getItemListener(SongPojo songPojo, DashboardType dashBoardType){
         switch (dashBoardType){
-            case SelectingSong: return new OnClickListenerForSelectingSong(songPojo,allSongs.getValue(),allSongLists.getValue(),allRelation.getValue());
-            case SwitchSongList:return new OnClickListenerForSwitchingSongList(songPojo);
+            case SelectingSong: return listenerFactory.create(songPojo,allSongs.getValue(),allSongLists.getValue(),allRelation.getValue());
+            case SwitchSongList:return listenerFactory.create(songPojo);
             default: return null;
         }
     }
 
     /**
      *
-     * 用于表示{@link DashBoard}的不同用途，作为{@link #setup(List, DashBoardType)}的参数暴露给外界
+     * 用于表示{@link Dashboard}的不同用途，作为{@link #setup(List, DashboardType)}的参数暴露给外界
      */
-    public enum DashBoardType{
+    public enum DashboardType {
         SelectingSong,//选择歌曲
         SwitchSongList//切换歌单
     }

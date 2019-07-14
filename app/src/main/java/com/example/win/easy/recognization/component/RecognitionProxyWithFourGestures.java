@@ -12,16 +12,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+
 public class RecognitionProxyWithFourGestures implements RecognitionProxy {
+
     private static List<Character> myList = new ArrayList<>();
     private static RecognitionAdapterImpl myAdapter;
     private static Discriminator myDecisionMaker = new DecisionMaker();
     private static long CurrentId = 0;
     private boolean has0 = false, has1 = false, has2 = false, has3 = false;
-
-    private static RecognitionProxyWithFourGestures instance=new RecognitionProxyWithFourGestures();
-    public static RecognitionProxyWithFourGestures getInstance(){return instance;}
-    private RecognitionProxyWithFourGestures(){}
 
     @Override
     public void setAssetManager(AssetManager assetManger){

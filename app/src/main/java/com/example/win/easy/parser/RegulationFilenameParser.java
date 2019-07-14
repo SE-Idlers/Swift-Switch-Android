@@ -2,8 +2,6 @@ package com.example.win.easy.parser;
 
 import com.example.win.easy.parser.interfaces.FilenameParser;
 import com.example.win.easy.parser.interfaces.MatcherProxy;
-import com.example.win.easy.parser.matchers.ChineseCharacterMatcherProxy;
-import com.example.win.easy.parser.matchers.WordMatcherProxy;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,14 +17,7 @@ public class RegulationFilenameParser implements FilenameParser<Character> {
     //执行功能的一系列MatcherProxy
     private List<MatcherProxy<Character>> matcherProxies;
 
-    private static RegulationFilenameParser instance=new RegulationFilenameParser();
-    public static RegulationFilenameParser getInstance(){return instance;}
-    private RegulationFilenameParser(){
-        matcherProxies=new ArrayList<>();
-        matcherProxies.add(new WordMatcherProxy());
-        matcherProxies.add(new ChineseCharacterMatcherProxy());
-    }
-    private RegulationFilenameParser(List<MatcherProxy<Character>> matcherProxies){setMatcherProxies(matcherProxies);}
+    public RegulationFilenameParser(List<MatcherProxy<Character>> matcherProxies){setMatcherProxies(matcherProxies);}
 
     public void setMatcherProxies(List<MatcherProxy<Character>> matcherProxies) {
         this.matcherProxies = matcherProxies;

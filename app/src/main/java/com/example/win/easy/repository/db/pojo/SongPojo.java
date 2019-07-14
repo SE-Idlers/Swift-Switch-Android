@@ -3,17 +3,20 @@ package com.example.win.easy.repository.db.pojo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
-import com.example.win.easy.repository.web.domain.NetworkSong;
 import com.example.win.easy.enumeration.DataSource;
-import com.example.win.easy.parser.RegulationFilenameParser;
 
-import java.io.File;
 import java.util.List;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class SongPojo {
 
     /**
@@ -64,22 +67,4 @@ public class SongPojo {
      */
     public String remoteId;
 
-    public SongPojo(){}
-    public SongPojo(NetworkSong networkSong){
-        this.name=networkSong.totalName;
-        this.author=networkSong.author;
-        this.source=networkSong.source;
-        this.uid=networkSong.uid;
-        this.remoteId=networkSong.remoteId;
-        this.sequence= RegulationFilenameParser.getInstance().parse(networkSong.name);
-    }
-
-    public SongPojo(File songFile){
-        String abPath=songFile.getAbsolutePath();
-        this.name=abPath.substring(abPath.lastIndexOf('/')+1, abPath.lastIndexOf('.'));
-        this.author=abPath.substring(abPath.lastIndexOf('/')+1,abPath.indexOf('-'));
-        this.source=DataSource.Local;
-        this.sequence=RegulationFilenameParser.getInstance().parse(abPath.substring(abPath.indexOf('-')+1,abPath.lastIndexOf('.')));
-        this.songPath=abPath;
-    }
 }

@@ -8,8 +8,6 @@ import com.qmuiteam.qmui.widget.dialog.QMUIDialogAction;
 
 public class DialogTool {
 
-    private DialogTool(){}
-
     public static void createMenuDialog(Context context, String title,String[] contents, DialogInterface.OnClickListener listener,int style){
         new QMUIDialog.MenuDialogBuilder(context)
                 .setTitle(title)

@@ -1,20 +1,18 @@
 package com.example.win.easy.listener;
 
-import com.example.win.easy.application.SwiftSwitchApplication;
 import com.example.win.easy.display.interfaces.DisplayManager;
 import com.example.win.easy.tool.SongList;
 import com.qmuiteam.qmui.widget.QMUITabSegment;
 
 import java.util.List;
 
+import lombok.Builder;
+
+@Builder
 public class OnTabSelectedListenerForSwitchingSongList implements QMUITabSegment.OnTabSelectedListener {
 
-    private DisplayManager displayManager= SwiftSwitchApplication.application.getAppComponent().getDisplayManager();
+    private DisplayManager displayManager;
     private List<SongList> appearanceLists;
-
-    public OnTabSelectedListenerForSwitchingSongList(List<SongList> appearanceLists){
-        this.appearanceLists=appearanceLists;
-    }
 
     @Override
     public void onTabSelected(int index) {

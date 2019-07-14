@@ -2,11 +2,9 @@ package com.example.win.easy.listener;
 
 import android.view.View;
 
-import com.example.win.easy.ActivityHolder;
-import com.example.win.easy.enumeration.DataSource;
-import com.example.win.easy.application.SwiftSwitchApplication;
 import com.example.win.easy.activity.interfaces.SongListView;
 import com.example.win.easy.display.interfaces.DisplayManager;
+import com.example.win.easy.enumeration.DataSource;
 import com.example.win.easy.repository.db.pojo.SongListPojo;
 import com.example.win.easy.repository.db.pojo.SongPojo;
 import com.example.win.easy.repository.db.pojo.SongXSongList;
@@ -15,21 +13,18 @@ import com.example.win.easy.tool.SongList;
 import java.util.ArrayList;
 import java.util.List;
 
+import lombok.Builder;
+
+@Builder
 public class OnClickListenerForSelectingSong implements View.OnClickListener {
 
-    private SongListView songListView= ActivityHolder.getLockActivity().get();
-    private DisplayManager displayManager= SwiftSwitchApplication.application.getAppComponent().getDisplayManager();
+    private SongListView songListView;
+    private DisplayManager displayManager;
 
     private SongPojo songPojo;
     private List<SongPojo> allSongs;
     private List<SongListPojo> allSongLists;
     private List<SongXSongList> allRelation;
-    public OnClickListenerForSelectingSong(SongPojo songPojo,List<SongPojo> allSongs,List<SongListPojo> allSongLists, List<SongXSongList> allRelation){
-        this.songPojo=songPojo;
-        this.allSongs=allSongs;
-        this.allSongLists=allSongLists;
-        this.allRelation=allRelation;
-    }
 
     @Override
     public void onClick(View v) {

@@ -94,7 +94,7 @@
     <com.qmuiteam.qmui.widget.textview.QMUISpanTouchFixTextView
         android:layout_width="wrap_content"
         android:layout_height="30dp" />
-    <com.example.win.easy.DashBoard
+    <com.example.win.easy.Dashboard
         android:id="@+id/dash_board"
         android:layout_width="match_parent"
         android:layout_height="270dp"/>

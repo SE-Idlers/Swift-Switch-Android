@@ -2,7 +2,6 @@ package com.example.win.easy.repository.repo;
 
 import androidx.lifecycle.LiveData;
 
-import com.example.win.easy.application.SwiftSwitchApplication;
 import com.example.win.easy.repository.LoginManager;
 import com.example.win.easy.repository.db.dao.SongPojoDao;
 import com.example.win.easy.repository.db.dao.SongXSongListDao;
@@ -18,18 +17,23 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
 
+import lombok.AllArgsConstructor;
+
 @Singleton
 public class SongXSongListRepository extends Repository<SongXSongList,Void> {
 
     private Executor diskIO;
+    private SongPojoDao songPojoDao;
     private SongXSongListDao songXSongListDao;
 
     @Inject
     public SongXSongListRepository(@Named("dbAccess")Executor diskIO,
+                                   SongPojoDao songPojoDao,
                                    SongXSongListDao songXSongListDao,
                                    LoginManager loginManager){
         super(loginManager);
         this.diskIO= diskIO;
+        this.songPojoDao=songPojoDao;
         this.songXSongListDao= songXSongListDao;
     }
 
@@ -52,11 +56,6 @@ public class SongXSongListRepository extends Repository<SongXSongList,Void> {
     }
 
     @Override
-    public void fetchAllByUid(String uid) {
-
-    }
-
-    @Override
     protected boolean shouldFetch() {
         return true;
     }
@@ -67,22 +66,17 @@ public class SongXSongListRepository extends Repository<SongXSongList,Void> {
     }
 
     public void insertNewSongAndToSongLists(SongPojo newSong, List<SongListPojo> songListPojos){
-        diskIO.execute(new InsertNewSongAndToSongListsTask(newSong,songListPojos) );
+        diskIO.execute(create(newSong,songListPojos) );
     }
 
-    private class InsertNewSongAndToSongListsTask implements Runnable{
+    @AllArgsConstructor
+    private class InsertNewSongToSongListsTask implements Runnable{
 
         private SongPojo newSong;
         private List<SongListPojo> songListPojos;
         private SongPojoDao songPojoDao;
         private SongXSongListDao songXSongListDao;
 
-        InsertNewSongAndToSongListsTask(SongPojo newSong, List<SongListPojo> songListPojos){
-            this.newSong =newSong;
-            this.songListPojos=songListPojos;
-            this.songPojoDao= SwiftSwitchApplication.application.getAppComponent().getSongPojoDao();
-            this.songXSongListDao=SwiftSwitchApplication.application.getAppComponent().getSongXSongListDao();
-        }
         @Override
         public void run() {
             SongPojo result=songPojoDao.findAllBySongPath(newSong.songPath);
@@ -98,5 +92,9 @@ public class SongXSongListRepository extends Repository<SongXSongList,Void> {
                     songXSongLists.add(new SongXSongList(newSongId,songListPojo.getId()));
             songXSongListDao.insert(songXSongLists);
         }
+    }
+
+    public InsertNewSongToSongListsTask create(SongPojo newSong, List<SongListPojo> songListPojos){
+        return new InsertNewSongToSongListsTask(newSong,songListPojos,songPojoDao,songXSongListDao);
     }
 }

@@ -17,10 +17,6 @@ import java.util.List;
  */
 public class CharSequenceFilterStrategy implements FilterStrategy<List<Character>> {
 
-    private static CharSequenceFilterStrategy instance=new CharSequenceFilterStrategy();
-    public static CharSequenceFilterStrategy getInstance(){return instance;}
-    private CharSequenceFilterStrategy(){}
-
     @Override
     public List<Integer> filter(List<Character> basis, List<List<Character>> sequenceList) {
         final int sequenceSize=sequenceList.size();//获取序列数

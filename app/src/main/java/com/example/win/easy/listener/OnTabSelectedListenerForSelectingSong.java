@@ -2,9 +2,10 @@ package com.example.win.easy.listener;
 
 import com.qmuiteam.qmui.widget.QMUITabSegment;
 
-public class OnTabSelectedListenerForSelectingSong implements QMUITabSegment.OnTabSelectedListener {
+import lombok.Builder;
 
-    public OnTabSelectedListenerForSelectingSong(){ }
+@Builder
+public class OnTabSelectedListenerForSelectingSong implements QMUITabSegment.OnTabSelectedListener {
 
     @Override
     public void onTabSelected(int index) {

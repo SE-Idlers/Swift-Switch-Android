@@ -1,6 +1,7 @@
 package com.example.win.easy.repository.task;
 
-import com.example.win.easy.application.SwiftSwitchApplication;
+import com.example.win.easy.factory.AsyncTaskFactory;
+import com.example.win.easy.factory.SongFactory;
 import com.example.win.easy.repository.db.dao.SongListPojoDao;
 import com.example.win.easy.repository.db.dao.SongPojoDao;
 import com.example.win.easy.repository.db.dao.SongXSongListDao;
@@ -11,37 +12,32 @@ import com.example.win.easy.repository.web.domain.NetworkSong;
 import com.example.win.easy.repository.web.domain.NetworkSongList;
 import com.example.win.easy.repository.web.download.PictureDownloadManager;
 import com.example.win.easy.repository.web.download.SongDownloadManager;
-import com.google.gson.internal.LinkedTreeMap;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import lombok.Builder;
+
+@Builder
 public class SongListBatchSyncTask implements Runnable {
 
-    private SongListPojoDao songListPojoDao;
     private SongPojoDao songPojoDao;
+    private SongListPojoDao songListPojoDao;
     private SongXSongListDao songXSongListDao;
-    private SongDownloadManager songDownloadManager=SongDownloadManager.getInstance();
-    private PictureDownloadManager pictureDownloadManager=PictureDownloadManager.getInstance();
+    private SongDownloadManager songDownloadManager;
+    private PictureDownloadManager pictureDownloadManager;
+    private SongFactory songFactory;
+    private AsyncTaskFactory asyncTaskFactory;
 
     private List<NetworkSongList> networkSongLists;
-    private List<SongPojo> songLocalRecords=new ArrayList<>();
-    private List<NetworkSong> networkSongs=new ArrayList<>();
-    private List<Long> songIds=new ArrayList<>();
-    private List<Long> songListIds=new ArrayList<>();
-    private List<SongXSongList> relations=new ArrayList<>();
 
+    private List<SongPojo> songLocalRecords;
+    private List<NetworkSong> networkSongs;
+    private List<Long> songIds;
+    private List<Long> songListIds;
+    private List<SongXSongList> relations;
 
-    public SongListBatchSyncTask(List<LinkedTreeMap<String,Object>> networkNewData){
-        this.networkSongLists = new ArrayList<>();
-        for (LinkedTreeMap<String,Object> treeMap:networkNewData)
-                networkSongLists.add(new NetworkSongList(treeMap));
-        this.songListPojoDao= SwiftSwitchApplication.application.getAppComponent().getSongListPojoDao();
-        this.songPojoDao=SwiftSwitchApplication.application.getAppComponent().getSongPojoDao();
-        this.songXSongListDao=SwiftSwitchApplication.application.getAppComponent().getSongXSongListDao();
-    }
 
     @Override
     public void run() {
@@ -66,7 +62,7 @@ public class SongListBatchSyncTask implements Runnable {
                     networkSong.remoteId);
             //没有本地记录时插入
             if (localRecord==null) {
-                localRecord=new SongPojo(networkSong);
+                localRecord=songFactory.create(networkSong);
                 songIds.add(songPojoDao.insert(localRecord));
             } else//有记录时记下id
                 songIds.add(localRecord.id);
@@ -115,8 +111,8 @@ public class SongListBatchSyncTask implements Runnable {
         for (int index=0;index<songAmount;index++){
             NetworkSong networkSong=networkSongs.get(index);
             long songId=songIds.get(index);
-            songDownloadManager.download(new SongDownloadTask(networkSong,songId));
-            pictureDownloadManager.download(new SongPictureDownloadTask(networkSong,songId));
+            songDownloadManager.download(asyncTaskFactory.create(networkSong,songId,SongDownloadTask.class));
+            pictureDownloadManager.download(asyncTaskFactory.create(networkSong,songId,SongPictureDownloadTask.class));
         }
 
         int songListAmount=songListIds.size();

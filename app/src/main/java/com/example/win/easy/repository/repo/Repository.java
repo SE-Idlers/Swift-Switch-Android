@@ -38,10 +38,8 @@ public abstract class Repository<LocalType,NetworkType> {
         if(!loginManager.hasLogin())
             return;
         //获取uid并据此发起网络请求并抓取
-        fetchAllByUid(loginManager.getCurrentUid());
+        loginManager.fetchAllByUid(loginManager.getCurrentUid());
     }
-
-    public abstract void fetchAllByUid(String uid);
 
     protected abstract boolean shouldFetch();
 
