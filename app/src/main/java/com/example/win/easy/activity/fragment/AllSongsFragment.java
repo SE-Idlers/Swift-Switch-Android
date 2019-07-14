@@ -11,10 +11,12 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.example.win.easy.Constants;
 import com.example.win.easy.R;
+import com.example.win.easy.application.SwiftSwitchApplication;
 import com.example.win.easy.tool.UriProcessTool;
 import com.example.win.easy.repository.db.CustomTypeConverters;
 import com.example.win.easy.repository.db.pojo.SongPojo;
@@ -26,11 +28,14 @@ import com.qmuiteam.qmui.widget.grouplist.QMUIGroupListView;
 import java.io.File;
 import java.util.List;
 
+import javax.inject.Inject;
+
 /**
  * 展示所有歌曲的Fragment
  */
 public class AllSongsFragment extends ListFragment {
 
+    @Inject ViewModelProvider.Factory factory;
     private SimpleViewModel viewModel;
     private LiveData<List<SongPojo>> allSongs;
     private QMUIGroupListView.Section section;
@@ -67,7 +72,8 @@ public class AllSongsFragment extends ListFragment {
     public void onCreate(@Nullable Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         //注册数据监听
-        viewModel = ViewModelProviders.of(this).get(SimpleViewModel.class);
+        SwiftSwitchApplication.application.getViewModelComponent().inject(this);
+        viewModel = ViewModelProviders.of(this,factory).get(SimpleViewModel.class);
         allSongs=viewModel.getAllSongs();
         allSongs.observe(this, this::update);
     }

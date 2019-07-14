@@ -1,4 +1,4 @@
-package com.example.win.easy.filter;
+package com.example.win.easy.parser.filter;
 
 import java.util.List;
 

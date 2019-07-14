@@ -1,10 +1,9 @@
 package com.example.win.easy.repository.task;
 
-import com.example.win.easy.SwiftSwitchClassLoader;
+import com.example.win.easy.application.SwiftSwitchApplication;
 import com.example.win.easy.repository.db.dao.SongListPojoDao;
 import com.example.win.easy.repository.db.dao.SongPojoDao;
 import com.example.win.easy.repository.db.dao.SongXSongListDao;
-import com.example.win.easy.repository.db.database.OurDatabase;
 import com.example.win.easy.repository.db.pojo.SongListPojo;
 import com.example.win.easy.repository.db.pojo.SongPojo;
 import com.example.win.easy.repository.db.pojo.SongXSongList;
@@ -12,7 +11,6 @@ import com.example.win.easy.repository.web.domain.NetworkSong;
 import com.example.win.easy.repository.web.domain.NetworkSongList;
 import com.example.win.easy.repository.web.download.PictureDownloadManager;
 import com.example.win.easy.repository.web.download.SongDownloadManager;
-import com.example.win.easy.thread.AppExecutors;
 import com.google.gson.internal.LinkedTreeMap;
 
 import java.util.ArrayList;
@@ -22,7 +20,6 @@ import java.util.Set;
 
 public class SongListBatchSyncTask implements Runnable {
 
-    private AppExecutors appExecutors;
     private SongListPojoDao songListPojoDao;
     private SongPojoDao songPojoDao;
     private SongXSongListDao songXSongListDao;
@@ -41,11 +38,9 @@ public class SongListBatchSyncTask implements Runnable {
         this.networkSongLists = new ArrayList<>();
         for (LinkedTreeMap<String,Object> treeMap:networkNewData)
                 networkSongLists.add(new NetworkSongList(treeMap));
-        appExecutors=AppExecutors.getInstance();
-        OurDatabase ourDatabase= SwiftSwitchClassLoader.getOurDatabase();
-        songListPojoDao=ourDatabase.songListPojoDao();
-        songPojoDao=ourDatabase.songPojoDao();
-        songXSongListDao=ourDatabase.songXSongListDao();
+        this.songListPojoDao= SwiftSwitchApplication.application.getAppComponent().getSongListPojoDao();
+        this.songPojoDao=SwiftSwitchApplication.application.getAppComponent().getSongPojoDao();
+        this.songXSongListDao=SwiftSwitchApplication.application.getAppComponent().getSongXSongListDao();
     }
 
     @Override

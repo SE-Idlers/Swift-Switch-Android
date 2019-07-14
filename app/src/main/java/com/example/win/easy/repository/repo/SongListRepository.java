@@ -2,29 +2,36 @@ package com.example.win.easy.repository.repo;
 
 import androidx.lifecycle.LiveData;
 
-import com.example.win.easy.SwiftSwitchClassLoader;
+import com.example.win.easy.repository.LoginManager;
 import com.example.win.easy.repository.db.dao.SongListPojoDao;
 import com.example.win.easy.repository.db.pojo.SongListPojo;
 import com.example.win.easy.repository.web.BackendResourceWebService;
 import com.example.win.easy.repository.web.callback.SongListBatchFetchCallBack;
 import com.example.win.easy.repository.web.domain.NetworkSongList;
-import com.example.win.easy.thread.AppExecutors;
 
 import java.util.List;
 import java.util.concurrent.Executor;
 
+import javax.inject.Inject;
+import javax.inject.Named;
+import javax.inject.Singleton;
+
+@Singleton
 public class SongListRepository extends Repository<SongListPojo, NetworkSongList> {
 
     private Executor diskIO;
     private SongListPojoDao songListPojoDao;
     private BackendResourceWebService webService;
 
-    private static SongListRepository instance=new SongListRepository();
-    public static SongListRepository getInstance(){return instance;}
-    private SongListRepository(){
-        this.diskIO= AppExecutors.getInstance().diskIO();
-        this.songListPojoDao= SwiftSwitchClassLoader.getOurDatabase().songListPojoDao();
-        this.webService=SwiftSwitchClassLoader.getBackendResourceWebService();
+    @Inject
+    public SongListRepository(@Named("dbAccess") Executor diskIO,
+                              SongListPojoDao songListPojoDao,
+                              BackendResourceWebService backendResourceWebService,
+                              LoginManager loginManager){
+        super(loginManager);
+        this.diskIO=diskIO;
+        this.songListPojoDao= songListPojoDao;
+        this.webService=backendResourceWebService;
     }
 
     @Override

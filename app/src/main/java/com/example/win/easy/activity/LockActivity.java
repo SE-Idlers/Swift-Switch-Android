@@ -19,20 +19,20 @@ import com.example.win.easy.ActivityHolder;
 import com.example.win.easy.Constants;
 import com.example.win.easy.DashBoard;
 import com.example.win.easy.R;
-import com.example.win.easy.tool.SongList;
-import com.example.win.easy.display.DisplayManagerImpl;
+import com.example.win.easy.application.SwiftSwitchApplication;
+import com.example.win.easy.activity.interfaces.SearchingView;
+import com.example.win.easy.activity.interfaces.SongListView;
 import com.example.win.easy.display.interfaces.DisplayManager;
-import com.example.win.easy.filter.CharSequenceFilterStrategy;
-import com.example.win.easy.filter.FilterStrategy;
+import com.example.win.easy.parser.filter.CharSequenceFilterStrategy;
+import com.example.win.easy.parser.filter.FilterStrategy;
 import com.example.win.easy.recognization.PositionedImage;
 import com.example.win.easy.recognization.component.RecognitionProxyWithFourGestures;
 import com.example.win.easy.recognization.interfaces.RecognitionProxy;
 import com.example.win.easy.repository.db.pojo.SongListPojo;
 import com.example.win.easy.repository.db.pojo.SongPojo;
 import com.example.win.easy.repository.db.pojo.SongXSongList;
+import com.example.win.easy.tool.SongList;
 import com.example.win.easy.tool.SongListTool;
-import com.example.win.easy.activity.interfaces.SearchingView;
-import com.example.win.easy.activity.interfaces.SongListView;
 import com.example.win.easy.viewmodel.SimpleViewModel;
 
 import java.util.ArrayList;
@@ -50,7 +50,7 @@ public class LockActivity extends AppCompatActivity implements SongListView, Sea
 
 
     private SongListTool tool = SongListTool.getInstance();
-    private DisplayManager displayManager=DisplayManagerImpl.getInstance();
+    private DisplayManager displayManager= SwiftSwitchApplication.application.getAppComponent().getDisplayManager();
     private SimpleViewModel viewModel;
     private LiveData<List<List<Character>>> sequences;
     private LiveData<List<SongPojo>> allSongs;

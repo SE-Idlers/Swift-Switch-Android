@@ -9,9 +9,11 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.example.win.easy.R;
+import com.example.win.easy.application.SwiftSwitchApplication;
 import com.example.win.easy.repository.db.pojo.SongListPojo;
 import com.example.win.easy.repository.db.pojo.SongXSongList;
 import com.example.win.easy.viewmodel.SimpleViewModel;
@@ -21,12 +23,15 @@ import com.qmuiteam.qmui.widget.grouplist.QMUIGroupListView;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 /**
  * 用于展示所有歌单的Fragment
  */
 public class AllSongListsFragment extends ListFragment {
 
     private SimpleViewModel viewModel;
+    @Inject ViewModelProvider.Factory factory;
     private LiveData<List<SongListPojo>> allSongLists;
     private LiveData<List<SongXSongList>> allRelation;
     private QMUIGroupListView.Section section;
@@ -49,7 +54,8 @@ public class AllSongListsFragment extends ListFragment {
     public void onCreate(@Nullable Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         //注册数据监听
-        viewModel= ViewModelProviders.of(this).get(SimpleViewModel.class);
+        SwiftSwitchApplication.application.getViewModelComponent().inject(this);
+        viewModel= ViewModelProviders.of(this,factory).get(SimpleViewModel.class);
         allSongLists=viewModel.getAllSongLists();
         allRelation=viewModel.getAllRelation();
         allRelation.observe(this,songXSongLists->update(allSongLists.getValue()==null?new ArrayList<>():allSongLists.getValue(),songXSongLists));

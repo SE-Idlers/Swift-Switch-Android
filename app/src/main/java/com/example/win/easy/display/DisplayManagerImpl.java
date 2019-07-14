@@ -9,12 +9,15 @@ import com.example.win.easy.repository.db.pojo.SongPojo;
 import java.io.IOException;
 import java.util.List;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
+@Singleton
 public class DisplayManagerImpl implements DisplayManager {
 
-    private static DisplayManagerImpl instance=new DisplayManagerImpl();
-    public static DisplayManagerImpl getInstance(){return instance;}
-    private DisplayManagerImpl(){
-        mediaPlayer=new MediaPlayer();
+    @Inject
+    public DisplayManagerImpl(MediaPlayer mediaPlayer){
+        this.mediaPlayer=mediaPlayer;
     }
 
     private MediaPlayer mediaPlayer;

@@ -4,7 +4,7 @@ import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
 import com.example.win.easy.repository.web.domain.NetworkSongList;
-import com.example.win.easy.DataSource;
+import com.example.win.easy.enumeration.DataSource;
 
 import lombok.Data;
 

@@ -2,29 +2,36 @@ package com.example.win.easy.repository.repo;
 
 import androidx.lifecycle.LiveData;
 
-import com.example.win.easy.SwiftSwitchClassLoader;
+import com.example.win.easy.application.SwiftSwitchApplication;
+import com.example.win.easy.repository.LoginManager;
 import com.example.win.easy.repository.db.dao.SongPojoDao;
 import com.example.win.easy.repository.db.dao.SongXSongListDao;
 import com.example.win.easy.repository.db.pojo.SongListPojo;
 import com.example.win.easy.repository.db.pojo.SongPojo;
 import com.example.win.easy.repository.db.pojo.SongXSongList;
-import com.example.win.easy.thread.AppExecutors;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Executor;
 
-public class SongXSongListRepository extends Repository<SongXSongList,Void> {
+import javax.inject.Inject;
+import javax.inject.Named;
+import javax.inject.Singleton;
 
-    private static SongXSongListRepository instance=new SongXSongListRepository();
-    public static SongXSongListRepository getInstance(){return instance;}
-    private SongXSongListRepository(){
-        this.diskIO= AppExecutors.getInstance().diskIO();
-        this.songXSongListDao= SwiftSwitchClassLoader.getOurDatabase().songXSongListDao();
-    }
+@Singleton
+public class SongXSongListRepository extends Repository<SongXSongList,Void> {
 
     private Executor diskIO;
     private SongXSongListDao songXSongListDao;
+
+    @Inject
+    public SongXSongListRepository(@Named("dbAccess")Executor diskIO,
+                                   SongXSongListDao songXSongListDao,
+                                   LoginManager loginManager){
+        super(loginManager);
+        this.diskIO= diskIO;
+        this.songXSongListDao= songXSongListDao;
+    }
 
     public LiveData<List<SongPojo>> getAllSongsForSongList(SongListPojo songListPojo){
         return songXSongListDao.findAllSongsForSongListById(songListPojo.getId());
@@ -69,11 +76,12 @@ public class SongXSongListRepository extends Repository<SongXSongList,Void> {
         private List<SongListPojo> songListPojos;
         private SongPojoDao songPojoDao;
         private SongXSongListDao songXSongListDao;
+
         InsertNewSongAndToSongListsTask(SongPojo newSong, List<SongListPojo> songListPojos){
             this.newSong =newSong;
             this.songListPojos=songListPojos;
-            this.songPojoDao=SwiftSwitchClassLoader.getOurDatabase().songPojoDao();
-            this.songXSongListDao=SwiftSwitchClassLoader.getOurDatabase().songXSongListDao();
+            this.songPojoDao= SwiftSwitchApplication.application.getAppComponent().getSongPojoDao();
+            this.songXSongListDao=SwiftSwitchApplication.application.getAppComponent().getSongXSongListDao();
         }
         @Override
         public void run() {

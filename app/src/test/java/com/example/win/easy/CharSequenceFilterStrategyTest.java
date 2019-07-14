@@ -1,6 +1,6 @@
 package com.example.win.easy;
 
-import com.example.win.easy.filter.CharSequenceFilterStrategy;
+import com.example.win.easy.parser.filter.CharSequenceFilterStrategy;
 
 import org.junit.Before;
 import org.junit.Test;

@@ -6,14 +6,16 @@ import android.os.Looper;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
+@Singleton
 public class AppExecutors {
 
     private Executor diskIO;
     private Executor mainThread;
 
-    private static AppExecutors instance=new AppExecutors();
-    public static AppExecutors getInstance(){return instance;}
-    private AppExecutors(){
+    @Inject public AppExecutors(){
         this.diskIO= Executors.newSingleThreadExecutor();
         this.mainThread=new MainThreadExecutor();
     }

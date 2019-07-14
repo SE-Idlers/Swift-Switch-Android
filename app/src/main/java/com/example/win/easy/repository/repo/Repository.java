@@ -8,6 +8,11 @@ import java.util.List;
 
 public abstract class Repository<LocalType,NetworkType> {
 
+    protected LoginManager loginManager;
+
+    public Repository(LoginManager loginManager){
+        this.loginManager=loginManager;
+    }
 
     /**
      * 对外提供一个简单的接口，获取所有歌曲<br/>
@@ -30,10 +35,10 @@ public abstract class Repository<LocalType,NetworkType> {
 
     public void fetchAll(){
         //未登录时取消抓取
-        if(!LoginManager.hasLogin())
+        if(!loginManager.hasLogin())
             return;
         //获取uid并据此发起网络请求并抓取
-        fetchAllByUid(LoginManager.getCurrentUid());
+        fetchAllByUid(loginManager.getCurrentUid());
     }
 
     public abstract void fetchAllByUid(String uid);

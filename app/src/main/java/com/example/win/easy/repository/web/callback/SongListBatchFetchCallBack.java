@@ -1,22 +1,22 @@
 package com.example.win.easy.repository.web.callback;
 
+import com.example.win.easy.application.SwiftSwitchApplication;
 import com.example.win.easy.repository.task.SongListBatchSyncTask;
-import com.example.win.easy.thread.AppExecutors;
 
 import java.util.List;
 import java.util.concurrent.Executor;
 
 public class SongListBatchFetchCallBack extends CustomCallBack {
 
-    private Executor executor;
+    private Executor diskIO;
 
     public SongListBatchFetchCallBack(){
         super();
-        this.executor= AppExecutors.getInstance().diskIO();
+        this.diskIO= SwiftSwitchApplication.application.getAppComponent().diskIO();
     }
 
     @Override
     protected void process(Object data) {
-        executor.execute(new SongListBatchSyncTask((List) data));
+        diskIO.execute(new SongListBatchSyncTask((List) data));
     }
 }

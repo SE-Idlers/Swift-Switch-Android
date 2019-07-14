@@ -2,26 +2,33 @@ package com.example.win.easy.repository.repo;
 
 import androidx.lifecycle.LiveData;
 
-import com.example.win.easy.SwiftSwitchClassLoader;
+import com.example.win.easy.repository.LoginManager;
 import com.example.win.easy.repository.db.dao.SongPojoDao;
 import com.example.win.easy.repository.db.pojo.SongPojo;
 import com.example.win.easy.repository.web.domain.NetworkSong;
-import com.example.win.easy.thread.AppExecutors;
 
 import java.util.List;
 import java.util.concurrent.Executor;
 
-public class SongRepository extends Repository<SongPojo, NetworkSong> {
+import javax.inject.Inject;
+import javax.inject.Named;
+import javax.inject.Singleton;
 
-    private static SongRepository instance=new SongRepository();
-    public static SongRepository getInstance(){return instance;}
-    private SongRepository(){
-        this.songPojoDao= SwiftSwitchClassLoader.getOurDatabase().songPojoDao();
-        this.diskIO= AppExecutors.getInstance().diskIO();
-    }
+@Singleton
+public class SongRepository extends Repository<SongPojo, NetworkSong> {
 
     private SongPojoDao songPojoDao;
     private Executor diskIO;
+
+    @Inject
+    public SongRepository(@Named("dbAccess")Executor diskIO,
+                          SongPojoDao songPojoDao,
+                          LoginManager loginManager){
+        super(loginManager);
+        this.diskIO= diskIO;
+        this.songPojoDao= songPojoDao;
+    }
+
 
     @Override
     public void insert(SongPojo localData) {

@@ -3,14 +3,14 @@ package com.example.win.easy.listener;
 import android.view.View;
 
 import com.example.win.easy.ActivityHolder;
-import com.example.win.easy.DataSource;
-import com.example.win.easy.tool.SongList;
-import com.example.win.easy.display.DisplayManagerImpl;
+import com.example.win.easy.enumeration.DataSource;
+import com.example.win.easy.application.SwiftSwitchApplication;
+import com.example.win.easy.activity.interfaces.SongListView;
 import com.example.win.easy.display.interfaces.DisplayManager;
 import com.example.win.easy.repository.db.pojo.SongListPojo;
 import com.example.win.easy.repository.db.pojo.SongPojo;
 import com.example.win.easy.repository.db.pojo.SongXSongList;
-import com.example.win.easy.activity.interfaces.SongListView;
+import com.example.win.easy.tool.SongList;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +18,7 @@ import java.util.List;
 public class OnClickListenerForSelectingSong implements View.OnClickListener {
 
     private SongListView songListView= ActivityHolder.getLockActivity().get();
-    private DisplayManager displayManager=DisplayManagerImpl.getInstance();
+    private DisplayManager displayManager= SwiftSwitchApplication.application.getAppComponent().getDisplayManager();
 
     private SongPojo songPojo;
     private List<SongPojo> allSongs;

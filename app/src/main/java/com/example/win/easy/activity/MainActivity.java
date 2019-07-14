@@ -9,19 +9,18 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
-import androidx.room.Room;
 
 import com.example.win.easy.ActivityHolder;
 import com.example.win.easy.Constants;
-import com.example.win.easy.tool.DialogTool;
 import com.example.win.easy.R;
-import com.example.win.easy.SwiftSwitchClassLoader;
-import com.example.win.easy.tool.UriProcessTool;
+import com.example.win.easy.application.SwiftSwitchApplication;
 import com.example.win.easy.activity.fragment.ListFragment;
-import com.example.win.easy.repository.db.database.OurDatabase;
 import com.example.win.easy.repository.db.pojo.SongListPojo;
 import com.example.win.easy.repository.db.pojo.SongPojo;
+import com.example.win.easy.tool.DialogTool;
+import com.example.win.easy.tool.UriProcessTool;
 import com.example.win.easy.viewmodel.SimpleViewModel;
 import com.qmuiteam.qmui.widget.QMUITopBar;
 import com.qmuiteam.qmui.widget.dialog.QMUIDialog;
@@ -32,6 +31,8 @@ import com.qmuiteam.qmui.widget.grouplist.QMUIGroupListView;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -45,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
     ImageButton addSongListBtn;
     ImageButton cloud;
     ImageButton music;
+    @Inject ViewModelProvider.Factory factory;
     private SimpleViewModel viewModel;
     private LiveData<Integer> songAmount;
     private LiveData<Integer> songListAmount;
@@ -56,9 +58,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ActivityHolder.update(this);
-        //加载类
-        SwiftSwitchClassLoader.init();
-        SwiftSwitchClassLoader.setOurDatabase(Room.databaseBuilder(getApplicationContext(), OurDatabase.class,"ourDatabase").build());
+        SwiftSwitchApplication.application.getViewModelComponent().inject(this);
         //初始化界面
         initView();
         //开启锁屏后台服务
@@ -150,7 +150,7 @@ public class MainActivity extends AppCompatActivity {
      * 注册MVVM数据
      */
     private void registerData(){
-        viewModel= ViewModelProviders.of(this).get(SimpleViewModel.class);
+        viewModel= ViewModelProviders.of(this,factory).get(SimpleViewModel.class);
         songAmount=viewModel.getSongAmount();
         songListAmount=viewModel.getSongListAmount();
         allSongs=viewModel.getAllSongs();

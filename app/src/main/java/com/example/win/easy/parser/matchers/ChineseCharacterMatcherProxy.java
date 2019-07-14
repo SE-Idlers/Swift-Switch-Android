@@ -9,8 +9,6 @@ import java.util.TreeMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import dagger.Module;
-
 /**
  * 提供了从字符串中提取中文字并转化为拼音首字母的功能<br/>
  * 如输入"那一夜有没有说(2017-Live)"，输出为一个有序的{@code Map}:
@@ -24,7 +22,6 @@ import dagger.Module;
  *     <li>6:S</li>
  * </span>
  */
-@Module
 public class ChineseCharacterMatcherProxy implements MatcherProxy<Character> {
 
     //对中文字的正则表达式

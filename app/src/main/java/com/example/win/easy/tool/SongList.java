@@ -1,6 +1,6 @@
 package com.example.win.easy.tool;
 
-import com.example.win.easy.DataSource;
+import com.example.win.easy.enumeration.DataSource;
 import com.example.win.easy.repository.db.pojo.SongListPojo;
 import com.example.win.easy.repository.db.pojo.SongPojo;
 

@@ -1,13 +1,19 @@
 package com.example.win.easy.repository.web.domain;
 
-import com.example.win.easy.DataSource;
+import com.example.win.easy.enumeration.DataSource;
 import com.google.gson.internal.LinkedTreeMap;
 
 import java.io.Serializable;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class NetworkSong implements Serializable {
 
     private static final long serialVersionUID=5L;

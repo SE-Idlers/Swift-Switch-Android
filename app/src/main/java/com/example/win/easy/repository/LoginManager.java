@@ -1,60 +1,58 @@
 package com.example.win.easy.repository;
 
-import com.example.win.easy.repository.repo.SongListRepository;
 import com.example.win.easy.repository.web.BackendResourceWebService;
 import com.example.win.easy.repository.web.callback.LoginCallBack;
+
+import javax.inject.Inject;
+import javax.inject.Singleton;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
+@Singleton
 public class LoginManager {
 
-    private static boolean isLogining;
-    private static LoginStateHolder stateHolder;
-    private static BackendResourceWebService backendResourceWebService;
+    private BackendResourceWebService backendResourceWebService;
 
-    public static boolean hasLogin(){
-        return stateHolder!=null;
+    @Inject
+    public LoginManager(BackendResourceWebService backendResourceWebService){
+        setLogining(false);
+        setStateHolder(null);
+        this.backendResourceWebService=backendResourceWebService;
     }
 
-    public static String getCurrentUid(){
-        return stateHolder==null?null:stateHolder.getUid();
-    }
-    public static boolean isLogining(){
-        return isLogining;
-    }
+    private boolean logining;
+    private LoginStateHolder stateHolder;
 
-    public static void init(BackendResourceWebService _backendResourceWebService){
-        isLogining=false;
-        stateHolder=null;
-        backendResourceWebService=_backendResourceWebService;
-    }
-
-    public static void loginByPhone(String phone,String password){
-        if (isLogining)
+    public void loginByPhone(String phone,String password){
+        if (logining)
             return;
-        isLogining=true;
+        logining =true;
         backendResourceWebService.getUidByPhone(phone,password).enqueue(new LoginCallBack(LoginType.Phone));
     }
 
-    public static void loginByEmail(String email,String password){
-        if (isLogining)
+    public void loginByEmail(String email,String password){
+        if (logining)
             return;
-        isLogining=true;
+        logining =true;
         backendResourceWebService.getUidByEmail(email,password).enqueue(new LoginCallBack(LoginType.Email));
     }
 
-    public static void success(String uid,LoginType loginType){
-        isLogining=false;
-        stateHolder=new LoginStateHolder(uid,loginType);
-        SongListRepository.getInstance().fetchAllByUid(uid);
+    public void setLogining(boolean logining){ this.logining=logining; }
+    public void setStateHolder(LoginStateHolder stateHolder){ this.stateHolder=stateHolder;}
+    public boolean hasLogin(){
+        return stateHolder!=null;
     }
-
-    private LoginManager(){ }
+    public String getCurrentUid(){
+        return stateHolder==null?null:stateHolder.getUid();
+    }
+    public boolean isLogining(){
+        return logining;
+    }
 
     @AllArgsConstructor
     @Data
-    private static class LoginStateHolder{
+    public static class LoginStateHolder{
         private String uid;
         private LoginType loginType;
     }

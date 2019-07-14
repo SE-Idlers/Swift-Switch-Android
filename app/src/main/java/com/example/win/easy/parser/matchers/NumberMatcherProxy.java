@@ -7,8 +7,6 @@ import java.util.TreeMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import dagger.Module;
-
 /**
  * 提供了从一个字符串中提取一系列数字串的功能，同时把每一个独立的数字串的第一个数字用来表示这个数字串<br/>
  * 如对输入"编号89757-(2018Live)第8版",输出结果为:
@@ -18,7 +16,6 @@ import dagger.Module;
  *     <li>19:8</li>
  * </span>
  */
-@Module
 public class NumberMatcherProxy implements MatcherProxy<Character> {
 
     //匹配数字串的正则表达式

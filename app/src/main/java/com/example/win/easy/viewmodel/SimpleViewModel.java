@@ -17,9 +17,18 @@ import java.util.Map;
 
 public class SimpleViewModel extends ViewModel {
 
-    private SongListRepository songListRepository=SongListRepository.getInstance();
-    private SongRepository songRepository=SongRepository.getInstance();
-    private SongXSongListRepository songXSongListRepository=SongXSongListRepository.getInstance();
+    private SongListRepository songListRepository;
+    private SongRepository songRepository;
+    private SongXSongListRepository songXSongListRepository;
+
+    public SimpleViewModel(SongRepository songRepository,
+                           SongListRepository songListRepository,
+                           SongXSongListRepository songXSongListRepository){
+        this.songRepository=songRepository;
+        this.songListRepository=songListRepository;
+        this.songXSongListRepository=songXSongListRepository;
+    }
+
     private LiveData<List<SongPojo>> allSongs;
     private LiveData<List<SongListPojo>> allSongLists;
     private LiveData<List<SongXSongList>> allRelation;
