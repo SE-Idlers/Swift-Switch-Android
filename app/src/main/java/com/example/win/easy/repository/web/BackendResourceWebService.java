@@ -1,6 +1,6 @@
 package com.example.win.easy.repository.web;
 
-import com.example.win.easy.repository.web.domain.Response;
+import com.example.win.easy.repository.web.dto.Response;
 
 import retrofit2.Call;
 import retrofit2.http.GET;

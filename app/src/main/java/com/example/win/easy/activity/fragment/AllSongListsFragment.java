@@ -14,8 +14,8 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.example.win.easy.R;
 import com.example.win.easy.application.SwiftSwitchApplication;
-import com.example.win.easy.repository.db.pojo.SongListPojo;
-import com.example.win.easy.repository.db.pojo.SongXSongList;
+import com.example.win.easy.repository.db.data_object.SongListDO;
+import com.example.win.easy.repository.db.data_object.SongXSongListDO;
 import com.example.win.easy.viewmodel.SimpleViewModel;
 import com.qmuiteam.qmui.widget.grouplist.QMUICommonListItemView;
 import com.qmuiteam.qmui.widget.grouplist.QMUIGroupListView;
@@ -32,8 +32,8 @@ public class AllSongListsFragment extends ListFragment {
 
     private SimpleViewModel viewModel;
     @Inject ViewModelProvider.Factory factory;
-    private LiveData<List<SongListPojo>> allSongLists;
-    private LiveData<List<SongXSongList>> allRelation;
+    private LiveData<List<SongListDO>> allSongLists;
+    private LiveData<List<SongXSongListDO>> allRelation;
     private QMUIGroupListView.Section section;
 
     @Override
@@ -64,28 +64,28 @@ public class AllSongListsFragment extends ListFragment {
 
     /**
      * 根据最新的歌单及关系数据刷新视图
-     * @param songListPojos 最新的歌单数据
+     * @param songListDOS 最新的歌单数据
      * @param allRelation 最新的关系数据
      */
-    public void update(List<SongListPojo> songListPojos,List<SongXSongList> allRelation){
+    public void update(List<SongListDO> songListDOS, List<SongXSongListDO> allRelation){
         //每次刷新时都重新创建section
         if (section!=null)
             section.removeFrom(groupListView);
         section=QMUIGroupListView.newSection(getContext());
         //对每个歌单都生成一个itemView
-        for (SongListPojo songListPojo:songListPojos) {
+        for (SongListDO songListDO : songListDOS) {
             QMUICommonListItemView itemView=groupListView.createItemView(LinearLayout.VERTICAL);
             //显示歌单名字
-            itemView.setText(songListPojo.name);
+            itemView.setText(songListDO.name);
             //显示歌单默认头像，如果后续发现有下载好的头像，则替换
             itemView.setImageDrawable(getResources().getDrawable(R.drawable.ase16));
             //item右侧显示歌单内歌曲数量
-            itemView.setDetailText(String.valueOf(sizeOf(songListPojo,allRelation)));
+            itemView.setDetailText(String.valueOf(sizeOf(songListDO,allRelation)));
             //item最右侧显示">"
             itemView.setAccessoryType(QMUICommonListItemView.ACCESSORY_TYPE_CHEVRON);
             //若歌单已下载自己的头像，则发起一个解码的异步任务（因为解码耗时较长，会阻塞主线程）,解码结束后自动更新头像
-            if (songListPojo.avatarPath!=null)
-                new DecodeImageAsyncTask(itemView,getResources()).execute(songListPojo.avatarPath);
+            if (songListDO.avatarPath!=null)
+                new DecodeImageAsyncTask(itemView,getResources()).execute(songListDO.avatarPath);
             //设置item点击监听
             itemView.setOnClickListener(v -> {
                 //TODO 触发切换Fragment
@@ -98,14 +98,14 @@ public class AllSongListsFragment extends ListFragment {
 
     /**
      * 根据ManyToMany的关系列表计算某个歌单中歌曲的数量
-     * @param songListPojo 歌单
+     * @param songListDO 歌单
      * @param allRelation 关系表
      * @return 该歌单中歌曲的数量
      */
-    private int sizeOf(SongListPojo songListPojo,List<SongXSongList> allRelation){
+    private int sizeOf(SongListDO songListDO, List<SongXSongListDO> allRelation){
         int size=0;
-        for (SongXSongList songXSongList:allRelation) {
-            if (songXSongList.songListId == songListPojo.id)
+        for (SongXSongListDO songXSongListDO :allRelation) {
+            if (songXSongListDO.songListId == songListDO.id)
                 size++;
         }
         return size;

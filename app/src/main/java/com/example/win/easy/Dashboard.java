@@ -13,9 +13,9 @@ import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 import com.example.win.easy.factory.ListenerFactory;
-import com.example.win.easy.repository.db.pojo.SongListPojo;
-import com.example.win.easy.repository.db.pojo.SongPojo;
-import com.example.win.easy.repository.db.pojo.SongXSongList;
+import com.example.win.easy.repository.db.data_object.SongDO;
+import com.example.win.easy.repository.db.data_object.SongListDO;
+import com.example.win.easy.repository.db.data_object.SongXSongListDO;
 import com.example.win.easy.tool.SongList;
 import com.qmuiteam.qmui.layout.QMUILinearLayout;
 import com.qmuiteam.qmui.widget.QMUITabSegment;
@@ -36,9 +36,9 @@ public class Dashboard extends QMUILinearLayout  {
     private PagerAdapter pagerAdapter;
     private List<View> pages=new ArrayList<>();
     private List<QMUITabSegment.OnTabSelectedListener> tabListeners =new ArrayList<>();
-    private LiveData<List<SongPojo>> allSongs;
-    private LiveData<List<SongListPojo>> allSongLists;
-    private LiveData<List<SongXSongList>> allRelation;
+    private LiveData<List<SongDO>> allSongs;
+    private LiveData<List<SongListDO>> allSongLists;
+    private LiveData<List<SongXSongListDO>> allRelation;
 
     @Getter private int tabSegmentBackgroundColor;
     @Getter private int viewPagerBackgroundColor;
@@ -192,7 +192,7 @@ public class Dashboard extends QMUILinearLayout  {
      * @param allSongLists
      * @param allRelation
      */
-    public void setData(LiveData<List<SongPojo>> allSongs,LiveData<List<SongListPojo>> allSongLists,LiveData<List<SongXSongList>> allRelation){
+    public void setData(LiveData<List<SongDO>> allSongs, LiveData<List<SongListDO>> allSongLists, LiveData<List<SongXSongListDO>> allRelation){
         this.allSongs=allSongs;
         this.allSongLists=allSongLists;
         this.allRelation=allRelation;
@@ -250,25 +250,25 @@ public class Dashboard extends QMUILinearLayout  {
      */
     private QMUIGroupListView getGroupListView(SongList songList, DashboardType dashBoardType){
         //获取这个歌单的歌曲列表
-        List<SongPojo> songPojos=songList.getSongPojos();
+        List<SongDO> songDOs =songList.getSongDOs();
 
         //用于返回的GroupListView
         QMUIGroupListView groupListView=new QMUIGroupListView(getContext());
         QMUIGroupListView.Section section=QMUIGroupListView.newSection(getContext());
 
         //为这个歌单每一首歌构建一个Item，并把它们放入同一个Section中
-        for(SongPojo songPojo:songPojos){
+        for(SongDO songDO : songDOs){
             //构建Item
             QMUICommonListItemView commonListItemView=groupListView.createItemView(
                     null,
-                    songPojo.getName(),
+                    songDO.getName(),
                     null,
                     QMUICommonListItemView.HORIZONTAL,
                     QMUICommonListItemView.ACCESSORY_TYPE_NONE
             );
             commonListItemView.setBackgroundColor(getResources().getColor(R.color.app_color_blue_2));
             //将Item放入Section中
-            section.addItemView(commonListItemView,getItemListener(songPojo,dashBoardType));
+            section.addItemView(commonListItemView,getItemListener(songDO,dashBoardType));
         }
 
         //将这个Section放入GroupListView中（每个GroupListView只设置一个Section，虽然实际上允许放多个Section）
@@ -301,14 +301,14 @@ public class Dashboard extends QMUILinearLayout  {
 
     /**
      * 根据搜索还是切换歌单，构建Item监听
-     * @param songPojo 这个Item所对应的歌曲
+     * @param songDO 这个Item所对应的歌曲
      * @param dashBoardType 搜索还是切换歌单
      * @return 构建的Item监听
      */
-    private OnClickListener getItemListener(SongPojo songPojo, DashboardType dashBoardType){
+    private OnClickListener getItemListener(SongDO songDO, DashboardType dashBoardType){
         switch (dashBoardType){
-            case SelectingSong: return listenerFactory.create(songPojo,allSongs.getValue(),allSongLists.getValue(),allRelation.getValue());
-            case SwitchSongList:return listenerFactory.create(songPojo);
+            case SelectingSong: return listenerFactory.create(songDO,allSongs.getValue(),allSongLists.getValue(),allRelation.getValue());
+            case SwitchSongList:return listenerFactory.create(songDO);
             default: return null;
         }
     }

@@ -1,6 +1,6 @@
 package com.example.win.easy.repository.web;
 
-import com.example.win.easy.repository.web.domain.NetworkSong;
+import com.example.win.easy.repository.web.dto.SongDTO;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -20,20 +20,20 @@ public class DownloadFilenameResolver {
         this.suffixOfTemp=suffixOfTempFile;
     }
 
-    public String tempSongFilePath(NetworkSong networkSong){
-        return finishSongFilePath(networkSong)+ suffixOfTemp;
+    public String tempSongFilePath(SongDTO songDTO){
+        return finishSongFilePath(songDTO)+ suffixOfTemp;
     }
 
-    public String finishSongFilePath(NetworkSong networkSong){
-        return root()+user(networkSong)+category(FileType.Song)+filename(networkSong,FileType.Song);
+    public String finishSongFilePath(SongDTO songDTO){
+        return root()+user(songDTO)+category(FileType.Song)+filename(songDTO,FileType.Song);
     }
 
-    public String tempPictureFilePath(NetworkSong networkSong){
-        return finishPictureFilePath(networkSong)+tempSuffix();
+    public String tempPictureFilePath(SongDTO songDTO){
+        return finishPictureFilePath(songDTO)+tempSuffix();
     }
 
-    public String finishPictureFilePath(NetworkSong networkSong){
-        return root()+user(networkSong)+category(FileType.Picture)+filename(networkSong,FileType.Picture);
+    public String finishPictureFilePath(SongDTO songDTO){
+        return root()+user(songDTO)+category(FileType.Picture)+filename(songDTO,FileType.Picture);
     }
     public String tempSuffix(){
         return suffixOfTemp;
@@ -44,19 +44,19 @@ public class DownloadFilenameResolver {
     }
 
 
-    private String user(NetworkSong networkSong){
-        return "/"+networkSong.uid;
+    private String user(SongDTO songDTO){
+        return "/"+ songDTO.uid;
     }
 
     private String category(FileType fileType){
         return "/"+fileType.toString();
     }
-    private String filename(NetworkSong networkSong,FileType fileType){
+    private String filename(SongDTO songDTO, FileType fileType){
         switch (fileType){
             case Song:
-                return "/"+networkSong.totalName+networkSong.extensionName;
+                return "/"+ songDTO.totalName+ songDTO.extensionName;
             case Picture:
-                return "/"+networkSong.totalName+".jpg";
+                return "/"+ songDTO.totalName+".jpg";
             default:
                 return null;
         }

@@ -1,15 +1,15 @@
 package com.example.win.easy.factory;
 
-import com.example.win.easy.repository.db.dao.SongListPojoDao;
-import com.example.win.easy.repository.db.dao.SongPojoDao;
+import com.example.win.easy.repository.db.dao.SongDao;
+import com.example.win.easy.repository.db.dao.SongListDao;
 import com.example.win.easy.repository.db.dao.SongXSongListDao;
 import com.example.win.easy.repository.task.DownloadTask;
 import com.example.win.easy.repository.task.SongDownloadTask;
 import com.example.win.easy.repository.task.SongListBatchSyncTask;
 import com.example.win.easy.repository.task.SongPictureDownloadTask;
 import com.example.win.easy.repository.web.DownloadFilenameResolver;
-import com.example.win.easy.repository.web.domain.NetworkSong;
-import com.example.win.easy.repository.web.domain.NetworkSongList;
+import com.example.win.easy.repository.web.dto.SongDTO;
+import com.example.win.easy.repository.web.dto.SongListDTO;
 import com.example.win.easy.repository.web.download.PictureDownloadManager;
 import com.example.win.easy.repository.web.download.SongDownloadManager;
 import com.google.gson.internal.LinkedTreeMap;
@@ -25,8 +25,8 @@ import javax.inject.Singleton;
 public class AsyncTaskFactory {
 
     private DownloadFilenameResolver resolver;
-    private SongPojoDao songPojoDao;
-    private SongListPojoDao songListPojoDao;
+    private SongDao songDao;
+    private SongListDao songListDao;
     private SongXSongListDao songXSongListDao;
     private SongDownloadManager songDownloadManager;
     private PictureDownloadManager pictureDownloadManager;
@@ -34,49 +34,49 @@ public class AsyncTaskFactory {
 
     @Inject
     public AsyncTaskFactory(DownloadFilenameResolver resolver,
-                            SongPojoDao songPojoDao,
-                            SongListPojoDao songListPojoDao,
+                            SongDao songDao,
+                            SongListDao songListDao,
                             SongXSongListDao songXSongListDao,
                             SongDownloadManager songDownloadManager,
                             PictureDownloadManager pictureDownloadManager,
                             SongFactory songFactory){
         this.resolver=resolver;
-        this.songPojoDao=songPojoDao;
-        this.songListPojoDao=songListPojoDao;
+        this.songDao = songDao;
+        this.songListDao = songListDao;
         this.songXSongListDao=songXSongListDao;
         this.songDownloadManager=songDownloadManager;
         this.pictureDownloadManager=pictureDownloadManager;
         this.songFactory=songFactory;
     }
 
-    public DownloadTask create(NetworkSong networkSong, long songId,Class<? extends DownloadTask> taskClass){
+    public DownloadTask create(SongDTO songDTO, long songId, Class<? extends DownloadTask> taskClass){
         if (taskClass==SongDownloadTask.class){
 
-            String tempName=resolver.tempSongFilePath(networkSong);
-            String finishName=resolver.finishSongFilePath(networkSong);
+            String tempName=resolver.tempSongFilePath(songDTO);
+            String finishName=resolver.finishSongFilePath(songDTO);
 
             return SongDownloadTask.builder()
-                    .networkSong(networkSong)
+                    .songDTO(songDTO)
                     .songId(songId)
                     .tempName(tempName)
                     .finishName(finishName)
                     .tempFile(new File(tempName))
                     .finishFile(new File(finishName))
-                    .songPojoDao(songPojoDao)
+                    .songDao(songDao)
                     .build();
         }else if (taskClass== SongPictureDownloadTask.class){
 
-            String tempName=resolver.tempPictureFilePath(networkSong);
-            String finishName=resolver.finishPictureFilePath(networkSong);
+            String tempName=resolver.tempPictureFilePath(songDTO);
+            String finishName=resolver.finishPictureFilePath(songDTO);
 
             return SongPictureDownloadTask.builder()
-                    .networkSong(networkSong)
+                    .songDTO(songDTO)
                     .songId(songId)
                     .tempName(tempName)
                     .finishName(finishName)
                     .tempFile(new File(tempName))
                     .finishFile(new File(finishName))
-                    .songPojoDao(songPojoDao)
+                    .songDao(songDao)
                     .build();
         }
         return null;
@@ -84,21 +84,21 @@ public class AsyncTaskFactory {
 
     public SongListBatchSyncTask create(List<LinkedTreeMap<String,Object>> networkNewData){
 
-        List<NetworkSongList> networkSongLists=new ArrayList<>();
+        List<SongListDTO> songListDTOs =new ArrayList<>();
         for (LinkedTreeMap<String,Object> treeMap:networkNewData)
-            networkSongLists.add(new NetworkSongList(treeMap));
+            songListDTOs.add(new SongListDTO(treeMap));
 
         return SongListBatchSyncTask.builder()
-                .networkSongLists(networkSongLists)
-                .songPojoDao(songPojoDao)
-                .songListPojoDao(songListPojoDao)
+                .songListDTOs(songListDTOs)
+                .songDao(songDao)
+                .songListDao(songListDao)
                 .songXSongListDao(songXSongListDao)
                 .songDownloadManager(songDownloadManager)
                 .pictureDownloadManager(pictureDownloadManager)
                 .songFactory(songFactory)
                 .asyncTaskFactory(this)
                 .songLocalRecords(new ArrayList<>())
-                .networkSongs(new ArrayList<>())
+                .songDTOs(new ArrayList<>())
                 .songIds(new ArrayList<>())
                 .songListIds(new ArrayList<>())
                 .relations(new ArrayList<>())

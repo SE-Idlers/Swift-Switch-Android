@@ -1,4 +1,4 @@
-package com.example.win.easy.repository.web.domain;
+package com.example.win.easy.repository.web.dto;
 
 public class Response {
 

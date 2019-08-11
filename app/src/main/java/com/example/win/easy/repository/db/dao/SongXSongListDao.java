@@ -8,9 +8,9 @@ import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 import androidx.room.RoomWarnings;
 
-import com.example.win.easy.repository.db.pojo.SongListPojo;
-import com.example.win.easy.repository.db.pojo.SongPojo;
-import com.example.win.easy.repository.db.pojo.SongXSongList;
+import com.example.win.easy.repository.db.data_object.SongListDO;
+import com.example.win.easy.repository.db.data_object.SongDO;
+import com.example.win.easy.repository.db.data_object.SongXSongListDO;
 
 import java.util.Collection;
 import java.util.List;
@@ -19,38 +19,38 @@ import java.util.List;
 public interface SongXSongListDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insert(SongXSongList songXSongList);
+    void insert(SongXSongListDO songXSongListDO);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insert(Collection<SongXSongList> songXSongLists);
+    void insert(Collection<SongXSongListDO> songXSongListDOs);
 
-    @Query("SELECT * FROM songxsonglist")
-    LiveData<List<SongXSongList>> findAllSongXSongLists();
-
-    @Query("SELECT * " +
-            "FROM songpojo INNER JOIN songxsonglist " +
-            "ON songpojo.id=songxsonglist.songId " +
-            "WHERE songxsonglist.songListId=:songListId")
-    @SuppressWarnings(RoomWarnings.CURSOR_MISMATCH)
-    List<SongPojo> findAllSongsDataForSongListById(long songListId);
-//    LiveData<List<SongPojo>> findAllSongsDataForSongListById(long songListId);
+    @Query("SELECT * FROM SongXSongListDO")
+    LiveData<List<SongXSongListDO>> findAllSongXSongLists();
 
     @Query("SELECT * " +
-            "FROM songpojo INNER JOIN songxsonglist " +
-            "ON songpojo.id=songxsonglist.songId " +
-            "WHERE songxsonglist.songListId=:songListId")
+            "FROM SongDO INNER JOIN SongXSongListDO " +
+            "ON SongDO.id=SongXSongListDO.songId " +
+            "WHERE SongXSongListDO.songListId=:songListId")
     @SuppressWarnings(RoomWarnings.CURSOR_MISMATCH)
-    LiveData<List<SongPojo>> findAllSongsForSongListById(long songListId);
+    List<SongDO> findAllSongsDataForSongListById(long songListId);
+//    LiveData<List<SongDO>> findAllSongsDataForSongListById(long songListId);
 
     @Query("SELECT * " +
-            "FROM songlistpojo INNER JOIN songxsonglist " +
-            "ON songlistpojo.id=songxsonglist.songListId " +
-            "WHERE songxsonglist.songId=:songId")
+            "FROM SongDO INNER JOIN SongXSongListDO " +
+            "ON SongDO.id=SongXSongListDO.songId " +
+            "WHERE SongXSongListDO.songListId=:songListId")
     @SuppressWarnings(RoomWarnings.CURSOR_MISMATCH)
-    List<SongListPojo> findAllSongListsForSongById(long songId);
-//    LiveData<List<SongListPojo>> findAllSongListsForSongById(long songId);
+    LiveData<List<SongDO>> findAllSongsForSongListById(long songListId);
+
+    @Query("SELECT * " +
+            "FROM SongListDO INNER JOIN SongXSongListDO " +
+            "ON SongListDO.id=SongXSongListDO.songListId " +
+            "WHERE SongXSongListDO.songId=:songId")
+    @SuppressWarnings(RoomWarnings.CURSOR_MISMATCH)
+    List<SongListDO> findAllSongListsForSongById(long songId);
+//    LiveData<List<SongListDO>> findAllSongListsForSongById(long songId);
 
     @Delete
-    void delete(SongXSongList songXSongList);
+    void delete(SongXSongListDO songXSongListDO);
 
 }

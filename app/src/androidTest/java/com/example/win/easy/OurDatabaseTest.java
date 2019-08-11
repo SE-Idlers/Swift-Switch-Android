@@ -4,23 +4,23 @@ package com.example.win.easy;
 //public class OurDatabaseTest {
 //
 //    private OurDatabase ourDatabase;
-//    private SongPojoDao songPojoDao;
-//    private SongListPojoDao songListPojoDao;
+//    private SongDao songDao;
+//    private SongListDao songListDao;
 //    private SongXSongListDao songXSongListDao;
 //    private IInformationDao iInformationDao;
-//    private SongPojo songPojo1=new SongPojo();
+//    private SongDO songPojo1=new SongDO();
 //    private IInformation iInformation1=new IInformation();
-//    private SongListPojo songListPojo1=new SongListPojo();
-//    private SongPojo songPojo2=new SongPojo();
+//    private SongListDO songListPojo1=new SongListDO();
+//    private SongDO songPojo2=new SongDO();
 //    private IInformation iInformation2=new IInformation();
-//    private SongListPojo songListPojo2=new SongListPojo();
+//    private SongListDO songListPojo2=new SongListDO();
 //
 //    @Before
 //    public void init(){
 //        Context context= ApplicationProvider.getApplicationContext();
 //        ourDatabase= Room.inMemoryDatabaseBuilder(context,OurDatabase.class).build();
-//        songPojoDao=ourDatabase.songPojoDao();
-//        songListPojoDao=ourDatabase.songListPojoDao();
+//        songDao=ourDatabase.songDao();
+//        songListDao=ourDatabase.songListDao();
 //        songXSongListDao=ourDatabase.songXSongListDao();
 //        iInformationDao=ourDatabase.iInformationDao();
 //    }
@@ -43,28 +43,28 @@ package com.example.win.easy;
 //        insertSongs();
 //        insertSongLists();
 //
-//        List<SongPojo> songPojos=songPojoDao.findAllSongPojos();
-//        List<SongListPojo> songListPojos=songListPojoDao.findAllSongListPojos();
+//        List<SongDO> songPojos=songDao.findAllSongDOs();
+//        List<SongListDO> songListPojos=songListDao.findAllSongListDOs();
 //
 //        //插入ManyToMany关系表
-//        for (SongPojo songPojo:songPojos){
-//            for (SongListPojo songListPojo:songListPojos)
-//                insert(songPojo,songListPojo);
+//        for (SongDO songDO:songPojos){
+//            for (SongListDO songListPojo:songListPojos)
+//                insert(songDO,songListPojo);
 //        }
 //
 //        //查看结果
 //        System.out.println("Find appearance SongLists of certain song:");
-//        for (SongPojo songPojo:songPojos)
-//            System.out.println("Appearance of "+songPojo+" ::: "+songXSongListDao.findAllSongListsForSongById(songPojo.getId()));
+//        for (SongDO songDO:songPojos)
+//            System.out.println("Appearance of "+songDO+" ::: "+songXSongListDao.findAllSongListsForSongById(songDO.getId()));
 //        System.out.println("Find songs of certain _SongList:");
-//        for (SongListPojo songListPojo:songListPojos)
+//        for (SongListDO songListPojo:songListPojos)
 //            System.out.println("Songs of "+songListPojo+" ::: "+songXSongListDao.findAllSongsDataForSongListById(songListPojo.getId()));
 //    }
 //
-//    private void insert(SongPojo songPojo, SongListPojo songListPojo){
-//        long songId=songPojo.getId();
+//    private void insert(SongDO songDO, SongListDO songListPojo){
+//        long songId=songDO.getId();
 //        long songListId=songListPojo.getId();
-//        songXSongListDao.insert(new SongXSongList(songId,songListId));
+//        songXSongListDao.insert(new SongXSongListDO(songId,songListId));
 //    }
 //
 //    private void createSongs(){
@@ -105,17 +105,17 @@ package com.example.win.easy;
 //    }
 //
 //    private void insertSongs(){
-//        long songId=songPojoDao.insert(songPojo1);
+//        long songId=songDao.insert(songPojo1);
 //        iInformation1.setSongId(songId);
 //        iInformationDao.insert(iInformation1);
 //
-//        songId=songPojoDao.insert(songPojo2);
+//        songId=songDao.insert(songPojo2);
 //        iInformation2.setSongId(songId);
 //        iInformationDao.insert(iInformation2);
 //    }
 //
 //    private void insertSongLists(){
-//        songListPojoDao.insert(songListPojo1);
-//        songListPojoDao.insert(songListPojo2);
+//        songListDao.insert(songListPojo1);
+//        songListDao.insert(songListPojo2);
 //    }
 //}

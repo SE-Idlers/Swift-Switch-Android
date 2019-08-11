@@ -1,8 +1,8 @@
 package com.example.win.easy.repository.task;
 
-import com.example.win.easy.repository.db.dao.SongPojoDao;
-import com.example.win.easy.repository.db.pojo.SongPojo;
-import com.example.win.easy.repository.web.domain.NetworkSong;
+import com.example.win.easy.repository.db.dao.SongDao;
+import com.example.win.easy.repository.db.data_object.SongDO;
+import com.example.win.easy.repository.web.dto.SongDTO;
 
 import java.io.File;
 
@@ -11,25 +11,25 @@ import lombok.Builder;
 @Builder
 public class SongPictureDownloadTask extends DownloadTask {
 
-    private NetworkSong networkSong;
+    private SongDTO songDTO;
     private long songId;
     private String tempName;
     private String finishName;
     private File tempFile;
     private File finishFile;
-    private SongPojoDao songPojoDao;
+    private SongDao songDao;
 
     @Override
     public void run() {
-        SongPojo songPojo=songPojoDao.findDataById(songId);
-        if (songPojo!=null){
+        SongDO songDO = songDao.findDataById(songId);
+        if (songDO !=null){
 //            //TODO 下载流逻辑
 //
 //
-//            if (download(networkSong.songUrl,tempName)){
+//            if (download(songDTO.songUrl,tempName)){
 //                tempFile.renameTo(finishFile);
-//                songPojo.setSongPath(finishName);
-//                songPojoDao.updateToSelectingSong(songPojo);
+//                songDO.setSongPath(finishName);
+//                songDao.updateToSelectingSong(songDO);
 //            }
         }
     }

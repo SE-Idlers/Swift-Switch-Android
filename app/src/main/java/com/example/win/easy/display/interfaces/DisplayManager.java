@@ -2,7 +2,7 @@ package com.example.win.easy.display.interfaces;
 
 import com.example.win.easy.tool.SongList;
 import com.example.win.easy.display.DisplayMode;
-import com.example.win.easy.repository.db.pojo.SongPojo;
+import com.example.win.easy.repository.db.data_object.SongDO;
 
 public interface DisplayManager {
 
@@ -24,5 +24,5 @@ public interface DisplayManager {
 
     void displayByIndex(int index);
 
-    boolean restartWith(SongPojo songPojo, SongList listSongAt);//根据具体实现，我修改了一下参数
+    boolean restartWith(SongDO songDO, SongList listSongAt);//根据具体实现，我修改了一下参数
 }

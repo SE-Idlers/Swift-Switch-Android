@@ -1,16 +1,16 @@
-package com.example.win.easy.repository.db.pojo;
+package com.example.win.easy.repository.db.data_object;
 
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
-import com.example.win.easy.repository.web.domain.NetworkSongList;
+import com.example.win.easy.repository.web.dto.SongListDTO;
 import com.example.win.easy.enumeration.DataSource;
 
 import lombok.Data;
 
 @Entity
 @Data
-public class SongListPojo {
+public class SongListDO {
 
     /**
      * 自动生成的歌单id
@@ -44,14 +44,14 @@ public class SongListPojo {
      */
     public String remoteId;
 
-    public SongListPojo(){}
-    public SongListPojo(NetworkSongList networkSongList){
-        this.name=networkSongList.name;
-        this.source=networkSongList.source;
-        this.uid=networkSongList.uid;
-        this.remoteId=networkSongList.remoteId;
+    public SongListDO(){}
+    public SongListDO(SongListDTO songListDTO){
+        this.name= songListDTO.name;
+        this.source= songListDTO.source;
+        this.uid= songListDTO.uid;
+        this.remoteId= songListDTO.remoteId;
     }
-    public SongListPojo(DataSource dataSource){
+    public SongListDO(DataSource dataSource){
         this.source=dataSource;
         this.name=source.toString();
     }

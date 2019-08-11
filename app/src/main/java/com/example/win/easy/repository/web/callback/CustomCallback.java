@@ -2,7 +2,7 @@ package com.example.win.easy.repository.web.callback;
 
 import androidx.annotation.NonNull;
 
-import com.example.win.easy.repository.web.domain.Response;
+import com.example.win.easy.repository.web.dto.Response;
 
 import retrofit2.Call;
 import retrofit2.Callback;

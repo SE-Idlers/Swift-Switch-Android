@@ -7,9 +7,9 @@ import com.example.win.easy.listener.OnClickListenerForSelectingSong;
 import com.example.win.easy.listener.OnClickListenerForSwitchingSongList;
 import com.example.win.easy.listener.OnTabSelectedListenerForSelectingSong;
 import com.example.win.easy.listener.OnTabSelectedListenerForSwitchingSongList;
-import com.example.win.easy.repository.db.pojo.SongListPojo;
-import com.example.win.easy.repository.db.pojo.SongPojo;
-import com.example.win.easy.repository.db.pojo.SongXSongList;
+import com.example.win.easy.repository.db.data_object.SongDO;
+import com.example.win.easy.repository.db.data_object.SongListDO;
+import com.example.win.easy.repository.db.data_object.SongXSongListDO;
 import com.example.win.easy.tool.SongList;
 
 import java.util.List;
@@ -28,12 +28,12 @@ public class ListenerFactory {
         this.songListView=songListView;
     }
 
-    public OnClickListenerForSelectingSong create(SongPojo songPojo,
-                                                  List<SongPojo> allSongs,
-                                                  List<SongListPojo> allSongLists,
-                                                  List<SongXSongList> allRelation) {
+    public OnClickListenerForSelectingSong create(SongDO songDO,
+                                                  List<SongDO> allSongs,
+                                                  List<SongListDO> allSongLists,
+                                                  List<SongXSongListDO> allRelation) {
         return OnClickListenerForSelectingSong.builder()
-                .songPojo(songPojo)
+                .songDO(songDO)
                 .allSongs(allSongs)
                 .allSongLists(allSongLists)
                 .allRelation(allRelation)
@@ -42,9 +42,9 @@ public class ListenerFactory {
                 .build();
     }
 
-    public OnClickListenerForSwitchingSongList create(SongPojo songPojo){
+    public OnClickListenerForSwitchingSongList create(SongDO songDO){
         return OnClickListenerForSwitchingSongList.builder()
-                .songPojo(songPojo)
+                .songDO(songDO)
                 .displayManager(displayManager)
                 .build();
     }

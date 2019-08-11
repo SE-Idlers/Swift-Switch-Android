@@ -28,9 +28,9 @@ import com.example.win.easy.factory.ListenerFactory;
 import com.example.win.easy.parser.filter.FilterStrategy;
 import com.example.win.easy.recognization.PositionedImage;
 import com.example.win.easy.recognization.interfaces.RecognitionProxy;
-import com.example.win.easy.repository.db.pojo.SongListPojo;
-import com.example.win.easy.repository.db.pojo.SongPojo;
-import com.example.win.easy.repository.db.pojo.SongXSongList;
+import com.example.win.easy.repository.db.data_object.SongListDO;
+import com.example.win.easy.repository.db.data_object.SongDO;
+import com.example.win.easy.repository.db.data_object.SongXSongListDO;
 import com.example.win.easy.tool.SongList;
 import com.example.win.easy.tool.SongListTool;
 import com.example.win.easy.viewmodel.SimpleViewModel;
@@ -60,9 +60,9 @@ public class LockActivity extends AppCompatActivity implements SongListView, Sea
     @Inject ListenerFactory listenerFactory;
     private SimpleViewModel viewModel;
     private LiveData<List<List<Character>>> sequences;
-    private LiveData<List<SongPojo>> allSongs;
-    private LiveData<List<SongListPojo>> allSongLists;
-    private LiveData<List<SongXSongList>> allRelation;
+    private LiveData<List<SongDO>> allSongs;
+    private LiveData<List<SongListDO>> allSongLists;
+    private LiveData<List<SongXSongListDO>> allRelation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,11 +78,11 @@ public class LockActivity extends AppCompatActivity implements SongListView, Sea
         initButtons();
         initGestures();
 
-        LiveData<List<SongPojo>> allSongs=viewModel.getAllSongs();
+        LiveData<List<SongDO>> allSongs=viewModel.getAllSongs();
         sequences= Transformations.map(allSongs, input -> {
             List<List<Character>> seqs=new ArrayList<>();
-            for (SongPojo songPojo:input)
-                seqs.add(songPojo.getSequence());
+            for (SongDO songDO :input)
+                seqs.add(songDO.getSequence());
             return seqs;
         });
         sequences.observe(this, lists -> {});

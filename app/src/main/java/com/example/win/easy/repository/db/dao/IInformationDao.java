@@ -6,7 +6,7 @@ import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 import androidx.room.Update;
 
-import com.example.win.easy.repository.db.pojo.IInformation;
+import com.example.win.easy.repository.db.data_object.IInformation;
 
 import java.util.Collection;
 

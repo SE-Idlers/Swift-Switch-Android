@@ -3,11 +3,11 @@ package com.example.win.easy.repository.repo;
 import androidx.lifecycle.LiveData;
 
 import com.example.win.easy.repository.LoginManager;
-import com.example.win.easy.repository.db.dao.SongPojoDao;
+import com.example.win.easy.repository.db.dao.SongDao;
 import com.example.win.easy.repository.db.dao.SongXSongListDao;
-import com.example.win.easy.repository.db.pojo.SongListPojo;
-import com.example.win.easy.repository.db.pojo.SongPojo;
-import com.example.win.easy.repository.db.pojo.SongXSongList;
+import com.example.win.easy.repository.db.data_object.SongListDO;
+import com.example.win.easy.repository.db.data_object.SongDO;
+import com.example.win.easy.repository.db.data_object.SongXSongListDO;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,39 +20,39 @@ import javax.inject.Singleton;
 import lombok.AllArgsConstructor;
 
 @Singleton
-public class SongXSongListRepository extends Repository<SongXSongList,Void> {
+public class SongXSongListRepository extends Repository<SongXSongListDO,Void> {
 
     private Executor diskIO;
-    private SongPojoDao songPojoDao;
+    private SongDao songDao;
     private SongXSongListDao songXSongListDao;
 
     @Inject
     public SongXSongListRepository(@Named("dbAccess")Executor diskIO,
-                                   SongPojoDao songPojoDao,
+                                   SongDao songDao,
                                    SongXSongListDao songXSongListDao,
                                    LoginManager loginManager){
         super(loginManager);
         this.diskIO= diskIO;
-        this.songPojoDao=songPojoDao;
+        this.songDao = songDao;
         this.songXSongListDao= songXSongListDao;
     }
 
-    public LiveData<List<SongPojo>> getAllSongsForSongList(SongListPojo songListPojo){
-        return songXSongListDao.findAllSongsForSongListById(songListPojo.getId());
+    public LiveData<List<SongDO>> getAllSongsForSongList(SongListDO songListDO){
+        return songXSongListDao.findAllSongsForSongListById(songListDO.getId());
     }
 
     @Override
-    public void insert(SongXSongList localData) {
+    public void insert(SongXSongListDO localData) {
         diskIO.execute(()->songXSongListDao.insert(localData));
     }
 
     @Override
-    public void delete(SongXSongList data) {
+    public void delete(SongXSongListDO data) {
         diskIO.execute(()->songXSongListDao.delete(data));
     }
 
     @Override
-    public void update(SongXSongList data) {
+    public void update(SongXSongListDO data) {
     }
 
     @Override
@@ -61,40 +61,40 @@ public class SongXSongListRepository extends Repository<SongXSongList,Void> {
     }
 
     @Override
-    protected LiveData<List<SongXSongList>> loadAll() {
+    protected LiveData<List<SongXSongListDO>> loadAll() {
         return songXSongListDao.findAllSongXSongLists();
     }
 
-    public void insertNewSongAndToSongLists(SongPojo newSong, List<SongListPojo> songListPojos){
-        diskIO.execute(create(newSong,songListPojos) );
+    public void insertNewSongAndToSongLists(SongDO newSong, List<SongListDO> songListDOS){
+        diskIO.execute(create(newSong, songListDOS) );
     }
 
     @AllArgsConstructor
     private class InsertNewSongToSongListsTask implements Runnable{
 
-        private SongPojo newSong;
-        private List<SongListPojo> songListPojos;
-        private SongPojoDao songPojoDao;
+        private SongDO newSong;
+        private List<SongListDO> songListDOS;
+        private SongDao songDao;
         private SongXSongListDao songXSongListDao;
 
         @Override
         public void run() {
-            SongPojo result=songPojoDao.findAllBySongPath(newSong.songPath);
+            SongDO result= songDao.findAllBySongPath(newSong.songPath);
             long newSongId;
             if (result==null)
-                newSongId=songPojoDao.insert(newSong);
+                newSongId= songDao.insert(newSong);
             else
                 newSongId=result.getId();
-            List<SongXSongList> songXSongLists=new ArrayList<>();
-            List<SongListPojo> existingLists=songXSongListDao.findAllSongListsForSongById(newSongId);
-            for (SongListPojo songListPojo:songListPojos)
-                if (!existingLists.contains(songListPojo))
-                    songXSongLists.add(new SongXSongList(newSongId,songListPojo.getId()));
-            songXSongListDao.insert(songXSongLists);
+            List<SongXSongListDO> songXSongListDOs =new ArrayList<>();
+            List<SongListDO> existingLists=songXSongListDao.findAllSongListsForSongById(newSongId);
+            for (SongListDO songListDO : songListDOS)
+                if (!existingLists.contains(songListDO))
+                    songXSongListDOs.add(new SongXSongListDO(newSongId, songListDO.getId()));
+            songXSongListDao.insert(songXSongListDOs);
         }
     }
 
-    public InsertNewSongToSongListsTask create(SongPojo newSong, List<SongListPojo> songListPojos){
-        return new InsertNewSongToSongListsTask(newSong,songListPojos,songPojoDao,songXSongListDao);
+    public InsertNewSongToSongListsTask create(SongDO newSong, List<SongListDO> songListDOS){
+        return new InsertNewSongToSongListsTask(newSong, songListDOS, songDao,songXSongListDao);
     }
 }

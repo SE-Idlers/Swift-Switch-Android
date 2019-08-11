@@ -3,9 +3,9 @@ package com.example.win.easy.repository.repo;
 import androidx.lifecycle.LiveData;
 
 import com.example.win.easy.repository.LoginManager;
-import com.example.win.easy.repository.db.dao.SongPojoDao;
-import com.example.win.easy.repository.db.pojo.SongPojo;
-import com.example.win.easy.repository.web.domain.NetworkSong;
+import com.example.win.easy.repository.db.dao.SongDao;
+import com.example.win.easy.repository.db.data_object.SongDO;
+import com.example.win.easy.repository.web.dto.SongDTO;
 
 import java.util.List;
 import java.util.concurrent.Executor;
@@ -15,39 +15,39 @@ import javax.inject.Named;
 import javax.inject.Singleton;
 
 @Singleton
-public class SongRepository extends Repository<SongPojo, NetworkSong> {
+public class SongRepository extends Repository<SongDO, SongDTO> {
 
-    private SongPojoDao songPojoDao;
+    private SongDao songDao;
     private Executor diskIO;
 
     @Inject
     public SongRepository(@Named("dbAccess")Executor diskIO,
-                          SongPojoDao songPojoDao,
+                          SongDao songDao,
                           LoginManager loginManager){
         super(loginManager);
         this.diskIO= diskIO;
-        this.songPojoDao= songPojoDao;
+        this.songDao = songDao;
     }
 
 
     @Override
-    public void insert(SongPojo localData) {
+    public void insert(SongDO localData) {
         diskIO.execute(()->{
-            SongPojo result=songPojoDao.findAllBySongPath(localData.songPath);
+            SongDO result= songDao.findAllBySongPath(localData.songPath);
             System.out.println(result);
             if (result==null)
-                songPojoDao.insert(localData);
+                songDao.insert(localData);
         });
     }
 
     @Override
-    public void delete(SongPojo data) {
-        diskIO.execute(()->songPojoDao.delete(data));
+    public void delete(SongDO data) {
+        diskIO.execute(()-> songDao.delete(data));
     }
 
     @Override
-    public void update(SongPojo data) {
-        diskIO.execute(()->songPojoDao.update(data));
+    public void update(SongDO data) {
+        diskIO.execute(()-> songDao.update(data));
     }
 
     @Override
@@ -56,7 +56,7 @@ public class SongRepository extends Repository<SongPojo, NetworkSong> {
     }
 
     @Override
-    protected LiveData<List<SongPojo>> loadAll() {
-        return songPojoDao.findAllSongPojos();
+    protected LiveData<List<SongDO>> loadAll() {
+        return songDao.findAllSongDOs();
     }
 }

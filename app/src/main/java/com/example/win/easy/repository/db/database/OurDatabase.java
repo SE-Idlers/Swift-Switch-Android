@@ -6,29 +6,30 @@ import androidx.room.TypeConverters;
 
 import com.example.win.easy.repository.db.CustomTypeConverters;
 import com.example.win.easy.repository.db.dao.IInformationDao;
-import com.example.win.easy.repository.db.dao.SongListPojoDao;
-import com.example.win.easy.repository.db.dao.SongPojoDao;
+import com.example.win.easy.repository.db.dao.SongDao;
+import com.example.win.easy.repository.db.dao.SongListDao;
 import com.example.win.easy.repository.db.dao.SongXSongListDao;
-import com.example.win.easy.repository.db.pojo.IInformation;
-import com.example.win.easy.repository.db.pojo.SongListPojo;
-import com.example.win.easy.repository.db.pojo.SongPojo;
-import com.example.win.easy.repository.db.pojo.SongXSongList;
+import com.example.win.easy.repository.db.data_object.IInformation;
+import com.example.win.easy.repository.db.data_object.SongDO;
+import com.example.win.easy.repository.db.data_object.SongListDO;
+import com.example.win.easy.repository.db.data_object.SongXSongListDO;
 
 @Database(
         entities = {
-                SongPojo.class,
-                SongListPojo.class,
-                SongXSongList.class,
+                SongDO.class,
+                SongListDO.class,
+                SongXSongListDO.class,
                 IInformation.class
         },
-        version = 1
+        version = 1,
+        exportSchema = false
 )
 @TypeConverters(value = {
         CustomTypeConverters.class
 })
 public abstract class OurDatabase extends RoomDatabase {
-    public abstract SongPojoDao songPojoDao();
-    public abstract SongListPojoDao songListPojoDao();
+    public abstract SongDao songDao();
+    public abstract SongListDao songListDao();
     public abstract SongXSongListDao songXSongListDao();
     public abstract IInformationDao iInformationDao();
 }

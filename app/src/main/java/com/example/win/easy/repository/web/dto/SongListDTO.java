@@ -1,4 +1,4 @@
-package com.example.win.easy.repository.web.domain;
+package com.example.win.easy.repository.web.dto;
 
 import com.example.win.easy.enumeration.DataSource;
 import com.google.gson.internal.LinkedTreeMap;
@@ -11,7 +11,7 @@ import lombok.Data;
 
 //@Builder
 @Data
-public class NetworkSongList implements Serializable {
+public class SongListDTO implements Serializable {
 
     private static final long serialVersionUID=4L;
 
@@ -23,7 +23,7 @@ public class NetworkSongList implements Serializable {
     /**
      * 歌单包含的歌曲
      */
-    public List<NetworkSong> networkSongs;
+    public List<SongDTO> songDTOs;
 
     /**
      * 歌单图片下载Url
@@ -45,12 +45,12 @@ public class NetworkSongList implements Serializable {
      */
     public String remoteId;
 
-    public NetworkSongList(LinkedTreeMap<String,Object> treeMap){
+    public SongListDTO(LinkedTreeMap<String,Object> treeMap){
         this.name=(String) treeMap.get("name");
-        List<NetworkSong> networkSongs=new ArrayList<>();
-        for (LinkedTreeMap<String,Object> _treeMap:(List<LinkedTreeMap<String,Object>>)treeMap.get("networkSongs"))
-            networkSongs.add(new NetworkSong(_treeMap));
-        this.networkSongs=networkSongs;
+        List<SongDTO> songDTOs =new ArrayList<>();
+        for (LinkedTreeMap<String,Object> _treeMap:(List<LinkedTreeMap<String,Object>>)treeMap.get("songDTOs"))
+            songDTOs.add(new SongDTO(_treeMap));
+        this.songDTOs = songDTOs;
         this.avatarUrl=(String)treeMap.get("avatarUrl");
         this.source=DataSource.valueOf((String) treeMap.get("source"));
         this.uid=(String)treeMap.get("uid");

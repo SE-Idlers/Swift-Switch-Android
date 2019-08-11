@@ -1,4 +1,4 @@
-package com.example.win.easy.repository.db.pojo;
+package com.example.win.easy.repository.db.data_object;
 
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
@@ -17,7 +17,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class SongPojo {
+public class SongDO {
 
     /**
      * 自动生成的歌曲id

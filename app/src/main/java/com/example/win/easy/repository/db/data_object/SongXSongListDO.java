@@ -1,4 +1,4 @@
-package com.example.win.easy.repository.db.pojo;
+package com.example.win.easy.repository.db.data_object;
 
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
@@ -14,13 +14,13 @@ import lombok.NoArgsConstructor;
 @Entity(
         foreignKeys = {
                 @ForeignKey(
-                        entity = SongPojo.class,
+                        entity = SongDO.class,
                         parentColumns = "id",
                         childColumns = "songId",
                         onDelete = ForeignKey.CASCADE
                 ),
                 @ForeignKey(
-                        entity = SongListPojo.class,
+                        entity = SongListDO.class,
                         parentColumns = "id",
                         childColumns = "songListId",
                         onDelete = ForeignKey.CASCADE
@@ -38,7 +38,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class SongXSongList {
+public class SongXSongListDO {
 
     /**
      * ManyToMany关系的Song的id

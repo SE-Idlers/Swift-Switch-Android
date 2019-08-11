@@ -1,8 +1,8 @@
 package com.example.win.easy.tool;
 
 import com.example.win.easy.enumeration.DataSource;
-import com.example.win.easy.repository.db.pojo.SongListPojo;
-import com.example.win.easy.repository.db.pojo.SongPojo;
+import com.example.win.easy.repository.db.data_object.SongDO;
+import com.example.win.easy.repository.db.data_object.SongListDO;
 
 import java.util.List;
 
@@ -10,11 +10,11 @@ import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
 public class SongList {
-    private SongListPojo songListPojo;
+    private SongListDO songListDO;
 
-    private List<SongPojo> songPojos;
+    private List<SongDO> songDOs;
 
-    public String getName(){return songListPojo.name;}
-    public DataSource getSource(){return songListPojo.source;}
-    public List<SongPojo> getSongPojos(){return songPojos;}
+    public String getName(){return songListDO.name;}
+    public DataSource getSource(){return songListDO.source;}
+    public List<SongDO> getSongDOs(){return songDOs;}
 }

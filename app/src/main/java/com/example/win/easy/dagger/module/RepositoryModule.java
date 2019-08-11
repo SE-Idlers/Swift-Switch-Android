@@ -4,8 +4,8 @@ import android.content.Context;
 
 import androidx.room.Room;
 
-import com.example.win.easy.repository.db.dao.SongListPojoDao;
-import com.example.win.easy.repository.db.dao.SongPojoDao;
+import com.example.win.easy.repository.db.dao.SongDao;
+import com.example.win.easy.repository.db.dao.SongListDao;
 import com.example.win.easy.repository.db.dao.SongXSongListDao;
 import com.example.win.easy.repository.db.database.OurDatabase;
 
@@ -27,12 +27,12 @@ public class RepositoryModule {
         return Room.databaseBuilder(applicationContext, OurDatabase.class,"ourDatabase").build();
     }
 
-    @Provides @Singleton static SongPojoDao provideSongPojoDao(OurDatabase ourDatabase){
-        return ourDatabase.songPojoDao();
+    @Provides @Singleton static SongDao provideSongPojoDao(OurDatabase ourDatabase){
+        return ourDatabase.songDao();
     }
 
-    @Provides @Singleton static SongListPojoDao provideSongListPojoDao(OurDatabase ourDatabase){
-        return ourDatabase.songListPojoDao();
+    @Provides @Singleton static SongListDao provideSongListPojoDao(OurDatabase ourDatabase){
+        return ourDatabase.songListDao();
     }
 
     @Provides @Singleton static SongXSongListDao provideSongXSongListDao(OurDatabase ourDatabase){

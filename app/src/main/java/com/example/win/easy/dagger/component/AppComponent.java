@@ -9,7 +9,7 @@ import com.example.win.easy.dagger.module.ThreadModule;
 import com.example.win.easy.display.interfaces.DisplayManager;
 import com.example.win.easy.factory.SongFactory;
 import com.example.win.easy.parser.filter.FilterStrategy;
-import com.example.win.easy.repository.db.dao.SongPojoDao;
+import com.example.win.easy.repository.db.dao.SongDao;
 import com.example.win.easy.repository.repo.SongListRepository;
 import com.example.win.easy.repository.repo.SongRepository;
 import com.example.win.easy.repository.repo.SongXSongListRepository;
@@ -40,7 +40,7 @@ public interface AppComponent {
 
     SongXSongListRepository getSongXSongListRepository();
 
-    SongPojoDao getSongPojoDao();
+    SongDao getSongPojoDao();
 
     SongFactory getSongFactory();
 

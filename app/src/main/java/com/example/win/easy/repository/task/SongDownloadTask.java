@@ -1,8 +1,8 @@
 package com.example.win.easy.repository.task;
 
-import com.example.win.easy.repository.db.dao.SongPojoDao;
-import com.example.win.easy.repository.db.pojo.SongPojo;
-import com.example.win.easy.repository.web.domain.NetworkSong;
+import com.example.win.easy.repository.db.dao.SongDao;
+import com.example.win.easy.repository.db.data_object.SongDO;
+import com.example.win.easy.repository.web.dto.SongDTO;
 
 import java.io.File;
 
@@ -11,9 +11,9 @@ import lombok.Builder;
 @Builder
 public class SongDownloadTask extends DownloadTask {
 
-    private SongPojoDao songPojoDao;
+    private SongDao songDao;
 
-    private NetworkSong networkSong;
+    private SongDTO songDTO;
     private long songId;
     private String tempName;
     private String finishName;
@@ -22,28 +22,28 @@ public class SongDownloadTask extends DownloadTask {
 
     @Override
     public void run() {
-        SongPojo songPojo=songPojoDao.findDataById(songId);
-        if (songPojo!=null){
-            if (songPojo.songPath!=null){
+        SongDO songDO = songDao.findDataById(songId);
+        if (songDO !=null){
+            if (songDO.songPath!=null){
                 if (finishFile.exists())
                     return;
                 else {
-                    songPojo.setSongPath(null);
-                    songPojoDao.update(songPojo);
+                    songDO.setSongPath(null);
+                    songDao.update(songDO);
                 }
             }else {
                 if (finishFile.exists()){
-                    songPojo.setSongPath(finishName);
-                    songPojoDao.update(songPojo);
+                    songDO.setSongPath(finishName);
+                    songDao.update(songDO);
                     return;
                 }
             }
             if (tempFile.exists())
                 tempFile.delete();
-            if (download(networkSong.songUrl,tempName)){
+            if (download(songDTO.songUrl,tempName)){
                 tempFile.renameTo(finishFile);
-                songPojo.setSongPath(finishName);
-                songPojoDao.update(songPojo);
+                songDO.setSongPath(finishName);
+                songDao.update(songDO);
             }
         }
     }

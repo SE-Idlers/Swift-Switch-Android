@@ -1,4 +1,4 @@
-package com.example.win.easy.repository.web.domain;
+package com.example.win.easy.repository.web.dto;
 
 import com.example.win.easy.enumeration.DataSource;
 import com.google.gson.internal.LinkedTreeMap;
@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class NetworkSong implements Serializable {
+public class SongDTO implements Serializable {
 
     private static final long serialVersionUID=5L;
 
@@ -66,7 +66,7 @@ public class NetworkSong implements Serializable {
      */
     public String remoteId;
 
-    public NetworkSong(LinkedTreeMap<String,Object> treeMap){
+    public SongDTO(LinkedTreeMap<String,Object> treeMap){
         this.totalName=(String)treeMap.get("totalName");
         this.name=(String)treeMap.get("name");
         this.author=(String)treeMap.get("author");

@@ -1,10 +1,10 @@
 package com.example.win.easy.repository.task;
 
-import com.example.win.easy.repository.web.domain.NetworkSongList;
+import com.example.win.easy.repository.web.dto.SongListDTO;
 
 public class SongListPictureDownloadTask implements Runnable {
 
-    public SongListPictureDownloadTask(NetworkSongList networkSongList,long id){
+    public SongListPictureDownloadTask(SongListDTO songListDTO, long id){
 
     }
     @Override

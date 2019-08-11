@@ -2,14 +2,14 @@ package com.example.win.easy.repository.task;
 
 import com.example.win.easy.factory.AsyncTaskFactory;
 import com.example.win.easy.factory.SongFactory;
-import com.example.win.easy.repository.db.dao.SongListPojoDao;
-import com.example.win.easy.repository.db.dao.SongPojoDao;
+import com.example.win.easy.repository.db.dao.SongDao;
+import com.example.win.easy.repository.db.dao.SongListDao;
 import com.example.win.easy.repository.db.dao.SongXSongListDao;
-import com.example.win.easy.repository.db.pojo.SongListPojo;
-import com.example.win.easy.repository.db.pojo.SongPojo;
-import com.example.win.easy.repository.db.pojo.SongXSongList;
-import com.example.win.easy.repository.web.domain.NetworkSong;
-import com.example.win.easy.repository.web.domain.NetworkSongList;
+import com.example.win.easy.repository.db.data_object.SongListDO;
+import com.example.win.easy.repository.db.data_object.SongDO;
+import com.example.win.easy.repository.db.data_object.SongXSongListDO;
+import com.example.win.easy.repository.web.dto.SongDTO;
+import com.example.win.easy.repository.web.dto.SongListDTO;
 import com.example.win.easy.repository.web.download.PictureDownloadManager;
 import com.example.win.easy.repository.web.download.SongDownloadManager;
 
@@ -22,21 +22,21 @@ import lombok.Builder;
 @Builder
 public class SongListBatchSyncTask implements Runnable {
 
-    private SongPojoDao songPojoDao;
-    private SongListPojoDao songListPojoDao;
+    private SongDao songDao;
+    private SongListDao songListDao;
     private SongXSongListDao songXSongListDao;
     private SongDownloadManager songDownloadManager;
     private PictureDownloadManager pictureDownloadManager;
     private SongFactory songFactory;
     private AsyncTaskFactory asyncTaskFactory;
 
-    private List<NetworkSongList> networkSongLists;
+    private List<SongListDTO> songListDTOs;
 
-    private List<SongPojo> songLocalRecords;
-    private List<NetworkSong> networkSongs;
+    private List<SongDO> songLocalRecords;
+    private List<SongDTO> songDTOs;
     private List<Long> songIds;
     private List<Long> songListIds;
-    private List<SongXSongList> relations;
+    private List<SongXSongListDO> relations;
 
 
     @Override
@@ -49,57 +49,57 @@ public class SongListBatchSyncTask implements Runnable {
 
     private void updateSongs(){
         //去重
-        Set<NetworkSong> uniqueNetworkSongs=new HashSet<>();
-        for (NetworkSongList networkSongList: networkSongLists)
-            uniqueNetworkSongs.addAll(networkSongList.getNetworkSongs());
-        for (NetworkSong networkSong:uniqueNetworkSongs){
+        Set<SongDTO> uniqueSongDTOs =new HashSet<>();
+        for (SongListDTO songListDTO : songListDTOs)
+            uniqueSongDTOs.addAll(songListDTO.getSongDTOs());
+        for (SongDTO songDTO : uniqueSongDTOs){
             //查找本地记录
-            SongPojo localRecord=songPojoDao.findLocalRecordOfNetworkSong(
-                    networkSong.totalName,
-                    networkSong.author,
-                    networkSong.source.toString(),
-                    networkSong.uid,
-                    networkSong.remoteId);
+            SongDO localRecord= songDao.findLocalRecordOfNetworkSong(
+                    songDTO.totalName,
+                    songDTO.author,
+                    songDTO.source.toString(),
+                    songDTO.uid,
+                    songDTO.remoteId);
             //没有本地记录时插入
             if (localRecord==null) {
-                localRecord=songFactory.create(networkSong);
-                songIds.add(songPojoDao.insert(localRecord));
+                localRecord=songFactory.create(songDTO);
+                songIds.add(songDao.insert(localRecord));
             } else//有记录时记下id
                 songIds.add(localRecord.id);
             //保留网络歌曲的引用
-            networkSongs.add(networkSong);
+            songDTOs.add(songDTO);
             //保留本地歌曲的引用
             songLocalRecords.add(localRecord);
         }
     }
 
     private void updateSongLists(){
-        for (NetworkSongList networkSongList: networkSongLists){
+        for (SongListDTO songListDTO : songListDTOs){
             //查找本地记录
-            SongListPojo localRecord=songListPojoDao.findLocalRecordOfNetworkSongList(
-                    networkSongList.name,
-                    networkSongList.source.toString(),
-                    networkSongList.uid,
-                    networkSongList.remoteId);
+            SongListDO localRecord= songListDao.findLocalRecordOfNetworkSongList(
+                    songListDTO.name,
+                    songListDTO.source.toString(),
+                    songListDTO.uid,
+                    songListDTO.remoteId);
             //没有本地记录时插入
             if (localRecord==null){
-                localRecord=new SongListPojo(networkSongList);
-                songListIds.add(songListPojoDao.insert(localRecord));
+                localRecord=new SongListDO(songListDTO);
+                songListIds.add(songListDao.insert(localRecord));
             }else//有记录时记下id
                 songListIds.add(localRecord.id);
         }
     }
 
     private void updateSongXSongLists(){
-        for (NetworkSongList networkSongList: networkSongLists){
+        for (SongListDTO songListDTO : songListDTOs){
             //获取歌单id
-            long songListId=songListIds.get(networkSongLists.indexOf(networkSongList));
-            List<NetworkSong> contents=networkSongList.networkSongs;
-            for (NetworkSong networkSong:contents){
+            long songListId=songListIds.get(songListDTOs.indexOf(songListDTO));
+            List<SongDTO> contents= songListDTO.songDTOs;
+            for (SongDTO songDTO :contents){
                 //获取歌曲id
-                long songId=songIds.get(networkSongs.indexOf(networkSong));
+                long songId=songIds.get(songDTOs.indexOf(songDTO));
                 //添加 歌曲-歌单 关系记录
-                relations.add(new SongXSongList(songId,songListId));
+                relations.add(new SongXSongListDO(songId,songListId));
             }
         }
         //插入关系数据
@@ -109,17 +109,17 @@ public class SongListBatchSyncTask implements Runnable {
     private void initiateDownloadTask(){
         int songAmount=songLocalRecords.size();
         for (int index=0;index<songAmount;index++){
-            NetworkSong networkSong=networkSongs.get(index);
+            SongDTO songDTO = songDTOs.get(index);
             long songId=songIds.get(index);
-            songDownloadManager.download(asyncTaskFactory.create(networkSong,songId,SongDownloadTask.class));
-            pictureDownloadManager.download(asyncTaskFactory.create(networkSong,songId,SongPictureDownloadTask.class));
+            songDownloadManager.download(asyncTaskFactory.create(songDTO,songId,SongDownloadTask.class));
+            pictureDownloadManager.download(asyncTaskFactory.create(songDTO,songId,SongPictureDownloadTask.class));
         }
 
         int songListAmount=songListIds.size();
         for (int index=0;index<songListAmount;index++){
-            NetworkSongList networkSongList= networkSongLists.get(index);
+            SongListDTO songListDTO = songListDTOs.get(index);
             long songListId=songListIds.get(index);
-            pictureDownloadManager.download(new SongListPictureDownloadTask(networkSongList,songListId));
+            pictureDownloadManager.download(new SongListPictureDownloadTask(songListDTO,songListId));
         }
 
     }

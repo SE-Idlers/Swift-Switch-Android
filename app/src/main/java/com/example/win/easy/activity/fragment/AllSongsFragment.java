@@ -20,7 +20,7 @@ import com.example.win.easy.application.SwiftSwitchApplication;
 import com.example.win.easy.factory.SongFactory;
 import com.example.win.easy.tool.UriProcessTool;
 import com.example.win.easy.repository.db.CustomTypeConverters;
-import com.example.win.easy.repository.db.pojo.SongPojo;
+import com.example.win.easy.repository.db.data_object.SongDO;
 import com.example.win.easy.viewmodel.SimpleViewModel;
 import com.qmuiteam.qmui.widget.QMUIRadiusImageView;
 import com.qmuiteam.qmui.widget.grouplist.QMUICommonListItemView;
@@ -39,7 +39,7 @@ public class AllSongsFragment extends ListFragment {
     @Inject ViewModelProvider.Factory factory;
     @Inject SongFactory songFactory;
     private SimpleViewModel viewModel;
-    private LiveData<List<SongPojo>> allSongs;
+    private LiveData<List<SongDO>> allSongs;
     private QMUIGroupListView.Section section;
 
     @Override
@@ -82,18 +82,18 @@ public class AllSongsFragment extends ListFragment {
 
     /**
      * 根据最新的歌曲数据刷新视图
-     * @param songPojos 最新的歌曲数据
+     * @param songDOs 最新的歌曲数据
      */
-    public void update(List<SongPojo> songPojos){
+    public void update(List<SongDO> songDOs){
         //每次刷新时都重新创建section
         if (section!=null)
             section.removeFrom(groupListView);
         section=QMUIGroupListView.newSection(getContext());
         //对每个歌曲都生成一个itemView
-        for (SongPojo songPojo:songPojos) {
+        for (SongDO songDO : songDOs) {
             QMUICommonListItemView itemView=groupListView.createItemView(LinearLayout.VERTICAL);
             //显示歌曲名称
-            itemView.setText(songPojo.name);
+            itemView.setText(songDO.name);
             //显示歌曲默认头像
             itemView.setImageDrawable(getResources().getDrawable(R.drawable.ase16));
             //itemView最右侧显示自定义的视图（一张图片）
@@ -103,15 +103,15 @@ public class AllSongsFragment extends ListFragment {
                 Toast.makeText(getContext(),"待实现：点击播放歌曲",Toast.LENGTH_SHORT).show();
             });
             //如果歌曲已经下载好，则显示它的sequence，同时在最右侧显示一张音符图片
-            if (songPojo.songPath!=null){
+            if (songDO.songPath!=null){
                 QMUIRadiusImageView imageView=new QMUIRadiusImageView(getContext());
                 imageView.setImageDrawable(getResources().getDrawable(R.drawable.ic_action_music));
                 itemView.addAccessoryCustomView(imageView);
-                itemView.setDetailText(CustomTypeConverters.characterList2string(songPojo.sequence));
+                itemView.setDetailText(CustomTypeConverters.characterList2string(songDO.sequence));
             }
             //如果歌曲有下载好的头像，则发起一个异步任务，读取本地图片文件并解码图片，完成后自动更新视图
-            if (songPojo.avatarPath!=null)
-                new DecodeImageAsyncTask(itemView,getResources()).execute(songPojo.avatarPath);
+            if (songDO.avatarPath!=null)
+                new DecodeImageAsyncTask(itemView,getResources()).execute(songDO.avatarPath);
             section.addItemView(itemView,null);
         }
         section.addTo(groupListView);

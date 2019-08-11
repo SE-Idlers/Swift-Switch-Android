@@ -2,8 +2,8 @@ package com.example.win.easy.factory;
 
 import com.example.win.easy.enumeration.DataSource;
 import com.example.win.easy.parser.interfaces.FilenameParser;
-import com.example.win.easy.repository.db.pojo.SongPojo;
-import com.example.win.easy.repository.web.domain.NetworkSong;
+import com.example.win.easy.repository.db.data_object.SongDO;
+import com.example.win.easy.repository.web.dto.SongDTO;
 
 import java.io.File;
 
@@ -20,22 +20,22 @@ public class SongFactory {
         this.parser=parser;
     }
 
-    public SongPojo create(NetworkSong networkSong){
-        return SongPojo.builder()
-                .name(networkSong.totalName)
-                .author(networkSong.author)
-                .source(networkSong.source)
-                .uid(networkSong.uid)
-                .remoteId(networkSong.remoteId)
-                .sequence(parser.parse(networkSong.name))
+    public SongDO create(SongDTO songDTO){
+        return SongDO.builder()
+                .name(songDTO.totalName)
+                .author(songDTO.author)
+                .source(songDTO.source)
+                .uid(songDTO.uid)
+                .remoteId(songDTO.remoteId)
+                .sequence(parser.parse(songDTO.name))
                 .build();
     }
 
 
 
-    public SongPojo create(File songFile){
+    public SongDO create(File songFile){
         String abPath=songFile.getAbsolutePath();
-        return SongPojo.builder()
+        return SongDO.builder()
                 .name(abPath.substring(abPath.lastIndexOf('/')+1, abPath.lastIndexOf('.')))
                 .author(abPath.substring(abPath.lastIndexOf('/')+1,abPath.indexOf('-')))
                 .source(DataSource.Local)

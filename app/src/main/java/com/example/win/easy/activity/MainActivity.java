@@ -18,8 +18,8 @@ import com.example.win.easy.R;
 import com.example.win.easy.application.SwiftSwitchApplication;
 import com.example.win.easy.activity.fragment.ListFragment;
 import com.example.win.easy.factory.SongFactory;
-import com.example.win.easy.repository.db.pojo.SongListPojo;
-import com.example.win.easy.repository.db.pojo.SongPojo;
+import com.example.win.easy.repository.db.data_object.SongDO;
+import com.example.win.easy.repository.db.data_object.SongListDO;
 import com.example.win.easy.tool.DialogTool;
 import com.example.win.easy.tool.UriProcessTool;
 import com.example.win.easy.viewmodel.SimpleViewModel;
@@ -52,9 +52,9 @@ public class MainActivity extends AppCompatActivity {
     private SimpleViewModel viewModel;
     private LiveData<Integer> songAmount;
     private LiveData<Integer> songListAmount;
-    private LiveData<List<SongPojo>> allSongs;
-    private LiveData<List<SongListPojo>> allSongLists;
-    private List<LiveData<List<SongPojo>>> recordTable;
+    private LiveData<List<SongDO>> allSongs;
+    private LiveData<List<SongListDO>> allSongLists;
+    private List<LiveData<List<SongDO>>> recordTable;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -167,8 +167,8 @@ public class MainActivity extends AppCompatActivity {
         allSongLists.observe(this, songListPojos -> { });
         recordTable=new ArrayList<>();
         if (allSongLists.getValue()!=null)
-            for (SongListPojo songListPojo:allSongLists.getValue()){
-                LiveData<List<SongPojo>> record=viewModel.getAllSongsForSongList(songListPojo);
+            for (SongListDO songListDO :allSongLists.getValue()){
+                LiveData<List<SongDO>> record=viewModel.getAllSongsForSongList(songListDO);
                 record.observe(this, songPojos -> { });
                 recordTable.add(record);
             }
@@ -198,8 +198,8 @@ public class MainActivity extends AppCompatActivity {
     public void createDialogSeeAllSongs(){
         List<String> songNames=new ArrayList<>();
         if (allSongs.getValue()!=null)
-            for (SongPojo songPojo:allSongs.getValue())
-                songNames.add(songPojo.getName());
+            for (SongDO songDO :allSongs.getValue())
+                songNames.add(songDO.getName());
         DialogTool.createMenuDialog(
                 this,
                 "所有歌曲",
@@ -216,8 +216,8 @@ public class MainActivity extends AppCompatActivity {
     public void createDialogAddSongToSongList(final Uri uri){
         if (allSongLists.getValue()!=null){
             List<String> songListNames=new ArrayList<>();
-            for (SongListPojo songListPojo:allSongLists.getValue())
-                songListNames.add(songListPojo.getName());
+            for (SongListDO songListDO :allSongLists.getValue())
+                songListNames.add(songListDO.getName());
             final QMUIDialog.MultiCheckableDialogBuilder builder=new QMUIDialog.MultiCheckableDialogBuilder(this);
             DialogTool.createMultiCheckDialog(
                     builder,
@@ -240,8 +240,8 @@ public class MainActivity extends AppCompatActivity {
     private void createDialogSeeSongList(){
         List<String> songListNames=new ArrayList<>();
         if(allSongLists.getValue()!=null)
-            for (SongListPojo songListPojo:allSongLists.getValue())
-                songListNames.add(songListPojo.getName());
+            for (SongListDO songListDO :allSongLists.getValue())
+                songListNames.add(songListDO.getName());
         DialogTool.createMenuDialog(
                 this,
                 "所有歌单",
@@ -266,11 +266,11 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onClick(QMUIDialog dialog, int index) {
             File songFile=new File(UriProcessTool.getPathByUri4kitkat(builder.getBaseContext(),uri));
-            List<SongListPojo> songListPojos=new ArrayList<>();
+            List<SongListDO> songListDOS =new ArrayList<>();
             int[] indices=builder.getCheckedItemIndexes();
             for (int checkedIndex:indices)
-                songListPojos.add(allSongLists.getValue().get(checkedIndex));
-            viewModel.insertNewSongAndToSongLists(songFactory.create(songFile),songListPojos);
+                songListDOS.add(allSongLists.getValue().get(checkedIndex));
+            viewModel.insertNewSongAndToSongLists(songFactory.create(songFile), songListDOS);
             Toast.makeText(builder.getBaseContext(),"添加成功", Toast.LENGTH_SHORT).show();
             dialog.dismiss();
         }
