@@ -3,11 +3,12 @@ package com.example.win.easy.dagger.module;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.example.win.easy.viewmodel.SimpleViewModel;
+import com.example.win.easy.viewmodel.SongViewModel;
 import com.example.win.easy.viewmodel.ViewModelFactory;
 import com.example.win.easy.repository.repo.SongListRepository;
 import com.example.win.easy.repository.repo.SongRepository;
 import com.example.win.easy.repository.repo.SongXSongListRepository;
-import com.example.win.easy.viewmodel.SimpleViewModel;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
@@ -38,6 +39,13 @@ public class ViewModelModule {
                                      SongListRepository songListRepository,
                                      SongXSongListRepository songXSongListRepository){
         return new SimpleViewModel(songRepository,songListRepository,songXSongListRepository);
+    }
+
+    @Provides
+    @IntoMap
+    @ViewModelKey(SongViewModel.class)
+    static ViewModel songViewModel(SongRepository songRepository){
+        return new SongViewModel(songRepository);
     }
 
     @Provides

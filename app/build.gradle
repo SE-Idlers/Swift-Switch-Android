@@ -58,8 +58,14 @@ dependencies {
    // testImplementation group: 'org.mockito', name: 'mockito-core', version: '2.25.1'
     testImplementation "org.mockito:mockito-core:2.+"
 
-    // https://mvnrepository.com/artifact/org.powermock/powermock-module-junit4
+    //power mock runner support
     testImplementation group: 'org.powermock', name: 'powermock-module-junit4', version: '2.0.0'
+
+    //power mock api support
+    testImplementation group: 'org.powermock', name: 'powermock-api-mockito2', version: '2.0.2'
+
+    //some android test TestRule support
+    testImplementation group: 'androidx.arch.core', name: 'core-testing', version: '2.1.0-rc01'
 
     // https://mvnrepository.com/artifact/com.google.dagger/dagger
     implementation group: 'com.google.dagger', name: 'dagger', version: '2.21'
@@ -74,6 +80,11 @@ dependencies {
 
     // https://mvnrepository.com/artifact/com.alibaba/fastjson
     implementation group: 'com.alibaba', name: 'fastjson', version: '1.2.57'
+
+    //RxJava plugins
+    implementation group: 'io.reactivex.rxjava2', name: 'rxjava', version: '2.2.11'
+    //RxAndroid plugins
+    implementation group: 'io.reactivex.rxjava2', name: 'rxandroid', version: '2.1.1'
 
 
     implementation 'org.apache.commons.io:commonsIO:2.5.0'
