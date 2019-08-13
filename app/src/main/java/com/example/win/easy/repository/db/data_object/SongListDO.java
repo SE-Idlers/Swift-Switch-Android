@@ -6,10 +6,14 @@ import androidx.room.PrimaryKey;
 import com.example.win.easy.repository.web.dto.SongListDTO;
 import com.example.win.easy.enumeration.DataSource;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 
 @Entity
 @Data
+@Builder
+@AllArgsConstructor
 public class SongListDO {
 
     /**

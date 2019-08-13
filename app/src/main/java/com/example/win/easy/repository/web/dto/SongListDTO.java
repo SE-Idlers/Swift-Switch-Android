@@ -7,10 +7,14 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.Singular;
 
-//@Builder
+@Builder
 @Data
+@AllArgsConstructor
 public class SongListDTO implements Serializable {
 
     private static final long serialVersionUID=4L;
@@ -23,6 +27,7 @@ public class SongListDTO implements Serializable {
     /**
      * 歌单包含的歌曲
      */
+    @Singular
     public List<SongDTO> songDTOs;
 
     /**
