@@ -1,13 +1,13 @@
 package com.example.win.easy;
 
-import com.example.win.easy.repository.SongListNetworkService;
-import com.example.win.easy.repository.LoginManager;
+import com.example.win.easy.repository.DTOUtil;
 import com.example.win.easy.repository.db.data_object.SongDO;
 import com.example.win.easy.repository.db.data_object.SongListDO;
-import com.example.win.easy.repository.web.SongListWebService;
-import com.example.win.easy.repository.web.OnReadyFunc;
+import com.example.win.easy.repository.web.callback.OnReadyFunc;
 import com.example.win.easy.repository.web.dto.SongDTO;
 import com.example.win.easy.repository.web.dto.SongListDTO;
+import com.example.win.easy.repository.web.network.NetworkFetchService;
+import com.example.win.easy.repository.web.service.SongListWebService;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -16,7 +16,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.powermock.api.mockito.PowerMockito;
-import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 import java.util.ArrayList;
@@ -28,51 +27,33 @@ import java.util.concurrent.Executors;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.spy;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
+@SuppressWarnings("ALL")
 @RunWith(PowerMockRunner.class)
-@PrepareForTest(SongListWebService.class)
 public class SongListWebServiceTest {
 
     @InjectMocks SongListWebService songListWebService;
-    @Mock LoginManager mockLoginManager;
-    @SuppressWarnings({"FieldCanBeLocal", "unused"})
-    private SongListNetworkService mockSongListNetworkService;
+    @Mock DTOUtil dtoUtil;
+    private NetworkFetchService mockSongListNetworkFetchService;
     private final Object mockRequestProcess=new Object();
     private final BooleanSemaphore requestHasBeenWaiting=new BooleanSemaphore(false);
     private final BooleanSemaphore dataConvertHasBeenFinished=new BooleanSemaphore(false);
 
     /**
-     * <p>没有登陆时的测试，不会发起任何网络请求</p>
-     * <p>通过networkService的fetch不被调用来断言</p>
-     */
-    @Test
-    public void testWithoutLogin(){
-        setLoginState(false);
-        setUpCallbackToInvokeWhenSongDOsFromWebServiceIsReady();
-
-        assertServiceDoesNotCallNetworkServiceSoThatDoesNotInitiateNetworkRequest();
-    }
-
-    /**
-     * <p>登陆后的测试</p>
      * <ol>
      *      <li>
      *        <p>测试中通过同步代码严格控制主线程和web线程的执行顺序，确保测试能够正常进行</p>
      *        <p>顺序为：准备（主线程）->开启一个子线程（主线程）->子线程阻塞模拟请求进行中->主线程通知子线程解除其阻塞，模拟请求完成-></p>
      *        <p>子线程准备数据->主线程assert结果的正确性</p>
      *      </li>
-     *      <li>同时，测试是独立于DTO到DO实现来进行的，DTO到DO的实现尚未测试</li>
+     *      <li>同时，测试是独立于DTO到DO实现来进行的(可以看到DTO到DO的转化util是被mock了的)</li>
      * </ol>
      *
      */
     @Test
-    public void testWithLogin() throws InterruptedException {
-        setLoginState(true);
+    public void testGet() throws InterruptedException {
         setUpCallbackToInvokeWhenSongDOsFromWebServiceIsReady();
         assertDataIsNotReadyAndCallbackIsNotInvoked();
 
@@ -95,7 +76,7 @@ public class SongListWebServiceTest {
 
     //mock网络请求服务
     private void mockNetworkService(){
-        mockSongListNetworkService = spy(new SongListNetworkService() {
+        mockSongListNetworkFetchService = spy(new NetworkFetchService<List<SongListDTO>>() {
             /**
              * <p>网络请求是在其他线程中执行的，因此这里应当模拟一个后台的web请求线程<p/>
              * <p>并控制这个线程的阻塞与执行，相当于mock请求过程与请求完成</p>
@@ -137,7 +118,6 @@ public class SongListWebServiceTest {
             }
         });
     }
-    private void setLoginState(boolean ifHasLogin){ doReturn(ifHasLogin).when(mockLoginManager).hasLogin(); }
     private void setUpCallbackToInvokeWhenSongDOsFromWebServiceIsReady(){
         songListWebService.getAllSongLists((songListToSongsMap)->{
 
@@ -177,7 +157,6 @@ public class SongListWebServiceTest {
         assertEquals(trueSongListString, actualSongListString);
         assertEquals(trueAllSongDOsSet, actualAllSongDOsSet);
     }
-    private void assertServiceDoesNotCallNetworkServiceSoThatDoesNotInitiateNetworkRequest(){ verify(mockSongListNetworkService,times(0)).fetch(any()); }
 
     //以下是数据准备
     private void mockSongListDTOFromBackend(){
@@ -195,12 +174,12 @@ public class SongListWebServiceTest {
     }
 
     private void mock_DTO_to_DO_methods() throws Exception {
-        PowerMockito.when(songListWebService,"toDO",songDTO1).thenReturn(songDO1);
-        PowerMockito.when(songListWebService,"toDO",songDTO2).thenReturn(songDO2);
-        PowerMockito.when(songListWebService,"toDO",songDTO3).thenReturn(songDO3);
+        when(dtoUtil.toDO(songDTO1)).thenReturn(songDO1);
+        when(dtoUtil.toDO(songDTO2)).thenReturn(songDO2);
+        when(dtoUtil.toDO(songDTO3)).thenReturn(songDO3);
 
-        PowerMockito.when(songListWebService,"toDO",songListDTO1).thenReturn(songListDO1);
-        PowerMockito.when(songListWebService,"toDO",songListDTO2).thenReturn(songListDO2);
+        when(dtoUtil.toDO(songListDTO1)).thenReturn(songListDO1);
+        when(dtoUtil.toDO(songListDTO2)).thenReturn(songListDO2);
     }
 
     private void prepareResult(){
@@ -235,9 +214,3 @@ public class SongListWebServiceTest {
     private List<SongListDTO> mockSongListDTOs=new ArrayList<>();
 }
 
-class BooleanSemaphore {
-    BooleanSemaphore(boolean ready){setReady(ready);}
-    private boolean ready;
-    boolean isNotReady(){return !ready;}
-    void setReady(boolean ready){this.ready=ready;}
-}

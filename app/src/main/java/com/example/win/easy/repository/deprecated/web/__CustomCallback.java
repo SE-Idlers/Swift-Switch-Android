@@ -1,4 +1,4 @@
-package com.example.win.easy.repository.web.callback;
+package com.example.win.easy.repository.deprecated.web;
 
 import androidx.annotation.NonNull;
 
@@ -7,7 +7,7 @@ import com.example.win.easy.repository.web.dto.Response;
 import retrofit2.Call;
 import retrofit2.Callback;
 
-public abstract class CustomCallback implements Callback<Response> {
+public abstract class __CustomCallback implements Callback<Response> {
 
     @Override
     public void onResponse(@NonNull Call<Response> call, @NonNull retrofit2.Response<Response> response) {
@@ -22,3 +22,4 @@ public abstract class CustomCallback implements Callback<Response> {
     @Override
     public void onFailure(@NonNull Call<Response> call, @NonNull Throwable t) { }
 }
+

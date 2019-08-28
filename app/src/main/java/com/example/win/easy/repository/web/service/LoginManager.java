@@ -1,8 +1,8 @@
-package com.example.win.easy.repository;
+package com.example.win.easy.repository.web.service;
 
 import com.example.win.easy.factory.CallbackFactory;
-import com.example.win.easy.repository.web.BackendResourceWebService;
-import com.example.win.easy.repository.web.callback.CustomCallback;
+import com.example.win.easy.repository.web.request.BackendResourceWebService;
+import com.example.win.easy.repository.deprecated.web.__CustomCallback;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -32,14 +32,14 @@ public class LoginManager {
         if (logining)
             return;
         logining =true;
-        backendResourceWebService.getUidByPhone(phone,password).enqueue(createCallback(LoginType.Phone));
+//        backendResourceWebService.getUidByPhone(phone,password).enqueue(createCallback(LoginType.Phone));
     }
 
     public void loginByEmail(String email,String password){
         if (logining)
             return;
         logining =true;
-        backendResourceWebService.getUidByEmail(email,password).enqueue(createCallback(LoginType.Email));
+//        backendResourceWebService.getUidByEmail(email,password).enqueue(createCallback(LoginType.Email));
     }
 
     public void fetchAllByUid(String uid) {
@@ -49,7 +49,7 @@ public class LoginManager {
         //     而网络请求完成后，回调函数的执行是在主线程，但是回调函数的任务只是
         //     发起一个异步的在子线程执行的歌单同步任务，不会造成主线程的阻塞
         //TODO 根据uid发起网络请求抓取歌曲
-        backendResourceWebService.getAllSongListsByUid(uid).enqueue(callbackFactory.create());
+//        backendResourceWebService.getAllSongListsByUid(uid).enqueue(callbackFactory.create());
     }
 
     public void setLogining(boolean logining){ this.logining=logining; }
@@ -77,7 +77,7 @@ public class LoginManager {
     }
 
     @AllArgsConstructor
-    public class LoginCallback extends CustomCallback {
+    public class LoginCallback extends __CustomCallback {
 
         private LoginManager.LoginType loginType;
         private LoginManager loginManager;

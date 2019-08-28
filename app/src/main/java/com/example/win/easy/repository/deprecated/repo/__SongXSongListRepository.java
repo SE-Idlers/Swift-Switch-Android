@@ -1,8 +1,8 @@
-package com.example.win.easy.repository.repo;
+package com.example.win.easy.repository.deprecated.repo;
 
 import androidx.lifecycle.LiveData;
 
-import com.example.win.easy.repository.LoginManager;
+import com.example.win.easy.repository.web.service.LoginManager;
 import com.example.win.easy.repository.db.dao.SongDao;
 import com.example.win.easy.repository.db.dao.SongXSongListDao;
 import com.example.win.easy.repository.db.data_object.SongListDO;
@@ -20,17 +20,17 @@ import javax.inject.Singleton;
 import lombok.AllArgsConstructor;
 
 @Singleton
-public class SongXSongListRepository extends Repository<SongXSongListDO,Void> {
+public class __SongXSongListRepository extends __Repository<SongXSongListDO,Void> {
 
     private Executor diskIO;
     private SongDao songDao;
     private SongXSongListDao songXSongListDao;
 
     @Inject
-    public SongXSongListRepository(@Named("dbAccess")Executor diskIO,
-                                   SongDao songDao,
-                                   SongXSongListDao songXSongListDao,
-                                   LoginManager loginManager){
+    public __SongXSongListRepository(@Named("dbAccess")Executor diskIO,
+                                     SongDao songDao,
+                                     SongXSongListDao songXSongListDao,
+                                     LoginManager loginManager){
         super(loginManager);
         this.diskIO= diskIO;
         this.songDao = songDao;

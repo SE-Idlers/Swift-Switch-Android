@@ -1,16 +1,16 @@
-package com.example.win.easy.repository.repo;
+package com.example.win.easy.repository.deprecated.repo;
 
 import androidx.lifecycle.LiveData;
 
-import com.example.win.easy.repository.LoginManager;
+import com.example.win.easy.repository.web.service.LoginManager;
 
 import java.util.List;
 
-public abstract class Repository<LocalType,NetworkType> {
+public abstract class __Repository<LocalType,NetworkType> {
 
     protected LoginManager loginManager;
 
-    public Repository(LoginManager loginManager){
+    public __Repository(LoginManager loginManager){
         this.loginManager=loginManager;
     }
 

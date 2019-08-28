@@ -9,7 +9,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.win.easy.repository.db.data_object.SongDO;
-import com.example.win.easy.repository.repo.SongRepository;
+import com.example.win.easy.repository.deprecated.repo.__SongRepository;
 import com.example.win.easy.rule.MockAndroidEnvironmentMainLooperRule;
 import com.example.win.easy.value_object.SongVO;
 import com.example.win.easy.viewmodel.SongViewModel;
@@ -45,7 +45,8 @@ public class SongViewModelTest {
 
     @InjectMocks SongViewModel songViewModel;
     @Mock LifecycleOwner lifecycleOwner;
-    @Mock SongRepository songRepository;
+    @Mock
+    __SongRepository songRepository;
     private LifecycleRegistry lifecycleRegistry;
     private MutableLiveData<List<SongDO>> mockDatabaseAllSongDOs;
     private LiveData<List<SongVO>> allSongVOs;

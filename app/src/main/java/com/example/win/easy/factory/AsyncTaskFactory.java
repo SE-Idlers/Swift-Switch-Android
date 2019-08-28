@@ -7,7 +7,7 @@ import com.example.win.easy.repository.task.DownloadTask;
 import com.example.win.easy.repository.task.SongDownloadTask;
 import com.example.win.easy.repository.task.SongListBatchSyncTask;
 import com.example.win.easy.repository.task.SongPictureDownloadTask;
-import com.example.win.easy.repository.web.DownloadFilenameResolver;
+import com.example.win.easy.repository.web.download.DownloadFilenameResolver;
 import com.example.win.easy.repository.web.dto.SongDTO;
 import com.example.win.easy.repository.web.dto.SongListDTO;
 import com.example.win.easy.repository.web.download.PictureDownloadManager;

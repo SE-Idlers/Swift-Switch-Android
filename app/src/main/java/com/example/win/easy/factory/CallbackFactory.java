@@ -1,6 +1,6 @@
 package com.example.win.easy.factory;
 
-import com.example.win.easy.repository.web.callback.SongListBatchFetchCallback;
+import com.example.win.easy.repository.deprecated.web.__SongListBatchFetchCallback;
 
 import java.util.concurrent.Executor;
 
@@ -21,11 +21,12 @@ public class CallbackFactory {
         this.diskIO=diskIO;
     }
 
-    public SongListBatchFetchCallback create(){
-        return SongListBatchFetchCallback.builder()
+    public __SongListBatchFetchCallback create(){
+        return __SongListBatchFetchCallback.builder()
                 .asyncTaskFactory(asyncTaskFactory)
                 .diskIO(diskIO)
                 .build();
     }
+
 
 }

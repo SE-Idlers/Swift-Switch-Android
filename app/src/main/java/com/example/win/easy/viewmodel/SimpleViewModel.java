@@ -7,9 +7,9 @@ import androidx.lifecycle.ViewModel;
 import com.example.win.easy.repository.db.data_object.SongDO;
 import com.example.win.easy.repository.db.data_object.SongListDO;
 import com.example.win.easy.repository.db.data_object.SongXSongListDO;
-import com.example.win.easy.repository.repo.SongListRepository;
-import com.example.win.easy.repository.repo.SongRepository;
-import com.example.win.easy.repository.repo.SongXSongListRepository;
+import com.example.win.easy.repository.deprecated.repo.__SongListRepository;
+import com.example.win.easy.repository.deprecated.repo.__SongRepository;
+import com.example.win.easy.repository.deprecated.repo.__SongXSongListRepository;
 
 import java.util.HashMap;
 import java.util.List;
@@ -17,13 +17,13 @@ import java.util.Map;
 
 public class SimpleViewModel extends ViewModel {
 
-    private SongListRepository songListRepository;
-    private SongRepository songRepository;
-    private SongXSongListRepository songXSongListRepository;
+    private __SongListRepository songListRepository;
+    private __SongRepository songRepository;
+    private __SongXSongListRepository songXSongListRepository;
 
-    public SimpleViewModel(SongRepository songRepository,
-                           SongListRepository songListRepository,
-                           SongXSongListRepository songXSongListRepository){
+    public SimpleViewModel(__SongRepository songRepository,
+                           __SongListRepository songListRepository,
+                           __SongXSongListRepository songXSongListRepository){
         this.songRepository=songRepository;
         this.songListRepository=songListRepository;
         this.songXSongListRepository=songXSongListRepository;

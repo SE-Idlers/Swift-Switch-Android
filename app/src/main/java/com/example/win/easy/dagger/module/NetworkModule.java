@@ -1,6 +1,6 @@
 package com.example.win.easy.dagger.module;
 
-import com.example.win.easy.repository.web.BackendResourceWebService;
+import com.example.win.easy.repository.web.request.BackendResourceWebService;
 
 import javax.inject.Named;
 import javax.inject.Singleton;

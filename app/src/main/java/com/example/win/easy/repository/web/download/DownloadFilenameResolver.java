@@ -1,4 +1,4 @@
-package com.example.win.easy.repository.web;
+package com.example.win.easy.repository.web.download;
 
 import com.example.win.easy.repository.web.dto.SongDTO;
 

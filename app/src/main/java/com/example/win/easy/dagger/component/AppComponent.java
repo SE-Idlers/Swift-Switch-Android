@@ -10,9 +10,9 @@ import com.example.win.easy.display.interfaces.DisplayManager;
 import com.example.win.easy.factory.SongFactory;
 import com.example.win.easy.parser.filter.FilterStrategy;
 import com.example.win.easy.repository.db.dao.SongDao;
-import com.example.win.easy.repository.repo.SongListRepository;
-import com.example.win.easy.repository.repo.SongRepository;
-import com.example.win.easy.repository.repo.SongXSongListRepository;
+import com.example.win.easy.repository.deprecated.repo.__SongListRepository;
+import com.example.win.easy.repository.deprecated.repo.__SongRepository;
+import com.example.win.easy.repository.deprecated.repo.__SongXSongListRepository;
 
 import java.util.List;
 import java.util.concurrent.Executor;
@@ -34,11 +34,11 @@ public interface AppComponent {
 
     DisplayManager getDisplayManager();
 
-    SongRepository getSongRepository();
+    __SongRepository getSongRepository();
 
-    SongListRepository getSongListRepository();
+    __SongListRepository getSongListRepository();
 
-    SongXSongListRepository getSongXSongListRepository();
+    __SongXSongListRepository getSongXSongListRepository();
 
     SongDao getSongPojoDao();
 

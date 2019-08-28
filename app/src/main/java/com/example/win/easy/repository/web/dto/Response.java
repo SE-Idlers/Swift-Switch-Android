@@ -6,13 +6,7 @@ public class Response {
     private Status status;
     private String message;
 
-    public static Response success(Object body,String message){
-        return new Response(body,Status.Success,message);
-    }
 
-    public static Response error(Object body,String message){
-        return new Response(body,Status.Error,message);
-    }
     public Response(Object body,Status status,String message){
         this.body=body;
         this.status=status;

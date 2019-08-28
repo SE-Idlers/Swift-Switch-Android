@@ -3,6 +3,7 @@ package com.example.win.easy;
 import com.example.win.easy.parser.matchers.WordMatcherProxy;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.MockitoAnnotations;
@@ -22,6 +23,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 @RunWith(PowerMockRunner.class)
+@Ignore
 public class WordMatcherProxyTest {
     @Spy
     WordMatcherProxy proxy=new WordMatcherProxy();
