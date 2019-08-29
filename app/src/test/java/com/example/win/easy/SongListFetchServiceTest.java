@@ -4,8 +4,8 @@ import com.example.win.easy.repository.web.callback.OnReadyFunc;
 import com.example.win.easy.repository.web.dto.SongListDTO;
 import com.example.win.easy.repository.web.network.AllSongListNetworkFetchService;
 import com.example.win.easy.repository.web.network.NetworkFetchService;
-import com.example.win.easy.repository.web.request.BackendResourceWebService;
-import com.example.win.easy.repository.web.service.LoginManager;
+import com.example.win.easy.repository.web.request.BackendRequestService;
+import com.example.win.easy.repository.web.service.LoginService;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -70,7 +70,7 @@ public class SongListFetchServiceTest {
 
     /**
      * <p>未登录状态下的测试，获取uid的方法应该没有被调用</p>
-     * <p>（其实按理说应当verify的是网络请求没有发起，但是{@link BackendResourceWebService}这个类是自动生成的，是个final类</p>
+     * <p>（其实按理说应当verify的是网络请求没有发起，但是{@link BackendRequestService}这个类是自动生成的，是个final类</p>
      * <p>而mockito没法spy一个final类对象，所以只能退而求其次，verify一下loginManger的方法没有被调用了）</p>
      */
     @Test
@@ -78,17 +78,17 @@ public class SongListFetchServiceTest {
         setUpLoginState(false);
         networkFetchService.fetch(onReadyFuncForTest);
 
-        verify(mockLoginManager,times(0)).getCurrentUid();
+        verify(mockLoginService,times(0)).getCurrentUid();
     }
 
 
     @Before
     public void setUp(){
         //mock依赖注入
-        spyBackendResourceWebService = new Retrofit.Builder().baseUrl(serverUrl)
+        spyBackendRequestService = new Retrofit.Builder().baseUrl(serverUrl)
                 .addConverterFactory(GsonConverterFactory.create())
-                .build().create(BackendResourceWebService.class);
-        networkFetchService =new AllSongListNetworkFetchService(spyBackendResourceWebService, mockLoginManager);
+                .build().create(BackendRequestService.class);
+        networkFetchService =new AllSongListNetworkFetchService(spyBackendRequestService, mockLoginService);
 
 
 
@@ -96,42 +96,32 @@ public class SongListFetchServiceTest {
         //用于测试的onReadyFuncTest，简单地assert一下测试歌单的大小，确保通信成功
         onReadyFuncForTest=songListsFromResponse -> {
 
-            //直到确保主线程已经开始等待assertion成功后，才能assert并通知主线程
-            while (true){
-                synchronized (mainTestThreadHasBeenWaitingForMyAssertionToBeFinished){
-                    if (mainTestThreadHasBeenWaitingForMyAssertionToBeFinished.isNotReady())
-                        continue;
+            //找到那个我专门用来测试的歌单
+            SongListDTO songListDedicatedForTest=null;
+            for (SongListDTO songListDTO:songListsFromResponse)
+                if (songListDTO.getName().equals(songListNameForTest)) {
+                    songListDedicatedForTest = songListDTO;
+                    break;
                 }
 
-                //找到那个我专门用来测试的歌单
-                SongListDTO songListDedicatedForTest=null;
-                for (SongListDTO songListDTO:songListsFromResponse)
-                    if (songListDTO.getName().equals(songListNameForTest)) {
-                        songListDedicatedForTest = songListDTO;
-                        break;
-                    }
+            //没找到就直接手动让测试不通过（好吧，这个assert很沙雕。。）
+            if (songListDedicatedForTest==null)
+                assertTrue(false);
 
-                //没找到就直接手动让测试不通过（好吧，这个assert很沙雕。。）
-                if (songListDedicatedForTest==null)
-                    assertTrue(false);
+            //找到后进行assert
+            assertEquals(songListSizeForTest,songListDedicatedForTest.getSongDTOs().size());
 
-                //找到后进行assert
-                assertEquals(songListSizeForTest,songListDedicatedForTest.getSongDTOs().size());
-                break;
-            }
+            //直到确保主线程已经开始等待assertion成功后，才能assert并通知主线程
+            notifyMainThread();
 
-            //通知主线程assertion结束了
-            synchronized (assertionIsFinished){
-                assertionIsFinished.notifyAll();
-            }
         };
 
 
 
         //mock 当前用户（如果当前mock登陆状态是已登陆）的uid
-        doReturn(testUid).when(mockLoginManager).getCurrentUid();
+        doReturn(testUid).when(mockLoginService).getCurrentUid();
     }
-    private void setUpLoginState(boolean hasLogin){doReturn(hasLogin).when(mockLoginManager).hasLogin();}
+    private void setUpLoginState(boolean hasLogin){doReturn(hasLogin).when(mockLoginService).hasLogin();}
     private void waitForSubThreadAssertion() throws InterruptedException {
         //发起网络请求后，设置自己已经准备好要开始等待assertion了，然后开始等待assertion
         synchronized (assertionIsFinished){
@@ -142,8 +132,22 @@ public class SongListFetchServiceTest {
         }
     }
 
+    private void notifyMainThread(){
+        while (true){
+            synchronized (mainTestThreadHasBeenWaitingForMyAssertionToBeFinished){
+                if (mainTestThreadHasBeenWaitingForMyAssertionToBeFinished.isNotReady())
+                    continue;
+            }
+
+            synchronized (assertionIsFinished){
+                assertionIsFinished.notifyAll();
+            }
+            break;
+        }
+    }
+
     private NetworkFetchService<List<SongListDTO>> networkFetchService;
-    private BackendResourceWebService spyBackendResourceWebService;
-    private LoginManager mockLoginManager =Mockito.mock(LoginManager.class);
+    private BackendRequestService spyBackendRequestService;
+    private LoginService mockLoginService =Mockito.mock(LoginService.class);
 
 }

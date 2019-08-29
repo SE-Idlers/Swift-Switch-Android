@@ -9,7 +9,7 @@ import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
 
-public interface BackendResourceWebService {
+public interface BackendRequestService {
 
     @POST("resource/uid/phone")
     Call<String> getUidByPhone(@Query("account") String phone, @Query("password") String password);

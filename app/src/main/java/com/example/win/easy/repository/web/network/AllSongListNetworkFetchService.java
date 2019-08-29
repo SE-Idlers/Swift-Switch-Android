@@ -1,11 +1,11 @@
 package com.example.win.easy.repository.web.network;
 
 import com.example.win.easy.factory.CallbackFactory;
-import com.example.win.easy.repository.web.service.LoginManager;
+import com.example.win.easy.repository.web.service.LoginService;
 import com.example.win.easy.repository.web.callback.LambdaCallback;
 import com.example.win.easy.repository.web.callback.OnReadyFunc;
 import com.example.win.easy.repository.web.dto.SongListDTO;
-import com.example.win.easy.repository.web.request.BackendResourceWebService;
+import com.example.win.easy.repository.web.request.BackendRequestService;
 
 import java.util.List;
 
@@ -14,18 +14,18 @@ import retrofit2.Call;
 /**
  * <p>这个类的主要功能是根据不同的需要fetch的类型调用相应的网络请求方法</p>
  * <p>虽然看起来什么都没干，但其实是一个“胶水”功能的类，因为</p>
- * <p>url以及具体的参数要求是在{@link BackendResourceWebService}中定义的；Response到本地DTO类型的转化是在{@link CallbackFactory}中定义的</p>
+ * <p>url以及具体的参数要求是在{@link BackendRequestService}中定义的；Response到本地DTO类型的转化是在{@link CallbackFactory}中定义的</p>
  * <p>而这个类的功能就是，当上层说：“我要A类型的网络数据”时，调用这个类的fetch方法，这个类根据A，调用相应的网络方法（请求url的方法），设置相应的</p>
  * <p>CustomCallback用来将Response的数据转化为DTO数据。所以说这个类是一个“胶水”类，把一些功能联合起来</p>
  */
 public class AllSongListNetworkFetchService implements NetworkFetchService<List<SongListDTO>> {
 
-    private BackendResourceWebService webService;
-    private LoginManager loginManager;
-    public AllSongListNetworkFetchService(BackendResourceWebService webService,
-                                          LoginManager loginManager){
+    private BackendRequestService webService;
+    private LoginService loginService;
+    public AllSongListNetworkFetchService(BackendRequestService webService,
+                                          LoginService loginService){
         this.webService=webService;
-        this.loginManager=loginManager;
+        this.loginService = loginService;
     }
 
     /**
@@ -41,10 +41,10 @@ public class AllSongListNetworkFetchService implements NetworkFetchService<List<
     public void fetch(OnReadyFunc<List<SongListDTO>> onReadyFunc) {
 
         //只有登陆后才发起网路请求，否则直接啥都不干
-        if (loginManager.hasLogin()){
+        if (loginService.hasLogin()){
 
             //构造一个网络请求
-            Call<List<SongListDTO>> webCall=webService.getAllSongListsByUid(loginManager.getCurrentUid());
+            Call<List<SongListDTO>> webCall=webService.getAllSongListsByUid(loginService.getCurrentUid());
 
 
             //构造一个请求成功时要调用的callback，这里callback直接执行上层给的onReadyFunc，不再自己构造onReadyFunc

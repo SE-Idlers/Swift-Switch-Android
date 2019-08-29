@@ -2,16 +2,16 @@ package com.example.win.easy.repository.deprecated.repo;
 
 import androidx.lifecycle.LiveData;
 
-import com.example.win.easy.repository.web.service.LoginManager;
+import com.example.win.easy.repository.web.service.LoginService;
 
 import java.util.List;
 
 public abstract class __Repository<LocalType,NetworkType> {
 
-    protected LoginManager loginManager;
+    protected LoginService loginService;
 
-    public __Repository(LoginManager loginManager){
-        this.loginManager=loginManager;
+    public __Repository(LoginService loginService){
+        this.loginService = loginService;
     }
 
     /**
@@ -35,10 +35,8 @@ public abstract class __Repository<LocalType,NetworkType> {
 
     public void fetchAll(){
         //未登录时取消抓取
-        if(!loginManager.hasLogin())
+        if(!loginService.hasLogin())
             return;
-        //获取uid并据此发起网络请求并抓取
-        loginManager.fetchAllByUid(loginManager.getCurrentUid());
     }
 
     protected abstract boolean shouldFetch();

@@ -2,7 +2,7 @@ package com.example.win.easy.repository.deprecated.repo;
 
 import androidx.lifecycle.LiveData;
 
-import com.example.win.easy.repository.web.service.LoginManager;
+import com.example.win.easy.repository.web.service.LoginService;
 import com.example.win.easy.repository.db.dao.SongListDao;
 import com.example.win.easy.repository.db.data_object.SongListDO;
 import com.example.win.easy.repository.web.dto.SongListDTO;
@@ -23,8 +23,8 @@ public class __SongListRepository extends __Repository<SongListDO, SongListDTO> 
     @Inject
     public __SongListRepository(@Named("dbAccess") Executor diskIO,
                                 SongListDao songListDao,
-                                LoginManager loginManager){
-        super(loginManager);
+                                LoginService loginService){
+        super(loginService);
         this.diskIO=diskIO;
         this.songListDao = songListDao;
     }
