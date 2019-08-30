@@ -17,7 +17,7 @@ import androidx.lifecycle.ViewModelProviders;
 import com.example.win.easy.Constants;
 import com.example.win.easy.R;
 import com.example.win.easy.application.SwiftSwitchApplication;
-import com.example.win.easy.factory.SongFactory;
+import com.example.win.easy.factory.__SongFactory;
 import com.example.win.easy.tool.UriProcessTool;
 import com.example.win.easy.repository.db.CustomTypeConverters;
 import com.example.win.easy.repository.db.data_object.SongDO;
@@ -37,7 +37,8 @@ import javax.inject.Inject;
 public class AllSongsFragment extends ListFragment {
 
     @Inject ViewModelProvider.Factory factory;
-    @Inject SongFactory songFactory;
+    @Inject
+    __SongFactory songFactory;
     private SimpleViewModel viewModel;
     private LiveData<List<SongDO>> allSongs;
     private QMUIGroupListView.Section section;
@@ -93,7 +94,7 @@ public class AllSongsFragment extends ListFragment {
         for (SongDO songDO : songDOs) {
             QMUICommonListItemView itemView=groupListView.createItemView(LinearLayout.VERTICAL);
             //显示歌曲名称
-            itemView.setText(songDO.name);
+            itemView.setText(songDO.getName());
             //显示歌曲默认头像
             itemView.setImageDrawable(getResources().getDrawable(R.drawable.ase16));
             //itemView最右侧显示自定义的视图（一张图片）
@@ -103,15 +104,15 @@ public class AllSongsFragment extends ListFragment {
                 Toast.makeText(getContext(),"待实现：点击播放歌曲",Toast.LENGTH_SHORT).show();
             });
             //如果歌曲已经下载好，则显示它的sequence，同时在最右侧显示一张音符图片
-            if (songDO.songPath!=null){
+            if (songDO.getSongPath()!=null){
                 QMUIRadiusImageView imageView=new QMUIRadiusImageView(getContext());
                 imageView.setImageDrawable(getResources().getDrawable(R.drawable.ic_action_music));
                 itemView.addAccessoryCustomView(imageView);
-                itemView.setDetailText(CustomTypeConverters.characterList2string(songDO.sequence));
+                itemView.setDetailText(CustomTypeConverters.characterList2string(songDO.getSequence()));
             }
             //如果歌曲有下载好的头像，则发起一个异步任务，读取本地图片文件并解码图片，完成后自动更新视图
-            if (songDO.avatarPath!=null)
-                new DecodeImageAsyncTask(itemView,getResources()).execute(songDO.avatarPath);
+            if (songDO.getAvatarPath()!=null)
+                new DecodeImageAsyncTask(itemView,getResources()).execute(songDO.getAvatarPath());
             section.addItemView(itemView,null);
         }
         section.addTo(groupListView);

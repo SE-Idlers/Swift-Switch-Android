@@ -1,13 +1,13 @@
 package com.example.win.easy;
 
-import com.example.win.easy.repository.DTOUtil;
+import com.example.win.easy.web.DTOUtil;
 import com.example.win.easy.repository.db.data_object.SongDO;
 import com.example.win.easy.repository.db.data_object.SongListDO;
-import com.example.win.easy.repository.web.callback.OnReadyFunc;
-import com.example.win.easy.repository.web.dto.SongDTO;
-import com.example.win.easy.repository.web.dto.SongListDTO;
-import com.example.win.easy.repository.web.network.NetworkFetchService;
-import com.example.win.easy.repository.web.service.SongListWebService;
+import com.example.win.easy.web.callback.OnReadyFunc;
+import com.example.win.easy.web.dto.SongDTO;
+import com.example.win.easy.web.dto.SongListDTO;
+import com.example.win.easy.web.network.NetworkFetchService;
+import com.example.win.easy.web.service.SongListWebService;
 
 import org.junit.Before;
 import org.junit.Test;

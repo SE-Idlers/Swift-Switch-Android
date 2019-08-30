@@ -1,6 +1,6 @@
-package com.example.win.easy.repository.web.request;
+package com.example.win.easy.web.request;
 
-import com.example.win.easy.repository.web.dto.SongListDTO;
+import com.example.win.easy.web.dto.SongListDTO;
 
 import java.util.List;
 

@@ -103,7 +103,7 @@ public class DisplayManagerImpl implements DisplayManager {
             // 切歌之前先重置，释放掉之前的资源
             mediaPlayer.reset();
             // 设置播放源
-            mediaPlayer.setDataSource(songDO.songPath);
+            mediaPlayer.setDataSource(songDO.getSongPath());
             // 开始播放前的准备工作，加载多媒体资源，获取相关信息
             mediaPlayer.prepare();
             // 开始播放

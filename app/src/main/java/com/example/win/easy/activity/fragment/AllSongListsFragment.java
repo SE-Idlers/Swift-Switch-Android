@@ -76,7 +76,7 @@ public class AllSongListsFragment extends ListFragment {
         for (SongListDO songListDO : songListDOS) {
             QMUICommonListItemView itemView=groupListView.createItemView(LinearLayout.VERTICAL);
             //显示歌单名字
-            itemView.setText(songListDO.name);
+            itemView.setText(songListDO.getName());
             //显示歌单默认头像，如果后续发现有下载好的头像，则替换
             itemView.setImageDrawable(getResources().getDrawable(R.drawable.ase16));
             //item右侧显示歌单内歌曲数量
@@ -84,8 +84,8 @@ public class AllSongListsFragment extends ListFragment {
             //item最右侧显示">"
             itemView.setAccessoryType(QMUICommonListItemView.ACCESSORY_TYPE_CHEVRON);
             //若歌单已下载自己的头像，则发起一个解码的异步任务（因为解码耗时较长，会阻塞主线程）,解码结束后自动更新头像
-            if (songListDO.avatarPath!=null)
-                new DecodeImageAsyncTask(itemView,getResources()).execute(songListDO.avatarPath);
+            if (songListDO.getAvatarPath()!=null)
+                new DecodeImageAsyncTask(itemView,getResources()).execute(songListDO.getAvatarPath());
             //设置item点击监听
             itemView.setOnClickListener(v -> {
                 //TODO 触发切换Fragment
@@ -105,7 +105,7 @@ public class AllSongListsFragment extends ListFragment {
     private int sizeOf(SongListDO songListDO, List<SongXSongListDO> allRelation){
         int size=0;
         for (SongXSongListDO songXSongListDO :allRelation) {
-            if (songXSongListDO.songListId == songListDO.id)
+            if (songXSongListDO.getSongListId() == songListDO.getId())
                 size++;
         }
         return size;

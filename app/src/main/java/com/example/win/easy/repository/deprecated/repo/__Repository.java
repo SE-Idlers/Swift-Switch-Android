@@ -2,7 +2,7 @@ package com.example.win.easy.repository.deprecated.repo;
 
 import androidx.lifecycle.LiveData;
 
-import com.example.win.easy.repository.web.service.LoginService;
+import com.example.win.easy.web.service.LoginService;
 
 import java.util.List;
 

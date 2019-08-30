@@ -1,7 +1,13 @@
 package com.example.win.easy;
 
-//@RunWith(AndroidJUnit4ClassRunner.class)
-//public class OurDatabaseTest {
+import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner;
+
+import org.junit.Ignore;
+import org.junit.runner.RunWith;
+
+@RunWith(AndroidJUnit4ClassRunner.class)
+@Ignore
+public class OurDatabaseTest {
 //
 //    private OurDatabase ourDatabase;
 //    private SongDao songDao;
@@ -118,4 +124,4 @@ package com.example.win.easy;
 //        songListDao.insert(songListPojo1);
 //        songListDao.insert(songListPojo2);
 //    }
-//}
+}

@@ -2,10 +2,10 @@ package com.example.win.easy.repository.deprecated.repo;
 
 import androidx.lifecycle.LiveData;
 
-import com.example.win.easy.repository.web.service.LoginService;
+import com.example.win.easy.web.service.LoginService;
 import com.example.win.easy.repository.db.dao.SongListDao;
 import com.example.win.easy.repository.db.data_object.SongListDO;
-import com.example.win.easy.repository.web.dto.SongListDTO;
+import com.example.win.easy.web.dto.SongListDTO;
 
 import java.util.List;
 import java.util.concurrent.Executor;

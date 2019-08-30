@@ -48,9 +48,19 @@ public class SongDO {
     public DataSource source;
 
     /**
+     * 歌曲的下载url
+     */
+    public String songUrl;
+
+    /**
      * 歌曲的绝对路径
      */
     public String songPath;
+
+    /**
+     * 歌曲头像的下载url
+     */
+    public String avatarUrl;
 
     /**
      * 歌曲图片的绝对路径

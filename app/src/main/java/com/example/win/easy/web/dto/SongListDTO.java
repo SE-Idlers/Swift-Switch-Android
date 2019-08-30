@@ -1,10 +1,8 @@
-package com.example.win.easy.repository.web.dto;
+package com.example.win.easy.web.dto;
 
 import com.example.win.easy.enumeration.DataSource;
-import com.google.gson.internal.LinkedTreeMap;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
 import lombok.AllArgsConstructor;
@@ -50,16 +48,5 @@ public class SongListDTO implements Serializable {
      */
     public String remoteId;
 
-    public SongListDTO(LinkedTreeMap<String,Object> treeMap){
-        this.name=(String) treeMap.get("name");
-        List<SongDTO> songDTOs =new ArrayList<>();
-        for (LinkedTreeMap<String,Object> _treeMap:(List<LinkedTreeMap<String,Object>>)treeMap.get("songDTOs"))
-            songDTOs.add(new SongDTO(_treeMap));
-        this.songDTOs = songDTOs;
-        this.avatarUrl=(String)treeMap.get("avatarUrl");
-        this.source=DataSource.valueOf((String) treeMap.get("source"));
-        this.uid=(String)treeMap.get("uid");
-        this.remoteId=(String)treeMap.get("remoteId");
-    }
 
 }

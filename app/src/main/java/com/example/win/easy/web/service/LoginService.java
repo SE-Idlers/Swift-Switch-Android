@@ -1,7 +1,7 @@
-package com.example.win.easy.repository.web.service;
+package com.example.win.easy.web.service;
 
-import com.example.win.easy.repository.web.callback.OnReadyFunc;
-import com.example.win.easy.repository.web.request.BackendRequestService;
+import com.example.win.easy.web.callback.OnReadyFunc;
+import com.example.win.easy.web.request.BackendRequestService;
 
 
 import retrofit2.Call;

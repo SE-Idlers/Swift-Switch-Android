@@ -2,7 +2,7 @@ package com.example.win.easy.repository.deprecated.repo;
 
 import androidx.lifecycle.LiveData;
 
-import com.example.win.easy.repository.web.service.LoginService;
+import com.example.win.easy.web.service.LoginService;
 import com.example.win.easy.repository.db.dao.SongDao;
 import com.example.win.easy.repository.db.dao.SongXSongListDao;
 import com.example.win.easy.repository.db.data_object.SongListDO;
@@ -79,7 +79,7 @@ public class __SongXSongListRepository extends __Repository<SongXSongListDO,Void
 
         @Override
         public void run() {
-            SongDO result= songDao.findAllBySongPath(newSong.songPath);
+            SongDO result= songDao.findAllBySongPath(newSong.getSongPath());
             long newSongId;
             if (result==null)
                 newSongId= songDao.insert(newSong);

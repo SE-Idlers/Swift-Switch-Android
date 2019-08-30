@@ -7,7 +7,7 @@ import com.example.win.easy.dagger.module.ParserModule;
 import com.example.win.easy.dagger.module.RepositoryModule;
 import com.example.win.easy.dagger.module.ThreadModule;
 import com.example.win.easy.display.interfaces.DisplayManager;
-import com.example.win.easy.factory.SongFactory;
+import com.example.win.easy.factory.__SongFactory;
 import com.example.win.easy.parser.filter.FilterStrategy;
 import com.example.win.easy.repository.db.dao.SongDao;
 import com.example.win.easy.repository.deprecated.repo.__SongListRepository;
@@ -42,7 +42,7 @@ public interface AppComponent {
 
     SongDao getSongPojoDao();
 
-    SongFactory getSongFactory();
+    __SongFactory getSongFactory();
 
     FilterStrategy<List<Character>> getFilterStrategy();
 

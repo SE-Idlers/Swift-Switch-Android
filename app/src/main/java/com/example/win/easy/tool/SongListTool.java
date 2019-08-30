@@ -42,7 +42,7 @@ public class SongListTool {
         for (DataSource dataSource:dataSources)
             songLists.add(
                     new SongList(
-                            new SongListDO(dataSource),
+                            SongListDO.builder().source(dataSource).build(),
                             dataSourceGroup.get(dataSource)
                     )
             );

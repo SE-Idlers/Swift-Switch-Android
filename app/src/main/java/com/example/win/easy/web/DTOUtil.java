@@ -1,9 +1,9 @@
-package com.example.win.easy.repository;
+package com.example.win.easy.web;
 
 import com.example.win.easy.repository.db.data_object.SongDO;
 import com.example.win.easy.repository.db.data_object.SongListDO;
-import com.example.win.easy.repository.web.dto.SongDTO;
-import com.example.win.easy.repository.web.dto.SongListDTO;
+import com.example.win.easy.web.dto.SongDTO;
+import com.example.win.easy.web.dto.SongListDTO;
 
 /**
  * <p>从DTO到DO转化的工具（当然以后也有可能实现DO到DTO的转化）</p>
@@ -11,7 +11,7 @@ import com.example.win.easy.repository.web.dto.SongListDTO;
  * <p></p>
  * <p>首先如果写在其他类里面，那应该private还是public呢？如果private，那么很难mock（或者说mock起来很丑而且还要用PowerMock的修改字节码的方式）</p>
  * <p>不但如此，其他类万一需要用，那就得重写，代码就开始复制粘贴了。那行，设置成public成了吧？也不成。为啥？</p>
- * <p>看起来public是一举解决了上面两个问题，但现实是，需要这些转化方法的类大多都是某些中间件（比如{@link com.example.win.easy.repository.web.service.SongListWebService}）</p>
+ * <p>看起来public是一举解决了上面两个问题，但现实是，需要这些转化方法的类大多都是某些中间件（比如{@link com.example.win.easy.web.service.SongListWebService}）</p>
  * <p>如果其他中间件仅仅是为了调用一个转化方法就把这个类加入自己的依赖类中，也太傻X了。。按理来说应该是依赖其核心功能的时候才应该添加依赖啊，可只是为了转化这个。。</p>
  * <p>所以从职责分配的角度，转化这个方法应当单独提出来作为一个类</p>
  * <p></p>

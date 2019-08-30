@@ -37,7 +37,7 @@ public class OnClickListenerForSelectingSong implements View.OnClickListener {
         List<SongList> appearanceLists=new ArrayList<>();
         //TODO 统计出现的歌单
         //将本地音乐作为一个歌单加入
-        appearanceLists.add(new SongList(new SongListDO(DataSource.Local),allSongs));
+        appearanceLists.add(new SongList(SongListDO.builder().source(DataSource.Local).build(),allSongs));
         return appearanceLists;
     }
 }

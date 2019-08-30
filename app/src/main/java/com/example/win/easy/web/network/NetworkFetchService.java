@@ -1,6 +1,6 @@
-package com.example.win.easy.repository.web.network;
+package com.example.win.easy.web.network;
 
-import com.example.win.easy.repository.web.callback.OnReadyFunc;
+import com.example.win.easy.web.callback.OnReadyFunc;
 
 public interface NetworkFetchService<DTOType> {
 

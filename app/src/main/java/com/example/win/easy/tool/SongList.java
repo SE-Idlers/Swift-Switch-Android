@@ -14,7 +14,7 @@ public class SongList {
 
     private List<SongDO> songDOs;
 
-    public String getName(){return songListDO.name;}
-    public DataSource getSource(){return songListDO.source;}
+    public String getName(){return songListDO.getName();}
+    public DataSource getSource(){return songListDO.getSource();}
     public List<SongDO> getSongDOs(){return songDOs;}
 }

@@ -1,11 +1,11 @@
 package com.example.win.easy;
 
-import com.example.win.easy.repository.web.callback.OnReadyFunc;
-import com.example.win.easy.repository.web.dto.SongListDTO;
-import com.example.win.easy.repository.web.network.AllSongListNetworkFetchService;
-import com.example.win.easy.repository.web.network.NetworkFetchService;
-import com.example.win.easy.repository.web.request.BackendRequestService;
-import com.example.win.easy.repository.web.service.LoginService;
+import com.example.win.easy.web.callback.OnReadyFunc;
+import com.example.win.easy.web.dto.SongListDTO;
+import com.example.win.easy.web.network.AllSongListNetworkFetchService;
+import com.example.win.easy.web.network.NetworkFetchService;
+import com.example.win.easy.web.request.BackendRequestService;
+import com.example.win.easy.web.service.LoginService;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -38,7 +38,7 @@ public class SongListFetchServiceTest {
     private String testUid="1846879130";
 
     //测试的配置
-    private String serverUrl="http://localhost:9000/";
+    private String serverUrl="http://106.53.93.41:9000/";
 
     //用于同步的信号量
     private final BooleanSemaphore mainTestThreadHasBeenWaitingForMyAssertionToBeFinished=new BooleanSemaphore(false);

@@ -2,9 +2,11 @@ package com.example.win.easy;
 
 import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner;
 
+import org.junit.Ignore;
 import org.junit.runner.RunWith;
 
 @RunWith(AndroidJUnit4ClassRunner.class)
+@Ignore
 public class SongDownloadTest {
 
 //

@@ -1,7 +1,6 @@
-package com.example.win.easy.repository.web.dto;
+package com.example.win.easy.web.dto;
 
 import com.example.win.easy.enumeration.DataSource;
-import com.google.gson.internal.LinkedTreeMap;
 
 import java.io.Serializable;
 
@@ -66,15 +65,4 @@ public class SongDTO implements Serializable {
      */
     public String remoteId;
 
-    public SongDTO(LinkedTreeMap<String,Object> treeMap){
-        this.totalName=(String)treeMap.get("totalName");
-        this.name=(String)treeMap.get("name");
-        this.author=(String)treeMap.get("author");
-        this.extensionName=(String)treeMap.get("extensionName");
-        this.songUrl=(String)treeMap.get("songUrl");
-        this.avatarUrl=(String)treeMap.get("avatarUrl");
-        this.source=DataSource.valueOf((String)treeMap.get("source"));
-        this.uid=(String)treeMap.get("uid");
-        this.remoteId=(String)treeMap.get("remoteId");
-    }
 }

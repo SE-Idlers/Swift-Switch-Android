@@ -2,10 +2,10 @@ package com.example.win.easy.repository.deprecated.repo;
 
 import androidx.lifecycle.LiveData;
 
-import com.example.win.easy.repository.web.service.LoginService;
+import com.example.win.easy.web.service.LoginService;
 import com.example.win.easy.repository.db.dao.SongDao;
 import com.example.win.easy.repository.db.data_object.SongDO;
-import com.example.win.easy.repository.web.dto.SongDTO;
+import com.example.win.easy.web.dto.SongDTO;
 
 import java.util.List;
 import java.util.concurrent.Executor;
@@ -33,7 +33,7 @@ public class __SongRepository extends __Repository<SongDO, SongDTO> {
     @Override
     public void insert(SongDO localData) {
         diskIO.execute(()->{
-            SongDO result= songDao.findAllBySongPath(localData.songPath);
+            SongDO result= songDao.findAllBySongPath(localData.getSongPath());
             System.out.println(result);
             if (result==null)
                 songDao.insert(localData);

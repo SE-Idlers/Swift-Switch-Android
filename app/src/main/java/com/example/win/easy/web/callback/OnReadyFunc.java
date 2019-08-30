@@ -1,4 +1,4 @@
-package com.example.win.easy.repository.web.callback;
+package com.example.win.easy.web.callback;
 
 /**
  * <p>专门用来当lambda函数用的接口</p>

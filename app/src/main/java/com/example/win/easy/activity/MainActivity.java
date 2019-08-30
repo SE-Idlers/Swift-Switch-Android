@@ -17,7 +17,7 @@ import com.example.win.easy.Constants;
 import com.example.win.easy.R;
 import com.example.win.easy.application.SwiftSwitchApplication;
 import com.example.win.easy.activity.fragment.ListFragment;
-import com.example.win.easy.factory.SongFactory;
+import com.example.win.easy.factory.__SongFactory;
 import com.example.win.easy.repository.db.data_object.SongDO;
 import com.example.win.easy.repository.db.data_object.SongListDO;
 import com.example.win.easy.tool.DialogTool;
@@ -48,7 +48,8 @@ public class MainActivity extends AppCompatActivity {
     ImageButton cloud;
     ImageButton music;
     @Inject ViewModelProvider.Factory factory;
-    @Inject SongFactory songFactory;
+    @Inject
+    __SongFactory songFactory;
     private SimpleViewModel viewModel;
     private LiveData<Integer> songAmount;
     private LiveData<Integer> songListAmount;

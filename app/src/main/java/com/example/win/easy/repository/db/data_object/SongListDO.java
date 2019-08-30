@@ -3,17 +3,18 @@ package com.example.win.easy.repository.db.data_object;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
-import com.example.win.easy.repository.web.dto.SongListDTO;
 import com.example.win.easy.enumeration.DataSource;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Data
 @Builder
 @AllArgsConstructor
+@NoArgsConstructor
 public class SongListDO {
 
     /**
@@ -34,6 +35,11 @@ public class SongListDO {
     public DataSource source;
 
     /**
+     * 歌单头像的下载url
+     */
+    public String avatarUrl;
+
+    /**
      * 歌单图片的绝对路径
      */
     public String avatarPath;
@@ -47,16 +53,4 @@ public class SongListDO {
      * 网络歌单本身的id
      */
     public String remoteId;
-
-    public SongListDO(){}
-    public SongListDO(SongListDTO songListDTO){
-        this.name= songListDTO.name;
-        this.source= songListDTO.source;
-        this.uid= songListDTO.uid;
-        this.remoteId= songListDTO.remoteId;
-    }
-    public SongListDO(DataSource dataSource){
-        this.source=dataSource;
-        this.name=source.toString();
-    }
 }
