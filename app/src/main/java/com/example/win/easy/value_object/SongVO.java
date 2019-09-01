@@ -1,5 +1,7 @@
 package com.example.win.easy.value_object;
 
+import java.io.File;
+
 import lombok.Builder;
 import lombok.Data;
 
@@ -8,5 +10,9 @@ import lombok.Data;
 public class SongVO {
 
     String name;
+
+    File songFile;
+
+    File avatarFile;
 
 }
