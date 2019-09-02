@@ -1,12 +1,12 @@
 package com.example.win.easy;
 
 
-import androidx.test.ext.junit.runners.AndroidJUnit4;
+import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-@RunWith(AndroidJUnit4.class)
+@RunWith(AndroidJUnit4ClassRunner.class)
 public class AdapterOnAndroidTest {
     static {
         System.loadLibrary("tensorflow_inference");
