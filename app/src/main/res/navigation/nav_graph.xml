@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/mainActivityFragment">
+    <fragment
+        android:id="@+id/mainActivityFragment"
+        android:name="com.example.win.easy.view.fragment.MainActivityFragment"
+        android:label="MainActivityFragment" >
+        <action
+            android:id="@+id/action_mainActivityFragment_to_allSongListsFragment"
+            app:destination="@id/allSongListsFragment" />
+        <action
+            android:id="@+id/action_mainActivityFragment_to_allSongsFragment"
+            app:destination="@id/allSongsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/allSongListsFragment"
+        android:name="com.example.win.easy.view.fragment.AllSongListsFragment"
+        android:label="AllSongListsFragment" />
+    <fragment
+        android:id="@+id/allSongsFragment"
+        android:name="com.example.win.easy.view.fragment.AllSongsFragment"
+        android:label="AllSongsFragment" />
+</navigation>

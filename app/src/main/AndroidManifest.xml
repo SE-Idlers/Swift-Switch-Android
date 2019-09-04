@@ -7,7 +7,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
-        android:name=".application.SwiftSwitchApplication"
+        android:name=".dagger.SwiftSwitchApplication"
         android:icon="@drawable/swift"
         android:label="@string/app_name"
         android:roundIcon="@drawable/swift"
@@ -19,18 +19,13 @@
         <uses-library android:name="android.test.base" android:required="false"/>
         <uses-library android:name="android.test.mock" android:required="false"/>
 
-        <activity android:name=".activity.ListActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-            </intent-filter>
-        </activity>
-        <activity android:name=".activity.MainActivity">
+        <activity android:name=".view.activity.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.LockActivity">
+        <activity android:name=".view.activity.LockActivity">
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -38,7 +33,7 @@
         </activity>
 
         <service
-            android:name=".activity.MyService"
+            android:name=".view.activity.MyService"
             android:enabled="true"
             android:exported="true" />
     </application>

@@ -1,7 +1,7 @@
 package com.example.win.easy;
 
-import com.example.win.easy.activity.LockActivity;
-import com.example.win.easy.activity.MainActivity;
+import com.example.win.easy.view.activity.LockActivity;
+import com.example.win.easy.view.activity.MainActivity;
 
 import java.lang.ref.WeakReference;
 

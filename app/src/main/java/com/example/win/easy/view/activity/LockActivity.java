@@ -1,4 +1,4 @@
-package com.example.win.easy.activity;
+package com.example.win.easy.view.activity;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
@@ -20,9 +20,9 @@ import com.example.win.easy.ActivityHolder;
 import com.example.win.easy.Constants;
 import com.example.win.easy.Dashboard;
 import com.example.win.easy.R;
-import com.example.win.easy.activity.interfaces.SearchingView;
-import com.example.win.easy.activity.interfaces.SongListView;
-import com.example.win.easy.application.SwiftSwitchApplication;
+import com.example.win.easy.view.activity.interfaces.SearchingView;
+import com.example.win.easy.view.activity.interfaces.SongListView;
+import com.example.win.easy.dagger.SwiftSwitchApplication;
 import com.example.win.easy.display.interfaces.DisplayManager;
 import com.example.win.easy.factory.ListenerFactory;
 import com.example.win.easy.parser.filter.FilterStrategy;
@@ -69,7 +69,7 @@ public class LockActivity extends AppCompatActivity implements SongListView, Sea
         super.onCreate(savedInstanceState);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED|WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
         ActivityHolder.update(this);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_dashboard);
         SwiftSwitchApplication.application.getDashboardComponent(this).inject(this);
         viewModel= ViewModelProviders.of(this,factory).get(SimpleViewModel.class);
         recognitionProxy.setAssetManager(getAssets());

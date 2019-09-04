@@ -1,8 +1,9 @@
-package com.example.win.easy.activity;
+package com.example.win.easy.download;
 
-import com.example.win.easy.download.DownloadService;
+import com.example.win.easy.repository.UpdateService;
 import com.example.win.easy.repository.db.data_object.SongDO;
 import com.example.win.easy.value_object.SongVO;
+import com.example.win.easy.value_object.VOUtil;
 import com.example.win.easy.web.callback.OnReadyFunc;
 
 /**

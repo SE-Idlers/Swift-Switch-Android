@@ -3,11 +3,11 @@ package com.example.win.easy.dagger.module;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.example.win.easy.activity.VOUtil;
+import com.example.win.easy.value_object.VOUtil;
 import com.example.win.easy.repository.deprecated.repo.__SongRepository;
 import com.example.win.easy.viewmodel.SimpleViewModel;
 import com.example.win.easy.viewmodel.SongViewModel;
-import com.example.win.easy.viewmodel.ViewModelFactory;
+import com.example.win.easy.factory.ViewModelFactory;
 import com.example.win.easy.repository.deprecated.repo.__SongListRepository;
 import com.example.win.easy.repository.deprecated.repo.__SongXSongListRepository;
 

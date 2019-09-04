@@ -1,4 +1,4 @@
-package com.example.win.easy.activity.interfaces;
+package com.example.win.easy.view.activity.interfaces;
 
 import com.example.win.easy.tool.SongList;
 

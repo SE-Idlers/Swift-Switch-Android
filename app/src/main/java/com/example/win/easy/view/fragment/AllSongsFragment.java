@@ -1,4 +1,4 @@
-package com.example.win.easy.activity.fragment;
+package com.example.win.easy.view.fragment;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -16,11 +16,10 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.example.win.easy.Constants;
 import com.example.win.easy.R;
-import com.example.win.easy.application.SwiftSwitchApplication;
 import com.example.win.easy.factory.__SongFactory;
-import com.example.win.easy.tool.UriProcessTool;
 import com.example.win.easy.repository.db.CustomTypeConverters;
 import com.example.win.easy.repository.db.data_object.SongDO;
+import com.example.win.easy.tool.UriProcessTool;
 import com.example.win.easy.viewmodel.SimpleViewModel;
 import com.qmuiteam.qmui.widget.QMUIRadiusImageView;
 import com.qmuiteam.qmui.widget.grouplist.QMUICommonListItemView;
@@ -29,19 +28,21 @@ import com.qmuiteam.qmui.widget.grouplist.QMUIGroupListView;
 import java.io.File;
 import java.util.List;
 
-import javax.inject.Inject;
-
 /**
- * 展示所有歌曲的Fragment
+ * <p>展示所有歌曲的界面</p>
  */
 public class AllSongsFragment extends ListFragment {
 
-    @Inject ViewModelProvider.Factory factory;
-    @Inject
-    __SongFactory songFactory;
+    private ViewModelProvider.Factory factory;
+    private __SongFactory songFactory;
     private SimpleViewModel viewModel;
     private LiveData<List<SongDO>> allSongs;
     private QMUIGroupListView.Section section;
+
+    public AllSongsFragment(ViewModelProvider.Factory factory,__SongFactory songFactory){
+        this.factory=factory;
+        this.songFactory=songFactory;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
@@ -74,8 +75,6 @@ public class AllSongsFragment extends ListFragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
-        //注册数据监听
-        SwiftSwitchApplication.application.getViewModelComponent().inject(this);
         viewModel = ViewModelProviders.of(this,factory).get(SimpleViewModel.class);
         allSongs=viewModel.getAllSongs();
         allSongs.observe(this, this::update);

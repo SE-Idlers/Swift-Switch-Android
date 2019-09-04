@@ -1,4 +1,4 @@
-package com.example.win.easy.activity;
+package com.example.win.easy.view.activity;
 
 import android.app.Service;
 import android.content.BroadcastReceiver;

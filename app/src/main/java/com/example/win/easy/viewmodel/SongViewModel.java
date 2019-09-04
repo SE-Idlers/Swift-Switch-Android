@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModel;
 
-import com.example.win.easy.activity.VOUtil;
+import com.example.win.easy.value_object.VOUtil;
 import com.example.win.easy.repository.db.data_object.SongDO;
 import com.example.win.easy.repository.deprecated.repo.__SongRepository;
 import com.example.win.easy.value_object.SongVO;

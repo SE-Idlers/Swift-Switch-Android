@@ -2,7 +2,7 @@ package com.example.win.easy.listener;
 
 import android.view.View;
 
-import com.example.win.easy.activity.interfaces.SongListView;
+import com.example.win.easy.view.activity.interfaces.SongListView;
 import com.example.win.easy.display.interfaces.DisplayManager;
 import com.example.win.easy.enumeration.DataSource;
 import com.example.win.easy.repository.db.data_object.SongDO;

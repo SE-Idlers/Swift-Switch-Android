@@ -1,4 +1,4 @@
-package com.example.win.easy.viewmodel;
+package com.example.win.easy.factory;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModel;

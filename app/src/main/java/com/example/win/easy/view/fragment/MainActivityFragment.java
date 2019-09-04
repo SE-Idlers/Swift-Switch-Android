@@ -1,22 +1,23 @@
-package com.example.win.easy.activity;
+package com.example.win.easy.view.fragment;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.navigation.Navigation;
 
-import com.example.win.easy.ActivityHolder;
 import com.example.win.easy.Constants;
 import com.example.win.easy.R;
-import com.example.win.easy.application.SwiftSwitchApplication;
-import com.example.win.easy.activity.fragment.ListFragment;
 import com.example.win.easy.factory.__SongFactory;
 import com.example.win.easy.repository.db.data_object.SongDO;
 import com.example.win.easy.repository.db.data_object.SongListDO;
@@ -33,23 +34,27 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.inject.Inject;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MainActivity extends AppCompatActivity {
+/**
+ * <p>点app图标进来后见到的主界面</p>
+ */
+public class MainActivityFragment extends Fragment {
     @BindView(R.id.listview) QMUIGroupListView mGroupListContact;
     @BindView(R.id.topbar) QMUITopBar qmuiTopBar;
-    QMUICommonListItemView allSongItem;
-    QMUICommonListItemView allSongListItem;
-    ImageButton addSongBtn;
-    ImageButton addSongListBtn;
-    ImageButton cloud;
-    ImageButton music;
-    @Inject ViewModelProvider.Factory factory;
-    @Inject
-    __SongFactory songFactory;
+
+    private QMUICommonListItemView allSongItem;
+    private QMUICommonListItemView allSongListItem;
+
+    private ImageButton addSongBtn;
+    private ImageButton addSongListBtn;
+    private ImageButton cloud;
+    private ImageButton music;
+
+    private ViewModelProvider.Factory factory;
+    private __SongFactory songFactory;
+
     private SimpleViewModel viewModel;
     private LiveData<Integer> songAmount;
     private LiveData<Integer> songListAmount;
@@ -57,15 +62,23 @@ public class MainActivity extends AppCompatActivity {
     private LiveData<List<SongListDO>> allSongLists;
     private List<LiveData<List<SongDO>>> recordTable;
 
+    public MainActivityFragment(ViewModelProvider.Factory factory,__SongFactory songFactory){
+        this.factory=factory;
+        this.songFactory=songFactory;
+    }
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        ActivityHolder.update(this);
-        SwiftSwitchApplication.application.getViewModelComponent().inject(this);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
+        View thisView=inflater.inflate(R.layout.fragment_main_activity,container,false);
+        ButterKnife.bind(this,thisView);
         //初始化界面
         initView();
-        //开启锁屏后台服务
-        startService(new Intent(this,MyService.class));
+        System.out.println("I am created view!");
+        return thisView;
+    }
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         //注册数据监听
         registerData();
     }
@@ -75,8 +88,6 @@ public class MainActivity extends AppCompatActivity {
      * 初始化界面及其相应监听
      */
     private void initView(){
-        //设置本页面视图
-        setContentView(R.layout.main);
         //绑定视图
         bindView();
         //初始化顶栏
@@ -92,13 +103,12 @@ public class MainActivity extends AppCompatActivity {
      * 绑定视图
      */
     private void bindView(){
-        ButterKnife.bind(this);
         allSongItem = mGroupListContact.createItemView("我的歌曲");
         allSongListItem = mGroupListContact.createItemView("我的歌单");
-        addSongBtn =new ImageButton(getApplicationContext());
-        addSongListBtn =new ImageButton(getApplicationContext());
-        cloud=new ImageButton(getApplicationContext());
-        music=new ImageButton(getApplicationContext());
+        addSongBtn =new ImageButton(getContext());
+        addSongListBtn =new ImageButton(getContext());
+        cloud=new ImageButton(getContext());
+        music=new ImageButton(getContext());
     }
     /**
      * 初始化Item
@@ -108,17 +118,13 @@ public class MainActivity extends AppCompatActivity {
         allSongListItem.setAccessoryType(QMUICommonListItemView.ACCESSORY_TYPE_CUSTOM);
         allSongItem.addAccessoryCustomView(addSongBtn);
         allSongItem.setOnClickListener(v -> {
-            Intent checkAllSongsIntent=new Intent(this, ListActivity.class);
-            checkAllSongsIntent.putExtra("content", ListFragment.CONTENT_ALL_SONGS);
-            startActivity(checkAllSongsIntent);
+            Navigation.findNavController(getView()).navigate(R.id.action_mainActivityFragment_to_allSongsFragment);
         });
         allSongListItem.addAccessoryCustomView(addSongListBtn);
         allSongListItem.setOnClickListener(v -> {
-            Intent checkAllSongListsIntent=new Intent(this, ListActivity.class);
-            checkAllSongListsIntent.putExtra("content",ListFragment.CONTENT_ALL_SONG_LISTS);
-            startActivity(checkAllSongListsIntent);
+            Navigation.findNavController(getView()).navigate(R.id.action_mainActivityFragment_to_allSongListsFragment);
         });
-        QMUIGroupListView.newSection(this)
+        QMUIGroupListView.newSection(getContext())
                 .addItemView(allSongItem,null)
                 .addItemView(allSongListItem,null)
                 .addTo(mGroupListContact);
@@ -145,8 +151,8 @@ public class MainActivity extends AppCompatActivity {
         cloud.setImageResource(R.drawable.ic_action_cloud);
         music.setImageResource(R.drawable.ic_action_music);
         qmuiTopBar.setTitle("我的");
-        qmuiTopBar.addRightImageButton(R.drawable.ic_action_music,music.getId()).setOnClickListener(v -> Toast.makeText(getApplicationContext(),"音乐 ",Toast.LENGTH_LONG).show());
-        qmuiTopBar.addLeftImageButton(R.drawable.ic_action_cloud,cloud.getId()).setOnClickListener(v -> Toast.makeText(getApplicationContext(),"云 ",Toast.LENGTH_LONG).show());
+        qmuiTopBar.addRightImageButton(R.drawable.ic_action_music,music.getId()).setOnClickListener(v -> Toast.makeText(getContext(),"音乐 ",Toast.LENGTH_LONG).show());
+        qmuiTopBar.addLeftImageButton(R.drawable.ic_action_cloud,cloud.getId()).setOnClickListener(v -> Toast.makeText(getContext(),"云 ",Toast.LENGTH_LONG).show());
     }
 
     /**
@@ -182,12 +188,13 @@ public class MainActivity extends AppCompatActivity {
      * @param resultData 如果成功操作，返回的数据
      */
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent resultData){
+    public void onActivityResult(int requestCode, int resultCode, Intent resultData) {
 
         //从查看文件夹Activity,即请求码为READ_REQUEST_CODE返回
-        if (requestCode ==Constants.READ_REQUEST_CODE
+        super.onActivityResult(requestCode, resultCode, resultData);
+        if (requestCode == Constants.READ_REQUEST_CODE
                 && resultCode == Activity.RESULT_OK
-                &&resultData!=null) {
+                && resultData != null) {
             //将歌曲文件添加到歌单的对话框
             createDialogAddSongToSongList(resultData.getData());
         }
@@ -202,7 +209,7 @@ public class MainActivity extends AppCompatActivity {
             for (SongDO songDO :allSongs.getValue())
                 songNames.add(songDO.getName());
         DialogTool.createMenuDialog(
-                this,
+                getContext(),
                 "所有歌曲",
                 songNames.toArray(new String[0]),
                 null,
@@ -219,7 +226,7 @@ public class MainActivity extends AppCompatActivity {
             List<String> songListNames=new ArrayList<>();
             for (SongListDO songListDO :allSongLists.getValue())
                 songListNames.add(songListDO.getName());
-            final QMUIDialog.MultiCheckableDialogBuilder builder=new QMUIDialog.MultiCheckableDialogBuilder(this);
+            final QMUIDialog.MultiCheckableDialogBuilder builder=new QMUIDialog.MultiCheckableDialogBuilder(getContext());
             DialogTool.createMultiCheckDialog(
                     builder,
                     "添加到歌单..",
@@ -232,7 +239,7 @@ public class MainActivity extends AppCompatActivity {
                     com.qmuiteam.qmui.R.style.QMUI_Dialog
             );
         }else
-            viewModel.insert(songFactory.create(new File(UriProcessTool.getPathByUri4kitkat(this,uri))));
+            viewModel.insert(songFactory.create(new File(UriProcessTool.getPathByUri4kitkat(getContext(),uri))));
     }
 
     /**
@@ -244,7 +251,7 @@ public class MainActivity extends AppCompatActivity {
             for (SongListDO songListDO :allSongLists.getValue())
                 songListNames.add(songListDO.getName());
         DialogTool.createMenuDialog(
-                this,
+                getContext(),
                 "所有歌单",
                 songListNames.toArray(new String[0]),
                 null,
@@ -276,6 +283,5 @@ public class MainActivity extends AppCompatActivity {
             dialog.dismiss();
         }
     }
-
 
 }

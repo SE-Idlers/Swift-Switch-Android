@@ -1,6 +1,6 @@
 package com.example.win.easy.factory;
 
-import com.example.win.easy.activity.interfaces.SongListView;
+import com.example.win.easy.view.activity.interfaces.SongListView;
 import com.example.win.easy.dagger.scope.DashboardScope;
 import com.example.win.easy.display.interfaces.DisplayManager;
 import com.example.win.easy.listener.OnClickListenerForSelectingSong;

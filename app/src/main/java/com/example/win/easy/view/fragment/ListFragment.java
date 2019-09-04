@@ -1,4 +1,4 @@
-package com.example.win.easy.activity.fragment;
+package com.example.win.easy.view.fragment;
 
 import android.content.res.Resources;
 import android.graphics.Bitmap;

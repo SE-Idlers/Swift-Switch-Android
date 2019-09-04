@@ -1,4 +1,4 @@
-package com.example.win.easy.activity.fragment;
+package com.example.win.easy.view.fragment;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -13,7 +13,6 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.example.win.easy.R;
-import com.example.win.easy.application.SwiftSwitchApplication;
 import com.example.win.easy.repository.db.data_object.SongListDO;
 import com.example.win.easy.repository.db.data_object.SongXSongListDO;
 import com.example.win.easy.viewmodel.SimpleViewModel;
@@ -23,19 +22,20 @@ import com.qmuiteam.qmui.widget.grouplist.QMUIGroupListView;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.inject.Inject;
-
 /**
- * 用于展示所有歌单的Fragment
+ * <p>用于展示所有歌单的界面</p>
  */
 public class AllSongListsFragment extends ListFragment {
 
     private SimpleViewModel viewModel;
-    @Inject ViewModelProvider.Factory factory;
+    private ViewModelProvider.Factory factory;
     private LiveData<List<SongListDO>> allSongLists;
     private LiveData<List<SongXSongListDO>> allRelation;
     private QMUIGroupListView.Section section;
 
+    public AllSongListsFragment(ViewModelProvider.Factory factory){
+        this.factory=factory;
+    }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
         View thisView=super.onCreateView(inflater,container,savedInstanceState);
@@ -54,7 +54,6 @@ public class AllSongListsFragment extends ListFragment {
     public void onCreate(@Nullable Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         //注册数据监听
-        SwiftSwitchApplication.application.getViewModelComponent().inject(this);
         viewModel= ViewModelProviders.of(this,factory).get(SimpleViewModel.class);
         allSongLists=viewModel.getAllSongLists();
         allRelation=viewModel.getAllRelation();
