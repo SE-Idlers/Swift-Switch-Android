@@ -1,8 +1,8 @@
 package com.example.win.easy;
 
-import com.example.win.easy.web.DTOUtil;
 import com.example.win.easy.repository.db.data_object.SongDO;
 import com.example.win.easy.repository.db.data_object.SongListDO;
+import com.example.win.easy.web.DTOUtil;
 import com.example.win.easy.web.callback.OnReadyFunc;
 import com.example.win.easy.web.dto.SongDTO;
 import com.example.win.easy.web.dto.SongListDTO;
@@ -15,8 +15,7 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.powermock.api.mockito.PowerMockito;
-import org.powermock.modules.junit4.PowerMockRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -31,7 +30,7 @@ import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
 
 @SuppressWarnings("ALL")
-@RunWith(PowerMockRunner.class)
+@RunWith(MockitoJUnitRunner.class)
 public class SongListWebServiceTest {
 
     @InjectMocks SongListWebService songListWebService;
@@ -66,7 +65,7 @@ public class SongListWebServiceTest {
         //手动初始化一个spy，初始化注解mock注入
         mockNetworkService();
         MockitoAnnotations.initMocks(this);
-        songListWebService =PowerMockito.spy(songListWebService);
+        songListWebService = spy(songListWebService);
 
         //mock数据
         mockSongListDTOFromBackend();
@@ -183,7 +182,7 @@ public class SongListWebServiceTest {
     }
 
     private void prepareResult(){
-        trueSongListString ="another excellent set!"+"无双";
+        trueSongListString ="无双"+"another excellent set!";
 
         trueAllSongDOsSet=new HashSet<>();
         trueAllSongDOsSet.add(songDO1);

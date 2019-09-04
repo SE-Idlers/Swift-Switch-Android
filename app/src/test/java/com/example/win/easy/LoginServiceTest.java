@@ -7,8 +7,7 @@ import com.example.win.easy.web.service.LoginService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.powermock.core.classloader.annotations.PowerMockIgnore;
-import org.powermock.modules.junit4.PowerMockRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -19,8 +18,7 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 @SuppressWarnings("ALL")
-@RunWith(PowerMockRunner.class)
-@PowerMockIgnore("javax.net.ssl.*")
+@RunWith(MockitoJUnitRunner.class)
 public class LoginServiceTest {
 
     //真正的我的网易云id

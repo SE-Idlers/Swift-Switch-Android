@@ -1,11 +1,8 @@
 package com.example.win.easy;
 
 import org.junit.Ignore;
-import org.junit.runner.RunWith;
-import org.powermock.modules.junit4.PowerMockRunner;
 
 //没有Mock掉Proxy，因此是一个功能测试
-@RunWith(PowerMockRunner.class)
 @Ignore
 public class RegulationFilenameParserTest {
 //    @Spy
