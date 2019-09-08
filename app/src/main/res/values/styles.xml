@@ -17,7 +17,7 @@
 
 <resources xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools">
 
-    <style name="AppTheme" parent="QMUI.Compat.NoActionBar">
+    <style name="AppTheme" parent="QMUI.Compat">
         <!-- 配置Android提供的theme -->
         <item name="android:textAppearanceListItemSmall">@style/QDTextAppearanceListItemSmall</item>
         <item name="android:textAppearanceListItem">@style/QDtextAppearanceListItem</item>

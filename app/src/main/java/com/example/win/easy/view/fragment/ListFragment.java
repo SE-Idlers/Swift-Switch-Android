@@ -1,10 +1,5 @@
 package com.example.win.easy.view.fragment;
 
-import android.content.res.Resources;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,7 +14,7 @@ import com.qmuiteam.qmui.widget.QMUITopBar;
 import com.qmuiteam.qmui.widget.grouplist.QMUICommonListItemView;
 import com.qmuiteam.qmui.widget.grouplist.QMUIGroupListView;
 
-import java.lang.ref.WeakReference;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -29,11 +24,10 @@ import butterknife.ButterKnife;
  */
 public abstract class ListFragment extends Fragment {
 
-    public static final int CONTENT_ALL_SONGS=0;
-    public static final int CONTENT_ALL_SONG_LISTS=1;
     @BindView(R.id.fragment_list_top_bar) QMUITopBar topBar;
     @BindView(R.id.fragment_list_group_list) QMUIGroupListView groupListView;
     QMUIAlphaImageButton imageButton;
+    private QMUIGroupListView.Section section;
 
     /**
      * 创建视图时的行为包括：<br/>
@@ -55,6 +49,15 @@ public abstract class ListFragment extends Fragment {
         return thisView;
     }
 
+    protected void setItemViews(List<QMUICommonListItemView> itemViews){
+        if (section!=null)
+            section.removeFrom(groupListView);
+        section=QMUIGroupListView.newSection(getContext());
+        for (int i=0;i<itemViews.size();i++)
+            section.addItemView(itemViews.get(i),null);
+        section.addTo(groupListView);
+    }
+
     /**
      * 供子类设置标题
      * @param title topBar的标题
@@ -71,31 +74,7 @@ public abstract class ListFragment extends Fragment {
         imageButton.setOnClickListener(listener);
     }
 
-    /**
-     * 一个异步的解码图片的任务<br/>
-     * 因为解码需要涉及磁盘IO及图片处理，可能会阻塞主线程，故在此设置一个异步Task专门处理图片的读取与解码,在结束后会自动更新传入的itemView
-     */
-    public static class DecodeImageAsyncTask extends AsyncTask<String,Void, Bitmap>{
 
-        private WeakReference<QMUICommonListItemView> itemViewWeakReference;
-        private Resources resources;
-
-        public DecodeImageAsyncTask(QMUICommonListItemView itemView,Resources resources){
-            this.itemViewWeakReference=new WeakReference<>(itemView);
-            this.resources=resources;
-        }
-
-        @Override
-        protected Bitmap doInBackground(String... strings) {
-            return BitmapFactory.decodeFile(strings[0]);
-        }
-
-        @Override
-        protected void onPostExecute(Bitmap bitmap){
-            itemViewWeakReference.get().setImageDrawable(new BitmapDrawable(resources,bitmap));
-        }
-
-
-    }
 
 }
+

@@ -47,6 +47,7 @@ public class SwiftSwitchApplication extends Application {
         super.onCreate();
         application=this;
 
+
     }
 
     private AppComponent getAppComponent() {

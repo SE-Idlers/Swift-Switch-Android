@@ -6,26 +6,27 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.example.win.easy.Constants;
 import com.example.win.easy.R;
+import com.example.win.easy.enumeration.DataSource;
 import com.example.win.easy.factory.__SongFactory;
 import com.example.win.easy.repository.db.CustomTypeConverters;
 import com.example.win.easy.repository.db.data_object.SongDO;
 import com.example.win.easy.tool.UriProcessTool;
+import com.example.win.easy.view.EntityItem;
+import com.example.win.easy.view.OnClickFunc;
 import com.example.win.easy.viewmodel.SimpleViewModel;
 import com.qmuiteam.qmui.widget.QMUIRadiusImageView;
 import com.qmuiteam.qmui.widget.grouplist.QMUICommonListItemView;
-import com.qmuiteam.qmui.widget.grouplist.QMUIGroupListView;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -36,8 +37,6 @@ public class AllSongsFragment extends ListFragment {
     private ViewModelProvider.Factory factory;
     private __SongFactory songFactory;
     private SimpleViewModel viewModel;
-    private LiveData<List<SongDO>> allSongs;
-    private QMUIGroupListView.Section section;
 
     public AllSongsFragment(ViewModelProvider.Factory factory,__SongFactory songFactory){
         this.factory=factory;
@@ -76,8 +75,7 @@ public class AllSongsFragment extends ListFragment {
     public void onCreate(@Nullable Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         viewModel = ViewModelProviders.of(this,factory).get(SimpleViewModel.class);
-        allSongs=viewModel.getAllSongs();
-        allSongs.observe(this, this::update);
+        viewModel.getAllSongs().observe(this, this::update);
     }
 
     /**
@@ -85,38 +83,44 @@ public class AllSongsFragment extends ListFragment {
      * @param songDOs 最新的歌曲数据
      */
     public void update(List<SongDO> songDOs){
-        //每次刷新时都重新创建section
-        if (section!=null)
-            section.removeFrom(groupListView);
-        section=QMUIGroupListView.newSection(getContext());
-        //对每个歌曲都生成一个itemView
-        for (SongDO songDO : songDOs) {
-            QMUICommonListItemView itemView=groupListView.createItemView(LinearLayout.VERTICAL);
-            //显示歌曲名称
-            itemView.setText(songDO.getName());
-            //显示歌曲默认头像
-            itemView.setImageDrawable(getResources().getDrawable(R.drawable.ase16));
-            //itemView最右侧显示自定义的视图（一张图片）
-            itemView.setAccessoryType(QMUICommonListItemView.ACCESSORY_TYPE_CUSTOM);
-            itemView.setOnClickListener(v -> {
+        if (songDOs.size()==0) {
+            songDOs.add(SongDO.builder().id(78).name("测试测试and测试 - 桂喜老师").source(DataSource.Local).sequence(new ArrayList<>()).build());
+            songDOs.add(SongDO.builder().id(99).name("One Punch").source(DataSource.Local).sequence(new ArrayList<>()).build());
+        }
+        List<QMUICommonListItemView> songItemViews=new ArrayList<>();
+        //对每个歌单都生成一个itemView
+        for (int i=0;i<songDOs.size();i++){
+            songItemViews.add(new SongItem(songDOs.get(i),(song,view)->{
                 //TODO 触发歌曲播放
                 Toast.makeText(getContext(),"待实现：点击播放歌曲",Toast.LENGTH_SHORT).show();
-            });
-            //如果歌曲已经下载好，则显示它的sequence，同时在最右侧显示一张音符图片
-            if (songDO.getSongPath()!=null){
-                QMUIRadiusImageView imageView=new QMUIRadiusImageView(getContext());
-                imageView.setImageDrawable(getResources().getDrawable(R.drawable.ic_action_music));
-                itemView.addAccessoryCustomView(imageView);
-                itemView.setDetailText(CustomTypeConverters.characterList2string(songDO.getSequence()));
-            }
-            //如果歌曲有下载好的头像，则发起一个异步任务，读取本地图片文件并解码图片，完成后自动更新视图
-            if (songDO.getAvatarPath()!=null)
-                new DecodeImageAsyncTask(itemView,getResources()).execute(songDO.getAvatarPath());
-            section.addItemView(itemView,null);
+            }));
         }
-        section.addTo(groupListView);
+        setItemViews(songItemViews);
     }
 
+
+    class SongItem extends EntityItem<SongDO> {
+
+        public SongItem(SongDO entity, OnClickFunc<SongDO> onClickFunc) {
+            super(AllSongsFragment.this.getContext(), entity, onClickFunc);
+            //显示歌曲名称
+            setText(entity.getName());
+            //显示歌曲默认头像
+            setImageDrawable(getResources().getDrawable(R.drawable.ase16));
+            //itemView最右侧显示自定义的视图（一张图片）
+            setAccessoryType(QMUICommonListItemView.ACCESSORY_TYPE_CUSTOM);
+            //如果歌曲已经下载好，则显示它的sequence，同时在最右侧显示一张音符图片
+            if (entity.getSongPath()!=null){
+                QMUIRadiusImageView imageView=new QMUIRadiusImageView(getContext());
+                imageView.setImageDrawable(getResources().getDrawable(R.drawable.ic_action_music));
+                addAccessoryCustomView(imageView);
+                setDetailText(CustomTypeConverters.characterList2string(entity.getSequence()));
+            }
+            //如果歌曲有下载好的头像，则发起一个异步任务，读取本地图片文件并解码图片，完成后自动更新视图
+//            if (entity.getAvatarPath()!=null)
+//                new DecodeImageAsyncTask(this,getResources()).execute(entity.getAvatarPath());
+        }
+    }
 
 
 

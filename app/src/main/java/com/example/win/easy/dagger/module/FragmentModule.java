@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.win.easy.factory.DaggerFragmentFactory;
+import com.example.win.easy.view.ImageService;
 import com.example.win.easy.view.fragment.MainActivityFragment;
 import com.example.win.easy.view.fragment.AllSongListsFragment;
 import com.example.win.easy.view.fragment.AllSongsFragment;
@@ -51,7 +52,7 @@ public class FragmentModule {
     @IntoMap
     @FragmentKey(AllSongListsFragment.class)
     static Fragment provideAllSongListsFragment(ViewModelProvider.Factory factory){
-        return new AllSongListsFragment(factory);
+        return new AllSongListsFragment(factory,new ImageService());
     }
 
     @Provides

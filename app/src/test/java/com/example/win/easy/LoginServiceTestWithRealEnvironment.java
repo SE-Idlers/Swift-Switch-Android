@@ -19,7 +19,7 @@ import static org.junit.Assert.assertTrue;
 
 @SuppressWarnings("ALL")
 @RunWith(MockitoJUnitRunner.class)
-public class LoginServiceTest {
+public class LoginServiceTestWithRealEnvironment {
 
     //真正的我的网易云id
     private String actualMyUid="1846879130";
@@ -54,7 +54,7 @@ public class LoginServiceTest {
 
 
     /**
-     * <p>跟{@link LoginServiceTest#testLoginByPhone()}差不多，验证hasLogin为false，验证当前id是null，其他的都一样</p>
+     * <p>跟{@link LoginServiceTestWithRealEnvironment#testLoginByPhone()}差不多，验证hasLogin为false，验证当前id是null，其他的都一样</p>
      */
     @Test
     public void testFailLogin() throws InterruptedException {

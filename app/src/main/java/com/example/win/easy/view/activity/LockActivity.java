@@ -41,6 +41,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import lombok.AllArgsConstructor;
 
 public class LockActivity extends AppCompatActivity implements SongListView, SearchingView {
@@ -70,6 +71,7 @@ public class LockActivity extends AppCompatActivity implements SongListView, Sea
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED|WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
         ActivityHolder.update(this);
         setContentView(R.layout.activity_dashboard);
+        ButterKnife.bind(this);
         SwiftSwitchApplication.application.getDashboardComponent(this).inject(this);
         viewModel= ViewModelProviders.of(this,factory).get(SimpleViewModel.class);
         recognitionProxy.setAssetManager(getAssets());

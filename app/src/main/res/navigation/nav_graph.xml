@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
     app:startDestination="@id/mainActivityFragment">
     <fragment
@@ -17,9 +18,26 @@
     <fragment
         android:id="@+id/allSongListsFragment"
         android:name="com.example.win.easy.view.fragment.AllSongListsFragment"
-        android:label="AllSongListsFragment" />
+        android:label="AllSongListsFragment" >
+        <action
+            android:id="@+id/action_allSongListsFragment_to_songListFragment"
+            app:destination="@id/songListFragment" />
+        <action
+            android:id="@+id/action_allSongListsFragment_to_placeholder"
+            app:destination="@id/placeholder" />
+    </fragment>
     <fragment
         android:id="@+id/allSongsFragment"
         android:name="com.example.win.easy.view.fragment.AllSongsFragment"
         android:label="AllSongsFragment" />
+    <fragment
+        android:id="@+id/songListFragment"
+        android:name="com.example.win.easy.view.fragment.SongListFragment"
+        android:label="SongListFragment">
+        <argument android:name="selectedSongList"
+            app:argType="com.example.win.easy.value_object.SongListVO" />
+    </fragment>
+    <fragment
+        android:id="@+id/placeholder"
+        android:label="SongListCreationFragment" />
 </navigation>
