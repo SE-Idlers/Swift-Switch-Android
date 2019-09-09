@@ -1,8 +1,8 @@
 package com.example.win.easy.dagger.module;
 
+import com.example.win.easy.display.interfaces.DisplayService;
 import com.example.win.easy.view.activity.interfaces.SongListView;
 import com.example.win.easy.dagger.scope.DashboardScope;
-import com.example.win.easy.display.interfaces.DisplayManager;
 import com.example.win.easy.factory.ListenerFactory;
 import com.example.win.easy.recognization.component.RecognitionProxyWithFourGestures;
 import com.example.win.easy.recognization.interfaces.RecognitionProxy;
@@ -20,8 +20,8 @@ public class ListenerModule {
     }
 
     @Provides @DashboardScope
-    ListenerFactory provideListenerFactory(DisplayManager displayManager){
-        return new ListenerFactory(displayManager,songListView);
+    ListenerFactory provideListenerFactory(DisplayService displayService){
+        return new ListenerFactory(displayService,songListView);
     }
 
     @Provides @DashboardScope

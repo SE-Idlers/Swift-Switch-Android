@@ -2,9 +2,9 @@ package com.example.win.easy.display;
 
 import android.media.MediaPlayer;
 
+import com.example.win.easy.display.interfaces.DisplayService;
 import com.example.win.easy.repository.db.data_object.SongDO;
 import com.example.win.easy.tool.SongList;
-import com.example.win.easy.display.interfaces.DisplayManager;
 
 import java.io.IOException;
 import java.util.List;
@@ -13,10 +13,10 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 @Singleton
-public class DisplayManagerImpl implements DisplayManager {
+public class DisplayServiceImpl implements DisplayService {
 
     @Inject
-    public DisplayManagerImpl(MediaPlayer mediaPlayer){
+    public DisplayServiceImpl(MediaPlayer mediaPlayer){
         this.mediaPlayer=mediaPlayer;
     }
 

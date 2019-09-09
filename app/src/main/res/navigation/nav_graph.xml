@@ -24,7 +24,7 @@
             app:destination="@id/songListFragment" />
         <action
             android:id="@+id/action_allSongListsFragment_to_placeholder"
-            app:destination="@id/placeholder" />
+            app:destination="@id/songListCreationFragment" />
     </fragment>
     <fragment
         android:id="@+id/allSongsFragment"
@@ -36,8 +36,18 @@
         android:label="SongListFragment">
         <argument android:name="selectedSongList"
             app:argType="com.example.win.easy.value_object.SongListVO" />
+        <action
+            android:id="@+id/action_songListFragment_to_placeholder2"
+            app:destination="@id/addSongToSongListFragment" />
     </fragment>
     <fragment
-        android:id="@+id/placeholder"
+        android:id="@+id/songListCreationFragment"
         android:label="SongListCreationFragment" />
+    <fragment
+        android:id="@+id/addSongToSongListFragment"
+        android:label="AddSongToSongListFragment" >
+        <argument
+            android:name="songListSongsAddedTo"
+            app:argType="com.example.win.easy.value_object.SongListVO" />
+    </fragment>
 </navigation>

@@ -11,8 +11,13 @@ public class SongVO {
 
     String name;
 
-    File songFile;
+    String songFileUrl;
+
+    String songFilePath;
 
     File avatarFile;
 
+
+    public boolean songFileHasBeenDownloaded(){return songFilePath!=null;}
+    public boolean songFileCanBeDownloaded(){return songFileUrl!=null;}
 }

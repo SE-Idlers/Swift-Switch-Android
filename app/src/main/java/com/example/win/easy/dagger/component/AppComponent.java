@@ -6,7 +6,7 @@ import com.example.win.easy.dagger.module.NetworkModule;
 import com.example.win.easy.dagger.module.ParserModule;
 import com.example.win.easy.dagger.module.RepositoryModule;
 import com.example.win.easy.dagger.module.ThreadModule;
-import com.example.win.easy.display.interfaces.DisplayManager;
+import com.example.win.easy.display.interfaces.DisplayService;
 import com.example.win.easy.factory.__SongFactory;
 import com.example.win.easy.parser.filter.FilterStrategy;
 import com.example.win.easy.repository.db.dao.SongDao;
@@ -32,7 +32,7 @@ import dagger.Component;
 @Singleton
 public interface AppComponent {
 
-    DisplayManager getDisplayManager();
+    DisplayService getDisplayManager();
 
     __SongRepository getSongRepository();
 

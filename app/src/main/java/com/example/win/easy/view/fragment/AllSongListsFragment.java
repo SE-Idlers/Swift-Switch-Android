@@ -6,7 +6,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
@@ -42,16 +41,9 @@ public class AllSongListsFragment extends ListFragment {
         setTopBarTitle(barTitle);
         //右上角按钮用于创建新的歌单
         setRightImageButtonOnClickListener(v-> Navigation.findNavController(v).navigate(AllSongListsFragmentDirections.actionAllSongListsFragmentToPlaceholder()));
-        return thisView;
-    }
-
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState){
-        super.onCreate(savedInstanceState);
-        //注册数据监听
         SongListViewModel songListViewModel=ViewModelProviders.of(this,factory).get(SongListViewModel.class);
         songListViewModel.getAll().observe(this,this::update);
+        return thisView;
     }
 
     /**

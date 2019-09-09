@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.example.win.easy.dagger.module.ViewModelModule;
 import com.example.win.easy.dagger.scope.ViewModelScope;
-import com.example.win.easy.display.interfaces.DisplayManager;
+import com.example.win.easy.display.interfaces.DisplayService;
 import com.example.win.easy.factory.__SongFactory;
 import com.example.win.easy.parser.filter.FilterStrategy;
 
@@ -18,7 +18,7 @@ public interface ViewModelComponent {
 
     ViewModelProvider.Factory getViewModelFactory();
 
-    DisplayManager getDisplayManager();
+    DisplayService getDisplayManager();
 
     FilterStrategy<List<Character>> getFilterStrategy();
 

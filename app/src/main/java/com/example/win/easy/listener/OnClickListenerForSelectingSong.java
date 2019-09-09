@@ -2,8 +2,8 @@ package com.example.win.easy.listener;
 
 import android.view.View;
 
+import com.example.win.easy.display.interfaces.DisplayService;
 import com.example.win.easy.view.activity.interfaces.SongListView;
-import com.example.win.easy.display.interfaces.DisplayManager;
 import com.example.win.easy.enumeration.DataSource;
 import com.example.win.easy.repository.db.data_object.SongDO;
 import com.example.win.easy.repository.db.data_object.SongListDO;
@@ -19,7 +19,7 @@ import lombok.Builder;
 public class OnClickListenerForSelectingSong implements View.OnClickListener {
 
     private SongListView songListView;
-    private DisplayManager displayManager;
+    private DisplayService displayService;
 
     private SongDO songDO;
     private List<SongDO> allSongs;
@@ -30,7 +30,7 @@ public class OnClickListenerForSelectingSong implements View.OnClickListener {
     public void onClick(View v) {
         List<SongList> appearanceLists=appearanceListsOf(songDO);
         songListView.updateToSwitchingSongList(appearanceLists);
-        displayManager.restartWith(songDO,appearanceLists.get(0));
+        displayService.restartWith(songDO,appearanceLists.get(0));
     }
 
     private List<SongList> appearanceListsOf(SongDO songDO){

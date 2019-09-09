@@ -129,7 +129,7 @@ public class DownloadServiceAdapterInvocationTest {
             SongVO songVO= invocation.getArgument(0);
             return SongDO.builder()
                     .name(songVO.getName())
-                    .songPath(songVO.getSongFile()==null?null:songVO.getSongFile().getAbsolutePath())
+                    .songPath(songVO.getSongFilePath())
                     .avatarPath(songVO.getAvatarFile()==null?null:songVO.getAvatarFile().getAbsolutePath())
                     .build();
         });
@@ -137,19 +137,19 @@ public class DownloadServiceAdapterInvocationTest {
             SongDO songDO=invocation.getArgument(0);
             return SongVO.builder()
                     .name(songDO.name)
-                    .songFile(songDO.getSongPath()==null?null:new File(songDO.getSongPath()))
+                    .songFilePath(songDO.getSongPath())
                     .avatarFile(songDO.getAvatarPath()==null?null:new File(songDO.getAvatarPath()))
                     .build();
         });
     }
 
     private void verifyInitialState() {
-        assertNull(invoker.getMySong().getSongFile());
+        assertNull(invoker.getMySong().getSongFilePath());
         verify(invoker,times(0)).displaySong(any(SongVO.class));
     }
 
     private void verifyLiveDataUpdateSuccessfullyAndCallbackIsInvokedRespectively() {
-        assertNotNull(invoker.getMySong().getSongFile());
+        assertNotNull(invoker.getMySong().getSongFilePath());
         verify(invoker,times(1)).displaySong(any(SongVO.class));
     }
 
@@ -240,7 +240,7 @@ public class DownloadServiceAdapterInvocationTest {
 
             //调用下载模块，并且下载成功（文件不是null）后就开始播放
             downloadServiceAdapter.download(songToDownloadAndDisplay, readySongVO->{
-                if (readySongVO.getSongFile()!=null)
+                if (readySongVO.getSongFilePath()!=null)
                     displaySong(readySongVO);
             });
         }
@@ -263,7 +263,7 @@ public class DownloadServiceAdapterInvocationTest {
         public void update(SongDO songDO) {
             //模拟更新LiveData
             SongVO data= songVOMLD.getValue();
-            data.setSongFile(new File(songDO.getSongPath()));
+            data.setSongFilePath(songDO.getSongPath());
             songVOMLD.setValue(data);
 
             //模拟更新物理数据
@@ -283,7 +283,7 @@ public class DownloadServiceAdapterInvocationTest {
     @Spy MockSongRepository mockSongRepository;
 
     //用于测试的简单数据
-    private SongVO mockInitialSongVO=SongVO.builder().name("啥啊这是").songFile(null).avatarFile(null).build();
+    private SongVO mockInitialSongVO=SongVO.builder().name("啥啊这是").songFilePath(null).avatarFile(null).build();
     private String mockDownloadedFilePath="/1/2/3/4/5/6/7/8/9.mp3";
 
     //用于同步的信号量

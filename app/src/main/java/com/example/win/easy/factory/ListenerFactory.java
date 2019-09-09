@@ -1,8 +1,8 @@
 package com.example.win.easy.factory;
 
+import com.example.win.easy.display.interfaces.DisplayService;
 import com.example.win.easy.view.activity.interfaces.SongListView;
 import com.example.win.easy.dagger.scope.DashboardScope;
-import com.example.win.easy.display.interfaces.DisplayManager;
 import com.example.win.easy.listener.OnClickListenerForSelectingSong;
 import com.example.win.easy.listener.OnClickListenerForSwitchingSongList;
 import com.example.win.easy.listener.OnTabSelectedListenerForSelectingSong;
@@ -19,12 +19,12 @@ import javax.inject.Inject;
 @DashboardScope
 public class ListenerFactory {
 
-    private DisplayManager displayManager;
+    private DisplayService displayService;
     private SongListView songListView;
 
     @Inject
-    public ListenerFactory(DisplayManager displayManager,SongListView songListView) {
-        this.displayManager = displayManager;
+    public ListenerFactory(DisplayService displayService, SongListView songListView) {
+        this.displayService = displayService;
         this.songListView=songListView;
     }
 
@@ -37,7 +37,7 @@ public class ListenerFactory {
                 .allSongs(allSongs)
                 .allSongLists(allSongLists)
                 .allRelation(allRelation)
-                .displayManager(displayManager)
+                .displayService(displayService)
                 .songListView(songListView)
                 .build();
     }
@@ -45,7 +45,7 @@ public class ListenerFactory {
     public OnClickListenerForSwitchingSongList create(SongDO songDO){
         return OnClickListenerForSwitchingSongList.builder()
                 .songDO(songDO)
-                .displayManager(displayManager)
+                .displayService(displayService)
                 .build();
     }
 
@@ -57,7 +57,7 @@ public class ListenerFactory {
     public OnTabSelectedListenerForSwitchingSongList create(List<SongList> appearanceLists){
         return OnTabSelectedListenerForSwitchingSongList.builder()
                 .appearanceLists(appearanceLists)
-                .displayManager(displayManager)
+                .displayService(displayService)
                 .build();
     }
 

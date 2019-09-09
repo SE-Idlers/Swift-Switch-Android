@@ -6,11 +6,12 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.win.easy.factory.DaggerFragmentFactory;
+import com.example.win.easy.factory.__SongFactory;
 import com.example.win.easy.view.ImageService;
-import com.example.win.easy.view.fragment.MainActivityFragment;
 import com.example.win.easy.view.fragment.AllSongListsFragment;
 import com.example.win.easy.view.fragment.AllSongsFragment;
-import com.example.win.easy.factory.__SongFactory;
+import com.example.win.easy.view.fragment.MainActivityFragment;
+import com.example.win.easy.view.fragment.SongListFragment;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
@@ -36,6 +37,13 @@ public class FragmentModule {
 
     @Provides
     @IntoMap
+    @FragmentKey(NavHostFragment.class)
+    static Fragment provideNavHostFragment(){
+        return new NavHostFragment();
+    }
+
+    @Provides
+    @IntoMap
     @FragmentKey(MainActivityFragment.class)
     static Fragment provideMainActivityFragment(ViewModelProvider.Factory factory, __SongFactory songFactory){
         return new MainActivityFragment(factory,songFactory);
@@ -57,10 +65,11 @@ public class FragmentModule {
 
     @Provides
     @IntoMap
-    @FragmentKey(NavHostFragment.class)
-    static Fragment provideNavHostFragment(){
-        return new NavHostFragment();
+    @FragmentKey(SongListFragment.class)
+    static Fragment provideSongListFragment(ViewModelProvider.Factory factory){
+        return new SongListFragment(null,null,factory);
     }
+
 
     @Provides
     static FragmentFactory provideFragmentFactory(Map<Class<? extends Fragment>, Provider<Fragment>> providerMap){

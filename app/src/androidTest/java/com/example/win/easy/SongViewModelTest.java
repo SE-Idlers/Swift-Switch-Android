@@ -109,7 +109,7 @@ public class SongViewModelTest {
 
             return SongVO.builder()
                     .name(songDO.getName())
-                    .songFile(songDO.getSongPath()==null?null:new File(songDO.getSongPath()))
+                    .songFilePath(songDO.getSongPath())
                     .avatarFile(songDO.getAvatarPath()==null?null:new File(songDO.getAvatarPath()))
                     .build();
         });

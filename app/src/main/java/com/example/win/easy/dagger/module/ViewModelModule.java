@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.win.easy.value_object.SongListVO;
+import com.example.win.easy.value_object.SongVO;
 import com.example.win.easy.value_object.VOUtil;
 import com.example.win.easy.repository.deprecated.repo.__SongRepository;
 import com.example.win.easy.viewmodel.SimpleViewModel;
@@ -60,6 +61,11 @@ public class ViewModelModule {
     @ViewModelKey(SongListViewModel.class)
     static ViewModel provideSongListViewModel(){
         return new SongListViewModel() {
+            @Override
+            public LiveData<List<SongVO>> songsOf(SongListVO songListVO) {
+                return new MutableLiveData<>();
+            }
+
             @Override
             public LiveData<List<SongListVO>> getAll() {
                 MutableLiveData<List<SongListVO>> all=new MutableLiveData<>();

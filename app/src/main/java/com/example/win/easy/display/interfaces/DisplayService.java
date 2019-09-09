@@ -4,7 +4,7 @@ import com.example.win.easy.tool.SongList;
 import com.example.win.easy.display.DisplayMode;
 import com.example.win.easy.repository.db.data_object.SongDO;
 
-public interface DisplayManager {
+public interface DisplayService {
 
     void next();
 

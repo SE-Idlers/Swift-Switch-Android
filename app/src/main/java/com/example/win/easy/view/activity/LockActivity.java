@@ -23,7 +23,7 @@ import com.example.win.easy.R;
 import com.example.win.easy.view.activity.interfaces.SearchingView;
 import com.example.win.easy.view.activity.interfaces.SongListView;
 import com.example.win.easy.dagger.SwiftSwitchApplication;
-import com.example.win.easy.display.interfaces.DisplayManager;
+import com.example.win.easy.display.interfaces.DisplayService;
 import com.example.win.easy.factory.ListenerFactory;
 import com.example.win.easy.parser.filter.FilterStrategy;
 import com.example.win.easy.recognization.PositionedImage;
@@ -54,7 +54,8 @@ public class LockActivity extends AppCompatActivity implements SongListView, Sea
     private List<GestureOverlayView> Gestures = new ArrayList<>(Constants.NumberOfGesture);//to use indexOf
     private Integer[] id=new Integer[]{R.id.gesture1,R.id.gesture2,R.id.gesture3,R.id.gesture4};
 
-    @Inject DisplayManager displayManager;
+    @Inject
+    DisplayService displayService;
     @Inject ViewModelProvider.Factory factory;
     @Inject RecognitionProxy recognitionProxy;
     @Inject FilterStrategy<List<Character>> filterStrategy;
@@ -140,25 +141,25 @@ public class LockActivity extends AppCompatActivity implements SongListView, Sea
     private void initButtons(){
         //播放、暂停
         btnPause.setOnClickListener(v -> {
-            if (displayManager.isPlaying()){
-                displayManager.pause();
+            if (displayService.isPlaying()){
+                displayService.pause();
                 updateBeginView();
             }else {
-                displayManager.start();
+                displayService.start();
                 updatePauseView();
             }
         });
         //前一首
         btnPrevious.setOnClickListener(v -> {
-            if(!displayManager.isPlaying())
+            if(!displayService.isPlaying())
                 updatePauseView();
-            displayManager.previous();
+            displayService.previous();
         });
         //后一首
         btnNext.setOnClickListener(v -> {
-            if(!displayManager.isPlaying())
+            if(!displayService.isPlaying())
                 updatePauseView();
-            displayManager.next();
+            displayService.next();
         });
     }
 
