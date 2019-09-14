@@ -29,11 +29,17 @@ public interface SongDao {
     List<SongDO> findAllDataSongDOs();
 
     @Query("SELECT * FROM SongDO WHERE id=:songId")
-//    SongDO findById(long songId);
-    LiveData<SongDO> findById(long songId);
+//    SongDO findById(Long );songId
+    LiveData<SongDO> findById(Long songId);
+
+    @Query("SELECT * FROM SongDO WHERE id=:RemoteId")
+    LiveData<SongDO> findByRemoteId(Long RemoteId);
+
+    @Query("SELECT * FROM SongDO WHERE remoteId is not null")
+    LiveData<List<SongDO>> findAllDataOnWeb();
 
     @Query("SELECT * FROM SongDO WHERE id=:songId")
-    SongDO findDataById(long songId);
+    SongDO findDataById(Long songId);
 
 
     @Query("SELECT * FROM SongDO WHERE source=:dataSource")

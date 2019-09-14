@@ -1,10 +1,12 @@
 package com.example.win.easy.repository.db.data_object;
 
+import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
 import androidx.room.Index;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -38,16 +40,19 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class SongXSongListDO {
 
     /**
      * ManyToMany关系的Song的id
      */
-    public long songId;
+    @NonNull
+    public Long songId;
 
     /**
      * ManyToMany关系的SongList的id
      */
-    public long songListId;
+    @NonNull
+    public Long songListId;
 
 }

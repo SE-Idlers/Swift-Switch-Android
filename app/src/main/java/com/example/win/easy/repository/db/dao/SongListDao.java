@@ -17,10 +17,10 @@ import java.util.List;
 public interface SongListDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    long insert(SongListDO songListDO);
+    Long insert(SongListDO songListDO);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    long[] insert(Collection<SongListDO> songListDOs);
+    Long[] insert(Collection<SongListDO> songListDOs);
 
     @Query("SELECT * FROM SongListDO")
     List<SongListDO> findAllDataSongListDOs();
@@ -29,8 +29,14 @@ public interface SongListDao {
     LiveData<List<SongListDO>> findAllSongListDOs();
 
     @Query("SELECT * FROM SongListDO WHERE id=:songListId")
-//    SongListDO findById(long songListId);
-    LiveData<SongListDO> findById(long songListId);
+//    SongListDO findById(Long songListId);
+    LiveData<SongListDO> findById(Long songListId);
+
+    @Query("SELECT * FROM SongListDO WHERE id=:songListRemoteId")
+    LiveData<SongListDO> findByRemoteId(Long songListRemoteId);
+
+    @Query("SELECT * FROM SongListDO WHERE remoteId is not null")
+    LiveData<List<SongListDO>> findAllDataOnWeb();
 
     @Query("SELECT * FROM SongListDO WHERE source=:dataSource")
     List<SongListDO> findByDataSource(String dataSource);

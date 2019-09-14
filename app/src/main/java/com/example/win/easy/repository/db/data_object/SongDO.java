@@ -11,6 +11,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.NonNull;
 
 @Entity
 @Data
@@ -23,7 +24,7 @@ public class SongDO {
      * 自动生成的歌曲id
      */
     @PrimaryKey(autoGenerate = true)
-    public long id;
+    public Long id;
 
     /**
      * 歌曲名字，用于展示给用户
@@ -70,11 +71,11 @@ public class SongDO {
     /**
      * 网络歌曲的用户id
      */
-    public String uid;
+    public Long uid;
 
     /**
      * 网络歌曲的id
      */
-    public String remoteId;
+    public Long remoteId;
 
 }

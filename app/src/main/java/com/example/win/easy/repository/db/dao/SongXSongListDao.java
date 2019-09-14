@@ -32,23 +32,32 @@ public interface SongXSongListDao {
             "ON SongDO.id=SongXSongListDO.songId " +
             "WHERE SongXSongListDO.songListId=:songListId")
     @SuppressWarnings(RoomWarnings.CURSOR_MISMATCH)
-    List<SongDO> findAllSongsDataForSongListById(long songListId);
-//    LiveData<List<SongDO>> findAllSongsDataForSongListById(long songListId);
+    List<SongDO> findAllSongsDataForSongListById(Long songListId);
+//    LiveData<List<SongDO>> findAllSongsDataForSongListById(Long songListId);
 
     @Query("SELECT * " +
             "FROM SongDO INNER JOIN SongXSongListDO " +
             "ON SongDO.id=SongXSongListDO.songId " +
             "WHERE SongXSongListDO.songListId=:songListId")
     @SuppressWarnings(RoomWarnings.CURSOR_MISMATCH)
-    LiveData<List<SongDO>> findAllSongsForSongListById(long songListId);
+    LiveData<List<SongDO>> findAllSongsForSongListById(Long songListId);
 
     @Query("SELECT * " +
             "FROM SongListDO INNER JOIN SongXSongListDO " +
             "ON SongListDO.id=SongXSongListDO.songListId " +
             "WHERE SongXSongListDO.songId=:songId")
     @SuppressWarnings(RoomWarnings.CURSOR_MISMATCH)
-    List<SongListDO> findAllSongListsForSongById(long songId);
-//    LiveData<List<SongListDO>> findAllSongListsForSongById(long songId);
+    List<SongListDO> findAllSongListsForSongById(Long songId);
+//    LiveData<List<SongListDO>> findAllSongListsForSongById(Long songId);
+
+    @Query("SELECT * FROM SongXSongListDO " +
+            "WHERE SongXSongListDO.songId=:songId " +
+            "AND SongXSongListDO.songListId=:songListId")
+    LiveData<SongXSongListDO> findbyID(Long songId, Long songListId);
+
+    @Query("SELECT * FROM SongXSongListDO NATURAL JOIN SongDO " +
+            "WHERE SongDO.remoteId != null")
+    LiveData<List<SongXSongListDO>> findAllDataOnWeb();
 
     @Delete
     void delete(SongXSongListDO songXSongListDO);
