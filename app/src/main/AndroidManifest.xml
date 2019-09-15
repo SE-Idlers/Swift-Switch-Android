@@ -13,7 +13,9 @@
         android:roundIcon="@drawable/swift"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        tools:ignore="GoogleAppIndexingWarning" >
+        android:allowBackup="false"
+        tools:ignore="GoogleAppIndexingWarning"
+        tools:replace="android:allowBackup">
 
         <uses-library android:name="android.test.runner" android:required="false"/>
         <uses-library android:name="android.test.base" android:required="false"/>

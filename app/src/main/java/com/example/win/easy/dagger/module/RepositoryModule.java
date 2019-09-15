@@ -8,6 +8,8 @@ import com.example.win.easy.repository.db.dao.SongDao;
 import com.example.win.easy.repository.db.dao.SongListDao;
 import com.example.win.easy.repository.db.dao.SongXSongListDao;
 import com.example.win.easy.repository.db.database.OurDatabase;
+import com.example.win.easy.repository.repo.Repo;
+import com.example.win.easy.web.service.SongListWebService;
 
 import javax.inject.Singleton;
 
@@ -24,7 +26,9 @@ public class RepositoryModule {
     }
     @Provides @Singleton
     OurDatabase provideOurDatabase(){
-        return Room.databaseBuilder(applicationContext, OurDatabase.class,"ourDatabase").build();
+        return Room.databaseBuilder(applicationContext, OurDatabase.class,"ourDatabase")
+                .fallbackToDestructiveMigration()
+                .build();
     }
 
     @Provides @Singleton static SongDao provideSongPojoDao(OurDatabase ourDatabase){
@@ -37,6 +41,13 @@ public class RepositoryModule {
 
     @Provides @Singleton static SongXSongListDao provideSongXSongListDao(OurDatabase ourDatabase){
         return ourDatabase.songXSongListDao();
+    }
+
+    @Provides @Singleton static Repo provideRepo(SongDao songDao,
+                                                 SongListDao songListDao,
+                                                 SongXSongListDao songXSongListDao,
+                                                 SongListWebService songListWebService){
+        return new Repo(songDao,songListDao,songXSongListDao,songListWebService);
     }
 
 }
