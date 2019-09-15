@@ -75,7 +75,7 @@ public class FileServiceTest {
 
     @Before
     public void setUp() {
-        String uid="5456";
+        Long uid=5456L;
 
         //设置歌曲信息
         String songName="陈奕迅 - Last Order";

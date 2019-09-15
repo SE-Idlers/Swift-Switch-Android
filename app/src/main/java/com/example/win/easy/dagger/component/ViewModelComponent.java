@@ -7,6 +7,7 @@ import com.example.win.easy.dagger.scope.ViewModelScope;
 import com.example.win.easy.display.interfaces.DisplayService;
 import com.example.win.easy.factory.__SongFactory;
 import com.example.win.easy.parser.filter.FilterStrategy;
+import com.example.win.easy.web.service.LoginService;
 
 import java.util.List;
 
@@ -24,4 +25,5 @@ public interface ViewModelComponent {
 
     __SongFactory getSongFactory();
 
+    LoginService getLoginService();
 }

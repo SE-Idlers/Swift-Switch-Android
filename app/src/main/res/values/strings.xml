@@ -1,4 +1,17 @@
 <resources>
     <string name="app_name">Swift Switch</string>
     <string name="text_default_value">Please  enter the text for PTX</string>
+    <string name="phoneAccountHint">手机号</string>
+    <string name="emailAccountHint">邮箱</string>
+    <string name="passwordHint">密码</string>
+    <string name="loginingTipWord">正在登陆</string>
+    <string name="successfulLoginTipWord">登陆成功</string>
+    <string name="unsuccessfulLoginTipWord">登陆失败</string>
+    <string name="loginFragmentTopBarTitle">来登陆吧！</string>
+    <integer name="temporaryTipShowTimeInMillis">500</integer>
+    <string name="switchToEmailLoginHint">切换到邮箱登陆</string>
+    <string name="switchToPhoneLoginHint">切换到手机登陆</string>
+    <string name="loginButtonText">登陆</string>
+    <string name="accountTitleText">账号</string>
+    <string name="passwordTitleText">密码</string>
 </resources>

@@ -1,7 +1,6 @@
 package com.example.win.easy.dagger.module;
 
 import com.example.win.easy.web.request.BackendRequestService;
-import com.example.win.easy.web.service.LoginService;
 
 import javax.inject.Named;
 import javax.inject.Singleton;
@@ -12,10 +11,9 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 @Module
-public class NetworkModule {
+public class BackendRequestModule {
 
-
-    @Provides @Singleton static BackendRequestService backendResourceWebService(@Named("serverUrl") String serverUrl){
+    @Provides @Singleton static BackendRequestService provideBackendResourceWebService(@Named("serverUrl") String serverUrl){
         Retrofit retrofit=new Retrofit.Builder()
                 .baseUrl(serverUrl)
                 .addConverterFactory(GsonConverterFactory.create())
@@ -23,11 +21,7 @@ public class NetworkModule {
         return retrofit.create(BackendRequestService.class);
     }
 
-    @Provides @Named("serverUrl") static String serverUrl(){
-        return "http://guohere.com:9000/";
-    }
-
-    @Provides @Singleton static LoginService providesLoginService(BackendRequestService backendRequestService){
-        return new LoginService(backendRequestService);
+    @Provides @Named("serverUrl") static String provideServerUrl(){
+        return "http://106.53.93.41:9000/";
     }
 }

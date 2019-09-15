@@ -10,8 +10,10 @@ import com.example.win.easy.factory.__SongFactory;
 import com.example.win.easy.view.ImageService;
 import com.example.win.easy.view.fragment.AllSongListsFragment;
 import com.example.win.easy.view.fragment.AllSongsFragment;
+import com.example.win.easy.view.fragment.LoginFragment;
 import com.example.win.easy.view.fragment.MainActivityFragment;
 import com.example.win.easy.view.fragment.SongListFragment;
+import com.example.win.easy.web.service.LoginService;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
@@ -24,6 +26,8 @@ import dagger.MapKey;
 import dagger.Module;
 import dagger.Provides;
 import dagger.multibindings.IntoMap;
+
+import static com.example.win.easy.enumeration.LoginType.Phone;
 
 @Module
 public class FragmentModule {
@@ -68,6 +72,13 @@ public class FragmentModule {
     @FragmentKey(SongListFragment.class)
     static Fragment provideSongListFragment(ViewModelProvider.Factory factory){
         return new SongListFragment(null,null,factory);
+    }
+
+    @Provides
+    @IntoMap
+    @FragmentKey(LoginFragment.class)
+    static Fragment provideLoginFragment(LoginService loginService){
+        return new LoginFragment(loginService,Phone);
     }
 
 
