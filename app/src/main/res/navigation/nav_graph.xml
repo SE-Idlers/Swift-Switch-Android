@@ -14,6 +14,9 @@
         <action
             android:id="@+id/action_mainActivityFragment_to_allSongsFragment"
             app:destination="@id/allSongsFragment" />
+        <action
+            android:id="@+id/action_mainActivityFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
     </fragment>
     <fragment
         android:id="@+id/allSongListsFragment"
@@ -49,5 +52,14 @@
         <argument
             android:name="songListSongsAddedTo"
             app:argType="com.example.win.easy.value_object.SongListVO" />
+    </fragment>
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.example.win.easy.view.fragment.LoginFragment"
+        android:label="fragment_login"
+        tools:layout="@layout/fragment_login" >
+        <action
+            android:id="@+id/action_loginFragment_to_mainActivityFragment"
+            app:destination="@id/mainActivityFragment" />
     </fragment>
 </navigation>

@@ -12,10 +12,10 @@ import com.example.win.easy.dagger.module.WebSongListModule;
 import com.example.win.easy.display.interfaces.DisplayService;
 import com.example.win.easy.factory.__SongFactory;
 import com.example.win.easy.parser.filter.FilterStrategy;
-import com.example.win.easy.repository.db.dao.SongDao;
 import com.example.win.easy.repository.deprecated.repo.__SongListRepository;
 import com.example.win.easy.repository.deprecated.repo.__SongRepository;
 import com.example.win.easy.repository.deprecated.repo.__SongXSongListRepository;
+import com.example.win.easy.web.service.LoginService;
 
 import java.util.List;
 import java.util.concurrent.Executor;
@@ -46,11 +46,11 @@ public interface AppComponent {
 
     __SongXSongListRepository getSongXSongListRepository();
 
-    SongDao getSongPojoDao();
-
     __SongFactory getSongFactory();
 
     FilterStrategy<List<Character>> getFilterStrategy();
+
+    LoginService getLoginService();
 
     @Named("dbAccess") Executor diskIO();
     @Named("mainThread") Executor mainThread();

@@ -22,6 +22,6 @@ public class BackendRequestModule {
     }
 
     @Provides @Named("serverUrl") static String provideServerUrl(){
-        return "http://guohere.com:9000/";
+        return "http://106.53.93.41:9000/";
     }
 }

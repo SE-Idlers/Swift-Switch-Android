@@ -152,7 +152,7 @@ public class MainActivityFragment extends Fragment {
         music.setImageResource(R.drawable.ic_action_music);
         qmuiTopBar.setTitle("我的");
         qmuiTopBar.addRightImageButton(R.drawable.ic_action_music,music.getId()).setOnClickListener(v -> Toast.makeText(getContext(),"音乐 ",Toast.LENGTH_LONG).show());
-        qmuiTopBar.addLeftImageButton(R.drawable.ic_action_cloud,cloud.getId()).setOnClickListener(v -> Toast.makeText(getContext(),"云 ",Toast.LENGTH_LONG).show());
+        qmuiTopBar.addLeftImageButton(R.drawable.ic_action_cloud,cloud.getId()).setOnClickListener(v -> Navigation.findNavController(getView()).navigate(MainActivityFragmentDirections.actionMainActivityFragmentToLoginFragment()));
     }
 
     /**
