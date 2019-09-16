@@ -1,5 +1,6 @@
 package com.example.win.easy.web;
 
+import com.example.win.easy.parser.interfaces.FilenameParser;
 import com.example.win.easy.repository.db.data_object.SongDO;
 import com.example.win.easy.repository.db.data_object.SongListDO;
 import com.example.win.easy.web.dto.SongDTO;
@@ -29,14 +30,32 @@ import com.example.win.easy.web.dto.SongListDTO;
  */
 public class DTOUtil {
 
+    private FilenameParser<Character> parser;
+
+    public DTOUtil(FilenameParser<Character> parser){
+        this.parser=parser;
+    }
+
     public SongListDO toDO(SongListDTO songListDTO){
-        //TODO SongListDTO到SongListDO的转化
-        return null;
+        return SongListDO.builder()
+                .name(songListDTO.getName())
+                .uid(Long.valueOf(songListDTO.getUid()))
+                .remoteId(Long.valueOf(songListDTO.getRemoteId()))
+                .source(songListDTO.getSource())
+                .avatarUrl(songListDTO.getAvatarUrl())
+                .build();
     }
 
     public SongDO toDO(SongDTO songDTO){
-        //TODO SongDTO到SongDO的转化
-        return null;
+        return SongDO.builder()
+                .name(songDTO.getName())
+                .author(songDTO.getAuthor())
+                .uid(Long.valueOf(songDTO.getUid()))
+                .remoteId(Long.valueOf(songDTO.getRemoteId()))
+                .sequence(parser.parse(songDTO.getName()))
+                .songUrl(songDTO.getSongUrl())
+                .avatarUrl(songDTO.getAvatarUrl())
+                .build();
     }
 
 }

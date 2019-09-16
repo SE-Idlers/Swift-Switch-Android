@@ -1,5 +1,6 @@
 package com.example.win.easy.dagger.module;
 
+import com.example.win.easy.parser.interfaces.FilenameParser;
 import com.example.win.easy.value_object.VOUtil;
 import com.example.win.easy.web.DTOUtil;
 
@@ -13,8 +14,8 @@ public class UtilModule {
 
     @Provides
     @Singleton
-    static DTOUtil provideDTOUtil(){
-        return new DTOUtil();
+    static DTOUtil provideDTOUtil(FilenameParser<Character> filenameParser){
+        return new DTOUtil(filenameParser);
     }
 
     @Provides

@@ -19,7 +19,6 @@ public class SongVO {
 
     String avatarPath;
 
-
     public boolean songFileHasBeenDownloaded(){return songFilePath!=null;}
     public boolean songFileCanBeDownloaded(){return songFileUrl!=null;}
 }

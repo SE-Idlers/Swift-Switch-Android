@@ -105,10 +105,8 @@ public class SongListViewModelTest {
 
         SongDO songDO1=SongDO.builder().id(77777L).name("球球你了").source(Local).build();
         SongDO songDO2=SongDO.builder().id(88888L).name("饶了我吧").source(WangYiYun).build();
-        List<SongDO> allSongsInRepo=new ArrayList<>();
-        allSongsInRepo.add(songDO1);
-        allSongsInRepo.add(songDO2);
-        songsInReoLiveData.postValue(allSongsInRepo);
+        songsInReo.add(songDO1);
+        songsInReo.add(songDO2);
 
         SongVO songVO1=voUtil.toVO(songDO1);
         SongVO songVO2=voUtil.toVO(songDO2);
@@ -122,7 +120,7 @@ public class SongListViewModelTest {
 
     private void mockRepo() {
         doReturn(allSongListDOLiveData).when(repo).getAllSongList();
-        when(repo.songsOf(any(SongListDO.class))).thenReturn(songsInReoLiveData);
+        when(repo.songsOf(any(SongListDO.class))).thenReturn(songsInReo);
     }
 
     private void mockInvoker() {
@@ -139,7 +137,7 @@ public class SongListViewModelTest {
 
     private SongListVO testSongListVO=SongListVO.builder().build();
     private List<SongVO> expectedSongsOfTestSongListVO=new ArrayList<>();
-    private MutableLiveData<List<SongDO>> songsInReoLiveData=new MutableLiveData<>();
+    private List<SongDO> songsInReo =new ArrayList<>();
 
     @Mock Repo repo;
     @Mock VOUtil voUtil;
@@ -170,9 +168,7 @@ class MockInvoker extends LifecycleRegistry {
         return allSongListLiveData.getValue();
     }
     List<SongVO> getSongsIn(SongListVO songListVO){
-        LiveData<List<SongVO>> songsIn=songListViewModel.songsOf(songListVO);
-        songsIn.observe(myLifecycleOwner,songVOS -> {});
-        return songsIn.getValue();
+        return songListViewModel.songsOf(songListVO);
     }
 
 }

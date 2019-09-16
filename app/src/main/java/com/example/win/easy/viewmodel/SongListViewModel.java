@@ -19,9 +19,9 @@ public abstract class SongListViewModel extends ViewModel {
     /**
      * <p>获取某个歌单内的所有歌曲</p>
      * @param songListVO 要获取的歌单
-     * @return （可观测的）这个歌单里的歌曲列表
+     * @return 这个歌单里的歌曲列表
      */
-    public abstract LiveData<List<SongVO>> songsOf(SongListVO songListVO);
+    public abstract List<SongVO> songsOf(SongListVO songListVO);
 
     public abstract List<SongVO> songsNotIn(SongListVO songListVO);
 

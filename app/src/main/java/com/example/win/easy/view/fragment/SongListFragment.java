@@ -5,7 +5,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
@@ -26,11 +25,12 @@ import java.util.List;
 public class SongListFragment extends ListFragment {
 
     private SongListVO thisSongList;//这个歌单
-    private LiveData<List<SongVO>> songsInThisSongListLiveData;//歌单里的所有歌
+    private List<SongVO> songsInThisSongList;//歌单里的所有歌
 
     private DisplayServiceAdapter displayServiceAdapter;
     private DownloadServiceAdapter downloadServiceAdapter;
     private ViewModelProvider.Factory factory;
+    private SongListViewModel songListViewModel;
 
     public SongListFragment(DisplayServiceAdapter displayServiceAdapter,DownloadServiceAdapter downloadServiceAdapter, ViewModelProvider.Factory factory){
         this.displayServiceAdapter = displayServiceAdapter;
@@ -42,36 +42,30 @@ public class SongListFragment extends ListFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view=super.onCreateView(inflater, container, savedInstanceState);
 
+        songListViewModel=getViewModel();
         thisSongList=getPassedSongList();
+        songsInThisSongList=getSongsIn(thisSongList);
+
+        updateViewWith(songsInThisSongList);
         setTopBarTitle(thisSongList.getName());
         setUpRightImageButton();
-        observeSongsInThisSongList();
 
         return view;
+    }
+
+    private SongListViewModel getViewModel() {
+        return ViewModelProviders.of(this,factory).get(SongListViewModel.class);
     }
 
     private SongListVO getPassedSongList(){
         return SongListFragmentArgs.fromBundle(getArguments()).getSelectedSongList();
     }
 
-    private void setUpRightImageButton(){
-        setRightImageButtonOnClickListener(v-> Navigation.findNavController(getView()).navigate(SongListFragmentDirections.actionSongListFragmentToAddSongToSongListFragment(thisSongList)));
+    private List<SongVO> getSongsIn(SongListVO songListVO) {
+        return songListViewModel.songsOf(songListVO);
     }
 
-    private void observeSongsInThisSongList(){
-        songsInThisSongListLiveData =getSongListLiveData();
-        observe(songsInThisSongListLiveData);
-    }
-
-    private LiveData<List<SongVO>> getSongListLiveData(){
-        return ViewModelProviders.of(this,factory).get(SongListViewModel.class).songsOf(thisSongList);
-    }
-
-    private void observe(LiveData<List<SongVO>> songsInThisSongListLiveData){
-        songsInThisSongListLiveData.observe(this, this::update);
-    }
-
-    private void update(List<SongVO> newSongs){
+    private void updateViewWith(List<SongVO> newSongs){
         List<QMUICommonListItemView> songItems=createSongItemViews(newSongs);
         setItemViews(songItems);
     }
@@ -79,11 +73,11 @@ public class SongListFragment extends ListFragment {
     private List<QMUICommonListItemView> createSongItemViews(List<SongVO> songVOs){
         List<QMUICommonListItemView> songItems=new ArrayList<>();
         for (SongVO songVO:songVOs)
-            songItems.add(createItem(songVO));
+            songItems.add(item(songVO));
         return songItems;
     }
 
-    private SongItem createItem(SongVO songVO){
+    private SongItem item(SongVO songVO){
         //主要是设置监听事件
         return new SongItem(songVO, (songOfTheItem,itemView)->{
             if (songOfTheItem.songFileHasBeenDownloaded())//如果歌曲文件已经下载就直接播放
@@ -94,11 +88,15 @@ public class SongListFragment extends ListFragment {
     }
 
     private void display(SongVO songVO){
-        displayServiceAdapter.startWith(songVO, songsInThisSongListLiveData.getValue());
+        displayServiceAdapter.startWith(songVO, songsInThisSongList);
     }
 
     private void downloadThenDisplay(SongVO songVO){
         downloadServiceAdapter.download(songVO, this::display);
+    }
+
+    private void setUpRightImageButton(){
+        setRightImageButtonOnClickListener(v-> Navigation.findNavController(getView()).navigate(SongListFragmentDirections.actionSongListFragmentToAddSongToSongListFragment(thisSongList)));
     }
 
     class SongItem extends EntityItem<SongVO> {

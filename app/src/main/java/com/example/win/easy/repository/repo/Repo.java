@@ -11,6 +11,7 @@ import com.example.win.easy.repository.db.data_object.SongListDO;
 import com.example.win.easy.repository.db.data_object.SongXSongListDO;
 import com.example.win.easy.web.service.SongListWebService;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -208,7 +209,7 @@ public class Repo {
         return allSongList;
     }
 
-    public LiveData<List<SongDO>> songsOf(SongListDO songListDO) {
+    public List<SongDO> songsOf(SongListDO songListDO) {
         return null;
     }
 }

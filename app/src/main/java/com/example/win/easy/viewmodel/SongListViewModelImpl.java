@@ -29,15 +29,9 @@ public class SongListViewModelImpl extends SongListViewModel {
      */
     @Override
     public LiveData<List<SongListVO>> getAll() {
-        //只做转化
-        if (allSongList==null){
-            allSongList= Transformations.map(repo.getAllSongList(),allSongListDO->{
-                List<SongListVO> allSongListVO=new ArrayList<>();
-                for (SongListDO songListDO:allSongListDO)
-                    allSongListVO.add(voUtil.toVO(songListDO));
-                return allSongListVO;
-            });
-        }
+        //懒惰加载
+        if (allSongList==null)
+            allSongList= initAllSongListLiveData();
         return allSongList;
     }
 
@@ -45,15 +39,11 @@ public class SongListViewModelImpl extends SongListViewModel {
      * {@inheritDoc}
      */
     @Override
-    public LiveData<List<SongVO>> songsOf(SongListVO songListVO) {
-        //只做转化
-        LiveData<List<SongDO>> songsDOLiveData=repo.songsOf(voUtil.toDO(songListVO));
-        return Transformations.map(songsDOLiveData,songsDO->{
-            List<SongVO> songsVO=new ArrayList<>();
-            for (SongDO songDO:songsDO)
-                songsVO.add(voUtil.toVO(songDO));
-            return songsVO;
-        });
+    public List<SongVO> songsOf(SongListVO songListVO) {
+        //获取，避免空值，转化类型
+        List<SongDO> songsInRepo=repo.songsOf(voUtil.toDO(songListVO));
+        songsInRepo=avoidNullSongs(songsInRepo);
+        return toSongsVO(songsInRepo);
     }
 
     @Override
@@ -64,6 +54,43 @@ public class SongListViewModelImpl extends SongListViewModel {
     @Override
     public void addSongsTo(List<SongVO> songVOs, SongListVO songListVO) {
 
+    }
+
+    private LiveData<List<SongListVO>> initAllSongListLiveData(){
+
+        LiveData<List<SongListDO>> allSongListDOLiveData=repo.getAllSongList();
+
+        //空值避免，类型转换
+        return Transformations.map(allSongListDOLiveData,allSongListFromRepo->{
+            List<SongListDO> allSongListDO= avoidNullSongLists(allSongListFromRepo);
+            return toAllSongListVO(allSongListDO);
+        });
+    }
+
+    private List<SongListDO> avoidNullSongLists(List<SongListDO> songListDOs){
+        return songListDOs==null
+                ? new ArrayList<>()
+                :songListDOs;
+    }
+
+    private List<SongListVO> toAllSongListVO(List<SongListDO> songListDOs){
+        List<SongListVO> allSongListVO=new ArrayList<>();
+        for (SongListDO songListDO:songListDOs)
+            allSongListVO.add(voUtil.toVO(songListDO));
+        return allSongListVO;
+    }
+
+    private List<SongDO> avoidNullSongs(List<SongDO> songDOs){
+        return songDOs==null
+                ?new ArrayList<>()
+                :songDOs;
+    }
+
+    private List<SongVO> toSongsVO(List<SongDO> songDOs){
+        List<SongVO> songsVO=new ArrayList<>();
+        for (SongDO songDO:songDOs)
+            songsVO.add(voUtil.toVO(songDO));
+        return songsVO;
     }
 }
 

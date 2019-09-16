@@ -4,7 +4,6 @@ import android.os.Bundle;
 
 import androidx.fragment.app.FragmentFactory;
 import androidx.fragment.app.testing.FragmentScenario;
-import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -78,7 +77,7 @@ public class SongListFragmentTest {
     @Test
     public void testClickDownloadedSong(){
         onView(withText(downloadedSong.getName())).perform(click());
-        verify(displayServiceAdapter,times(1)).startWith(downloadedSong,songsInSelectedSongListLiveData.getValue());
+        verify(displayServiceAdapter,times(1)).startWith(downloadedSong, songsInSelectedSongList);
     }
 
 
@@ -89,7 +88,7 @@ public class SongListFragmentTest {
     public void testClickDownloadedSongWith(){
         onView(withText(nonDownloadedSongWithUrl.getName())).perform(click());
         verify(downloadServiceAdapter,times(1)).download(eq(nonDownloadedSongWithUrl),any(OnReadyFunc.class));
-        verify(displayServiceAdapter,times(1)).startWith(downloadedSongFromUrl,songsInSelectedSongListLiveData.getValue());
+        verify(displayServiceAdapter,times(1)).startWith(downloadedSongFromUrl, songsInSelectedSongList);
     }
 
     /**
@@ -116,16 +115,14 @@ public class SongListFragmentTest {
     }
 
     private void setUpData(){
-        setUpLiveData();
+        setUpRepoData();
         setUpBundleData();
         setUpDownloadedData();
     }
 
-    private void setUpLiveData(){
-        List<SongVO> songsInSelectedSongList=new ArrayList<>();
+    private void setUpRepoData(){
         songsInSelectedSongList.add(downloadedSong);
         songsInSelectedSongList.add(nonDownloadedSongWithUrl);
-        songsInSelectedSongListLiveData.postValue(songsInSelectedSongList);
     }
 
     private void setUpBundleData(){
@@ -172,7 +169,7 @@ public class SongListFragmentTest {
     }
 
     private void mockLiveDataFromViewModel() {
-        when(songListViewModel.songsOf(selectedSongList)).thenReturn(songsInSelectedSongListLiveData);
+        when(songListViewModel.songsOf(selectedSongList)).thenReturn(songsInSelectedSongList);
     }
 
     private void mockViewModelFactory() {
@@ -217,7 +214,7 @@ public class SongListFragmentTest {
     private SongListVO selectedSongList=SongListVO.builder().name("体测").build();
     private SongVO downloadedSong=SongVO.builder().name("电灯胆 - 邓丽欣").songFilePath("/songs/d.mp3").build();
     private SongVO nonDownloadedSongWithUrl=SongVO.builder().name("藏在贴纸相背后 - 陈奕迅").songFileUrl("https://www.google.com/songs/song.mp3").build();
-    private MutableLiveData<List<SongVO>> songsInSelectedSongListLiveData=new MutableLiveData<>();
+    private List<SongVO> songsInSelectedSongList =new ArrayList<>();
 
 
     //Bundle数据
