@@ -44,17 +44,31 @@ import static org.mockito.Mockito.verify;
 @RunWith(AndroidJUnit4ClassRunner.class)
 public class RepoTestOnAndroid {
 
-    public void defineDB(){
+    public void addToDB(){
         allSong.add(songDO1);
         allSong.add(songDO2);
         allSongList.add(songListDO1);
         allSongList.add(songListDO2);
         allSongXSongList.add(relation_1);
         allSongXSongList.add(relation_2);
-        //本地数据库定义完成
+        //本地数据库添加数据
     }
 
     public void reset(){
+        songMap = new HashMap<>();
+        List2 = new ArrayList<>();
+        List3 = new ArrayList<>();
+        allSong = new ArrayList<>();
+        allSongList = new ArrayList<>();
+        allSongXSongList = new ArrayList<>();
+        addToDB();
+        songDOS = new MutableLiveData<>();
+        songListDOS = new MutableLiveData<>();
+        songXSongListDOS = new MutableLiveData<>();
+        songDOS.setValue(allSong);
+        songListDOS.setValue(allSongList);
+        songXSongListDOS.setValue(allSongXSongList);
+        //定义本地数据库
         songMap.clear();
         List2.clear();List3.clear();
         List2.add(songDO2);
@@ -113,26 +127,28 @@ public class RepoTestOnAndroid {
         verify(songXSongListDao, times(2)).delete(any(SongXSongListDO.class));
     }
 
+    @Test
+    @UiThreadTest
+    public void testNullDB(){
+        reset();
+        allSong.clear();
+        allSongList.clear();
+        allSongXSongList.clear();
+        songDOS.setValue(null);
+        songListDOS.setValue(null);
+        songXSongListDOS.setValue(null);
+        repo.getAllSongList();
+
+        verify(songDao, atLeastOnce()).findAllSongDOs();
+        verify(songDao, atLeastOnce()).findAllDataOnWeb();
+    }
+
     @Before
     @UiThreadTest
     public void before() {
         MockitoAnnotations.initMocks(this);
 
-        songMap = new HashMap<>();
-        //List1 = new ArrayList<>();
-        List2 = new ArrayList<>();
-        List3 = new ArrayList<>();
-        allSong = new ArrayList<>();
-        allSongList = new ArrayList<>();
-        allSongXSongList = new ArrayList<>();
-        defineDB();
-        songDOS = new MutableLiveData<>();
-        songListDOS = new MutableLiveData<>();
-        songXSongListDOS = new MutableLiveData<>();
-        songDOS.setValue(allSong);
-        songListDOS.setValue(allSongList);
-        songXSongListDOS.setValue(allSongXSongList);
-        //本地数据库对应LiveData
+        reset();
 
         //mock 模拟网络请求
         doAnswer(invocation -> {
@@ -154,7 +170,7 @@ public class RepoTestOnAndroid {
                     return result;
                 }
             }
-            return null;
+            return new MutableLiveData<SongListDO>();
         }).when(songDao).findByRemoteId(any(Long.class));
 
         //mock 查询网络歌曲
@@ -191,7 +207,7 @@ public class RepoTestOnAndroid {
                     return result;
                 }
             }
-            return null;
+            return new MutableLiveData<SongListDO>();
         }).when(songListDao).findByRemoteId(any(Long.class));
 
         //mock 查询网络歌单
@@ -228,7 +244,7 @@ public class RepoTestOnAndroid {
                     return result;
                 }
             }
-            return null;
+            return new MutableLiveData<SongXSongListDO>();
         }).when(songXSongListDao).findbyID(any(Long.class), any(Long.class));
 
         //mock 查询网络关联键

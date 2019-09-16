@@ -84,8 +84,8 @@ public class AllSongsFragment extends ListFragment {
      */
     public void update(List<SongDO> songDOs){
         if (songDOs.size()==0) {
-            songDOs.add(SongDO.builder().id(78).name("测试测试and测试 - 桂喜老师").source(DataSource.Local).sequence(new ArrayList<>()).build());
-            songDOs.add(SongDO.builder().id(99).name("One Punch").source(DataSource.Local).sequence(new ArrayList<>()).build());
+            songDOs.add(SongDO.builder().id(78L).name("测试测试and测试 - 桂喜老师").source(DataSource.Local).sequence(new ArrayList<>()).build());
+            songDOs.add(SongDO.builder().id(99L).name("One Punch").source(DataSource.Local).sequence(new ArrayList<>()).build());
         }
         List<QMUICommonListItemView> songItemViews=new ArrayList<>();
         //对每个歌单都生成一个itemView
