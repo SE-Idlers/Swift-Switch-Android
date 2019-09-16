@@ -2,7 +2,6 @@ package com.example.win.easy;
 
 import android.test.UiThreadTest;
 
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner;
 
@@ -13,27 +12,20 @@ import com.example.win.easy.repository.db.data_object.SongDO;
 import com.example.win.easy.repository.db.data_object.SongListDO;
 import com.example.win.easy.repository.db.data_object.SongXSongListDO;
 import com.example.win.easy.repository.repo.Repo;
-import com.example.win.easy.tool.SongList;
 import com.example.win.easy.web.callback.OnReadyFunc;
 import com.example.win.easy.web.service.SongListWebService;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Answers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.mockito.Spy;
-import org.mockito.invocation.InvocationOnMock;
-import org.mockito.stubbing.Answer;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.atLeastOnce;
@@ -141,6 +133,15 @@ public class RepoTestOnAndroid {
 
         verify(songDao, atLeastOnce()).findAllSongDOs();
         verify(songDao, atLeastOnce()).findAllDataOnWeb();
+    }
+
+    @Test
+    @UiThreadTest
+    public void testSongOf(){
+        reset();
+        repo.fetch();
+        List<SongDO> result1 = repo.songsOf(songListDO2);
+        List<SongDO> result2 = repo.getSongNotIn(songListDO3);
     }
 
     @Before
@@ -315,6 +316,26 @@ public class RepoTestOnAndroid {
             songXSongListDOS.setValue(allSongXSongList);
             return null;
         }).when(songXSongListDao).delete(any(SongXSongListDO.class));
+
+        //mock 查询歌单中的歌曲
+        doAnswer(invocation ->{
+            Long songListId = invocation.getArgument(0);
+            List<SongDO> tmp = new ArrayList<>();
+            for(SongXSongListDO relation: allSongXSongList){
+                if(relation.songListId.longValue() == songListId){
+                    for(SongDO songDO: allSong){
+                        if(relation.songId.longValue() == songDO.id.longValue()){
+                            tmp.add(songDO);
+                            break;
+                        }
+                    }
+                }
+            }
+            if (tmp.isEmpty())
+                return null;
+            else
+                return tmp;
+        }).when(songXSongListDao).findAllSongsDataForSongListById(any(Long.class));
     }
 
     @InjectMocks
