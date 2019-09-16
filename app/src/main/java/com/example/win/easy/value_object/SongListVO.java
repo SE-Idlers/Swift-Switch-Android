@@ -17,6 +17,8 @@ public class SongListVO implements Serializable {
 
     private String name;
 
+    private String avatarUrl;
+
     private String avatarPath;
 
 }

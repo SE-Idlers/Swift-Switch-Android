@@ -1,7 +1,7 @@
 package com.example.win.easy.dagger.component;
 
 import com.example.win.easy.dagger.module.BackendRequestModule;
-import com.example.win.easy.dagger.module.DTOModule;
+import com.example.win.easy.dagger.module.UtilModule;
 import com.example.win.easy.dagger.module.DisplayModule;
 import com.example.win.easy.dagger.module.DownloadModule;
 import com.example.win.easy.dagger.module.LoginModule;
@@ -15,6 +15,9 @@ import com.example.win.easy.parser.filter.FilterStrategy;
 import com.example.win.easy.repository.deprecated.repo.__SongListRepository;
 import com.example.win.easy.repository.deprecated.repo.__SongRepository;
 import com.example.win.easy.repository.deprecated.repo.__SongXSongListRepository;
+import com.example.win.easy.repository.repo.Repo;
+import com.example.win.easy.value_object.VOUtil;
+import com.example.win.easy.web.DTOUtil;
 import com.example.win.easy.web.service.LoginService;
 
 import java.util.List;
@@ -28,7 +31,7 @@ import dagger.Component;
 @Component(modules = {ThreadModule.class,
         BackendRequestModule.class,
         LoginModule.class,
-        DTOModule.class,
+        UtilModule.class,
         WebSongListModule.class,
         DisplayModule.class,
         RepositoryModule.class,
@@ -45,6 +48,12 @@ public interface AppComponent {
     __SongListRepository getSongListRepository();
 
     __SongXSongListRepository getSongXSongListRepository();
+
+    Repo getRepo();
+
+    VOUtil getVOUtil();
+
+    DTOUtil getDTOUtil();
 
     __SongFactory getSongFactory();
 

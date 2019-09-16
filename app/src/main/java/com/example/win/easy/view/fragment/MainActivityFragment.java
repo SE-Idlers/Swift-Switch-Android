@@ -24,6 +24,7 @@ import com.example.win.easy.repository.db.data_object.SongListDO;
 import com.example.win.easy.tool.DialogTool;
 import com.example.win.easy.tool.UriProcessTool;
 import com.example.win.easy.viewmodel.SimpleViewModel;
+import com.example.win.easy.web.service.LoginService;
 import com.qmuiteam.qmui.widget.QMUITopBar;
 import com.qmuiteam.qmui.widget.dialog.QMUIDialog;
 import com.qmuiteam.qmui.widget.dialog.QMUIDialogAction;
@@ -54,6 +55,7 @@ public class MainActivityFragment extends Fragment {
 
     private ViewModelProvider.Factory factory;
     private __SongFactory songFactory;
+    private LoginService loginService;
 
     private SimpleViewModel viewModel;
     private LiveData<Integer> songAmount;
@@ -62,9 +64,10 @@ public class MainActivityFragment extends Fragment {
     private LiveData<List<SongListDO>> allSongLists;
     private List<LiveData<List<SongDO>>> recordTable;
 
-    public MainActivityFragment(ViewModelProvider.Factory factory,__SongFactory songFactory){
+    public MainActivityFragment(ViewModelProvider.Factory factory,__SongFactory songFactory,LoginService loginService){
         this.factory=factory;
         this.songFactory=songFactory;
+        this.loginService=loginService;
     }
 
     @Override
@@ -152,7 +155,10 @@ public class MainActivityFragment extends Fragment {
         music.setImageResource(R.drawable.ic_action_music);
         qmuiTopBar.setTitle("我的");
         qmuiTopBar.addRightImageButton(R.drawable.ic_action_music,music.getId()).setOnClickListener(v -> Toast.makeText(getContext(),"音乐 ",Toast.LENGTH_LONG).show());
-        qmuiTopBar.addLeftImageButton(R.drawable.ic_action_cloud,cloud.getId()).setOnClickListener(v -> Navigation.findNavController(getView()).navigate(MainActivityFragmentDirections.actionMainActivityFragmentToLoginFragment()));
+        qmuiTopBar.addLeftImageButton(R.drawable.ic_action_cloud,cloud.getId()).setOnClickListener(v -> {
+            if (!loginService.hasLogin())
+                Navigation.findNavController(getView()).navigate(MainActivityFragmentDirections.actionMainActivityFragmentToLoginFragment());
+        });
     }
 
     /**

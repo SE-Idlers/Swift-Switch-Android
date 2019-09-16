@@ -136,7 +136,7 @@ public class SongListFragmentTest {
         downloadedSongFromUrl=SongVO.builder()
                 .name(nonDownloadedSongWithUrl.getName())
                 .songFileUrl(nonDownloadedSongWithUrl.getSongFileUrl())
-                .avatarFile(nonDownloadedSongWithUrl.getAvatarFile())
+                .avatarPath(nonDownloadedSongWithUrl.getAvatarPath())
                 .songFilePath("/data/user/0/downloaded.mp3")
                 .build();
     }

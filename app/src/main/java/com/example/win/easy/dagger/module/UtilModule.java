@@ -1,5 +1,6 @@
 package com.example.win.easy.dagger.module;
 
+import com.example.win.easy.value_object.VOUtil;
 import com.example.win.easy.web.DTOUtil;
 
 import javax.inject.Singleton;
@@ -8,7 +9,7 @@ import dagger.Module;
 import dagger.Provides;
 
 @Module
-public class DTOModule {
+public class UtilModule {
 
     @Provides
     @Singleton
@@ -16,5 +17,10 @@ public class DTOModule {
         return new DTOUtil();
     }
 
+    @Provides
+    @Singleton
+    static VOUtil provideVOUtil(){
+        return new VOUtil();
+    }
 }
 

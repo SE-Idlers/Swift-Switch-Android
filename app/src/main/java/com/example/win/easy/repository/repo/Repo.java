@@ -9,13 +9,10 @@ import com.example.win.easy.repository.db.dao.SongXSongListDao;
 import com.example.win.easy.repository.db.data_object.SongDO;
 import com.example.win.easy.repository.db.data_object.SongListDO;
 import com.example.win.easy.repository.db.data_object.SongXSongListDO;
-import com.example.win.easy.tool.SongList;
 import com.example.win.easy.web.service.SongListWebService;
 
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.concurrent.Executor;
 
 public class Repo {
     private SongDao songDao;
@@ -178,5 +175,9 @@ public class Repo {
     public LiveData<List<SongListDO>> getAllSongList() {
         fetch();
         return allSongList;
+    }
+
+    public LiveData<List<SongDO>> songsOf(SongListDO songListDO) {
+        return null;
     }
 }

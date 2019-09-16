@@ -10,10 +10,10 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner;
 
-import com.example.win.easy.value_object.VOUtil;
 import com.example.win.easy.repository.db.data_object.SongDO;
 import com.example.win.easy.repository.deprecated.repo.__SongRepository;
 import com.example.win.easy.value_object.SongVO;
+import com.example.win.easy.value_object.VOUtil;
 import com.example.win.easy.viewmodel.SongViewModel;
 
 import org.junit.Before;
@@ -24,7 +24,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -110,7 +109,7 @@ public class SongViewModelTest {
             return SongVO.builder()
                     .name(songDO.getName())
                     .songFilePath(songDO.getSongPath())
-                    .avatarFile(songDO.getAvatarPath()==null?null:new File(songDO.getAvatarPath()))
+                    .avatarPath(songDO.getAvatarPath())
                     .build();
         });
         prepareResult();

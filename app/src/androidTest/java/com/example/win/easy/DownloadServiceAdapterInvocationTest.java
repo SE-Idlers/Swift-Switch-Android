@@ -10,12 +10,12 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner;
 
+import com.example.win.easy.download.DownloadService;
 import com.example.win.easy.download.DownloadServiceAdapter;
 import com.example.win.easy.repository.UpdateService;
-import com.example.win.easy.value_object.VOUtil;
-import com.example.win.easy.download.DownloadService;
 import com.example.win.easy.repository.db.data_object.SongDO;
 import com.example.win.easy.value_object.SongVO;
+import com.example.win.easy.value_object.VOUtil;
 import com.example.win.easy.web.callback.OnReadyFunc;
 
 import org.junit.Before;
@@ -26,7 +26,6 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.Spy;
 
-import java.io.File;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
@@ -130,7 +129,7 @@ public class DownloadServiceAdapterInvocationTest {
             return SongDO.builder()
                     .name(songVO.getName())
                     .songPath(songVO.getSongFilePath())
-                    .avatarPath(songVO.getAvatarFile()==null?null:songVO.getAvatarFile().getAbsolutePath())
+                    .avatarPath(songVO.getAvatarPath())
                     .build();
         });
         when(voUtil.toVO(any(SongDO.class))).thenAnswer(invocation -> {
@@ -138,7 +137,7 @@ public class DownloadServiceAdapterInvocationTest {
             return SongVO.builder()
                     .name(songDO.name)
                     .songFilePath(songDO.getSongPath())
-                    .avatarFile(songDO.getAvatarPath()==null?null:new File(songDO.getAvatarPath()))
+                    .avatarPath(songDO.getAvatarPath())
                     .build();
         });
     }
@@ -283,7 +282,7 @@ public class DownloadServiceAdapterInvocationTest {
     @Spy MockSongRepository mockSongRepository;
 
     //用于测试的简单数据
-    private SongVO mockInitialSongVO=SongVO.builder().name("啥啊这是").songFilePath(null).avatarFile(null).build();
+    private SongVO mockInitialSongVO=SongVO.builder().name("啥啊这是").build();
     private String mockDownloadedFilePath="/1/2/3/4/5/6/7/8/9.mp3";
 
     //用于同步的信号量

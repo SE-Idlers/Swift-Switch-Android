@@ -49,8 +49,8 @@ public class FragmentModule {
     @Provides
     @IntoMap
     @FragmentKey(MainActivityFragment.class)
-    static Fragment provideMainActivityFragment(ViewModelProvider.Factory factory, __SongFactory songFactory){
-        return new MainActivityFragment(factory,songFactory);
+    static Fragment provideMainActivityFragment(ViewModelProvider.Factory factory, __SongFactory songFactory,LoginService loginService){
+        return new MainActivityFragment(factory,songFactory,loginService);
     }
 
     @Provides
