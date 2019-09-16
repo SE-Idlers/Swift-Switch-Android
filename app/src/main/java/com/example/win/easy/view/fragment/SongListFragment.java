@@ -55,7 +55,7 @@ public class SongListFragment extends ListFragment {
     }
 
     private void setUpRightImageButton(){
-        setRightImageButtonOnClickListener(v-> Navigation.findNavController(getView()).navigate(SongListFragmentDirections.actionSongListFragmentToPlaceholder2(thisSongList)));
+        setRightImageButtonOnClickListener(v-> Navigation.findNavController(getView()).navigate(SongListFragmentDirections.actionSongListFragmentToAddSongToSongListFragment(thisSongList)));
     }
 
     private void observeSongsInThisSongList(){

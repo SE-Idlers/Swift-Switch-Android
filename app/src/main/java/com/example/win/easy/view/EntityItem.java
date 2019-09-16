@@ -32,6 +32,6 @@ public class EntityItem<E> extends QMUICommonListItemView {
     public EntityItem(Context context, E entity, OnClickFunc<E> onClickFunc) {
         super(context);
         setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, QMUIResHelper.getAttrDimen(getContext(), R.attr.qmui_list_item_height)));
-        setOnClickListener(v -> onClickFunc.onclick(entity,v));
+        setOnClickListener(v -> onClickFunc.onclick(entity,this));
     }
 }

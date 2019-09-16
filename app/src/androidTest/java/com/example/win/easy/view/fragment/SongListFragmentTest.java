@@ -98,7 +98,7 @@ public class SongListFragmentTest {
     @Test
     public void testAddSongToSongList(){
         onView(instanceOf(QMUIAlphaImageButton.class)).perform(click());
-        verify(mockNavController,times(1)).navigate(SongListFragmentDirections.actionSongListFragmentToPlaceholder2(selectedSongList));
+        verify(mockNavController,times(1)).navigate(SongListFragmentDirections.actionSongListFragmentToAddSongToSongListFragment(selectedSongList));
     }
 
     @Before

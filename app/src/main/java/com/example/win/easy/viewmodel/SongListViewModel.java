@@ -22,4 +22,8 @@ public abstract class SongListViewModel extends ViewModel {
      * @return （可观测的）这个歌单里的歌曲列表
      */
     public abstract LiveData<List<SongVO>> songsOf(SongListVO songListVO);
+
+    public abstract List<SongVO> songsNotIn(SongListVO songListVO);
+
+    public abstract void addSongsTo(List<SongVO> songVOs,SongListVO songListVO);
 }

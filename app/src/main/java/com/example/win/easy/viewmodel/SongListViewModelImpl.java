@@ -55,6 +55,16 @@ public class SongListViewModelImpl extends SongListViewModel {
             return songsVO;
         });
     }
+
+    @Override
+    public List<SongVO> songsNotIn(SongListVO songListVO) {
+        return null;
+    }
+
+    @Override
+    public void addSongsTo(List<SongVO> songVOs, SongListVO songListVO) {
+
+    }
 }
 
 

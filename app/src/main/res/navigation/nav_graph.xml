@@ -40,7 +40,7 @@
         <argument android:name="selectedSongList"
             app:argType="com.example.win.easy.value_object.SongListVO" />
         <action
-            android:id="@+id/action_songListFragment_to_placeholder2"
+            android:id="@+id/action_songListFragment_to_addSongToSongListFragment"
             app:destination="@id/addSongToSongListFragment" />
     </fragment>
     <fragment
@@ -48,10 +48,14 @@
         android:label="SongListCreationFragment" />
     <fragment
         android:id="@+id/addSongToSongListFragment"
-        android:label="AddSongToSongListFragment" >
+        android:name="com.example.win.easy.view.fragment.AddSongToSongListFragment"
+        android:label="AddSongToSongListFragment">
         <argument
             android:name="songListSongsAddedTo"
             app:argType="com.example.win.easy.value_object.SongListVO" />
+        <action
+            android:id="@+id/action_addSongToSongListFragment_to_songListFragment"
+            app:destination="@id/songListFragment" />
     </fragment>
     <fragment
         android:id="@+id/loginFragment"

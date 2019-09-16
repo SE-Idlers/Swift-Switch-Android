@@ -8,6 +8,7 @@ import androidx.navigation.fragment.NavHostFragment;
 import com.example.win.easy.factory.DaggerFragmentFactory;
 import com.example.win.easy.factory.__SongFactory;
 import com.example.win.easy.view.ImageService;
+import com.example.win.easy.view.fragment.AddSongToSongListFragment;
 import com.example.win.easy.view.fragment.AllSongListsFragment;
 import com.example.win.easy.view.fragment.AllSongsFragment;
 import com.example.win.easy.view.fragment.LoginFragment;
@@ -72,6 +73,13 @@ public class FragmentModule {
     @FragmentKey(SongListFragment.class)
     static Fragment provideSongListFragment(ViewModelProvider.Factory factory){
         return new SongListFragment(null,null,factory);
+    }
+
+    @Provides
+    @IntoMap
+    @FragmentKey(AddSongToSongListFragment.class)
+    static Fragment provideAddSongToSongListFragment(ViewModelProvider.Factory viewModelFactory){
+        return new AddSongToSongListFragment(viewModelFactory);
     }
 
     @Provides
