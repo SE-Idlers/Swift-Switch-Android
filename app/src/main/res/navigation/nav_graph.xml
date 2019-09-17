@@ -17,6 +17,12 @@
         <action
             android:id="@+id/action_mainActivityFragment_to_loginFragment"
             app:destination="@id/loginFragment" />
+        <action
+            android:id="@+id/action_mainActivityFragment_to_songListCreationFragment"
+            app:destination="@id/songListCreationFragment" />
+        <action
+            android:id="@+id/action_mainActivityFragment_to_placeholder"
+            app:destination="@id/placeholder" />
     </fragment>
     <fragment
         android:id="@+id/allSongListsFragment"
@@ -32,7 +38,11 @@
     <fragment
         android:id="@+id/allSongsFragment"
         android:name="com.example.win.easy.view.fragment.AllSongsFragment"
-        android:label="AllSongsFragment" />
+        android:label="AllSongsFragment" >
+        <action
+            android:id="@+id/action_allSongsFragment_to_placeholder"
+            app:destination="@id/placeholder" />
+    </fragment>
     <fragment
         android:id="@+id/songListFragment"
         android:name="com.example.win.easy.view.fragment.SongListFragment"
@@ -66,4 +76,5 @@
             android:id="@+id/action_loginFragment_to_mainActivityFragment"
             app:destination="@id/mainActivityFragment" />
     </fragment>
+    <fragment android:id="@+id/placeholder" />
 </navigation>

@@ -16,23 +16,22 @@ import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 
-import com.example.win.easy.ActivityHolder;
 import com.example.win.easy.Constants;
 import com.example.win.easy.Dashboard;
 import com.example.win.easy.R;
-import com.example.win.easy.view.activity.interfaces.SearchingView;
-import com.example.win.easy.view.activity.interfaces.SongListView;
 import com.example.win.easy.dagger.SwiftSwitchApplication;
 import com.example.win.easy.display.interfaces.DisplayService;
 import com.example.win.easy.factory.ListenerFactory;
 import com.example.win.easy.parser.filter.FilterStrategy;
 import com.example.win.easy.recognization.PositionedImage;
 import com.example.win.easy.recognization.interfaces.RecognitionProxy;
-import com.example.win.easy.repository.db.data_object.SongListDO;
 import com.example.win.easy.repository.db.data_object.SongDO;
+import com.example.win.easy.repository.db.data_object.SongListDO;
 import com.example.win.easy.repository.db.data_object.SongXSongListDO;
 import com.example.win.easy.tool.SongList;
 import com.example.win.easy.tool.SongListTool;
+import com.example.win.easy.view.activity.interfaces.SearchingView;
+import com.example.win.easy.view.activity.interfaces.SongListView;
 import com.example.win.easy.viewmodel.SimpleViewModel;
 
 import java.util.ArrayList;
@@ -70,7 +69,6 @@ public class LockActivity extends AppCompatActivity implements SongListView, Sea
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED|WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
-        ActivityHolder.update(this);
         setContentView(R.layout.activity_dashboard);
         ButterKnife.bind(this);
         SwiftSwitchApplication.application.getDashboardComponent(this).inject(this);

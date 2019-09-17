@@ -14,4 +14,7 @@
     <string name="loginButtonText">登陆</string>
     <string name="accountTitleText">账号</string>
     <string name="passwordTitleText">密码</string>
+    <string name="mainActivityFragmentTopBarTitle">我的</string>
+    <string name="textOnItemToAllSong">所有歌曲</string>
+    <string name="textOnItemToAllSongList">所有歌单</string>
 </resources>

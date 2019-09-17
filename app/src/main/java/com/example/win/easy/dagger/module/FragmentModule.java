@@ -50,8 +50,8 @@ public class FragmentModule {
     @Provides
     @IntoMap
     @FragmentKey(MainActivityFragment.class)
-    static Fragment provideMainActivityFragment(ViewModelProvider.Factory factory, __SongFactory songFactory,LoginService loginService){
-        return new MainActivityFragment(factory,songFactory,loginService);
+    static Fragment provideMainActivityFragment(LoginService loginService){
+        return new MainActivityFragment(loginService);
     }
 
     @Provides
