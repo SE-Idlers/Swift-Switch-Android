@@ -5,16 +5,21 @@ import androidx.fragment.app.FragmentFactory;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.fragment.NavHostFragment;
 
+import com.example.win.easy.display.interfaces.DisplayService;
+import com.example.win.easy.recognization.interfaces.RecognitionService;
+import com.example.win.easy.view.lock.DisplayFragment;
+import com.example.win.easy.view.lock.HandWritingFragment;
+import com.example.win.easy.view.lock.SearchFragment;
 import com.example.win.easy.factory.DaggerFragmentFactory;
 import com.example.win.easy.factory.__SongFactory;
 import com.example.win.easy.view.ImageService;
-import com.example.win.easy.view.fragment.AddSongToSongListFragment;
-import com.example.win.easy.view.fragment.AllSongListsFragment;
-import com.example.win.easy.view.fragment.AllSongsFragment;
-import com.example.win.easy.view.fragment.LoginFragment;
-import com.example.win.easy.view.fragment.MainActivityFragment;
-import com.example.win.easy.view.fragment.SongListCreationFragment;
-import com.example.win.easy.view.fragment.SongListFragment;
+import com.example.win.easy.view.main.AddSongToSongListFragment;
+import com.example.win.easy.view.main.AllSongListsFragment;
+import com.example.win.easy.view.main.AllSongsFragment;
+import com.example.win.easy.view.main.LoginFragment;
+import com.example.win.easy.view.main.MainActivityFragment;
+import com.example.win.easy.view.main.SongListCreationFragment;
+import com.example.win.easy.view.main.SongListFragment;
 import com.example.win.easy.web.service.LoginService;
 
 import java.lang.annotation.Documented;
@@ -95,6 +100,27 @@ public class FragmentModule {
     @FragmentKey(SongListCreationFragment.class)
     static Fragment provideSongListCreationFragment(ViewModelProvider.Factory viewModelFactory){
         return new SongListCreationFragment(viewModelFactory);
+    }
+
+    @Provides
+    @IntoMap
+    @FragmentKey(SearchFragment.class)
+    static Fragment provideSearchFragment(ViewModelProvider.Factory viewModelFactory){
+        return new SearchFragment(viewModelFactory,null);
+    }
+
+    @Provides
+    @IntoMap
+    @FragmentKey(HandWritingFragment.class)
+    static Fragment provideHandWritingFragment(RecognitionService recognitionService){
+        return new HandWritingFragment(recognitionService);
+    }
+
+    @Provides
+    @IntoMap
+    @FragmentKey(DisplayFragment.class)
+    static Fragment provideDisplayFragment(DisplayService displayService){
+        return new DisplayFragment(displayService);
     }
 
     @Provides

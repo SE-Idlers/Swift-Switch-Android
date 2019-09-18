@@ -1,6 +1,6 @@
 package com.example.win.easy.dagger.component;
 
-import com.example.win.easy.view.activity.MainActivity;
+import com.example.win.easy.view.main.MainActivity;
 import com.example.win.easy.dagger.scope.MainActivityScope;
 
 import dagger.Component;

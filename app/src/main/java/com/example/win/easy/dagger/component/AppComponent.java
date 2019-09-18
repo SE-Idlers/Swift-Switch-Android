@@ -1,6 +1,7 @@
 package com.example.win.easy.dagger.component;
 
 import com.example.win.easy.dagger.module.BackendRequestModule;
+import com.example.win.easy.dagger.module.RecognitionModule;
 import com.example.win.easy.dagger.module.UtilModule;
 import com.example.win.easy.dagger.module.DisplayModule;
 import com.example.win.easy.dagger.module.DownloadModule;
@@ -12,6 +13,7 @@ import com.example.win.easy.dagger.module.WebSongListModule;
 import com.example.win.easy.display.interfaces.DisplayService;
 import com.example.win.easy.factory.__SongFactory;
 import com.example.win.easy.parser.filter.FilterStrategy;
+import com.example.win.easy.recognization.interfaces.RecognitionService;
 import com.example.win.easy.repository.deprecated.repo.__SongListRepository;
 import com.example.win.easy.repository.deprecated.repo.__SongRepository;
 import com.example.win.easy.repository.deprecated.repo.__SongXSongListRepository;
@@ -36,7 +38,8 @@ import dagger.Component;
         DisplayModule.class,
         RepositoryModule.class,
         ParserModule.class,
-        DownloadModule.class
+        DownloadModule.class,
+        RecognitionModule.class
 })
 @Singleton
 public interface AppComponent {
@@ -57,9 +60,13 @@ public interface AppComponent {
 
     __SongFactory getSongFactory();
 
+    RecognitionService getRecognitionService();
+
     FilterStrategy<List<Character>> getFilterStrategy();
 
     LoginService getLoginService();
+
+
 
     @Named("dbAccess") Executor diskIO();
     @Named("mainThread") Executor mainThread();

@@ -12,9 +12,7 @@ import com.example.win.easy.dagger.component.DashboardComponent;
 import com.example.win.easy.dagger.component.FragmentComponent;
 import com.example.win.easy.dagger.component.MainActivityComponent;
 import com.example.win.easy.dagger.component.ViewModelComponent;
-import com.example.win.easy.dagger.module.ListenerModule;
 import com.example.win.easy.dagger.module.RepositoryModule;
-import com.example.win.easy.view.activity.LockActivity;
 
 /**
  * <p>帮助dagger初始化component的静态工具类</p>
@@ -86,11 +84,10 @@ public class SwiftSwitchApplication extends Application {
         return mainActivityComponent;
     }
 
-    public DashboardComponent getDashboardComponent(LockActivity lockActivity){
+    public DashboardComponent getDashboardComponent(){
         if(dashboardComponent==null){
             dashboardComponent= DaggerDashboardComponent.builder()
-                    .viewModelComponent(getViewModelComponent())
-                    .listenerModule(new ListenerModule(lockActivity))
+                    .fragmentComponent(getFragmentComponent())
                     .build();
         }
         return dashboardComponent;

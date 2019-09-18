@@ -4,7 +4,7 @@ import android.content.Context;
 import android.widget.LinearLayout;
 
 import com.example.win.easy.R;
-import com.example.win.easy.view.fragment.ListFragment;
+import com.example.win.easy.view.main.ListFragment;
 import com.qmuiteam.qmui.util.QMUIResHelper;
 import com.qmuiteam.qmui.widget.grouplist.QMUICommonListItemView;
 

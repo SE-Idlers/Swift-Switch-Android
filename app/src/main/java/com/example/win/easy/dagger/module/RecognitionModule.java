@@ -1,17 +1,20 @@
 package com.example.win.easy.dagger.module;
 
-import com.example.win.easy.dagger.scope.DashboardScope;
 import com.example.win.easy.recognization.component.RecognitionServiceWithFourGestures;
 import com.example.win.easy.recognization.interfaces.RecognitionService;
+
+import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
 
 @Module
-public class ListenerModule {
+public class RecognitionModule {
 
-    @Provides @DashboardScope
-    RecognitionService provideRecognitionProxyWithFourGestures(){
+    @Provides
+    @Singleton
+    static RecognitionService provideRecognitionService(){
         return new RecognitionServiceWithFourGestures();
     }
+
 }

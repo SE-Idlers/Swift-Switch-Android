@@ -2,7 +2,6 @@ package com.example.win.easy.tool;
 
 import com.example.win.easy.enumeration.DataSource;
 import com.example.win.easy.repository.db.data_object.SongDO;
-import com.example.win.easy.repository.db.data_object.SongListDO;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -11,7 +10,7 @@ import java.util.Map;
 
 public class SongListTool {
 
-    public static List<SongList> generateTempList(List<Integer> sortedIndices, List<SongDO> allSongs){
+    public static List<SongListWithSongs> generateTempList(List<Integer> sortedIndices, List<SongDO> allSongs){
         return generateSongLists(groupByDataSource(sortedIndices,allSongs));
     }
 
@@ -36,16 +35,16 @@ public class SongListTool {
         return dataSourceGroup;
     }
 
-    private static List<SongList> generateSongLists(Map<DataSource,List<SongDO>> dataSourceGroup){
+    private static List<SongListWithSongs> generateSongLists(Map<DataSource,List<SongDO>> dataSourceGroup){
         List<DataSource> dataSources=new ArrayList<>(dataSourceGroup.keySet());
-        List<SongList> songLists=new ArrayList<>();//即将生成的歌单list
+        List<SongListWithSongs> songListWithSongs =new ArrayList<>();//即将生成的歌单list
         for (DataSource dataSource:dataSources)
-            songLists.add(
-                    new SongList(
-                            SongListDO.builder().source(dataSource).build(),
-                            dataSourceGroup.get(dataSource)
-                    )
+            songListWithSongs.add(null
+//                    new SongListWithSongs(
+//                            SongListDO.builder().source(dataSource).build(),
+//                            dataSourceGroup.get(dataSource)
+//                    )
             );
-        return songLists;
+        return songListWithSongs;
     }
 }

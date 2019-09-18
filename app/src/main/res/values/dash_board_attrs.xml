@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <declare-styleable name="Dashboard">
+    <declare-styleable name="SearchFragment">
         <attr name="tab_segment_background_color" format="color" />
         <attr name="view_pager_background_color" format="color" />
         <attr name="tab_selected_text_color" format="color" />

@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel;
 
 import com.example.win.easy.value_object.SongListVO;
 import com.example.win.easy.value_object.SongVO;
-import com.example.win.easy.view.SongListToCreateAlreadyExistLocallyException;
+import com.example.win.easy.view.main.SongListToCreateAlreadyExistLocallyException;
 
 import java.util.List;
 

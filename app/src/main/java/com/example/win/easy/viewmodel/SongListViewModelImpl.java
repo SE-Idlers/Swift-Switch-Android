@@ -9,7 +9,7 @@ import com.example.win.easy.repository.repo.Repo;
 import com.example.win.easy.value_object.SongListVO;
 import com.example.win.easy.value_object.SongVO;
 import com.example.win.easy.value_object.VOUtil;
-import com.example.win.easy.view.SongListToCreateAlreadyExistLocallyException;
+import com.example.win.easy.view.main.SongListToCreateAlreadyExistLocallyException;
 
 import java.util.ArrayList;
 import java.util.List;
