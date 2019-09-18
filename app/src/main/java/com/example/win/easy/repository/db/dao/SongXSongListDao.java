@@ -24,19 +24,34 @@ public interface SongXSongListDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insert(Collection<SongXSongListDO> songXSongListDOs);
 
+    //以下为Repo涉及方法
     @Query("SELECT * FROM SongXSongListDO")
-    LiveData<List<SongXSongListDO>> findAllSongXSongLists();
+    List<SongXSongListDO> getAllRelation();
 
-    @Query("SELECT * FROM SongXSongListDO")
-    List<SongXSongListDO> findAllRelation();
+    @Query("SELECT * FROM SongXSongListDO " +
+            "WHERE SongXSongListDO.songId=:songId " +
+            "AND SongXSongListDO.songListId=:songListId")
+    SongXSongListDO findById(Long songId, Long songListId);
+
+    @Query("SELECT songId, songListId FROM SongXSongListDO NATURAL JOIN SongDO " +
+            "WHERE SongDO.remoteId is not null")
+    List<SongXSongListDO> findAllDataOnWeb();
+
+    @Query("SELECT songId, songListId FROM SongXSongListDO NATURAL JOIN SongDO " +
+            "WHERE SongDO.remoteId is null")
+    List<SongXSongListDO> findAllDataOnLocal();
 
     @Query("SELECT * " +
             "FROM SongDO INNER JOIN SongXSongListDO " +
             "ON SongDO.id=SongXSongListDO.songId " +
             "WHERE SongXSongListDO.songListId=:songListId")
     @SuppressWarnings(RoomWarnings.CURSOR_MISMATCH)
-    List<SongDO> findAllSongsDataForSongListById(Long songListId);
-//    LiveData<List<SongDO>> findAllSongsDataForSongListById(Long songListId);
+    List<SongDO> getSongsOf(Long songListId);
+    /***********************/
+
+
+    @Query("SELECT * FROM SongXSongListDO")
+    LiveData<List<SongXSongListDO>> findAllSongXSongLists();
 
     @Query("SELECT * " +
             "FROM SongDO INNER JOIN SongXSongListDO " +
@@ -51,16 +66,6 @@ public interface SongXSongListDao {
             "WHERE SongXSongListDO.songId=:songId")
     @SuppressWarnings(RoomWarnings.CURSOR_MISMATCH)
     List<SongListDO> findAllSongListsForSongById(Long songId);
-//    LiveData<List<SongListDO>> findAllSongListsForSongById(Long songId);
-
-    @Query("SELECT * FROM SongXSongListDO " +
-            "WHERE SongXSongListDO.songId=:songId " +
-            "AND SongXSongListDO.songListId=:songListId")
-    LiveData<SongXSongListDO> findbyID(Long songId, Long songListId);
-
-    @Query("SELECT songId,songListId FROM SongXSongListDO NATURAL JOIN SongDO " +
-            "WHERE SongDO.remoteId != null")
-    LiveData<List<SongXSongListDO>> findAllDataOnWeb();
 
     @Delete
     void delete(SongXSongListDO songXSongListDO);
