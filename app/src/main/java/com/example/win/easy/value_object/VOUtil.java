@@ -38,6 +38,7 @@ public class VOUtil {
                 .name(songListDO.getName())
                 .avatarUrl(songListDO.getAvatarUrl())
                 .avatarPath(songListDO.getAvatarPath())
+                .dataSource(songListDO.getSource())
                 .build();
     }
 
@@ -47,6 +48,7 @@ public class VOUtil {
                 .name(songListVO.getName())
                 .avatarUrl(songListVO.getAvatarUrl())
                 .avatarPath(songListVO.getAvatarPath())
+                .source(songListVO.getDataSource())
                 .build();
     }
 

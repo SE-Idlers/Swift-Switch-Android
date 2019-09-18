@@ -1,5 +1,7 @@
 package com.example.win.easy.value_object;
 
+import com.example.win.easy.enumeration.DataSource;
+
 import java.io.Serializable;
 
 import lombok.AllArgsConstructor;
@@ -21,4 +23,5 @@ public class SongListVO implements Serializable {
 
     private String avatarPath;
 
+    private DataSource dataSource;
 }

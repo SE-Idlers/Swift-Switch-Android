@@ -13,6 +13,7 @@ import com.example.win.easy.view.fragment.AllSongListsFragment;
 import com.example.win.easy.view.fragment.AllSongsFragment;
 import com.example.win.easy.view.fragment.LoginFragment;
 import com.example.win.easy.view.fragment.MainActivityFragment;
+import com.example.win.easy.view.fragment.SongListCreationFragment;
 import com.example.win.easy.view.fragment.SongListFragment;
 import com.example.win.easy.web.service.LoginService;
 
@@ -89,6 +90,12 @@ public class FragmentModule {
         return new LoginFragment(loginService,Phone);
     }
 
+    @Provides
+    @IntoMap
+    @FragmentKey(SongListCreationFragment.class)
+    static Fragment provideSongListCreationFragment(ViewModelProvider.Factory viewModelFactory){
+        return new SongListCreationFragment(viewModelFactory);
+    }
 
     @Provides
     static FragmentFactory provideFragmentFactory(Map<Class<? extends Fragment>, Provider<Fragment>> providerMap){

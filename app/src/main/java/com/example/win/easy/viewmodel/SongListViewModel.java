@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel;
 
 import com.example.win.easy.value_object.SongListVO;
 import com.example.win.easy.value_object.SongVO;
+import com.example.win.easy.view.SongListToCreateAlreadyExistLocallyException;
 
 import java.util.List;
 
@@ -26,4 +27,6 @@ public abstract class SongListViewModel extends ViewModel {
     public abstract List<SongVO> songsNotIn(SongListVO songListVO);
 
     public abstract void addSongsTo(List<SongVO> songVOs,SongListVO songListVO);
+
+    public abstract void create(SongListVO songListVO) throws SongListToCreateAlreadyExistLocallyException;
 }

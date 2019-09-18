@@ -55,6 +55,7 @@ public class _VOUtilTest {
                 .name(songListDO.getName())
                 .avatarUrl(songListDO.getAvatarUrl())
                 .avatarPath(songListDO.getAvatarPath())
+                .dataSource(songListDO.getSource())
                 .build();
     }
 

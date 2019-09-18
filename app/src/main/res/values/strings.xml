@@ -14,6 +14,13 @@
     <string name="loginButtonText">登陆</string>
     <string name="accountTitleText">账号</string>
     <string name="passwordTitleText">密码</string>
+    <string name="newSongListCreationTitleText">名儿</string>
+    <string name="newSongListCreationHint">我的新歌单已经饥渴难耐了</string>
+    <string name="newSongListCreationButtonText">给我建他娘的！</string>
+    <string name="songListCreationFragmentTopBarTitle">给老子来个新歌单</string>
+    <string name="successfulSongListCreationTip">创建成功！</string>
+    <string name="unsuccessfulCreationTipForAlreadyExistedSongList">重名了喔</string>
+    <string name="unsuccessfulCreationTipForEmptySongListName">写点儿东西再创建8</string>
     <string name="mainActivityFragmentTopBarTitle">我的</string>
     <string name="textOnItemToAllSong">所有歌曲</string>
     <string name="textOnItemToAllSongList">所有歌单</string>

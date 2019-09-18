@@ -55,6 +55,7 @@
     </fragment>
     <fragment
         android:id="@+id/songListCreationFragment"
+        android:name="com.example.win.easy.view.fragment.SongListCreationFragment"
         android:label="SongListCreationFragment" />
     <fragment
         android:id="@+id/addSongToSongListFragment"

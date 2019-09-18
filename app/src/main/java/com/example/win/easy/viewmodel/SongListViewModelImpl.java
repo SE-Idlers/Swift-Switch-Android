@@ -9,6 +9,7 @@ import com.example.win.easy.repository.repo.Repo;
 import com.example.win.easy.value_object.SongListVO;
 import com.example.win.easy.value_object.SongVO;
 import com.example.win.easy.value_object.VOUtil;
+import com.example.win.easy.view.SongListToCreateAlreadyExistLocallyException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,6 +54,11 @@ public class SongListViewModelImpl extends SongListViewModel {
 
     @Override
     public void addSongsTo(List<SongVO> songVOs, SongListVO songListVO) {
+
+    }
+
+    @Override
+    public void create(SongListVO songListVO) throws SongListToCreateAlreadyExistLocallyException {
 
     }
 
