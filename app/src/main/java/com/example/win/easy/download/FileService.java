@@ -1,6 +1,7 @@
 package com.example.win.easy.download;
 
 import android.os.Environment;
+import android.util.Log;
 
 import com.example.win.easy.repository.db.data_object.SongDO;
 import com.example.win.easy.repository.db.data_object.SongListDO;
@@ -35,9 +36,10 @@ public class FileService {
         String songFileAbsolutePath=
                 rootDir+
                         songDir+d+
-                        songDO.getUid()+d+
-                        songDO.getName()+extension(songDO.getSongUrl());
-        return create(songFileAbsolutePath);
+                        songDO.getUid();
+        //Log.d("Print","File rootDir: "+rootDir);
+        //Log.d("Print","File absolutePath: "+songFileAbsolutePath);
+        return create(songFileAbsolutePath,songDO.getName()+extension(songDO.getSongUrl()));
     }
 
     /**
@@ -51,9 +53,9 @@ public class FileService {
                 rootDir+
                         pictureDir+d+
                         songDO.getUid()+
-                        songDir+d+
-                        webName(songDO.getAvatarUrl());
-        return create(songAvatarAbsolutePath);
+                        songDir;
+        return create(songAvatarAbsolutePath,
+                webName(songDO.getAvatarUrl()));
     }
 
     /**
@@ -68,33 +70,46 @@ public class FileService {
                         pictureDir+d+
                         songListDO.getUid()+
                         songListDir+d+
-                        songListDO.getSource().toString()+d+
-                        webName(songListDO.getAvatarUrl());
-        return create(songListAvatarAbsolutePath);
+                        songListDO.getSource().toString();
+        return create(songListAvatarAbsolutePath,
+                webName(songListDO.getAvatarUrl()));
     }
 
     /**
      * 根据文件名创建文件
-     * @param absolutePath 绝对路径
+     * @param dirPath 绝对路径
      * @return 创建完毕的文件
      * @throws IOException 文件创建失败
      */
-    private File create(String absolutePath) throws IOException {
-        File fileToCreate=new File(absolutePath);
+    private File create(String dirPath,String filename) throws IOException {
+        if (Environment.getExternalStorageState().equals(
+                Environment.MEDIA_MOUNTED)) {
+            File dir = new File(dirPath);
+            //Log.d("Flag", "dir ?:"+dirPath);
+            if(!dir.exists()){
+                dir.mkdirs();
+                Log.d("Flag", "dir mkdirs :"+dir.toPath());
+            }
+            File file = new File(dirPath,filename);
 
-        boolean successfulCreation=false;
+            if(file.exists()){
+                //若文件已存在，删除
+                Log.d("Exception", "File existed");
+                file.delete();
+                Log.d("Exception", "delete old File");
+            }
 
-        //若文件已经存在，确保删掉后重建
-        if (fileToCreate.exists()&&fileToCreate.delete())
-            successfulCreation=fileToCreate.createNewFile();
-        else
-            successfulCreation=fileToCreate.getParentFile().exists()
-                ?fileToCreate.createNewFile()//目录存在就直接创建文件
-                :fileToCreate.mkdirs();//目录不存在就递归创建（这个操作同时也把文件创建了）
+            //Log.d("Flag", "newFile ?:"+file.toPath());
+            file.createNewFile();
+            Log.d("Flag", "newFile done");
 
-        if (successfulCreation) return fileToCreate;
-        else throw new IOException();
+            Log.d("Flag", "successfulCreation ?:"+file.exists());
+
+            return file;
+        }
+        throw new IOException();
     }
+
 
     //从url中拿出文件的扩展名
     private String extension(String url){
