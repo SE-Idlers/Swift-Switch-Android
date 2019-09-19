@@ -53,25 +53,14 @@ public class Repo {
         this.songListWebService = songListWebService;
 
         executorService = Executors.newSingleThreadExecutor();//使用单线程化线程池，按照制定顺序执行Repo_task
-        this.executor = executor;
-
         AllSong = new MutableLiveData<>();
         AllSongList = new MutableLiveData<>();
 
         //在构造函数就把所有数据缓存好
-        allSong = songDao.getAllSong()==null?new ArrayList<>():songDao.getAllSong();
-        allSongList = songListDao.getAllSongList()==null?new ArrayList<>():songListDao.getAllSongList();
-        allRelation = songXSongListDao.getAllRelation()==null?new ArrayList<>():songXSongListDao.getAllRelation();
-        songOnWeb = songDao.findAllDataOnWeb()==null?new ArrayList<>():songDao.findAllDataOnWeb();
-        songListOnWeb = songListDao.findAllDataOnWeb()==null?new ArrayList<>():songListDao.findAllDataOnWeb();
-        songXSongListOnWeb = songXSongListDao.findAllDataOnWeb()==null?new ArrayList<>():songXSongListDao.findAllDataOnWeb();
-        songOnLocal = songDao.findAllDataOnLocal()==null?new ArrayList<>():songDao.findAllDataOnLocal();
-        songListOnLocal = songListDao.findAllDataOnLocal()==null?new ArrayList<>():songListDao.findAllDataOnLocal();
-        songXSongListOnLocal = songXSongListDao.findAllDataOnLocal()==null?new ArrayList<>():songXSongListDao.findAllDataOnLocal();
         songOf = new ArrayList<>();
         songNotIn = new ArrayList<>();
 
-        executor = new Executor() {
+        executor = new Executor() { //测试用
             @Override
             public void execute(Runnable command) {
                 command.run();
@@ -89,12 +78,12 @@ public class Repo {
     }
 
     public LiveData<List<SongDO>> getAllSong() {
-        Make_A_fetch_Task().executeOnExecutor(executor);
+        Make_A_fetch_Task().executeOnExecutor(executorService);
         return AllSong;
     }
 
     public LiveData<List<SongListDO>> getAllSongList() {
-        Make_A_fetch_Task().executeOnExecutor(executor);
+        Make_A_fetch_Task().executeOnExecutor(executorService);
         return AllSongList;
     }
 
