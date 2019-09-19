@@ -22,25 +22,29 @@ public interface SongDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     long[] insert(Collection<SongDO> songDOs);
 
+    //以下为Repo涉及方法
     @Query("SELECT * FROM SongDO")
-    LiveData<List<SongDO>> findAllSongDOs();
+    List<SongDO> getAllSong();
+
+    @Query("SELECT * FROM SongDO WHERE remoteId=:RemoteId")
+    SongDO findByRemoteId(Long RemoteId);
+
+    @Query("SELECT * FROM SongDO WHERE remoteId is not null")
+    List<SongDO> findAllDataOnWeb();
+
+    @Query("SELECT * FROM SongDO WHERE remoteId is null")
+    List<SongDO> findAllDataOnLocal();
+    /***********************/
 
     @Query("SELECT * FROM SongDO")
-    List<SongDO> findAllDataSongDOs();
+    LiveData<List<SongDO>> findAllSongDOs();
 
     @Query("SELECT * FROM SongDO WHERE id=:songId")
 //    SongDO findById(Long );songId
     LiveData<SongDO> findById(Long songId);
 
-    @Query("SELECT * FROM SongDO WHERE id=:RemoteId")
-    LiveData<SongDO> findByRemoteId(Long RemoteId);
-
-    @Query("SELECT * FROM SongDO WHERE remoteId is not null")
-    LiveData<List<SongDO>> findAllDataOnWeb();
-
     @Query("SELECT * FROM SongDO WHERE id=:songId")
     SongDO findDataById(Long songId);
-
 
     @Query("SELECT * FROM SongDO WHERE source=:dataSource")
 //    List<SongDO> findByDataSource(String dataSource);
@@ -48,9 +52,6 @@ public interface SongDao {
 
     @Query("SELECT * FROM SongDO WHERE source!=:dataSource")
     List<SongDO> findAllSongsExceptByDataSource(String dataSource);
-
-    @Query("SELECT * FROM SongDO WHERE name=:name AND author=:author AND source=:source AND uid=:uid AND remoteId=:remoteId")
-    SongDO findLocalRecordOfNetworkSong(String name, String author, String source, String uid, String remoteId);
 
     @Query("SELECT * FROM SongDO WHERE songPath=:songPath")
     SongDO findAllBySongPath(String songPath);
