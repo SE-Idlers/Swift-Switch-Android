@@ -34,11 +34,13 @@ public interface SongXSongListDao {
             "AND SongXSongListDO.songListId=:songListId")
     SongXSongListDO findById(Long songId, Long songListId);
 
-    @Query("SELECT songId, songListId FROM SongXSongListDO NATURAL JOIN SongDO " +
+    @Query("SELECT SongXSongListDO.songId, songListId FROM SongDO INNER JOIN SongXSongListDO " +
+            "ON SongDO.id = SongXSongListDO.songId " +
             "WHERE SongDO.remoteId is not null")
     List<SongXSongListDO> findAllDataOnWeb();
 
-    @Query("SELECT songId, songListId FROM SongXSongListDO NATURAL JOIN SongDO " +
+    @Query("SELECT SongXSongListDO.songId, songListId FROM SongDO INNER JOIN SongXSongListDO " +
+            "ON SongDO.id = SongXSongListDO.songId " +
             "WHERE SongDO.remoteId is null")
     List<SongXSongListDO> findAllDataOnLocal();
 

@@ -29,6 +29,7 @@ public class Repo {
 
     protected MutableLiveData<List<SongDO>> AllSong;
     protected MutableLiveData<List<SongListDO>> AllSongList;
+    protected MutableLiveData<List<SongXSongListDO>> AllRelation;
 
     protected List<SongDO> allSong;
     protected List<SongListDO> allSongList;
@@ -55,6 +56,7 @@ public class Repo {
         executorService = Executors.newSingleThreadExecutor();//使用单线程化线程池，按照制定顺序执行Repo_task
         AllSong = new MutableLiveData<>();
         AllSongList = new MutableLiveData<>();
+        AllRelation = new MutableLiveData<>();
 
         //在构造函数就把所有数据缓存好
         songOf = new ArrayList<>();
@@ -74,7 +76,8 @@ public class Repo {
         return new Repo_AsyncTask(this.songDao,this.songListDao,this.songXSongListDao,
                 this.songListWebService, this.AllSong, this.AllSongList, this.allSong, this.allSongList,
                 this.allRelation, this.songOnWeb, this.songListOnWeb, this.songXSongListOnWeb,
-                this.songOnLocal, this.songListOnLocal, this.songXSongListOnLocal);
+                this.songOnLocal, this.songListOnLocal, this.songXSongListOnLocal, this.AllRelation);
+        //传参过多，有些无意义可删减
     }
 
     public LiveData<List<SongDO>> getAllSong() {
@@ -88,12 +91,23 @@ public class Repo {
     }
 
     public List<SongDO> songsOf(SongListDO songList) {
-        songOf = songXSongListDao.getSongsOf(songList.id);
+        allRelation = AllRelation.getValue();
+        allSong = AllSong.getValue();
+        songOf = new ArrayList<>();//TODO: 如何将allRelation更新
+        for(SongXSongListDO relation: allRelation){
+            if(relation.songListId.longValue() == songList.id.longValue()){
+                for(SongDO item: allSong){
+                    if(relation.songId.longValue() == item.id.longValue()){
+                        songOf.add(item);
+                    }
+                }
+            }
+        }
         return songOf;
     }
 
     public List<SongDO> getSongNotIn(SongListDO songList) {
-        songOf = songXSongListDao.getSongsOf(songList.id);
+        songOf = songsOf(songList);
         songNotIn = new ArrayList<>();
         for(SongDO item_1: allSong){
             boolean flag = true;

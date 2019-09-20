@@ -24,6 +24,7 @@ public class Repo_AsyncTask extends AsyncTask<Object, Object, Long> {
 
     private MutableLiveData<List<SongDO>> AllSong;
     private MutableLiveData<List<SongListDO>> AllSongList;
+    private MutableLiveData<List<SongXSongListDO>> AllRelation;
 
     private List<SongDO> allSong;
     private List<SongListDO> allSongList;
@@ -49,7 +50,8 @@ public class Repo_AsyncTask extends AsyncTask<Object, Object, Long> {
                           List<SongXSongListDO> songXSongListOnWeb,
                           List<SongDO> songOnLocal,
                           List<SongListDO> songListOnLocal,
-                          List<SongXSongListDO> songXSongListOnLocal) {
+                          List<SongXSongListDO> songXSongListOnLocal,
+                          MutableLiveData<List<SongXSongListDO>> AllRelation) {
         this.songDao = songDao;
         this.songListDao = songListDao;
         this.songXSongListDao = songXSongListDao;
@@ -66,6 +68,8 @@ public class Repo_AsyncTask extends AsyncTask<Object, Object, Long> {
         this.songOnLocal = songOnLocal;
         this.songListOnLocal = songListOnLocal;
         this.songXSongListOnLocal = songXSongListOnLocal;
+
+        this.AllRelation = AllRelation;
     }
 
     @Override
@@ -91,7 +95,7 @@ public class Repo_AsyncTask extends AsyncTask<Object, Object, Long> {
                     this.songListWebService, this.AllSong, this.AllSongList, this.allSong, this.allSongList,
                     this.allRelation, this.songOnWeb, this.songListOnWeb, this.songXSongListOnWeb,
                     this.songOnLocal, this.songListOnLocal, this.songXSongListOnLocal,
-                    songMap);
+                    songMap, this.AllRelation);
             task.execute();
         });
     }

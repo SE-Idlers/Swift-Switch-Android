@@ -38,6 +38,8 @@ public class Repo_Task_AccessDB extends AsyncTask<Object, Object, Long> {
 
     Map<SongListDO,List<SongDO>> songMap;
 
+    private MutableLiveData<List<SongXSongListDO>> AllRelation;
+
     public Repo_Task_AccessDB(SongDao songDao,
                               SongListDao songListDao,
                               SongXSongListDao songXSongListDao,
@@ -53,7 +55,8 @@ public class Repo_Task_AccessDB extends AsyncTask<Object, Object, Long> {
                               List<SongDO> songOnLocal,
                               List<SongListDO> songListOnLocal,
                               List<SongXSongListDO> songXSongListOnLocal,
-                              Map<SongListDO,List<SongDO>> songMap) {
+                              Map<SongListDO,List<SongDO>> songMap,
+                              MutableLiveData<List<SongXSongListDO>> AllRelation) {
         this.songDao = songDao;
         this.songListDao = songListDao;
         this.songXSongListDao = songXSongListDao;
@@ -72,6 +75,8 @@ public class Repo_Task_AccessDB extends AsyncTask<Object, Object, Long> {
         this.songXSongListOnLocal = songXSongListOnLocal;
 
         this.songMap = songMap;
+
+        this.AllRelation = AllRelation;
     }
 
     @Override
@@ -79,6 +84,7 @@ public class Repo_Task_AccessDB extends AsyncTask<Object, Object, Long> {
 
         AllSong.postValue(allSong);
         AllSongList.postValue(allSongList);
+        AllRelation.postValue(allRelation);
     }
 
     private void beforeUpdate() {
