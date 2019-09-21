@@ -1,7 +1,11 @@
 package com.example.win.easy.value_object;
 
+import androidx.lifecycle.LiveData;
+
 import com.example.win.easy.repository.db.data_object.SongDO;
 import com.example.win.easy.repository.db.data_object.SongListDO;
+
+import java.util.List;
 
 /**
  * <p>职责和功能类似{@link com.example.win.easy.web.DTOUtil}</p>
@@ -14,8 +18,8 @@ public class VOUtil {
         return SongDO.builder()
                 .id(songVO.getId())
                 .name(songVO.getName())
-                .songUrl(songVO.getSongFileUrl())
-                .songPath(songVO.getSongFilePath())
+                .songUrl(songVO.getSongUrl())
+                .songPath(songVO.getSongPath())
                 .avatarUrl(songVO.getAvatarUrl())
                 .avatarPath(songVO.getAvatarPath())
                 .build();
@@ -25,8 +29,8 @@ public class VOUtil {
         return SongVO.builder()
                 .id(songDO.getId())
                 .name(songDO.getName())
-                .songFileUrl(songDO.getSongUrl())
-                .songFilePath(songDO.getSongPath())
+                .songUrl(songDO.getSongUrl())
+                .songPath(songDO.getSongPath())
                 .avatarUrl(songDO.getAvatarUrl())
                 .avatarPath(songDO.getAvatarPath())
                 .build();

@@ -16,11 +16,14 @@ import com.example.win.easy.Constants;
 import com.example.win.easy.R;
 import com.example.win.easy.enumeration.DataSource;
 import com.example.win.easy.factory.__SongFactory;
+import com.example.win.easy.parser.interfaces.FilenameParser;
 import com.example.win.easy.repository.db.CustomTypeConverters;
 import com.example.win.easy.repository.db.data_object.SongDO;
 import com.example.win.easy.tool.UriProcessTool;
+import com.example.win.easy.value_object.SongVO;
 import com.example.win.easy.view.EntityItem;
 import com.example.win.easy.view.OnClickFunc;
+import com.example.win.easy.viewmodel.AllSongViewModel;
 import com.example.win.easy.viewmodel.SimpleViewModel;
 import com.qmuiteam.qmui.widget.QMUIRadiusImageView;
 import com.qmuiteam.qmui.widget.grouplist.QMUICommonListItemView;
@@ -28,6 +31,8 @@ import com.qmuiteam.qmui.widget.grouplist.QMUICommonListItemView;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.inject.Inject;
 
 /**
  * <p>展示所有歌曲的界面</p>
@@ -37,6 +42,8 @@ public class AllSongsFragment extends ListFragment {
     private ViewModelProvider.Factory factory;
     private __SongFactory songFactory;
     private SimpleViewModel viewModel;
+
+    private AllSongViewModel allSongViewModel;
 
     public AllSongsFragment(ViewModelProvider.Factory factory,__SongFactory songFactory){
         this.factory=factory;
@@ -65,32 +72,53 @@ public class AllSongsFragment extends ListFragment {
                 && resultCode == Activity.RESULT_OK
                 &&resultData!=null) {
             //添加歌曲到本地数据库
-            viewModel.insert(songFactory.create(new File(UriProcessTool.getPathByUri4kitkat(getContext(),resultData.getData()))));
+            allSongViewModel.insert(create(new File(UriProcessTool.getPathByUri4kitkat(getContext(),resultData.getData()))));
             //提示添加成功
             Toast.makeText(getContext(),"歌曲添加成功",Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public SongVO create(File songFile){
+        String abPath=songFile.getAbsolutePath();
+        try{
+            return SongVO.builder()
+                    .name(abPath.substring(abPath.lastIndexOf('/')+1, abPath.lastIndexOf('.')))
+                    .author(abPath.substring(abPath.lastIndexOf('/')+1,abPath.indexOf('-')))
+                    .source(DataSource.Local)
+                    .songPath(abPath)
+                    .build();
+        }
+        catch (Exception E){
+            return SongVO.builder()
+                    .name(abPath.substring(abPath.lastIndexOf('/')+1, abPath.lastIndexOf('.')))
+                    .author("NONE")
+                    .source(DataSource.Local)
+                    .songPath(abPath)
+                    .build();
         }
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
-        viewModel = ViewModelProviders.of(this,factory).get(SimpleViewModel.class);
-        viewModel.getAllSongs().observe(this, this::update);
+
+        allSongViewModel = ViewModelProviders.of(this,factory).get(AllSongViewModel.class);
+       // allSongViewModel.getAllSongs().observe(this, this::update);
     }
 
     /**
      * 根据最新的歌曲数据刷新视图
-     * @param songDOs 最新的歌曲数据
+     * @param songVOS 最新的歌曲数据
      */
-    public void update(List<SongDO> songDOs){
-        if (songDOs.size()==0) {
-            songDOs.add(SongDO.builder().id(78L).name("测试测试and测试 - 桂喜老师").source(DataSource.Local).sequence(new ArrayList<>()).build());
-            songDOs.add(SongDO.builder().id(99L).name("One Punch").source(DataSource.Local).sequence(new ArrayList<>()).build());
+    public void update(List<SongVO> songVOS){
+        if (songVOS.size()==0) {
+            songVOS.add(SongVO.builder().id(78L).name("测试测试and测试 - 桂喜老师").source(DataSource.Local).sequence(new ArrayList<>()).build());
+            songVOS.add(SongVO.builder().id(99L).name("One Punch").source(DataSource.Local).sequence(new ArrayList<>()).build());
         }
         List<QMUICommonListItemView> songItemViews=new ArrayList<>();
         //对每个歌单都生成一个itemView
-        for (int i=0;i<songDOs.size();i++){
-            songItemViews.add(new SongItem(songDOs.get(i),(song,view)->{
+        for (int i=0;i<songVOS.size();i++){
+            songItemViews.add(new SongItem(songVOS.get(i),(song,view)->{
                 //TODO 触发歌曲播放
                 Toast.makeText(getContext(),"待实现：点击播放歌曲",Toast.LENGTH_SHORT).show();
             }));
@@ -99,9 +127,9 @@ public class AllSongsFragment extends ListFragment {
     }
 
 
-    class SongItem extends EntityItem<SongDO> {
+    class SongItem extends EntityItem<SongVO> {
 
-        public SongItem(SongDO entity, OnClickFunc<SongDO> onClickFunc) {
+        public SongItem(SongVO entity, OnClickFunc<SongVO> onClickFunc) {
             super(AllSongsFragment.this.getContext(), entity, onClickFunc);
             //显示歌曲名称
             setText(entity.getName());
@@ -114,7 +142,7 @@ public class AllSongsFragment extends ListFragment {
                 QMUIRadiusImageView imageView=new QMUIRadiusImageView(getContext());
                 imageView.setImageDrawable(getResources().getDrawable(R.drawable.ic_action_music));
                 addAccessoryCustomView(imageView);
-                setDetailText(CustomTypeConverters.characterList2string(entity.getSequence()));
+                //setDetailText(CustomTypeConverters.characterList2string(entity.getSequence()));
             }
             //如果歌曲有下载好的头像，则发起一个异步任务，读取本地图片文件并解码图片，完成后自动更新视图
 //            if (entity.getAvatarPath()!=null)

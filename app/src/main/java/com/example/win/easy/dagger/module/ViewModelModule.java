@@ -9,6 +9,7 @@ import com.example.win.easy.repository.deprecated.repo.__SongRepository;
 import com.example.win.easy.repository.deprecated.repo.__SongXSongListRepository;
 import com.example.win.easy.repository.repo.Repo;
 import com.example.win.easy.value_object.VOUtil;
+import com.example.win.easy.viewmodel.AllSongViewModel;
 import com.example.win.easy.viewmodel.SimpleViewModel;
 import com.example.win.easy.viewmodel.SongListViewModel;
 import com.example.win.easy.viewmodel.SongListViewModelImpl;
@@ -43,6 +44,15 @@ public class ViewModelModule {
                                      __SongListRepository songListRepository,
                                      __SongXSongListRepository songXSongListRepository){
         return new SimpleViewModel(songRepository,songListRepository,songXSongListRepository);
+    }
+
+    @Provides
+    @IntoMap
+    @ViewModelKey(AllSongViewModel.class)
+    static ViewModel allSongViewModel(__SongRepository songRepository,
+                                     __SongListRepository songListRepository,
+                                     __SongXSongListRepository songXSongListRepository){
+        return new AllSongViewModel(songRepository,songListRepository,songXSongListRepository);
     }
 
     @Provides

@@ -24,6 +24,7 @@ public class SongListDO {
     @PrimaryKey(autoGenerate = true)
     public Long id;
 
+
     /**
      * 歌单的名字
      */
@@ -54,4 +55,25 @@ public class SongListDO {
      * 网络歌单本身的id
      */
     public Long remoteId;
+
+    public Long getId(){
+        return id;
+    }
+
+    public String getName(){
+        return name;
+    }
+
+    public String getAvatarUrl(){
+        return avatarUrl;
+    }
+
+    public String getAvatarPath(){
+        return avatarPath;
+    }
+
+    public DataSource getSource(){
+        return source;
+    }
+
 }
