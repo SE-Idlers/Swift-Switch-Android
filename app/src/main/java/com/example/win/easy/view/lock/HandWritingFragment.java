@@ -33,7 +33,6 @@ public class HandWritingFragment extends Fragment {
             R.id.gesture3,
             R.id.gesture4
     };
-
     private List<GestureOverlayView> gestureBoards=new ArrayList<>();
     private MutableLiveData<List<Character>> recognitionLiveData =new MutableLiveData<>();
 
@@ -82,7 +81,7 @@ public class HandWritingFragment extends Fragment {
 
     private boolean authorityPermitted(){
         return ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                != PackageManager.PERMISSION_GRANTED;
+                == PackageManager.PERMISSION_GRANTED;
     }
 
     private void requestPermission(){

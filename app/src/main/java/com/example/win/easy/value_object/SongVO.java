@@ -1,5 +1,7 @@
 package com.example.win.easy.value_object;
 
+import com.example.win.easy.enumeration.DataSource;
+
 import lombok.Builder;
 import lombok.Data;
 
@@ -18,6 +20,8 @@ public class SongVO {
     String avatarUrl;
 
     String avatarPath;
+
+    DataSource source;
 
     public boolean songFileHasBeenDownloaded(){return songFilePath!=null;}
     public boolean songFileCanBeDownloaded(){return songFileUrl!=null;}

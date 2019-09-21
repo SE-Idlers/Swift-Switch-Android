@@ -11,5 +11,7 @@ public interface DisplayServiceAdapter {
 
     SongVO getCurrentDisplayedSong();
 
+    List<SongVO> getCurrentDisplayedSongList();
+
     void replaceSongList(List<SongVO> songList) throws FailToReplaceSongListException;
 }

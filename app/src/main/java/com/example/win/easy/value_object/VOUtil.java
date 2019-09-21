@@ -18,6 +18,7 @@ public class VOUtil {
                 .songPath(songVO.getSongFilePath())
                 .avatarUrl(songVO.getAvatarUrl())
                 .avatarPath(songVO.getAvatarPath())
+                .source(songVO.getSource())
                 .build();
     }
 
@@ -29,6 +30,7 @@ public class VOUtil {
                 .songFilePath(songDO.getSongPath())
                 .avatarUrl(songDO.getAvatarUrl())
                 .avatarPath(songDO.getAvatarPath())
+                .source(songDO.getSource())
                 .build();
     }
 

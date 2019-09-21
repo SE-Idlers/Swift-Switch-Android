@@ -1,5 +1,6 @@
 package com.example.win.easy.view.lock;
 
+import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -14,11 +15,14 @@ import com.qmuiteam.qmui.widget.grouplist.QMUIGroupListView;
 import java.util.ArrayList;
 import java.util.List;
 
-import static androidx.test.InstrumentationRegistry.getContext;
-
 public class PageGroup extends PagerAdapter {
 
     private List<QMUIGroupListView> pages=new ArrayList<>();
+    private Context context;
+
+    public PageGroup(Context context){
+        this.context=context;
+    }
 
     public void clear(){
         pages.clear();
@@ -35,13 +39,13 @@ public class PageGroup extends PagerAdapter {
 
     private QMUIGroupListView toPage(List<SongVO> songsInPage,OnClickFunc<SongVO> songOnClickFunc){
         //用于返回的GroupListView
-        QMUIGroupListView page=new QMUIGroupListView(getContext());
+        QMUIGroupListView page=new QMUIGroupListView(context);
         setItemsIn(page,songsInPage,songOnClickFunc);
         return page;
     }
 
     private void setItemsIn(QMUIGroupListView page,List<SongVO> songsInPage,OnClickFunc<SongVO> songOnClickFunc){
-        QMUIGroupListView.Section section=QMUIGroupListView.newSection(getContext());
+        QMUIGroupListView.Section section=QMUIGroupListView.newSection(context);
 
         //为这个歌单每一首歌构建一个Item，并把它们放入同一个Section中
         for(SongVO song : songsInPage){

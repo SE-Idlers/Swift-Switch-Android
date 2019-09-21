@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModel;
 
+import com.example.win.easy.value_object.SongListVO;
 import com.example.win.easy.value_object.VOUtil;
 import com.example.win.easy.repository.db.data_object.SongDO;
 import com.example.win.easy.repository.deprecated.repo.__SongRepository;
@@ -42,6 +43,16 @@ public class SongViewModel extends ViewModel {
             });
         }
         return allSongsLiveData;
+    }
+
+    public List<SongVO> songsMatch(List<Character> sequence){
+        //TODO 以序列为前缀匹配歌曲（查数据库）
+        return new ArrayList<>();
+    }
+
+    public List<SongListVO> songListsContain(SongVO songVO){
+        //TODO 查找所有包含这个歌曲的歌单（查数据库）
+        return new ArrayList<>();
     }
 
 }
