@@ -1,7 +1,5 @@
 package com.example.win.easy.value_object;
 
-import java.io.File;
-
 import lombok.Builder;
 import lombok.Data;
 
@@ -9,14 +7,17 @@ import lombok.Data;
 @Builder
 public class SongVO {
 
+    Long id;
+
     String name;
 
     String songFileUrl;
 
     String songFilePath;
 
-    File avatarFile;
+    String avatarUrl;
 
+    String avatarPath;
 
     public boolean songFileHasBeenDownloaded(){return songFilePath!=null;}
     public boolean songFileCanBeDownloaded(){return songFileUrl!=null;}

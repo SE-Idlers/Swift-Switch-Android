@@ -6,7 +6,7 @@
     app:startDestination="@id/mainActivityFragment">
     <fragment
         android:id="@+id/mainActivityFragment"
-        android:name="com.example.win.easy.view.fragment.MainActivityFragment"
+        android:name="com.example.win.easy.view.main.MainActivityFragment"
         android:label="MainActivityFragment" >
         <action
             android:id="@+id/action_mainActivityFragment_to_allSongListsFragment"
@@ -17,10 +17,16 @@
         <action
             android:id="@+id/action_mainActivityFragment_to_loginFragment"
             app:destination="@id/loginFragment" />
+        <action
+            android:id="@+id/action_mainActivityFragment_to_songListCreationFragment"
+            app:destination="@id/songListCreationFragment" />
+        <action
+            android:id="@+id/action_mainActivityFragment_to_placeholder"
+            app:destination="@id/placeholder" />
     </fragment>
     <fragment
         android:id="@+id/allSongListsFragment"
-        android:name="com.example.win.easy.view.fragment.AllSongListsFragment"
+        android:name="com.example.win.easy.view.main.AllSongListsFragment"
         android:label="AllSongListsFragment" >
         <action
             android:id="@+id/action_allSongListsFragment_to_songListFragment"
@@ -31,35 +37,45 @@
     </fragment>
     <fragment
         android:id="@+id/allSongsFragment"
-        android:name="com.example.win.easy.view.fragment.AllSongsFragment"
-        android:label="AllSongsFragment" />
+        android:name="com.example.win.easy.view.main.AllSongsFragment"
+        android:label="AllSongsFragment" >
+        <action
+            android:id="@+id/action_allSongsFragment_to_placeholder"
+            app:destination="@id/placeholder" />
+    </fragment>
     <fragment
         android:id="@+id/songListFragment"
-        android:name="com.example.win.easy.view.fragment.SongListFragment"
+        android:name="com.example.win.easy.view.main.SongListFragment"
         android:label="SongListFragment">
         <argument android:name="selectedSongList"
             app:argType="com.example.win.easy.value_object.SongListVO" />
         <action
-            android:id="@+id/action_songListFragment_to_placeholder2"
+            android:id="@+id/action_songListFragment_to_addSongToSongListFragment"
             app:destination="@id/addSongToSongListFragment" />
     </fragment>
     <fragment
         android:id="@+id/songListCreationFragment"
+        android:name="com.example.win.easy.view.main.SongListCreationFragment"
         android:label="SongListCreationFragment" />
     <fragment
         android:id="@+id/addSongToSongListFragment"
-        android:label="AddSongToSongListFragment" >
+        android:name="com.example.win.easy.view.main.AddSongToSongListFragment"
+        android:label="AddSongToSongListFragment">
         <argument
             android:name="songListSongsAddedTo"
             app:argType="com.example.win.easy.value_object.SongListVO" />
+        <action
+            android:id="@+id/action_addSongToSongListFragment_to_songListFragment"
+            app:destination="@id/songListFragment" />
     </fragment>
     <fragment
         android:id="@+id/loginFragment"
-        android:name="com.example.win.easy.view.fragment.LoginFragment"
+        android:name="com.example.win.easy.view.main.LoginFragment"
         android:label="fragment_login"
         tools:layout="@layout/fragment_login" >
         <action
             android:id="@+id/action_loginFragment_to_mainActivityFragment"
             app:destination="@id/mainActivityFragment" />
     </fragment>
+    <fragment android:id="@+id/placeholder" />
 </navigation>

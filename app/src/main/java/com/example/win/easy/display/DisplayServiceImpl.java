@@ -4,7 +4,7 @@ import android.media.MediaPlayer;
 
 import com.example.win.easy.display.interfaces.DisplayService;
 import com.example.win.easy.repository.db.data_object.SongDO;
-import com.example.win.easy.tool.SongList;
+import com.example.win.easy.tool.SongListWithSongs;
 
 import java.io.IOException;
 import java.util.List;
@@ -21,7 +21,7 @@ public class DisplayServiceImpl implements DisplayService {
     }
 
     private MediaPlayer mediaPlayer;
-    private SongList displayList;
+    private SongListWithSongs displayList;
     private DisplayMode displayMode;
     private SongDO currentSong;
     private int currentSongIndex;
@@ -37,7 +37,7 @@ public class DisplayServiceImpl implements DisplayService {
     private void automata(){}
 
     @Override
-    public SongList getDisplayList(){return displayList;}
+    public SongListWithSongs getDisplayList(){return displayList;}
 
     @Override
     public void next(){
@@ -72,7 +72,7 @@ public class DisplayServiceImpl implements DisplayService {
     }
 
     @Override
-    public boolean setDisplayList(SongList list) {
+    public boolean setDisplayList(SongListWithSongs list) {
         List<SongDO> songDOs =list.getSongDOs();
         if(songDOs.contains(currentSong)){
             this.displayList=list;
@@ -89,7 +89,7 @@ public class DisplayServiceImpl implements DisplayService {
     }
 
     @Override
-    public boolean restartWith(SongDO songDO, SongList listSongAt) {
+    public boolean restartWith(SongDO songDO, SongListWithSongs listSongAt) {
         //设置当前歌曲
         currentSong= songDO;
         //开始播放

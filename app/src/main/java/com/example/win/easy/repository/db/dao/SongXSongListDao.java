@@ -27,6 +27,9 @@ public interface SongXSongListDao {
     @Query("SELECT * FROM SongXSongListDO")
     LiveData<List<SongXSongListDO>> findAllSongXSongLists();
 
+    @Query("SELECT * FROM SongXSongListDO")
+    List<SongXSongListDO> findAllRelation();
+
     @Query("SELECT * " +
             "FROM SongDO INNER JOIN SongXSongListDO " +
             "ON SongDO.id=SongXSongListDO.songId " +
@@ -55,7 +58,7 @@ public interface SongXSongListDao {
             "AND SongXSongListDO.songListId=:songListId")
     LiveData<SongXSongListDO> findbyID(Long songId, Long songListId);
 
-    @Query("SELECT * FROM SongXSongListDO NATURAL JOIN SongDO " +
+    @Query("SELECT songId,songListId FROM SongXSongListDO NATURAL JOIN SongDO " +
             "WHERE SongDO.remoteId != null")
     LiveData<List<SongXSongListDO>> findAllDataOnWeb();
 

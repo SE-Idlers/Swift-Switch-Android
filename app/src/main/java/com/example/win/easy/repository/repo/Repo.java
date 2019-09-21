@@ -9,13 +9,11 @@ import com.example.win.easy.repository.db.dao.SongXSongListDao;
 import com.example.win.easy.repository.db.data_object.SongDO;
 import com.example.win.easy.repository.db.data_object.SongListDO;
 import com.example.win.easy.repository.db.data_object.SongXSongListDO;
-import com.example.win.easy.tool.SongList;
 import com.example.win.easy.web.service.SongListWebService;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.concurrent.Executor;
 
 public class Repo {
     private SongDao songDao;
@@ -28,6 +26,8 @@ public class Repo {
     private MutableLiveData<List<SongListDO>> allSongList;
     private SongListWebService songListWebService;
     //private Executor diskIO; // unblock
+
+    private List<SongDO> tempList;
 
     public Repo(SongDao songDao,
                 SongListDao songListDao,
@@ -42,61 +42,85 @@ public class Repo {
         songOnWeb = new MutableLiveData<>();
         songListOnWeb = new MutableLiveData<>();
         songXSongListOnWeb = new MutableLiveData<>();
+        tempList = new ArrayList<>();
     }
 
-    public Long insertSong(SongDO data) {
+    private Long insertSong(SongDO data) {
         LiveData<SongDO> result = songDao.findByRemoteId(data.remoteId);
-        if (result == null)
+        if (result == null) return -1L; //error
+        if (result.getValue() == null)
             return songDao.insert(data);
         else
             return result.getValue().id;
     }
 
-    public void deleteSong(SongDO data) {
+    private void deleteSong(SongDO data) {
         LiveData<SongDO> result = songDao.findByRemoteId(data.remoteId);
         if (result != null && result.getValue() != null)
             songDao.delete(data);
     }
 
-    public Long insertSongList(SongListDO data) {
+    private Long insertSongList(SongListDO data) {
         LiveData<SongListDO> result = songListDao.findByRemoteId(data.remoteId);
-        if (result == null)
+        if (result == null) return -1L; //error
+        if (result.getValue() == null)
             return songListDao.insert(data);
         else
             return result.getValue().id;
     }
 
-    public void deleteSongList(SongListDO data) {
+    private void deleteSongList(SongListDO data) {
         LiveData<SongListDO> result = songListDao.findByRemoteId(data.remoteId);
         if (result != null && result.getValue() != null)
             songListDao.delete(data);
     }
 
-    public void insertSongXSongLIst(SongXSongListDO data) {
+    private void insertSongXSongLIst(SongXSongListDO data) {
         LiveData<SongXSongListDO> result = songXSongListDao.findbyID(data.songId, data.songListId);
-        if (result == null)
+        if (result == null) return; //error
+        if (result.getValue() == null)
             songXSongListDao.insert(data);
     }
 
-    public void deleteSongXSongList(SongXSongListDO data) {
+    private void deleteSongXSongList(SongXSongListDO data) {
         LiveData<SongXSongListDO> result = songXSongListDao.findbyID(data.songId, data.songListId);
         if (result != null && result.getValue() != null)
             songXSongListDao.delete(data);
     }
 
-    public void beforeUpdate() {
-        songOnWeb.setValue(songDao.findAllDataOnWeb().getValue());
-        songListOnWeb.setValue(songListDao.findAllDataOnWeb().getValue());
-        songXSongListOnWeb.setValue(songXSongListDao.findAllDataOnWeb().getValue());
-        allSong.setValue(songDao.findAllSongDOs().getValue());
-        allSongList.setValue(songListDao.findAllSongListDOs().getValue());
+    private void beforeUpdate() {
+        songOnWeb.setValue(songDao.findAllDataOnWeb() == null
+                ? new ArrayList<SongDO>()
+                : songDao.findAllDataOnWeb().getValue() == null
+                ? new ArrayList<SongDO>()
+                : songDao.findAllDataOnWeb().getValue());
+        songListOnWeb.setValue(songListDao.findAllDataOnWeb() == null
+                ? new ArrayList<SongListDO>()
+                : songListDao.findAllDataOnWeb().getValue() == null
+                ? new ArrayList<SongListDO>()
+                : songListDao.findAllDataOnWeb().getValue());
+        songXSongListOnWeb.setValue(songXSongListDao.findAllDataOnWeb() == null
+                ? new ArrayList<SongXSongListDO>()
+                : songXSongListDao.findAllDataOnWeb().getValue() == null
+                ? new ArrayList<SongXSongListDO>()
+                : songXSongListDao.findAllDataOnWeb().getValue());
+        allSong.setValue(songDao.findAllSongDOs() == null
+                ? new ArrayList<SongDO>()
+                : songDao.findAllSongDOs().getValue() == null
+                ? new ArrayList<SongDO>()
+                : songDao.findAllSongDOs().getValue());
+        allSongList.setValue(songListDao.findAllSongListDOs() == null
+                ? new ArrayList<SongListDO>()
+                : songListDao.findAllSongListDOs().getValue() == null
+                ? new ArrayList<SongListDO>()
+                : songListDao.findAllSongListDOs().getValue());
     }
 
-    public Long UpDaTeSoNg(SongDO data, boolean isEnd) {
+    private Long UpDaTeSoNg(SongDO data, boolean isEnd) {
         Long songId = insertSong(data);
         //手动迭代
         int index = songOnWeb.getValue().size() - 1;
-        for(SongDO hasIt; index>=0; index--) {
+        for (SongDO hasIt; index >= 0; index--) {
             hasIt = songOnWeb.getValue().get(index);
             if (hasIt.remoteId.longValue() == data.remoteId.longValue())
                 songOnWeb.getValue().remove(songOnWeb.getValue().indexOf(data));//remove可行性存疑
@@ -109,11 +133,11 @@ public class Repo {
         return songId;
     }
 
-    public Long UpDaTeSoNgLiSt(SongListDO data, boolean isEnd) {
+    private Long UpDaTeSoNgLiSt(SongListDO data, boolean isEnd) {
         Long songListId = insertSongList(data);
         //手动迭代
         int index = songListOnWeb.getValue().size() - 1;
-        for(SongListDO hasIt; index>=0; index--){
+        for (SongListDO hasIt; index >= 0; index--) {
             hasIt = songListOnWeb.getValue().get(index);
             if (hasIt.remoteId.longValue() == data.remoteId.longValue())
                 songListOnWeb.getValue().remove(songListOnWeb.getValue().indexOf(data));
@@ -126,10 +150,10 @@ public class Repo {
         return songListId;
     }
 
-    public void UpDaTeSoNgXSoNgLiSt(SongXSongListDO data, boolean isEnd) {
+    private void UpDaTeSoNgXSoNgLiSt(SongXSongListDO data, boolean isEnd) {
         insertSongXSongLIst(data);
         int index = songXSongListOnWeb.getValue().size() - 1;
-        for(SongXSongListDO hasIt; index >= 0; index--){
+        for (SongXSongListDO hasIt; index >= 0; index--) {
             hasIt = songXSongListOnWeb.getValue().get(index);
             if (hasIt.songId.longValue() == data.songId.longValue()
                     && hasIt.songListId.longValue() == data.songListId.longValue())
@@ -165,8 +189,16 @@ public class Repo {
                 }
                 i++;
             }
-            allSong.setValue(songDao.findAllSongDOs().getValue());
-            allSongList.setValue(songListDao.findAllSongListDOs().getValue());
+            allSong.setValue(songDao.findAllSongDOs() == null
+                    ? new ArrayList<SongDO>()
+                    : songDao.findAllSongDOs().getValue() == null
+                    ? new ArrayList<SongDO>()
+                    : songDao.findAllSongDOs().getValue());
+            allSongList.setValue(songListDao.findAllSongListDOs() == null
+                    ? new ArrayList<SongListDO>()
+                    : songListDao.findAllSongListDOs().getValue() == null
+                    ? new ArrayList<SongListDO>()
+                    : songListDao.findAllSongListDOs().getValue());
         });
     }
 
@@ -179,4 +211,28 @@ public class Repo {
         fetch();
         return allSongList;
     }
+
+    public List<SongDO> songsOf(SongListDO songList) {
+        tempList = songXSongListDao.findAllSongsDataForSongListById(songList.id);
+        return tempList;
+    }
+
+    public List<SongDO> getSongNotIn(SongListDO songList) {
+        tempList = songXSongListDao.findAllSongsDataForSongListById(songList.id);
+        List<SongDO> notIn = new ArrayList<>();
+        for(SongDO item_1: allSong.getValue()){
+            boolean flag = true;
+            for(SongDO item_2: tempList){
+                if(item_1.id.longValue() == item_2.id.longValue()){
+                    flag = false;
+                    break;
+                }
+            }
+            if(flag)
+                notIn.add(item_1);
+        }
+        return notIn;
+    }
+
+    //TODO:更新
 }
