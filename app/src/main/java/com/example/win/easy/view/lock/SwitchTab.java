@@ -1,6 +1,7 @@
 package com.example.win.easy.view.lock;
 
 import android.content.Context;
+import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 
@@ -23,20 +24,35 @@ import butterknife.ButterKnife;
 public class SwitchTab extends QMUILinearLayout {
     @BindView(R.id.tab_segment) QMUITabSegment tabSegment;
     @BindView(R.id.view_pager) ViewPager viewPager;
-    private PageGroup pageGroup =new PageGroup();
+    private PageGroup pageGroup;
     private List<QMUITabSegment.OnTabSelectedListener> listeners=new ArrayList<>();
     private List<SongListWithSongs> currentAllSongListWithSongs;
 
     public SwitchTab(Context context) {
         super(context);
+        init(context);
+    }
+
+    public SwitchTab(Context context, AttributeSet attrs) {
+        super(context, attrs);
+        init(context);
+    }
+
+    public SwitchTab(Context context, AttributeSet attrs, int defStyleAttr) {
+        super(context, attrs, defStyleAttr);
+        init(context);
+    }
+
+    private void init(Context context){
 
         LayoutInflater inflater=(LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View thisView=inflater.inflate(R.layout.fragment_search,this);
+        View thisView=inflater.inflate(R.layout.switch_tab,this);
 
         ButterKnife.bind(this,thisView);
 
-        tabSegment.setupWithViewPager(viewPager);
+        pageGroup=new PageGroup(context);
         viewPager.setAdapter(pageGroup);
+        tabSegment.setupWithViewPager(viewPager,false);
     }
 
     public void setPagesWithTab(List<SongListWithSongs> allSongListWithSongs, OnClickFunc<SongListWithSongs> tabOnClickFunc, OnClickFunc<SongVO> songOnClickFunc){
@@ -44,11 +60,11 @@ public class SwitchTab extends QMUILinearLayout {
         clear();
         record(allSongListWithSongs);
 
-        for(SongListWithSongs songListWithSong: allSongListWithSongs){
+        for(int i=0;i<allSongListWithSongs.size();i++){
+            SongListWithSongs songListWithSong=allSongListWithSongs.get(i);
             addTab(songListWithSong.getSongList(),tabOnClickFunc);
             addPage(songListWithSong.getSongs(),songOnClickFunc);
         }
-
         flush();
     }
 

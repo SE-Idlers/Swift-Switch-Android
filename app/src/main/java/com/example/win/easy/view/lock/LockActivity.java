@@ -32,7 +32,10 @@ public class LockActivity extends AppCompatActivity {
         displayFragment=(DisplayFragment)fragmentManager.findFragmentById(R.id.lockDisplay);
         searchFragment= (SearchFragment) fragmentManager.findFragmentById(R.id.searchFragment);
         handWritingFragment=(HandWritingFragment)fragmentManager.findFragmentById(R.id.handWritingFragment);
-        handWritingFragment.getObserved(this,recognitionResult->searchFragment.search(recognitionResult));
+        handWritingFragment.getObserved(this,recognitionResult->{
+            System.out.println(recognitionResult);
+            searchFragment.search(recognitionResult);
+        });
 
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED|WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
 

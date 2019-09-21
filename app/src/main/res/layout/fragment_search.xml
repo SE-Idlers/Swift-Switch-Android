@@ -5,17 +5,8 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    <com.qmuiteam.qmui.widget.QMUITabSegment
-        android:id="@+id/tab_segment"
+    <com.example.win.easy.view.lock.SwitchTab
+        android:id="@+id/switch_tab"
         android:layout_width="match_parent"
-        android:background="@drawable/selected_favorite"
-        android:layout_height="100dp"
-        android:layout_marginTop="0dp" />
-
-    <androidx.viewpager.widget.ViewPager
-        android:id="@+id/view_pager"
-        android:background="@drawable/unselected_favorite"
-        android:layout_width="match_parent"
-        android:layout_height="150dp"
-        android:layout_marginTop="0dp" />
+        android:layout_height="match_parent" />
 </LinearLayout>

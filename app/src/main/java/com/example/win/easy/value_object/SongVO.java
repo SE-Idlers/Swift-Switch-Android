@@ -1,5 +1,6 @@
 package com.example.win.easy.value_object;
 
+
 import androidx.room.PrimaryKey;
 
 import com.example.win.easy.enumeration.DataSource;
@@ -101,4 +102,5 @@ public class SongVO {
 
     public boolean songFileHasBeenDownloaded(){return songPath!=null;}
     public boolean songFileCanBeDownloaded(){return songUrl!=null;}
+
 }
