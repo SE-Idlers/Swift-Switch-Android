@@ -26,11 +26,19 @@ public class SongDO {
     @PrimaryKey(autoGenerate = true)
     public Long id;
 
+    public Long getId(){
+        return id;
+    }
+
     /**
      * 歌曲名字，用于展示给用户
      * 如“陈奕迅 - 烟味”
      */
     public String name;
+
+    public String getName(){
+        return name;
+    }
 
     /**
      * 歌曲作者
@@ -53,20 +61,36 @@ public class SongDO {
      */
     public String songUrl;
 
+    public String getSongUrl(){
+        return songUrl;
+    }
+
+
     /**
      * 歌曲的绝对路径
      */
     public String songPath;
+
+    public  String getSongPath(){
+        return  songPath;
+    }
 
     /**
      * 歌曲头像的下载url
      */
     public String avatarUrl;
 
+    public String getAvatarUrl(){
+        return avatarUrl;
+    }
     /**
      * 歌曲图片的绝对路径
      */
     public String avatarPath;
+
+    public String getAvatarPath(){
+        return avatarPath;
+    }
 
     /**
      * 网络歌曲的用户id

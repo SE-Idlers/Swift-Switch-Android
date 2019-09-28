@@ -56,7 +56,7 @@ public class __SongRepository extends __Repository<SongDO, SongDTO> {
     }
 
     @Override
-    protected LiveData<List<SongDO>> loadAll() {
+    protected LiveData<List<SongDO>>loadAll() {
         return songDao.findAllSongDOs();
     }
 }

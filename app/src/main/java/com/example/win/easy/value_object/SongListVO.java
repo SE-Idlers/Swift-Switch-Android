@@ -24,4 +24,24 @@ public class SongListVO implements Serializable {
     private String avatarPath;
 
     private DataSource dataSource;
+
+    public Long getId(){
+        return id;
+    }
+
+    public String getName(){
+        return name;
+    }
+
+    public String getAvatarUrl(){
+        return avatarUrl;
+    }
+
+    public String getAvatarPath(){
+        return avatarPath;
+    }
+
+    public DataSource getDataSource(){
+        return dataSource;
+    }
 }
