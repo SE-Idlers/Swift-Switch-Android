@@ -3,6 +3,7 @@ package com.example.win.easy;
 import android.test.UiThreadTest;
 
 import androidx.lifecycle.MutableLiveData;
+import androidx.test.espresso.base.MainThread;
 import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner;
 
 import com.example.win.easy.repository.db.dao.SongDao;
@@ -26,6 +27,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.Executor;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.atLeastOnce;
@@ -41,34 +43,34 @@ public class RepoTestOnAndroid {
         allSong.add(songDO2);
         allSongList.add(songListDO1);
         allSongList.add(songListDO2);
-        allSongXSongList.add(relation_1);
-        allSongXSongList.add(relation_2);
+        allSongXSongList.add(relation_1);//1-1
+        allSongXSongList.add(relation_2);//2-2
         //本地数据库添加数据
     }
 
+    public void addToSongMap(){
+        songMap.clear();
+        List2.clear();//2-2,3
+        List2.add(songDO2);
+        List2.add(songDO3);
+        List3.clear();//3-3
+        List3.add(songDO3);
+        songMap.put(songListDO2, List2);
+        songMap.put(songListDO3, List3);
+        //添加网络数据
+    }
     public void reset(){
         songMap = new HashMap<>();
+        List1 = new ArrayList<>();
         List2 = new ArrayList<>();
         List3 = new ArrayList<>();
         allSong = new ArrayList<>();
         allSongList = new ArrayList<>();
         allSongXSongList = new ArrayList<>();
         addToDB();
-        songDOS = new MutableLiveData<>();
-        songListDOS = new MutableLiveData<>();
-        songXSongListDOS = new MutableLiveData<>();
-        songDOS.setValue(allSong);
-        songListDOS.setValue(allSongList);
-        songXSongListDOS.setValue(allSongXSongList);
         //定义本地数据库
-        songMap.clear();
-        List2.clear();List3.clear();
-        List2.add(songDO2);
-        List2.add(songDO3);
-        List3.add(songDO3);
-        songMap.put(songListDO2, List2);
-        songMap.put(songListDO3, List3);
-        //公共变量初始化
+        addToSongMap();
+        //初始化网络数据
     }
 
     @Test
@@ -126,12 +128,10 @@ public class RepoTestOnAndroid {
         allSong.clear();
         allSongList.clear();
         allSongXSongList.clear();
-        songDOS.setValue(null);
-        songListDOS.setValue(null);
-        songXSongListDOS.setValue(null);
+
         repo.getAllSongList();
 
-        verify(songDao, atLeastOnce()).findAllSongDOs();
+        verify(songDao, atLeastOnce()).getAllSong();
         verify(songDao, atLeastOnce()).findAllDataOnWeb();
     }
 
@@ -139,17 +139,19 @@ public class RepoTestOnAndroid {
     @UiThreadTest
     public void testSongOf(){
         reset();
-        repo.fetch();
+        repo.getAllSong();
         List<SongDO> result1 = repo.songsOf(songListDO2);
         List<SongDO> result2 = repo.getSongNotIn(songListDO3);
+
+        verify(songXSongListDao, atLeastOnce()).getSongsOf(any(Long.class));
     }
 
     @Before
     @UiThreadTest
     public void before() {
+        reset();
         MockitoAnnotations.initMocks(this);
 
-        reset();
 
         //mock 模拟网络请求
         doAnswer(invocation -> {
@@ -166,36 +168,46 @@ public class RepoTestOnAndroid {
             for (SongDO item : allSong) {
                 if(item.remoteId==null) continue;
                 if ((item.remoteId.longValue())==(songId.longValue())) {
-                    MutableLiveData<SongDO> result = new MutableLiveData<>();
-                    result.setValue(item);
-                    return result;
+                    return item;
                 }
             }
-            return new MutableLiveData<SongListDO>();
+            return null;
         }).when(songDao).findByRemoteId(any(Long.class));
 
         //mock 查询网络歌曲
         doAnswer(invocation -> {
-            MutableLiveData<List<SongDO>> result = new MutableLiveData<>();
             List<SongDO> answer = new ArrayList<>();
             for (SongDO item : allSong) {
                 if (item.remoteId != null)
                     answer.add(item);
             }
-            result.setValue(answer);
-            return result;
+            return answer.isEmpty()
+                    ?null
+                    :answer;
         }).when(songDao).findAllDataOnWeb();
+
+        //mock 查询本地歌曲
+        doAnswer(invocation -> {
+            List<SongDO> answer = new ArrayList<>();
+            for (SongDO item : allSong) {
+                if (item.remoteId == null)
+                    answer.add(item);
+            }
+            return answer.isEmpty()
+                    ?null
+                    :answer;
+        }).when(songDao).findAllDataOnLocal();
 
         //mock 获取所有歌曲
         doAnswer(invocation -> {
-            MutableLiveData<List<SongDO>> result = new MutableLiveData<>();
             List<SongDO> answer = new ArrayList<>();
             for (SongDO item : allSong) {
                 answer.add(item);
             }
-            result.setValue(answer);
-            return result;
-        }).when(songDao).findAllSongDOs();
+            return answer.isEmpty()
+                    ?null
+                    :answer;
+        }).when(songDao).getAllSong();
 
         //mock 根据Rid查询歌单
         doAnswer(invocation -> {
@@ -203,36 +215,46 @@ public class RepoTestOnAndroid {
             for (SongListDO item : allSongList) {
                 if(item.remoteId==null) continue;
                 if ((item.remoteId.longValue())==(songListId.longValue())) {
-                    MutableLiveData<SongListDO> result = new MutableLiveData<>();
-                    result.setValue(item);
-                    return result;
+                    return item;
                 }
             }
-            return new MutableLiveData<SongListDO>();
+            return null;
         }).when(songListDao).findByRemoteId(any(Long.class));
 
         //mock 查询网络歌单
         doAnswer(invocation -> {
-            MutableLiveData<List<SongListDO>> result = new MutableLiveData<>();
             List<SongListDO> answer = new ArrayList<>();
             for (SongListDO item : allSongList) {
                 if (item.remoteId != null)
                     answer.add(item);
             }
-            result.setValue(answer);
-            return result;
+            return answer.isEmpty()
+                    ?null
+                    :answer;
         }).when(songListDao).findAllDataOnWeb();
+
+        //mock 查询本地歌单
+        doAnswer(invocation -> {
+            List<SongListDO> answer = new ArrayList<>();
+            for (SongListDO item : allSongList) {
+                if (item.remoteId == null)
+                    answer.add(item);
+            }
+            return answer.isEmpty()
+                    ?null
+                    :answer;
+        }).when(songListDao).findAllDataOnLocal();
 
         //mock 获取所有歌单
         doAnswer(invocation -> {
-            MutableLiveData<List<SongListDO>> result = new MutableLiveData<>();
             List<SongListDO> answer = new ArrayList<>();
             for (SongListDO item : allSongList) {
                 answer.add(item);
             }
-            result.setValue(answer);
-            return result;
-        }).when(songListDao).findAllSongListDOs();
+            return answer.isEmpty()
+                    ?null
+                    :answer;
+        }).when(songListDao).getAllSongList();
 
         //mock 根据s_id sl_id查询关联键
         doAnswer(invocation -> {
@@ -240,38 +262,63 @@ public class RepoTestOnAndroid {
             Long songListId = invocation.getArgument(1);
             for (SongXSongListDO item: allSongXSongList) {
                 if((item.songId.longValue())==(songId.longValue()) && (item.songListId.longValue())==(songListId.longValue())) {
-                    MutableLiveData<SongXSongListDO> result = new MutableLiveData<>();
-                    result.setValue(item);
-                    return result;
+                    return item;
                 }
             }
-            return new MutableLiveData<SongXSongListDO>();
-        }).when(songXSongListDao).findbyID(any(Long.class), any(Long.class));
+            return null;
+        }).when(songXSongListDao).findById(any(Long.class), any(Long.class));
 
         //mock 查询网络关联键
         doAnswer(invocation -> {
-            MutableLiveData<List<SongXSongListDO>> result = new MutableLiveData<>();
             List<SongXSongListDO> answer = new ArrayList<>();
             for (SongDO item : allSong) {
                 if (item.remoteId != null) {
                     for (SongXSongListDO item2 : allSongXSongList) {
-                        if (item.id.equals( item2.songId)) {
+                        if (item.id.longValue() == item2.songId.longValue()) {
                             answer.add(item2);
                         }
                     }
                 }
             }
-            result.setValue(answer);
-            return result;
+            return answer.isEmpty()
+                    ?null
+                    :answer;
         }).when(songXSongListDao).findAllDataOnWeb();
+
+        //mock 查询本地关联键
+        doAnswer(invocation -> {
+            List<SongXSongListDO> answer = new ArrayList<>();
+            for (SongDO item : allSong) {
+                if (item.remoteId == null) {
+                    for (SongXSongListDO item2 : allSongXSongList) {
+                        if (item.id.longValue() == item2.songId.longValue()) {
+                            answer.add(item2);
+                        }
+                    }
+                }
+            }
+            return answer.isEmpty()
+                    ?null
+                    :answer;
+        }).when(songXSongListDao).findAllDataOnLocal();
+
+        //mock 获取所有关联键
+        doAnswer(invocation -> {
+            List<SongXSongListDO> answer = new ArrayList<>();
+            for(SongXSongListDO item: allSongXSongList){
+                answer.add(item);
+            }
+            return answer.isEmpty()
+                    ?null
+                    :answer;
+        }).when(songXSongListDao).getAllRelation();
 
         //mock 模拟歌曲插入
         doAnswer(invocation -> {
             SongDO song = invocation.getArgument(0);
-            songIdRecord = new Long(songIdRecord.intValue()+1);
+            songIdRecord = songIdRecord + 1L;
             song.setId(songIdRecord);
             allSong.add(song);
-            songDOS.setValue(allSong);
             return songIdRecord;
         }).when(songDao).insert(any(SongDO.class));
 
@@ -279,17 +326,15 @@ public class RepoTestOnAndroid {
         doAnswer(invocation -> {
             SongDO song = invocation.getArgument(0);
             allSong.remove(song);
-            songDOS.setValue(allSong);
             return null;
         }).when(songDao).delete(any(SongDO.class));
 
         //mock 模拟歌单插入
         doAnswer(invocation -> {
             SongListDO songList = invocation.getArgument(0);
-            songListIdRecord = new Long(songListIdRecord.intValue()+1);
+            songListIdRecord = songListIdRecord + 1L;
             songList.setId(songListIdRecord);
             allSongList.add(songList);
-            songListDOS.setValue(allSongList);
             return songListIdRecord;
         }).when(songListDao).insert(any(SongListDO.class));
 
@@ -297,7 +342,6 @@ public class RepoTestOnAndroid {
         doAnswer(invocation -> {
             SongListDO songList = invocation.getArgument(0);
             allSongList.remove(songList);
-            songListDOS.setValue(allSongList);
             return null;
         }).when(songListDao).delete(any(SongListDO.class));
 
@@ -305,7 +349,6 @@ public class RepoTestOnAndroid {
         doAnswer(invocation -> {
             SongXSongListDO songX = invocation.getArgument(0);
             allSongXSongList.add(songX);
-            songXSongListDOS.setValue(allSongXSongList);
             return null;
         }).when(songXSongListDao).insert(any(SongXSongListDO.class));
 
@@ -313,7 +356,6 @@ public class RepoTestOnAndroid {
         doAnswer(invocation -> {
             SongXSongListDO songX = invocation.getArgument(0);
             allSongXSongList.remove(songX);
-            songXSongListDOS.setValue(allSongXSongList);
             return null;
         }).when(songXSongListDao).delete(any(SongXSongListDO.class));
 
@@ -335,21 +377,11 @@ public class RepoTestOnAndroid {
                 return null;
             else
                 return tmp;
-        }).when(songXSongListDao).findAllSongsDataForSongListById(any(Long.class));
+        }).when(songXSongListDao).getSongsOf(any(Long.class));
     }
 
     @InjectMocks
     private Repo repo;
-//    @Spy//未使用
-//    private Executor diskIO = new Executor() {
-//
-//        private Executor executor = Executors.newSingleThreadExecutor();
-//
-//        @Override
-//        public void execute(Runnable command) {
-//            executor.execute(command);
-//        }
-//    };
     @Mock
     private SongDao songDao;
     @Mock
@@ -358,6 +390,13 @@ public class RepoTestOnAndroid {
     private SongXSongListDao songXSongListDao;
     @Mock
     private SongListWebService songListWebService;
+    @Mock
+    Executor executor = new Executor() {
+        @Override
+        public void execute(Runnable command) {
+            command.run();
+        }
+    };
 
     private SongDO songDO1 = SongDO.builder().id(new Long(1)).name("某人-本地").build();
     private SongDO songDO2 = SongDO.builder().id(new Long(2)).remoteId(new Long(1)).name("某人-网络").build();
@@ -372,17 +411,13 @@ public class RepoTestOnAndroid {
     private SongXSongListDO relation_1 = SongXSongListDO.builder().songId(new Long(1)).songListId(new Long(1)).build();
     private SongXSongListDO relation_2 = SongXSongListDO.builder().songId(new Long(2)).songListId(new Long(2)).build();
 
-    //private List<SongDO> List1;
+    private List<SongDO> List1;
     private List<SongDO> List2;
     private List<SongDO> List3;
 
     private List<SongDO> allSong;
     private List<SongListDO> allSongList;
     private List<SongXSongListDO> allSongXSongList;
-
-    private MutableLiveData<List<SongDO>> songDOS;
-    private MutableLiveData<List<SongListDO>> songListDOS;
-    private MutableLiveData<List<SongXSongListDO>> songXSongListDOS;
 
     private Map<SongListDO, List<SongDO>> songMap;
 }
