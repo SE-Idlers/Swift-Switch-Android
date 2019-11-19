@@ -47,9 +47,23 @@ public interface SongXSongListDao {
     @Query("SELECT * " +
             "FROM SongDO INNER JOIN SongXSongListDO " +
             "ON SongDO.id=SongXSongListDO.songId " +
-            "WHERE SongXSongListDO.songListId=:songListId")
+            "WHERE SongXSongListDO.songListId = :songListId")
     @SuppressWarnings(RoomWarnings.CURSOR_MISMATCH)
     List<SongDO> getSongsOf(Long songListId);
+
+    @Query("SELECT * " +
+            "FROM SongDO INNER JOIN SongXSongListDO " +
+            "ON SongDO.id=SongXSongListDO.songId " +
+            "WHERE SongXSongListDO.songListId != :songListId")
+    @SuppressWarnings(RoomWarnings.CURSOR_MISMATCH)
+    List<SongDO> getSongsNotIn(Long songListId);
+
+    @Query("SELECT * " +
+            "FROM SongListDO INNER JOIN SongXSongListDO " +
+            "ON SongListDO.id=SongXSongListDO.songListId " +
+            "WHERE SongXSongListDO.songId = :songId")
+    @SuppressWarnings(RoomWarnings.CURSOR_MISMATCH)
+    List<SongListDO> findAllSongListsForSongById(Long songId);
     /***********************/
 
 
@@ -63,12 +77,7 @@ public interface SongXSongListDao {
     @SuppressWarnings(RoomWarnings.CURSOR_MISMATCH)
     LiveData<List<SongDO>> findAllSongsForSongListById(Long songListId);
 
-    @Query("SELECT * " +
-            "FROM SongListDO INNER JOIN SongXSongListDO " +
-            "ON SongListDO.id=SongXSongListDO.songListId " +
-            "WHERE SongXSongListDO.songId=:songId")
-    @SuppressWarnings(RoomWarnings.CURSOR_MISMATCH)
-    List<SongListDO> findAllSongListsForSongById(Long songId);
+
 
     @Delete
     void delete(SongXSongListDO songXSongListDO);
