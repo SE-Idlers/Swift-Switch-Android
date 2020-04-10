@@ -17,11 +17,11 @@ public class SongListVO implements Serializable {
 
     private long id;
 
-    private String name;
+    public String name;
 
     private String avatarUrl;
 
-    private String avatarPath;
+    public String avatarPath;
 
     private DataSource dataSource;
 }

@@ -29,7 +29,7 @@ public class SongListViewModelImpl extends SongListViewModel {
      * {@inheritDoc}
      */
     @Override
-    public LiveData<List<SongListVO>> getAll() {
+    public LiveData<List<SongListVO>> loadAll() {
         //懒惰加载
         if (allSongList==null)
             allSongList= initAllSongListLiveData();
@@ -53,7 +53,7 @@ public class SongListViewModelImpl extends SongListViewModel {
     }
 
     @Override
-    public void addSongsTo(List<SongVO> songVOs, SongListVO songListVO) {
+    public void addSongsTo(List<? extends SongVO> songVOs, SongListVO songListVO) {
 
     }
 

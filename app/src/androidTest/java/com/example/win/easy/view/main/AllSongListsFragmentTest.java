@@ -111,7 +111,7 @@ public class AllSongListsFragmentTest {
         setUpData();
 
         //mock掉LiveData,ViewModel的工厂还有Fragment的工厂
-        doReturn(allSongListsLiveData).when(mockSongListViewModel).getAll();
+        doReturn(allSongListsLiveData).when(mockSongListViewModel).loadAll();
         when(mockViewModelFactory.create(SongListViewModel.class)).thenReturn(mockSongListViewModel);
         when(mockFragmentFactory.instantiate(any(ClassLoader.class),eq(AllSongListsFragment.class.getName()))).thenReturn(allSongListsFragment);
 

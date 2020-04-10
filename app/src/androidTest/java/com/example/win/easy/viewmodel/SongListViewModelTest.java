@@ -157,7 +157,7 @@ class MockInvoker extends LifecycleRegistry {
         super(provider);
         this.myLifecycleOwner =provider;
         this.songListViewModel=songListViewModel;
-        allSongListLiveData =songListViewModel.getAll();
+        allSongListLiveData =songListViewModel.loadAll();
     }
 
     void initDataObservation(){
