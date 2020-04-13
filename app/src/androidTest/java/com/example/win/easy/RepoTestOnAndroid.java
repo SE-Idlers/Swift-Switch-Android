@@ -254,7 +254,7 @@ public class RepoTestOnAndroid {
             return answer.isEmpty()
                     ?null
                     :answer;
-        }).when(songListDao).getAllSongList();
+        }).when(songListDao).allSongList();
 
         //mock 根据s_id sl_id查询关联键
         doAnswer(invocation -> {

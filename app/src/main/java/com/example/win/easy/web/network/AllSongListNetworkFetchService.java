@@ -43,7 +43,8 @@ public class AllSongListNetworkFetchService implements NetworkFetchService<List<
         if (loginService.hasLogin()){
 
             //构造一个网络请求
-            Call<List<SongListDTO>> webCall=webService.getAllSongListsByUid(loginService.getCurrentUid());
+            Call<List<SongListDTO>> webCall=null;
+//                    webService.getAllSongListsByUid(loginService.getCurrentUid(),);
 
 
             //构造一个请求成功时要调用的callback，这里callback直接执行上层给的onReadyFunc，不再自己构造onReadyFunc

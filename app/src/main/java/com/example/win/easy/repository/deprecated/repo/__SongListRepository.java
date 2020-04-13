@@ -57,6 +57,6 @@ public class __SongListRepository extends __Repository<SongListDO, SongListDTO> 
     @Override
     protected LiveData<List<SongListDO>> loadAll() {
         //TODO 从本地数据库加载数据，异步或同步有待考虑
-        return songListDao.findAllSongListDOs();
+        return songListDao.loadAll();
     }
 }

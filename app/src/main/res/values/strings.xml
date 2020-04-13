@@ -26,5 +26,6 @@
     <string name="textOnItemToAllSongList">所有歌单</string>
     <string name="allSongListsFragmentTopBarTitle">所有歌单</string>
     <string name="defaultNameOfSongListOfAllSongs">所有歌曲</string>
+    <integer name="networkTimeout">3000</integer>
 
 </resources>

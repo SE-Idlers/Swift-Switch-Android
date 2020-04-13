@@ -90,7 +90,7 @@ public class Repo_Task_AccessDB extends AsyncTask<Object, Object, Long> {
     private void beforeUpdate() {
         //fetch之前从新获取缓存数据
         allSong = songDao.getAllSong()==null?new ArrayList<>():songDao.getAllSong();
-        allSongList = songListDao.getAllSongList()==null?new ArrayList<>():songListDao.getAllSongList();
+        allSongList = songListDao.allSongList() ==null?new ArrayList<>(): songListDao.allSongList();
         allRelation = songXSongListDao.getAllRelation()==null?new ArrayList<>():songXSongListDao.getAllRelation();
         songOnWeb = songDao.findAllDataOnWeb()==null?new ArrayList<>():songDao.findAllDataOnWeb();
         songListOnWeb = songListDao.findAllDataOnWeb()==null?new ArrayList<>():songListDao.findAllDataOnWeb();
@@ -123,7 +123,7 @@ public class Repo_Task_AccessDB extends AsyncTask<Object, Object, Long> {
             i++;
         }
         allSong = songDao.getAllSong()==null?new ArrayList<>():songDao.getAllSong();
-        allSongList = songListDao.getAllSongList()==null?new ArrayList<>():songListDao.getAllSongList();
+        allSongList = songListDao.allSongList() ==null?new ArrayList<>(): songListDao.allSongList();
         allRelation = songXSongListDao.getAllRelation()==null
                 ?new ArrayList<>()
                 :songXSongListDao.getAllRelation();
