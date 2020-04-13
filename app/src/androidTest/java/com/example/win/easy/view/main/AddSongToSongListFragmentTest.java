@@ -28,6 +28,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import kotlin.NotImplementedError;
+
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
@@ -91,10 +93,13 @@ public class AddSongToSongListFragmentTest {
     }
 
     private void verifyNavigationToSongListFragment(){
-        verify(navController,times(1)).navigate(AddSongToSongListFragmentDirections.actionAddSongToSongListFragmentToSongListFragment(testSongList));
+        throw new NotImplementedError();
+        //TODO
+//        verify(navController,times(1)).navigate(AddSongToSongListFragmentDirections.actionAddSongToSongListFragmentToSongListFragment(testSongList));
+
         //重置NavController（清除调用记录）
-        navController= Mockito.mock(NavController.class);
-        scenario.onFragment(fragment -> Navigation.setViewNavController(fragment.requireView(),navController));
+//        navController= Mockito.mock(NavController.class);
+//        scenario.onFragment(fragment -> Navigation.setViewNavController(fragment.requireView(),navController));
     }
 
     @Before

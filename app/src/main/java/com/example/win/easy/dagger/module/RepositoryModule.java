@@ -4,17 +4,21 @@ import android.content.Context;
 
 import androidx.room.Room;
 
+import com.example.win.easy.repository.SongListDto;
+import com.example.win.easy.repository.SongListRepository;
 import com.example.win.easy.repository.db.dao.SongDao;
 import com.example.win.easy.repository.db.dao.SongListDao;
 import com.example.win.easy.repository.db.dao.SongXSongListDao;
 import com.example.win.easy.repository.db.database.OurDatabase;
 import com.example.win.easy.repository.repo.Repo;
+import com.example.win.easy.web.service.LoginService;
 import com.example.win.easy.web.service.SongListWebService;
 
 import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
+import lombok.val;
 
 @Module
 public class RepositoryModule {
@@ -48,6 +52,12 @@ public class RepositoryModule {
                                                  SongXSongListDao songXSongListDao,
                                                  SongListWebService songListWebService){
         return new Repo(songDao,songListDao,songXSongListDao,songListWebService);
+    }
+
+    @Provides@Singleton static SongListRepository provideSongListRepository(SongListDto songListDto,
+                                                                            SongListDao songListDao,
+                                                                            LoginService loginService){
+        return new SongListRepository(songListDto,songListDao,loginService);
     }
 
 }

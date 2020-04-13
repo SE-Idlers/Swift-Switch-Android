@@ -14,6 +14,7 @@ import com.example.win.easy.display.interfaces.DisplayService;
 import com.example.win.easy.factory.__SongFactory;
 import com.example.win.easy.parser.filter.FilterStrategy;
 import com.example.win.easy.recognization.interfaces.RecognitionService;
+import com.example.win.easy.repository.SongListRepository;
 import com.example.win.easy.repository.deprecated.repo.__SongListRepository;
 import com.example.win.easy.repository.deprecated.repo.__SongRepository;
 import com.example.win.easy.repository.deprecated.repo.__SongXSongListRepository;
@@ -48,11 +49,13 @@ public interface AppComponent {
 
     __SongRepository getSongRepository();
 
-    __SongListRepository getSongListRepository();
+    __SongListRepository _getSongListRepository();
 
     __SongXSongListRepository getSongXSongListRepository();
 
     Repo getRepo();
+
+    SongListRepository getSongListRepository();
 
     VOUtil getVOUtil();
 

@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.win.easy.factory.ViewModelFactory;
+import com.example.win.easy.repository.SongListRepository;
 import com.example.win.easy.repository.deprecated.repo.__SongListRepository;
 import com.example.win.easy.repository.deprecated.repo.__SongRepository;
 import com.example.win.easy.repository.deprecated.repo.__SongXSongListRepository;
@@ -25,6 +26,7 @@ import dagger.MapKey;
 import dagger.Module;
 import dagger.Provides;
 import dagger.multibindings.IntoMap;
+import kotlin.NotImplementedError;
 
 @Module
 public class ViewModelModule {
@@ -55,8 +57,8 @@ public class ViewModelModule {
     @Provides
     @IntoMap
     @ViewModelKey(SongListViewModel.class)
-    static ViewModel provideSongListViewModel(Repo repo,VOUtil voUtil){
-        return new SongListViewModelImpl(repo,voUtil);
+    static ViewModel provideSongListViewModel(SongListRepository songListRepository,Repo repo, VOUtil voUtil){
+        return new SongListViewModelImpl(songListRepository,repo,voUtil);
     }
 
     @Provides

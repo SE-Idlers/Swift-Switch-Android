@@ -22,6 +22,8 @@ import com.qmuiteam.qmui.widget.grouplist.QMUICommonListItemView;
 import java.util.ArrayList;
 import java.util.List;
 
+import kotlin.NotImplementedError;
+
 public class SongListFragment extends ListFragment {
 
     private SongListVO thisSongList;//这个歌单
@@ -58,7 +60,9 @@ public class SongListFragment extends ListFragment {
     }
 
     private SongListVO getPassedSongList(){
-        return SongListFragmentArgs.fromBundle(getArguments()).getSelectedSongList();
+        throw new NotImplementedError();
+        // TODO
+//        return SongListFragmentArgs.fromBundle(getArguments()).getSelectedSongList();
     }
 
     private List<SongVO> getSongsIn(SongListVO songListVO) {

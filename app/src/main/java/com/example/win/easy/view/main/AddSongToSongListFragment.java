@@ -10,6 +10,7 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
 
 import com.example.win.easy.R;
+import com.example.win.easy.repository.db.data_object.SongListDO;
 import com.example.win.easy.value_object.SongListVO;
 import com.example.win.easy.value_object.SongVO;
 import com.example.win.easy.view.EntityItem;
@@ -20,6 +21,7 @@ import com.qmuiteam.qmui.widget.grouplist.QMUICommonListItemView;
 import java.util.ArrayList;
 import java.util.List;
 
+import kotlin.NotImplementedError;
 import lombok.Data;
 
 public class AddSongToSongListFragment extends ListFragment {
@@ -96,10 +98,12 @@ public class AddSongToSongListFragment extends ListFragment {
     }
 
     private void setUpAddButton() {
-        setRightImageButtonOnClickListener(v-> {
-            songListViewModel.addSongsTo(songsWillAdd,thisSongList);
-            Navigation.findNavController(getView()).navigate(AddSongToSongListFragmentDirections.actionAddSongToSongListFragmentToSongListFragment(thisSongList));
-        });
+        throw new NotImplementedError();
+        // TODO
+//        setRightImageButtonOnClickListener(v-> {
+//            songListViewModel.addSongsTo(songsWillAdd,thisSongList);
+//            Navigation.findNavController(getView()).navigate(AddSongToSongListFragmentDirections.actionAddSongToSongListFragmentToSongListFragment(thisSongList));
+//        });
     }
 
     private void setUpTopBarTitle() {

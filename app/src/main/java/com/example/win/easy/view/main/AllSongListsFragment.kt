@@ -12,6 +12,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.Navigation
 import butterknife.BindString
 import com.example.win.easy.R
+import com.example.win.easy.repository.db.data_object.SongListDO
 import com.example.win.easy.value_object.SongListVO
 import com.example.win.easy.view.EntityItem
 import com.example.win.easy.view.ImageService
@@ -56,11 +57,11 @@ class AllSongListsFragment(private val factory: ViewModelProvider.Factory, priva
     /**
      * 根据最新的歌单数据刷新视图
      */
-    private fun refresh(songLists: List<SongListVO>) {
+    private fun refresh(songLists: List<SongListDO>) {
         ArrayList<QMUICommonListItemView>().run {
             //对每个歌单都生成一个itemView
             for (songList in songLists)
-                add(SongListItem(songList, OnClickFunc { songListPassed: SongListVO, _: QMUICommonListItemView ->
+                add(SongListItem(songList, OnClickFunc { songListPassed: SongListDO, _: QMUICommonListItemView ->
                     Navigation.findNavController(view!!)
                             .navigate(AllSongListsFragmentDirections.actionAllSongListsFragmentToSongListFragment(songListPassed))
                 }))
@@ -72,7 +73,7 @@ class AllSongListsFragment(private val factory: ViewModelProvider.Factory, priva
     /**
      * 列表页面中的每一个Item对应的对象
      */
-    internal inner class SongListItem(entity: SongListVO, onClickFunc: OnClickFunc<SongListVO>) : EntityItem<SongListVO>(this@AllSongListsFragment.context, entity, onClickFunc) {
+    internal inner class SongListItem(entity: SongListDO, onClickFunc: OnClickFunc<SongListDO>) : EntityItem<SongListDO>(this@AllSongListsFragment.context, entity, onClickFunc) {
         init {
             text = entity.name // 歌单名字
             setImageDrawable(resources.getDrawable(R.drawable.ase16)) // 默认头像

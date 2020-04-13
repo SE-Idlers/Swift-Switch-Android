@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.viewModelScope
+import com.example.win.easy.repository.SongListRepository
 import com.example.win.easy.repository.db.data_object.SongDO
 import com.example.win.easy.repository.db.data_object.SongListDO
 import com.example.win.easy.repository.repo.Repo
@@ -14,37 +15,39 @@ import com.example.win.easy.view.main.SongListToCreateAlreadyExistLocallyExcepti
 import kotlinx.coroutines.launch
 import java.util.*
 
-class SongListViewModelImpl(private val repo: Repo, private val voUtil: VOUtil) : SongListViewModel() {
+class SongListViewModelImpl(private val songListRepository: SongListRepository,
+                            private val repo: Repo,
+                            private val voUtil: VOUtil) : SongListViewModel() {
 
-    private var allSongList: LiveData<List<SongListVO>>? = null
+    private var allSongList: LiveData<List<SongListDO>>?=null
+
     private val _spinner=MutableLiveData<Boolean>()
     val spinner: LiveData<Boolean>
         get() = _spinner
+
     private val _snackbar=MutableLiveData<String?>()
     val snackbar: LiveData<String?>
         get()= _snackbar
 
-    /**
-     * {@inheritDoc}
-     */
-    override fun loadAll(): LiveData<List<SongListVO>> {
-        //懒惰加载
-        if (allSongList == null) {
 
-            allSongList = initAllSongListLiveData()
+    /**
+     * 尝试获取所有歌单：
+     * 1. 未超时：获取本地+网络
+     * 2. 超时：仅获取本地
+     */
+    override fun loadAll(): LiveData<List<SongListDO>>{
+        allSongList?:viewModelScope.launch {
+            allSongList=try {
+                _spinner.postValue(true)
+                songListRepository.loadAll()
+            }catch (t: Throwable){
+                _snackbar.postValue(t.message)
+                songListRepository.loadLocalOnly()
+            }finally {
+                _spinner.postValue(false)
+            }
         }
         return allSongList!!
-    }
-
-    private fun launchLoadData(block: ()->Unit)=viewModelScope.launch {
-        try {
-            _spinner.value=true
-            block()
-        }catch (t: Throwable){
-            _snackbar.value=t.message
-        }finally {
-            _spinner.value=false
-        }
     }
 
     /**

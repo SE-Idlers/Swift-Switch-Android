@@ -28,6 +28,8 @@ import org.mockito.MockitoAnnotations;
 import java.util.ArrayList;
 import java.util.List;
 
+import kotlin.NotImplementedError;
+
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.assertion.ViewAssertions.doesNotExist;
@@ -61,8 +63,10 @@ public class AllSongListsFragmentTest {
         onView(withText(name1)).perform(click());
 
         //确认一下确实触发了导航，而且带着正确的参数
-        verify(mockNavController,times(1))
-                .navigate(AllSongListsFragmentDirections.actionAllSongListsFragmentToSongListFragment(songList1));
+        throw new NotImplementedError();
+        //TODO
+//        verify(mockNavController,times(1))
+//                .navigate(AllSongListsFragmentDirections.actionAllSongListsFragmentToSongListFragment(songList1));
     }
 
     /**

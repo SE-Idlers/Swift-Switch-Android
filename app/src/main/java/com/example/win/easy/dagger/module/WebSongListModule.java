@@ -1,5 +1,8 @@
 package com.example.win.easy.dagger.module;
 
+import com.example.win.easy.repository.SongListDto;
+import com.example.win.easy.repository.SongListRepository;
+import com.example.win.easy.repository.db.dao.SongListDao;
 import com.example.win.easy.web.DTOUtil;
 import com.example.win.easy.web.dto.SongListDTO;
 import com.example.win.easy.web.network.AllSongListNetworkFetchService;
@@ -28,4 +31,7 @@ public class WebSongListModule {
         return new AllSongListNetworkFetchService(backendRequestService,loginService);
     }
 
+    @Provides@Singleton static SongListDto provideSongListDto(BackendRequestService backendRequestService){
+        return new SongListDto(backendRequestService);
+    }
 }

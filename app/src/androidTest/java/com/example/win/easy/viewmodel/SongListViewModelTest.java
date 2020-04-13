@@ -26,6 +26,8 @@ import org.mockito.MockitoAnnotations;
 import java.util.ArrayList;
 import java.util.List;
 
+import kotlin.NotImplementedError;
+
 import static com.example.win.easy.enumeration.DataSource.Local;
 import static com.example.win.easy.enumeration.DataSource.WangYiYun;
 import static org.junit.Assert.assertEquals;
@@ -115,7 +117,9 @@ public class SongListViewModelTest {
     }
 
     private void setUpTestViewModel(){
-        songListViewModel=new SongListViewModelImpl(repo,voUtil);
+        throw new NotImplementedError();
+        //TODO
+//        songListViewModel=new SongListViewModelImpl(repo,voUtil);
     }
 
     private void mockRepo() {
@@ -157,7 +161,9 @@ class MockInvoker extends LifecycleRegistry {
         super(provider);
         this.myLifecycleOwner =provider;
         this.songListViewModel=songListViewModel;
-        allSongListLiveData =songListViewModel.loadAll();
+        throw new NotImplementedError();
+        //TODO
+//        allSongListLiveData =songListViewModel.loadAll();
     }
 
     void initDataObservation(){
