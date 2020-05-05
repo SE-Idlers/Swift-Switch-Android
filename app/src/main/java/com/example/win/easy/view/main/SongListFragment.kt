@@ -4,7 +4,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ProgressBar
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.Navigation
@@ -13,24 +15,24 @@ import com.example.win.easy.display.DisplayServiceAdapter
 import com.example.win.easy.download.DownloadServiceAdapter
 import com.example.win.easy.repository.db.data_object.SongDO
 import com.example.win.easy.repository.db.data_object.SongListDO
-import com.example.win.easy.value_object.SongVO
 import com.example.win.easy.view.EntityItem
 import com.example.win.easy.view.OnClickFunc
-import com.example.win.easy.viewmodel.SongListViewModel
+import com.example.win.easy.viewmodel.SongListViewModelImpl
+import com.google.android.material.snackbar.Snackbar
 import com.qmuiteam.qmui.widget.grouplist.QMUICommonListItemView
 import kotlin.collections.ArrayList
 
 class SongListFragment(private val displayServiceAdapter: DisplayServiceAdapter, private val downloadServiceAdapter: DownloadServiceAdapter, private val factory: ViewModelProvider.Factory) : ListFragment() {
     private lateinit var thisSongList: SongListDO
     private lateinit var songsInThisSongList: LiveData<List<SongDO>?>
-    private lateinit var songListViewModel: SongListViewModel
+    private lateinit var songListViewModel: SongListViewModelImpl
 
     /**
      * 首次创建注册ViewModel
      */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        songListViewModel=ViewModelProviders.of(this, factory).get(SongListViewModel::class.java)
+        songListViewModel=ViewModelProviders.of(this, factory).get(SongListViewModelImpl::class.java)
     }
 
     /**
@@ -42,11 +44,20 @@ class SongListFragment(private val displayServiceAdapter: DisplayServiceAdapter,
      */
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = super.onCreateView(inflater, container, savedInstanceState)
+
+        // 歌单、进度条、提示框分别注册监听
+        songsInThisSongList.observe(this, Observer { newSongs-> refreshView(newSongs) })
+        songListViewModel.spinner.observe(this, Observer { show-> spinner.visibility=if (!show) ProgressBar.VISIBLE else ProgressBar.GONE })
+        songListViewModel.snackbar.observe(this, Observer { hint-> Snackbar.make(rootLayout,hint!!,Snackbar.LENGTH_SHORT) })
+
+        // 拉取歌单内歌曲
         thisSongList = retrievePassedSongList()
         songsInThisSongList = loadSongsIn(thisSongList)
-        songsInThisSongList.observe(this, androidx.lifecycle.Observer { refresh(it) })
+
+        // 设置标题、按钮
         setTopBarTitle(thisSongList.name)
         setUpRightImageButton()
+
         return view
     }
 
@@ -54,9 +65,19 @@ class SongListFragment(private val displayServiceAdapter: DisplayServiceAdapter,
     private fun loadSongsIn(songListDO: SongListDO)=songListViewModel.loadSongsIn(songListDO)
 
     /**
+     * 设置右上角按钮，导航到“添加歌曲到歌单界面”
+     */
+    private fun setUpRightImageButton() {
+        setRightImageButtonOnClickListener {
+            Navigation.findNavController(view!!)
+                    .navigate(SongListFragmentDirections.actionSongListFragmentToAddSongToSongListFragment(thisSongList))
+        }
+    }
+
+    /**
      * 新的数据到来时刷新视图
      */
-    private fun refresh(newSongDOs: List<SongDO>?) {
+    private fun refreshView(newSongDOs: List<SongDO>?) {
         newSongDOs?.let {nonNullSongDOs->
             ArrayList<QMUICommonListItemView>().apply {
                 for (songDO in nonNullSongDOs)
@@ -88,15 +109,7 @@ class SongListFragment(private val displayServiceAdapter: DisplayServiceAdapter,
 //        downloadServiceAdapter.download(songVO) { songVO: SongVO -> display(songVO) }
     }
 
-    /**
-     * 设置右上角按钮，导航到“添加歌曲到歌单界面”
-     */
-    private fun setUpRightImageButton() {
-        setRightImageButtonOnClickListener {
-            Navigation.findNavController(view!!)
-                    .navigate(SongListFragmentDirections.actionSongListFragmentToAddSongToSongListFragment(thisSongList))
-        }
-    }
+
 
     internal inner class SongItem(entity: SongDO, onClickFunc: OnClickFunc<SongDO>) : EntityItem<SongDO>(this@SongListFragment.context, entity, onClickFunc) {
         init {

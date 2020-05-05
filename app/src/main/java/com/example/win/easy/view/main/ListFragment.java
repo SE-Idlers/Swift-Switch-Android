@@ -5,6 +5,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 
 import androidx.fragment.app.Fragment;
 
@@ -24,9 +26,11 @@ import butterknife.ButterKnife;
  */
 public abstract class ListFragment extends Fragment {
 
+    @BindView(R.id.list_fragment_root_layout) protected LinearLayout rootLayout;
     @BindView(R.id.fragment_list_top_bar) QMUITopBar topBar;
     @BindView(R.id.fragment_list_group_list) QMUIGroupListView groupListView;
-    QMUIAlphaImageButton imageButton;
+    @BindView(R.id.progressBar) protected ProgressBar spinner;
+    private QMUIAlphaImageButton imageButton;
     private QMUIGroupListView.Section section;
 
     /**

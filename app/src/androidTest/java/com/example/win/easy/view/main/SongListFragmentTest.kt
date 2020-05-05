@@ -1,13 +1,16 @@
 package com.example.win.easy.view.main
 
 import android.os.Bundle
+import android.widget.ProgressBar
 import androidx.fragment.app.FragmentFactory
 import androidx.fragment.app.testing.FragmentScenario
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.test.espresso.Espresso
+import androidx.test.espresso.ViewAssertion
 import androidx.test.espresso.action.ViewActions
 import androidx.test.espresso.assertion.ViewAssertions
 import androidx.test.espresso.matcher.ViewMatchers
@@ -16,11 +19,13 @@ import com.example.win.easy.BooleanSemaphore
 import com.example.win.easy.R
 import com.example.win.easy.display.DisplayServiceAdapter
 import com.example.win.easy.download.DownloadServiceAdapter
+import com.example.win.easy.exception.TimeoutException
 import com.example.win.easy.repository.db.data_object.SongDO
 import com.example.win.easy.repository.db.data_object.SongListDO
 import com.example.win.easy.value_object.SongListVO
 import com.example.win.easy.value_object.SongVO
 import com.example.win.easy.viewmodel.SongListViewModel
+import com.example.win.easy.viewmodel.SongListViewModelImpl
 import com.example.win.easy.web.callback.OnReadyFunc
 import com.qmuiteam.qmui.alpha.QMUIAlphaImageButton
 import com.qmuiteam.qmui.widget.QMUITopBar
@@ -29,8 +34,14 @@ import io.mockk.every
 import io.mockk.impl.annotations.InjectMockKs
 import io.mockk.impl.annotations.MockK
 import io.mockk.impl.annotations.RelaxedMockK
+import io.mockk.mockkClass
 import io.mockk.verify
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.test.TestCoroutineDispatcher
+import kotlinx.coroutines.yield
 import org.hamcrest.CoreMatchers
+import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -45,42 +56,60 @@ class SongListFragmentTest {
     @MockK lateinit var downloadServiceAdapter: DownloadServiceAdapter
     @MockK lateinit var fragmentFactory: FragmentFactory
     @MockK lateinit var viewModelFactory: ViewModelProvider.Factory
-    @MockK(relaxUnitFun = true) lateinit var songListViewModel: SongListViewModel
+    private val songListViewModel= mockkClass(SongListViewModelImpl::class,relaxed = true)
     @MockK(relaxUnitFun = true) lateinit var mockNavController: NavController
 
     /**
-     *
-     * 简陋地测试下界面是不是正常显示
-     *
-     * 把带字的、特定类型的元素确认下isDisplayed就完了
-     */
-    @Test
-    fun testDisplay() {
-        Espresso.onView(CoreMatchers.allOf(ViewMatchers.isDescendantOfA(CoreMatchers.instanceOf(QMUITopBar::class.java)), ViewMatchers.withText(selectedSongList.getName()))).check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
-        Espresso.onView(CoreMatchers.instanceOf(QMUIAlphaImageButton::class.java)).check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
-        Espresso.onView(ViewMatchers.withText(downloadedSong.name)).check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
-        Espresso.onView(ViewMatchers.withText(nonDownloadedSongWithUrl.name)).check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
-    }
-
-    /**
-     *
      * 测试当点击右上角的按钮时，触发到“添加歌曲到歌单”fragment的导航
      */
     @Test
     fun testAddSongToSongList() {
+        scenario.onFragment { fragment: SongListFragment -> Navigation.setViewNavController(fragment.requireView(), mockNavController) }
         Espresso.onView(CoreMatchers.instanceOf(QMUIAlphaImageButton::class.java)).perform(ViewActions.click())
         verify{ mockNavController.navigate(SongListFragmentDirections.actionSongListFragmentToAddSongToSongListFragment(selectedSongList)) }
     }
 
+    private val mSpinner=MutableLiveData(false)
+    private val mSnackbar=MutableLiveData("")
+    private val onlineSongsLiveData=MutableLiveData<List<SongDO>>()
+
     /**
-     *
-     * 测试当点击一首已经下载好的歌曲时，直接播放
+     * 测试界面启动
+     * 1. 测试界面元素、本地歌单的正常显示
+     * 2. 网络歌单测试：
+     *      1. 加载时的状态
+     *      2. 加载成功时的界面
      */
-    //    @Test public
-    fun testClickDownloadedSong() {
-        // TODO
-        Espresso.onView(ViewMatchers.withText(downloadedSong.name)).perform(ViewActions.click())
-        //        verify(displayServiceAdapter,times(1)).startWith(downloadedSong, songsInSelectedSongList);
+    @Test
+    fun testFragmentLaunch(): Unit =runBlocking{
+
+        // 本地歌单以及界面元素测试
+        every { songListViewModel.loadSongsIn(selectedSongList) } returns songsInSelectedSongList
+        scenario.recreate()
+        Espresso.onView(CoreMatchers.allOf(ViewMatchers.isDescendantOfA(CoreMatchers.instanceOf(QMUITopBar::class.java)), ViewMatchers.withText(selectedSongList.getName()))).check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
+        Espresso.onView(CoreMatchers.instanceOf(QMUIAlphaImageButton::class.java)).check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
+        checkItemWithName(downloadedSong.name)
+        checkItemWithName(nonDownloadedSongWithUrl.name)
+
+        // 网络歌单测试
+
+        // 加载中
+        every { songListViewModel.loadSongsIn(selectedSongList) }.answers{
+            mSpinner.postValue(false)
+            onlineSongsLiveData
+        }
+        scenario.recreate()
+        Espresso.onView(CoreMatchers.instanceOf(ProgressBar::class.java)).check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
+
+        // 加载完
+        mSpinner.postValue(true)
+        onlineSongsLiveData.postValue(listOf(downloadedSong,nonDownloadedSongWithUrl))
+        checkItemWithName(downloadedSong.name)
+        checkItemWithName(nonDownloadedSongWithUrl.name)
+    }
+
+    private fun checkItemWithName(name: String){
+        Espresso.onView(ViewMatchers.withText(name)).check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
     }
 
     /**
@@ -95,16 +124,15 @@ class SongListFragmentTest {
         //        verify(displayServiceAdapter,times(1)).startWith(downloadedSongFromUrl, songsInSelectedSongList);
     }
 
-
-
     @Before
     fun setUp() {
+        every { songListViewModel.spinner } returns mSpinner
+        every { songListViewModel.snackbar } returns mSnackbar
         MockKAnnotations.init(this)
         mockDownloadService()
-        mockLiveDataFromViewModel()
         mockViewModelFactory()
         mockFragmentFactory()
-        launchTestedFragment()
+        scenario = FragmentScenario.launchInContainer(SongListFragment::class.java, bundlePassedFromSelection, R.style.AppTheme, fragmentFactory)
     }
 
     private fun mockDownloadService() {
@@ -135,21 +163,12 @@ class SongListFragmentTest {
         }
     }
 
-    private fun mockLiveDataFromViewModel() {
-        every { songListViewModel.loadSongsIn(selectedSongList) } returns songsInSelectedSongList
-    }
-
     private fun mockViewModelFactory() {
-        every { viewModelFactory.create(SongListViewModel::class.java) } returns songListViewModel
+        every { viewModelFactory.create(SongListViewModelImpl::class.java) } returns songListViewModel
     }
 
     private fun mockFragmentFactory() {
         every { fragmentFactory.instantiate(any(),SongListFragment::class.java.name) } returns songListFragment
-    }
-
-    private fun launchTestedFragment() {
-        val scenario = FragmentScenario.launchInContainer(SongListFragment::class.java, bundlePassedFromSelection, R.style.AppTheme, fragmentFactory)
-        scenario.onFragment { fragment: SongListFragment -> Navigation.setViewNavController(fragment.requireView(), mockNavController) }
     }
 
     private fun waitForDownloadFinished() {
@@ -195,6 +214,7 @@ class SongListFragmentTest {
     private val bundlePassedFromSelection = Bundle().apply { putSerializable("selectedSongList", selectedSongList) }
 
     private val songsInSelectedSongList=MutableLiveData(listOf(downloadedSong,nonDownloadedSongWithUrl))
+    private lateinit var scenario: FragmentScenario<SongListFragment>
 
 
     //用于同步的数据
