@@ -62,7 +62,9 @@ public class AddSongToSongListFragment extends ListFragment {
     }
 
     private SongListVO getPassedSongList(){
-        return AddSongToSongListFragmentArgs.fromBundle(getArguments()).getSongListSongsAddedTo();
+        throw new NotImplementedError();
+        // TODO
+//        return AddSongToSongListFragmentArgs.fromBundle(getArguments()).getSongListSongsAddedTo();
     }
 
     private SongListViewModel getSongListViewModel() {

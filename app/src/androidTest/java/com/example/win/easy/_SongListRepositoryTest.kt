@@ -3,6 +3,8 @@ package com.example.win.easy
 import android.util.Log
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.MutableLiveData
+import com.example.win.easy.exception.NonLoginException
+import com.example.win.easy.exception.TimeoutException
 import com.example.win.easy.repository.SongListDto
 import com.example.win.easy.repository.SongListRepository
 import com.example.win.easy.repository.db.dao.SongListDao
@@ -11,11 +13,9 @@ import com.example.win.easy.web.service.LoginService
 import io.mockk.*
 import io.mockk.impl.annotations.InjectMockKs
 import io.mockk.impl.annotations.MockK
+import io.mockk.impl.annotations.RelaxedMockK
 import io.mockk.impl.annotations.SpyK
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import kotlinx.coroutines.test.TestCoroutineDispatcher
 import kotlinx.coroutines.test.runBlockingTest
 import kotlinx.coroutines.test.setMain
@@ -27,59 +27,47 @@ import org.junit.Test
 class _SongListRepositoryTest {
 
     @InjectMockKs lateinit var songListRepository: SongListRepository
-    @MockK lateinit var songListDao: SongListDao
+    private val songListDao= mockkClass(SongListDao::class)
     @MockK lateinit var songListDto: SongListDto
-    @MockK lateinit var loginService: LoginService
+    @RelaxedMockK lateinit var loginService: LoginService
 
     /**
-     * 测试未登录下加载所有
+     * 测试网络超时
      */
     @ExperimentalCoroutinesApi
-    @Test
-    fun testNonLoginLoadAll()=runBlockingTest{
+    @Test(expected = TimeoutException::class)
+    fun testRefreshOnlineTimeout()= runBlockingTest{
+        every { loginService.hasLogin() } returns true
+        songListRepository.refreshOnline()
+    }
+
+    /**
+     * 测试未登录
+     */
+    @ExperimentalCoroutinesApi
+    @Test(expected = NonLoginException::class)
+    fun testRefreshOnlineNonLogin()= runBlockingTest {
         every { loginService.hasLogin() } returns false
-        setNetworkNonTimeout()
-        val allData=songListRepository.loadAll().apply { observeForever {} }
-        localMockLiveData.postValue(listOf(SongListDO(), SongListDO()))
-        assertEquals(allData.value!!.size,2)
+        songListRepository.refreshOnline()
     }
 
     /**
-     * 测试登录下加载所有，网络超时
+     * 测试正常抓取
      */
     @ExperimentalCoroutinesApi
-    @Test(expected = Throwable::class)
-    fun testLoginLoadAllTimeout()= runBlockingTest{
+    @Test
+    fun testRefreshOnline()= runBlockingTest{
         every { loginService.hasLogin() } returns true
-        setNetworkTimeout()
-        launch{
-            songListRepository.loadAll()
+        coEvery { songListDto.loadAll(any()) } coAnswers {
+            advanceTimeBy(1000)
+            onlineMockData
         }
-    }
 
-    /**
-     * 测试登录下加载所有，网络正常
-     */
-    @ExperimentalCoroutinesApi
-    @Test
-    fun testLoginLoadAll()= runBlockingTest{
-        every { loginService.hasLogin() } returns true
-        setNetworkNonTimeout()
-        val allData=songListRepository.loadAll().apply { observeForever{} }
         localMockLiveData.value=listOf(SongListDO(), SongListDO())
-        assertEquals(allData.value!!.size,4)
-        coVerify { songListDto.loadAll(mUid) }
-    }
+        assertEquals(2,songListRepository.allLiveData.value!!.size)
 
-    /**
-     * 测试仅加载本地
-     */
-    @ExperimentalCoroutinesApi
-    @Test
-    fun testLoadLocalOnly()=runBlockingTest{
-        val allData=songListRepository.loadLocalOnly().apply { observeForever {} }
-        localMockLiveData.postValue(listOf(SongListDO(), SongListDO()))
-        assertEquals(allData.value!!.size,2)
+        launch { songListRepository.refreshOnline() }.join()
+        assertEquals(4,songListRepository.allLiveData.value!!.size)
     }
 
     /**
@@ -88,23 +76,10 @@ class _SongListRepositoryTest {
     @ExperimentalCoroutinesApi
     @Before
     fun setUp(){
-        MockKAnnotations.init(this)
         every { songListDao.loadAll() } returns localMockLiveData
+        MockKAnnotations.init(this)
         every { loginService.currentUid } returns mUid
-    }
-
-    private fun setNetworkNonTimeout(){
-        coEvery { songListDto.loadAll(any()) } coAnswers {
-            delay(4000)
-            onlineMockData
-        }
-    }
-
-    private fun setNetworkTimeout(){
-        coEvery { songListDto.loadAll(any()) } coAnswers {
-            delay(5000)
-            onlineMockData
-        }
+        songListRepository.allLiveData.observeForever {  }
     }
 
     private var localMockLiveData= MutableLiveData<List<SongListDO>>()

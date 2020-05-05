@@ -2,6 +2,7 @@ package com.example.win.easy.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
+import com.example.win.easy.repository.db.data_object.SongDO
 import com.example.win.easy.repository.db.data_object.SongListDO
 import com.example.win.easy.value_object.SongListVO
 import com.example.win.easy.value_object.SongVO
@@ -25,6 +26,7 @@ abstract class SongListViewModel : ViewModel() {
     abstract fun songsNotIn(songListVO: SongListVO?): List<SongVO?>?
     abstract fun addSongsTo(songVOs: List<SongVO>, songListVO: SongListVO)
 
+    abstract fun loadSongsIn(songListDO: SongListDO): LiveData<List<SongDO>?>
     @Throws(SongListToCreateAlreadyExistLocallyException::class)
     abstract fun create(songListVO: SongListVO?)
 }

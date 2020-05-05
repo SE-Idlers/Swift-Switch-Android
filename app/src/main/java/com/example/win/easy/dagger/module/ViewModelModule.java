@@ -27,6 +27,7 @@ import dagger.Module;
 import dagger.Provides;
 import dagger.multibindings.IntoMap;
 import kotlin.NotImplementedError;
+import kotlin.coroutines.EmptyCoroutineContext;
 
 @Module
 public class ViewModelModule {

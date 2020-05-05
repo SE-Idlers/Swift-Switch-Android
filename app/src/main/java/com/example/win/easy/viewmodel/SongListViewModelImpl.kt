@@ -1,9 +1,7 @@
 package com.example.win.easy.viewmodel
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
+import com.example.win.easy.enumeration.DataSource
 import com.example.win.easy.repository.SongListRepository
 import com.example.win.easy.repository.db.data_object.SongDO
 import com.example.win.easy.repository.db.data_object.SongListDO
@@ -19,7 +17,8 @@ class SongListViewModelImpl(private val songListRepository: SongListRepository,
                             private val repo: Repo,
                             private val voUtil: VOUtil) : SongListViewModel() {
 
-    private var allSongList: LiveData<List<SongListDO>>?=null
+    private val allSongList= songListRepository.allLiveData
+    private lateinit var songsInList: MutableLiveData<List<SongDO>?>
 
     private val _spinner=MutableLiveData<Boolean>()
     val spinner: LiveData<Boolean>
@@ -36,18 +35,47 @@ class SongListViewModelImpl(private val songListRepository: SongListRepository,
      * 2. 超时：仅获取本地
      */
     override fun loadAll(): LiveData<List<SongListDO>>{
-        allSongList?:viewModelScope.launch {
-            allSongList=try {
-                _spinner.postValue(true)
-                songListRepository.loadAll()
-            }catch (t: Throwable){
-                _snackbar.postValue(t.message)
-                songListRepository.loadLocalOnly()
-            }finally {
-                _spinner.postValue(false)
-            }
+        launchLoading {
+            songListRepository.refreshOnline()
         }
-        return allSongList!!
+        return allSongList
+    }
+
+    /**
+     * 加载歌单内的歌曲
+     */
+    override fun loadSongsIn(songListDO: SongListDO):LiveData<List<SongDO>?>{
+        return if(songListDO.source==DataSource.Local)
+            songListRepository.loadSongsIn(songListDO)
+        else{
+            songsInList=MutableLiveData<List<SongDO>?>()
+            refreshOnlineSongList(songListDO)
+            songsInList
+        }
+    }
+
+    /**
+     * 刷新歌单内的歌曲（仅网络歌单应当使用）
+     */
+    private fun refreshOnlineSongList(songListDO: SongListDO){
+        launchLoading {
+            songsInList.value=songListRepository.loadOnlineSongsIn(songListDO)
+        }
+    }
+
+    /**
+     * 统一的loading状态控制
+     * @param block 执行时在viewModelScope中，它将执行限制在UI线程中，因此对viewmodel的赋值可以直接set
+     */
+    private fun launchLoading(block: suspend ()->Unit)=viewModelScope.launch{
+        try {
+            _spinner.postValue(true)
+            block()
+        }catch (t: Throwable){
+            _snackbar.postValue(t.message)
+        }finally {
+            _spinner.postValue(false)
+        }
     }
 
     /**

@@ -5,6 +5,8 @@ import androidx.room.PrimaryKey;
 
 import com.example.win.easy.enumeration.DataSource;
 
+import java.io.Serializable;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -16,7 +18,7 @@ import lombok.NonNull;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class SongListDO {
+public class SongListDO implements Serializable {
 
     /**
      * 自动生成的歌单id

@@ -63,7 +63,7 @@
         android:label="AddSongToSongListFragment">
         <argument
             android:name="songListSongsAddedTo"
-            app:argType="com.example.win.easy.value_object.SongListVO" />
+            app:argType="com.example.win.easy.repository.db.data_object.SongListDO" />
         <action
             android:id="@+id/action_addSongToSongListFragment_to_songListFragment"
             app:destination="@id/songListFragment" />

@@ -2,6 +2,7 @@ package com.example.win.easy.repository.db.dao
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
+import com.example.win.easy.repository.db.data_object.SongDO
 import com.example.win.easy.repository.db.data_object.SongListDO
 
 @Dao
@@ -24,6 +25,9 @@ interface SongListDao {
 
     @Query("SELECT * FROM SongListDO WHERE remoteId is null")
     fun findAllDataOnLocal(): List<SongListDO?>?
+
+    @Query("SELECT * FROM SongDO join SongXSongListDO WHERE songListId=:songListId")
+    fun findSongsInSongList(songListId: Long): LiveData<List<SongDO>?>
 
     /** */
     @Query("SELECT * FROM SongListDO")
