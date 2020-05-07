@@ -1,63 +1,58 @@
 package com.example.win.easy.view.main
 
 import android.os.Bundle
+import android.util.Log
 import android.widget.ProgressBar
 import androidx.fragment.app.FragmentFactory
 import androidx.fragment.app.testing.FragmentScenario
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.test.espresso.Espresso
-import androidx.test.espresso.ViewAssertion
 import androidx.test.espresso.action.ViewActions
 import androidx.test.espresso.assertion.ViewAssertions
 import androidx.test.espresso.matcher.ViewMatchers
-import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner
 import com.example.win.easy.BooleanSemaphore
 import com.example.win.easy.R
-import com.example.win.easy.display.DisplayServiceAdapter
+import com.example.win.easy.TestCoroutineRule
+import com.example.win.easy.display.interfaces.DisplayService
 import com.example.win.easy.download.DownloadServiceAdapter
-import com.example.win.easy.exception.TimeoutException
 import com.example.win.easy.repository.db.data_object.SongDO
 import com.example.win.easy.repository.db.data_object.SongListDO
-import com.example.win.easy.value_object.SongListVO
-import com.example.win.easy.value_object.SongVO
-import com.example.win.easy.viewmodel.SongListViewModel
 import com.example.win.easy.viewmodel.SongListViewModelImpl
-import com.example.win.easy.web.callback.OnReadyFunc
 import com.qmuiteam.qmui.alpha.QMUIAlphaImageButton
 import com.qmuiteam.qmui.widget.QMUITopBar
-import io.mockk.MockKAnnotations
-import io.mockk.every
+import io.mockk.*
 import io.mockk.impl.annotations.InjectMockKs
 import io.mockk.impl.annotations.MockK
 import io.mockk.impl.annotations.RelaxedMockK
-import io.mockk.mockkClass
-import io.mockk.verify
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.*
 import kotlinx.coroutines.test.TestCoroutineDispatcher
-import kotlinx.coroutines.yield
+import kotlinx.coroutines.test.resetMain
+import kotlinx.coroutines.test.runBlockingTest
+import kotlinx.coroutines.test.setMain
 import org.hamcrest.CoreMatchers
 import org.junit.Assert.assertEquals
 import org.junit.Before
+import org.junit.Rule
 import org.junit.Test
-import org.junit.runner.RunWith
-import org.mockito.*
-import org.mockito.invocation.InvocationOnMock
-import java.util.*
-import java.util.concurrent.Executors
+import java.util.logging.Level
+import java.util.logging.Logger
+import kotlin.coroutines.CoroutineContext
 
+@ExperimentalCoroutinesApi
 class SongListFragmentTest {
     @InjectMockKs lateinit var songListFragment: SongListFragment
-    @MockK lateinit var displayServiceAdapter: DisplayServiceAdapter
+    @RelaxedMockK lateinit var displayService: DisplayService
     @MockK lateinit var downloadServiceAdapter: DownloadServiceAdapter
     @MockK lateinit var fragmentFactory: FragmentFactory
     @MockK lateinit var viewModelFactory: ViewModelProvider.Factory
     private val songListViewModel= mockkClass(SongListViewModelImpl::class,relaxed = true)
     @MockK(relaxUnitFun = true) lateinit var mockNavController: NavController
+
+    @get:Rule
+    val testRule=TestCoroutineRule()
 
     /**
      * 测试当点击右上角的按钮时，触发到“添加歌曲到歌单”fragment的导航
@@ -112,82 +107,52 @@ class SongListFragmentTest {
         Espresso.onView(ViewMatchers.withText(name)).check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
     }
 
+    private var blockCap = CapturingSlot<()->Unit>()
+    private var songCap = CapturingSlot<SongDO>()
+
     /**
-     *
-     * 测试当点击一首还没下载的歌曲时，先触发下载，然后等下载结束后，触发播放
+     * 测试点击下载，且下载后触发播放
      */
-    //    @Test public
-    fun testClickDownloadedSongWith() {
-        // TODO
+    @Test
+    fun testClickSongToDownload()= testRule.testCoroutineDispatcher.runBlockingTest{
+        every { downloadServiceAdapter.download(capture(songCap),capture(blockCap)) } answers {
+            launch(testRule.testCoroutineDispatcher) {
+                yield()
+                songCap.captured.songPath="Test Path"
+                withContext(Dispatchers.Main){
+                    blockCap.captured()
+                }
+            }
+        }
+        every { songListViewModel.loadSongsIn(selectedSongList) } returns songsInSelectedSongList
+        scenario.recreate()
         Espresso.onView(ViewMatchers.withText(nonDownloadedSongWithUrl.name)).perform(ViewActions.click())
-//        Mockito.verify(downloadServiceAdapter, Mockito.times(1))!!.download(ArgumentMatchers.eq(nonDownloadedSongWithUrl), ArgumentMatchers.any(OnReadyFunc::class.java))
-        //        verify(displayServiceAdapter,times(1)).startWith(downloadedSongFromUrl, songsInSelectedSongList);
+        assertEquals(null,nonDownloadedSongWithUrl.songPath)
+        verify(exactly = 0) { displayService.restartWith(nonDownloadedSongWithUrl,selectedSongList,songsInSelectedSongList.value!!) }
+
+        runCurrent()
+
+        assertEquals("Test Path",nonDownloadedSongWithUrl.songPath)
+        verify(exactly = 1) { displayService.restartWith(nonDownloadedSongWithUrl,selectedSongList,songsInSelectedSongList.value!!) }
+
+        nonDownloadedSongWithUrl.songPath=null
     }
 
     @Before
     fun setUp() {
         every { songListViewModel.spinner } returns mSpinner
         every { songListViewModel.snackbar } returns mSnackbar
+
         MockKAnnotations.init(this)
-        mockDownloadService()
-        mockViewModelFactory()
-        mockFragmentFactory()
+
+        every { downloadServiceAdapter.spinner } returns mSpinner
+        every { downloadServiceAdapter.snackbar } returns mSnackbar
+
+        every { viewModelFactory.create(SongListViewModelImpl::class.java) } returns songListViewModel
+        every { fragmentFactory.instantiate(any(),SongListFragment::class.java.name) } returns songListFragment
         scenario = FragmentScenario.launchInContainer(SongListFragment::class.java, bundlePassedFromSelection, R.style.AppTheme, fragmentFactory)
     }
 
-    private fun mockDownloadService() {
-//        Mockito.doAnswer { invocation: InvocationOnMock ->
-//
-//            //获取参数
-//            val songToDownload = invocation.getArgument<SongVO>(0)
-//            val onReadyFunc = invocation.getArgument<OnReadyFunc<SongVO?>>(1)
-//
-//            //模拟发起请求
-//            Executors.newSingleThreadExecutor().execute { mockDownloadTask() }
-//            waitForDownloadFinished()
-//            onReadyFunc.onReady(downloadedSongFromUrl)
-//            null
-//        }.`when`(downloadServiceAdapter)!!.download(ArgumentMatchers.any(SongVO::class.java), ArgumentMatchers.any(OnReadyFunc::class.java))
-    }
-
-    private fun mockDownloadTask() {
-        downloading()
-        notifyDownloadFinished()
-    }
-
-    private fun downloading() {
-        try {
-            Thread.sleep(1000)
-        } catch (e: InterruptedException) {
-            e.printStackTrace()
-        }
-    }
-
-    private fun mockViewModelFactory() {
-        every { viewModelFactory.create(SongListViewModelImpl::class.java) } returns songListViewModel
-    }
-
-    private fun mockFragmentFactory() {
-        every { fragmentFactory.instantiate(any(),SongListFragment::class.java.name) } returns songListFragment
-    }
-
-    private fun waitForDownloadFinished() {
-        synchronized(downloadFinished) {
-            synchronized(mainThreadWaiting) { mainThreadWaiting.isReady = true }
-            try {
-//                downloadFinished.wait()
-            } catch (e: InterruptedException) {
-                e.printStackTrace()
-            }
-        }
-    }
-
-    private fun notifyDownloadFinished() {
-//        while (true) {
-//            synchronized(mainThreadWaiting) { if (mainThreadWaiting.isReady) break }
-//        }
-//        synchronized(downloadFinished) { downloadFinished.notifyAll() }
-    }
 
     //LiveData和这个界面的数据
     private val selectedSongList = SongListDO().apply {
@@ -215,9 +180,4 @@ class SongListFragmentTest {
 
     private val songsInSelectedSongList=MutableLiveData(listOf(downloadedSong,nonDownloadedSongWithUrl))
     private lateinit var scenario: FragmentScenario<SongListFragment>
-
-
-    //用于同步的数据
-    private val mainThreadWaiting = BooleanSemaphore(false)
-    private val downloadFinished = Any()
 }

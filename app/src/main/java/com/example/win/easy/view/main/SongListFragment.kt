@@ -13,6 +13,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.Navigation
 import com.example.win.easy.R
 import com.example.win.easy.display.DisplayServiceAdapter
+import com.example.win.easy.display.interfaces.DisplayService
 import com.example.win.easy.download.DownloadServiceAdapter
 import com.example.win.easy.repository.db.data_object.SongDO
 import com.example.win.easy.repository.db.data_object.SongListDO
@@ -23,7 +24,10 @@ import com.google.android.material.snackbar.Snackbar
 import com.qmuiteam.qmui.widget.grouplist.QMUICommonListItemView
 import kotlin.collections.ArrayList
 
-class SongListFragment(private val displayServiceAdapter: DisplayServiceAdapter, private val downloadServiceAdapter: DownloadServiceAdapter, private val factory: ViewModelProvider.Factory) : ListFragment() {
+class SongListFragment(
+        private val displayService: DisplayService,
+        private val downloadServiceAdapter: DownloadServiceAdapter,
+        private val factory: ViewModelProvider.Factory) : ListFragment() {
     private lateinit var thisSongList: SongListDO
     private lateinit var songsInThisSongList: LiveData<List<SongDO>?>
     private lateinit var songListViewModel: SongListViewModelImpl
@@ -47,13 +51,15 @@ class SongListFragment(private val displayServiceAdapter: DisplayServiceAdapter,
         val view = super.onCreateView(inflater, container, savedInstanceState)
 
         // 歌单、进度条、提示框分别注册监听
-        songsInThisSongList.observe(this, Observer { newSongs-> refreshView(newSongs) })
         songListViewModel.spinner.observe(this, Observer { show-> spinner.visibility=if (!show) ProgressBar.VISIBLE else ProgressBar.GONE })
         songListViewModel.snackbar.observe(this, Observer { hint-> Snackbar.make(rootLayout,hint!!,Snackbar.LENGTH_SHORT) })
+        downloadServiceAdapter.spinner.observe(this, Observer { show-> spinner.visibility=if (!show) ProgressBar.VISIBLE else ProgressBar.GONE })
+        downloadServiceAdapter.snackbar.observe(this, Observer { hint-> Snackbar.make(rootLayout,hint!!,Snackbar.LENGTH_SHORT) })
 
         // 拉取歌单内歌曲
         thisSongList = retrievePassedSongList()
         songsInThisSongList = loadSongsIn(thisSongList)
+        songsInThisSongList.observe(this, Observer { newSongs-> refreshView(newSongs) })
 
         // 设置标题、按钮
         setTopBarTitle(thisSongList.name)
@@ -99,19 +105,14 @@ class SongListFragment(private val displayServiceAdapter: DisplayServiceAdapter,
     })
 
     private fun display(songDO: SongDO) {
-        throw NotImplementedError()
-        // TODO
-//        displayServiceAdapter.startWith(songVO, songsInThisSongList.value!!)
+        displayService.restartWith(songDO,thisSongList,songsInThisSongList.value!!)
     }
 
     private fun downloadThenDisplay(songDO: SongDO) {
-
-        throw NotImplementedError()
-        // TODO
-//        downloadServiceAdapter.download(songVO) { songVO: SongVO -> display(songVO) }
+        downloadServiceAdapter.download(songDO){
+            display(songDO)
+        }
     }
-
-
 
     internal inner class SongItem(entity: SongDO, onClickFunc: OnClickFunc<SongDO>) : EntityItem<SongDO>(this@SongListFragment.context, entity, onClickFunc) {
         init {

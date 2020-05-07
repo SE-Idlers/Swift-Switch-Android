@@ -45,7 +45,7 @@ public class DisplayFragment extends Fragment {
 
     private void initPauseButton() {
         btnPause.setOnClickListener(v -> {
-            if (displayService.isPlaying()){
+            if (displayService.whetherPlaying()){
                 displayService.pause();
                 updateBeginView();
             }else {
@@ -57,7 +57,7 @@ public class DisplayFragment extends Fragment {
 
     private void initPreviousButton() {
         btnPrevious.setOnClickListener(v -> {
-            if(!displayService.isPlaying())
+            if(!displayService.whetherPlaying())
                 updatePauseView();
             displayService.previous();
         });
@@ -65,7 +65,7 @@ public class DisplayFragment extends Fragment {
 
     private void initNextButton() {
         btnNext.setOnClickListener(v -> {
-            if(!displayService.isPlaying())
+            if(!displayService.whetherPlaying())
                 updatePauseView();
             displayService.next();
         });
