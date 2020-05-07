@@ -89,7 +89,7 @@ public class Repo_Task_AccessDB extends AsyncTask<Object, Object, Long> {
 
     private void beforeUpdate() {
         //fetch之前从新获取缓存数据
-        allSong = songDao.getAllSong()==null?new ArrayList<>():songDao.getAllSong();
+        allSong = songDao.findAllSong()==null?new ArrayList<>():songDao.findAllSong();
         allSongList = songListDao.allSongList() ==null?new ArrayList<>(): songListDao.allSongList();
         allRelation = songXSongListDao.getAllRelation()==null?new ArrayList<>():songXSongListDao.getAllRelation();
         songOnWeb = songDao.findAllDataOnWeb()==null?new ArrayList<>():songDao.findAllDataOnWeb();
@@ -122,7 +122,7 @@ public class Repo_Task_AccessDB extends AsyncTask<Object, Object, Long> {
             }
             i++;
         }
-        allSong = songDao.getAllSong()==null?new ArrayList<>():songDao.getAllSong();
+        allSong = songDao.findAllSong()==null?new ArrayList<>():songDao.findAllSong();
         allSongList = songListDao.allSongList() ==null?new ArrayList<>(): songListDao.allSongList();
         allRelation = songXSongListDao.getAllRelation()==null
                 ?new ArrayList<>()
@@ -189,10 +189,11 @@ public class Repo_Task_AccessDB extends AsyncTask<Object, Object, Long> {
 
     private Long insertSong(SongDO data) {
         SongDO result = songDao.findByRemoteId(data.remoteId);
-        if (result == null)
-            return songDao.insert(data);
-        else
-            return result.id;
+//        if (result == null)
+//            return songDao.insert(data);
+//        else
+//            return result.id;
+        return new Long(0);
     }
 
     private void deleteSong(SongDO data) {

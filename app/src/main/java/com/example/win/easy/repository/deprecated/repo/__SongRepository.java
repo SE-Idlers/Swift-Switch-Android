@@ -29,27 +29,6 @@ public class __SongRepository extends __Repository<SongDO, SongDTO> {
         this.songDao = songDao;
     }
 
-
-    @Override
-    public void insert(SongDO localData) {
-        diskIO.execute(()->{
-            SongDO result= songDao.findAllBySongPath(localData.getSongPath());
-            System.out.println(result);
-            if (result==null)
-                songDao.insert(localData);
-        });
-    }
-
-    @Override
-    public void delete(SongDO data) {
-        diskIO.execute(()-> songDao.delete(data));
-    }
-
-    @Override
-    public void update(SongDO data) {
-        diskIO.execute(()-> songDao.update(data));
-    }
-
     @Override
     protected boolean shouldFetch() {
         return true;

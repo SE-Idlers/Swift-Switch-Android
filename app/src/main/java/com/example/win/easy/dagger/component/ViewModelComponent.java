@@ -5,7 +5,6 @@ import androidx.lifecycle.ViewModelProvider;
 import com.example.win.easy.dagger.module.ViewModelModule;
 import com.example.win.easy.dagger.scope.ViewModelScope;
 import com.example.win.easy.display.interfaces.DisplayService;
-import com.example.win.easy.factory.__SongFactory;
 import com.example.win.easy.parser.filter.FilterStrategy;
 import com.example.win.easy.recognization.interfaces.RecognitionService;
 import com.example.win.easy.web.service.LoginService;
@@ -23,8 +22,6 @@ public interface ViewModelComponent {
     DisplayService getDisplayManager();
 
     FilterStrategy<List<Character>> getFilterStrategy();
-
-    __SongFactory getSongFactory();
 
     RecognitionService getRecognitionService();
 

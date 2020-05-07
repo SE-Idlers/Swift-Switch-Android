@@ -27,12 +27,6 @@ public abstract class __Repository<LocalType,NetworkType> {
         return loadAll();
     }
 
-    public abstract void insert(LocalType localData);
-
-    public abstract void delete(LocalType data);
-
-    public abstract void update(LocalType data);
-
     public void fetchAll(){
         //未登录时取消抓取
         if(!loginService.hasLogin())

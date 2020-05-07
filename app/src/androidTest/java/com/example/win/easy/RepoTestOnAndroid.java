@@ -2,8 +2,6 @@ package com.example.win.easy;
 
 import android.test.UiThreadTest;
 
-import androidx.lifecycle.MutableLiveData;
-import androidx.test.espresso.base.MainThread;
 import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner;
 
 import com.example.win.easy.repository.db.dao.SongDao;
@@ -79,7 +77,7 @@ public class RepoTestOnAndroid {
         reset();
         repo.getAllSong();//fetch
 
-        verify(songDao, times(1)).insert(songDO3);
+//        verify(songDao, times(1)).insert(songDO3);
         verify(songListDao, times(1)).insert(songListDO3);
         verify(songXSongListDao, times(2)).insert(any(SongXSongListDO.class));
     }
@@ -131,7 +129,7 @@ public class RepoTestOnAndroid {
 
         repo.getAllSongList();
 
-        verify(songDao, atLeastOnce()).getAllSong();
+        verify(songDao, atLeastOnce()).findAllSong();
         verify(songDao, atLeastOnce()).findAllDataOnWeb();
     }
 
@@ -207,7 +205,7 @@ public class RepoTestOnAndroid {
             return answer.isEmpty()
                     ?null
                     :answer;
-        }).when(songDao).getAllSong();
+        }).when(songDao).findAllSong();
 
         //mock 根据Rid查询歌单
         doAnswer(invocation -> {
@@ -314,13 +312,13 @@ public class RepoTestOnAndroid {
         }).when(songXSongListDao).getAllRelation();
 
         //mock 模拟歌曲插入
-        doAnswer(invocation -> {
-            SongDO song = invocation.getArgument(0);
-            songIdRecord = songIdRecord + 1L;
-            song.setId(songIdRecord);
-            allSong.add(song);
-            return songIdRecord;
-        }).when(songDao).insert(any(SongDO.class));
+//        doAnswer(invocation -> {
+//            SongDO song = invocation.getArgument(0);
+//            songIdRecord = songIdRecord + 1L;
+//            song.setId(songIdRecord);
+//            allSong.add(song);
+//            return songIdRecord;
+//        }).when(songDao).insert(any(SongDO.class));
 
         //mock 模拟歌曲删除
         doAnswer(invocation -> {

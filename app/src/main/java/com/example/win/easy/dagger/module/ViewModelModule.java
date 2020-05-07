@@ -5,12 +5,9 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.example.win.easy.factory.ViewModelFactory;
 import com.example.win.easy.repository.SongListRepository;
-import com.example.win.easy.repository.deprecated.repo.__SongListRepository;
 import com.example.win.easy.repository.deprecated.repo.__SongRepository;
-import com.example.win.easy.repository.deprecated.repo.__SongXSongListRepository;
 import com.example.win.easy.repository.repo.Repo;
 import com.example.win.easy.value_object.VOUtil;
-import com.example.win.easy.viewmodel.SimpleViewModel;
 import com.example.win.easy.viewmodel.SongListViewModel;
 import com.example.win.easy.viewmodel.SongListViewModelImpl;
 import com.example.win.easy.viewmodel.SongViewModel;
@@ -26,8 +23,6 @@ import dagger.MapKey;
 import dagger.Module;
 import dagger.Provides;
 import dagger.multibindings.IntoMap;
-import kotlin.NotImplementedError;
-import kotlin.coroutines.EmptyCoroutineContext;
 
 @Module
 public class ViewModelModule {
@@ -41,18 +36,9 @@ public class ViewModelModule {
 
     @Provides
     @IntoMap
-    @ViewModelKey(SimpleViewModel.class)
-    static ViewModel simpleViewModel(__SongRepository songRepository,
-                                     __SongListRepository songListRepository,
-                                     __SongXSongListRepository songXSongListRepository){
-        return new SimpleViewModel(songRepository,songListRepository,songXSongListRepository);
-    }
-
-    @Provides
-    @IntoMap
     @ViewModelKey(SongViewModel.class)
     static ViewModel songViewModel(__SongRepository songRepository){
-        return new SongViewModel(songRepository,new VOUtil());
+        return new SongViewModel(null,songRepository,new VOUtil());
     }
 
     @Provides

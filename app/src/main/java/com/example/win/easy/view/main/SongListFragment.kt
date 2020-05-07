@@ -1,6 +1,5 @@
 package com.example.win.easy.view.main
 
-import android.app.DownloadManager
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -12,7 +11,6 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.Navigation
 import com.example.win.easy.R
-import com.example.win.easy.display.DisplayServiceAdapter
 import com.example.win.easy.display.interfaces.DisplayService
 import com.example.win.easy.download.DownloadServiceAdapter
 import com.example.win.easy.repository.db.data_object.SongDO
@@ -24,12 +22,12 @@ import com.google.android.material.snackbar.Snackbar
 import com.qmuiteam.qmui.widget.grouplist.QMUICommonListItemView
 import kotlin.collections.ArrayList
 
-class SongListFragment(
+open class SongListFragment(
         private val displayService: DisplayService,
         private val downloadServiceAdapter: DownloadServiceAdapter,
         private val factory: ViewModelProvider.Factory) : ListFragment() {
-    private lateinit var thisSongList: SongListDO
-    private lateinit var songsInThisSongList: LiveData<List<SongDO>?>
+    protected lateinit var thisSongList: SongListDO
+    protected lateinit var songsInThisSongList: LiveData<List<SongDO>?>
     private lateinit var songListViewModel: SongListViewModelImpl
 
     /**
@@ -37,6 +35,10 @@ class SongListFragment(
      */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        initViewModel()
+    }
+
+    protected open fun initViewModel() {
         songListViewModel=ViewModelProviders.of(this, factory).get(SongListViewModelImpl::class.java)
     }
 
@@ -49,32 +51,34 @@ class SongListFragment(
      */
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = super.onCreateView(inflater, container, savedInstanceState)
+        initCreateView()
+        return view
+    }
 
+    protected open fun initCreateView(){
         // 歌单、进度条、提示框分别注册监听
         songListViewModel.spinner.observe(this, Observer { show-> spinner.visibility=if (!show) ProgressBar.VISIBLE else ProgressBar.GONE })
         songListViewModel.snackbar.observe(this, Observer { hint-> Snackbar.make(rootLayout,hint!!,Snackbar.LENGTH_SHORT) })
         downloadServiceAdapter.spinner.observe(this, Observer { show-> spinner.visibility=if (!show) ProgressBar.VISIBLE else ProgressBar.GONE })
         downloadServiceAdapter.snackbar.observe(this, Observer { hint-> Snackbar.make(rootLayout,hint!!,Snackbar.LENGTH_SHORT) })
 
-        // 拉取歌单内歌曲
-        thisSongList = retrievePassedSongList()
-        songsInThisSongList = loadSongsIn(thisSongList)
-        songsInThisSongList.observe(this, Observer { newSongs-> refreshView(newSongs) })
+        initSongList()
 
         // 设置标题、按钮
         setTopBarTitle(thisSongList.name)
         setUpRightImageButton()
-
-        return view
     }
 
-    private fun retrievePassedSongList()=SongListFragmentArgs.fromBundle(arguments!!).selectedSongList
-    private fun loadSongsIn(songListDO: SongListDO)=songListViewModel.loadSongsIn(songListDO)
+    protected open fun initSongList(){
+        thisSongList=SongListFragmentArgs.fromBundle(arguments!!).selectedSongList
+        songsInThisSongList=songListViewModel.loadSongsIn(thisSongList)
+        songsInThisSongList.observe(this, Observer { newSongs-> refreshView(newSongs) })
+    }
 
     /**
      * 设置右上角按钮，导航到“添加歌曲到歌单界面”
      */
-    private fun setUpRightImageButton() {
+    protected open fun setUpRightImageButton() {
         setRightImageButtonOnClickListener {
             Navigation.findNavController(view!!)
                     .navigate(SongListFragmentDirections.actionSongListFragmentToAddSongToSongListFragment(thisSongList))

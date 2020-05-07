@@ -11,7 +11,6 @@ import com.example.win.easy.view.lock.DisplayFragment;
 import com.example.win.easy.view.lock.HandWritingFragment;
 import com.example.win.easy.view.lock.SearchFragment;
 import com.example.win.easy.factory.DaggerFragmentFactory;
-import com.example.win.easy.factory.__SongFactory;
 import com.example.win.easy.view.ImageService;
 import com.example.win.easy.view.main.AddSongToSongListFragment;
 import com.example.win.easy.view.main.AllSongListsFragment;
@@ -63,8 +62,8 @@ public class FragmentModule {
     @Provides
     @IntoMap
     @FragmentKey(AllSongsFragment.class)
-    static Fragment provideAllSongsFragment(ViewModelProvider.Factory factory, __SongFactory songFactory){
-        return new AllSongsFragment(factory,songFactory);
+    static Fragment provideAllSongsFragment(DisplayService displayService,ViewModelProvider.Factory factory){
+        return new AllSongsFragment(displayService,null,null,factory);
     }
 
     @Provides

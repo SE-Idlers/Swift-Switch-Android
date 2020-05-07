@@ -11,13 +11,10 @@ import com.example.win.easy.dagger.module.RepositoryModule;
 import com.example.win.easy.dagger.module.ThreadModule;
 import com.example.win.easy.dagger.module.WebSongListModule;
 import com.example.win.easy.display.interfaces.DisplayService;
-import com.example.win.easy.factory.__SongFactory;
 import com.example.win.easy.parser.filter.FilterStrategy;
 import com.example.win.easy.recognization.interfaces.RecognitionService;
 import com.example.win.easy.repository.SongListRepository;
-import com.example.win.easy.repository.deprecated.repo.__SongListRepository;
 import com.example.win.easy.repository.deprecated.repo.__SongRepository;
-import com.example.win.easy.repository.deprecated.repo.__SongXSongListRepository;
 import com.example.win.easy.repository.repo.Repo;
 import com.example.win.easy.value_object.VOUtil;
 import com.example.win.easy.web.DTOUtil;
@@ -49,10 +46,6 @@ public interface AppComponent {
 
     __SongRepository getSongRepository();
 
-    __SongListRepository _getSongListRepository();
-
-    __SongXSongListRepository getSongXSongListRepository();
-
     Repo getRepo();
 
     SongListRepository getSongListRepository();
@@ -60,8 +53,6 @@ public interface AppComponent {
     VOUtil getVOUtil();
 
     DTOUtil getDTOUtil();
-
-    __SongFactory getSongFactory();
 
     RecognitionService getRecognitionService();
 
