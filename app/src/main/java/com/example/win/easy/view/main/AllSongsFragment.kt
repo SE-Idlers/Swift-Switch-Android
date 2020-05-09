@@ -34,16 +34,14 @@ class AllSongsFragment(
 
     override fun initCreateView(){
         initSongList()
+
         // 设置标题、按钮
         setTopBarTitle(thisSongList.name)
         setUpRightImageButton()
     }
 
     override fun initSongList(){
-        thisSongList= SongListDO().apply {
-            name="本地歌曲"
-            source=DataSource.Local
-        }
+        thisSongList= SongListDO(name = "本地歌曲",source = DataSource.Local)
         songsInThisSongList=songViewModel.allLocalSongs
     }
 
@@ -71,12 +69,12 @@ class AllSongsFragment(
 
     private fun data2Song(intent: Intent): SongDO{
         val path=File(UriProcessTool.getPathByUri4kitkat(context, intent.data)).absolutePath
-        return SongDO().apply {
-            name=path.substring(path.lastIndexOf('/') + 1, path.lastIndexOf('.'))
-            author=path.substring(path.lastIndexOf('/') + 1, path.indexOf('-'))
-            source=DataSource.Local
-            sequence=parser.parse(path.substring(path.indexOf('-') + 1, path.lastIndexOf('.')))
+        return SongDO(
+            name=path.substring(path.lastIndexOf('/') + 1, path.lastIndexOf('.')),
+            author=path.substring(path.lastIndexOf('/') + 1, path.indexOf('-')),
+            source=DataSource.Local,
+            sequence=parser.parse(path.substring(path.indexOf('-') + 1, path.lastIndexOf('.'))),
             songPath=path
-        }
+        )
     }
 }

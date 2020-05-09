@@ -26,7 +26,7 @@ class DownloadService(
         var file: File?=null
         try {
             file=fileService.file(songDO)
-            download(songDO.songUrl,file)
+            download(songDO.songUrl!!,file)
         }catch (t: Throwable){
             file?.delete()
             throw FailToDownloadException("Fail to download song: ${songDO.name}")
@@ -48,7 +48,7 @@ class DownloadService(
      */
     @Throws(Throwable::class)
     private fun download(urlStr: String,file: File){
-        var connection: URLConnection?=null
+        var connection: URLConnection?
         var networkIn: BufferedInputStream?=null
         var localOut: FileOutputStream?=null
 

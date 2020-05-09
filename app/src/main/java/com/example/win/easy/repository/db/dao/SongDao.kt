@@ -18,10 +18,13 @@ interface SongDao {
     @Update
     suspend fun update(songDO: SongDO)
 
-    //以下为Repo涉及方法
     @Query("SELECT * FROM SongDO")
-    fun findAllSong(): List<SongDO>
+    fun loadAll(): LiveData<List<SongDO>>
 
+    @Query("SELECT * FROM SongDO join SongXSongListDO WHERE songListId=:songListId")
+    suspend fun loadBySongLists(songListId :Long): List<SongDO>
+
+    //以下为Repo涉及方法
     @Query("SELECT * FROM SongDO WHERE remoteId=:RemoteId")
     fun findByRemoteId(RemoteId: Long?): SongDO?
 

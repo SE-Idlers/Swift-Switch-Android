@@ -69,6 +69,11 @@ class DisplayServiceImpl @Inject constructor(private var mediaPlayer: MediaPlaye
         display(songDO, mediaPlayer)
     }
 
+    override fun currentSong(): SongDO?=currentSong
+    override fun currentSongList(): SongListDO?=currentSongList
+
+    override fun currentSongs(): List<SongDO>?=displayList
+
     private fun display(songDO: SongDO?, mediaPlayer: MediaPlayer) {
         try {
             // 切歌之前先重置，释放掉之前的资源

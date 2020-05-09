@@ -37,25 +37,27 @@ public class DTOUtil {
     }
 
     public SongListDO toDO(SongListDTO songListDTO){
-        return SongListDO.builder()
-                .name(songListDTO.getName())
-                .uid(Long.valueOf(songListDTO.getUid()))
-                .remoteId(Long.valueOf(songListDTO.getRemoteId()))
-                .source(songListDTO.getSource())
-                .avatarUrl(songListDTO.getAvatarUrl())
-                .build();
+        return null;
+        //        return SongListDO.builder()
+//                .name(songListDTO.getName())
+//                .uid(Long.valueOf(songListDTO.getUid()))
+//                .remoteId(Long.valueOf(songListDTO.getRemoteId()))
+//                .source(songListDTO.getSource())
+//                .avatarUrl(songListDTO.getAvatarUrl())
+//                .build();
     }
 
     public SongDO toDO(SongDTO songDTO){
-        return SongDO.builder()
-                .name(songDTO.getName())
-                .author(songDTO.getAuthor())
-                .uid(Long.valueOf(songDTO.getUid()))
-                .remoteId(Long.valueOf(songDTO.getRemoteId()))
-                .sequence(parser.parse(songDTO.getName()))
-                .songUrl(songDTO.getSongUrl())
-                .avatarUrl(songDTO.getAvatarUrl())
-                .build();
+        return null;
+//        return SongDO.builder()
+//                .name(songDTO.getName())
+//                .author(songDTO.getAuthor())
+//                .uid(Long.valueOf(songDTO.getUid()))
+//                .remoteId(Long.valueOf(songDTO.getRemoteId()))
+//                .sequence(parser.parse(songDTO.getName()))
+//                .songUrl(songDTO.getSongUrl())
+//                .avatarUrl(songDTO.getAvatarUrl())
+//                .build();
     }
 
 }

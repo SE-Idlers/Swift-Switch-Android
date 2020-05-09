@@ -15,4 +15,7 @@ interface DisplayService {
     fun configDisplayList(songListDO: SongListDO, songDOs: List<SongDO>)
     fun displayByIndex(index: Int)
     fun restartWith(songDO: SongDO, songListDO: SongListDO, songDOs: List<SongDO>)
+    fun currentSong(): SongDO?
+    fun currentSongList(): SongListDO?
+    fun currentSongs(): List<SongDO>?
 }

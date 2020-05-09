@@ -5,12 +5,8 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.example.win.easy.factory.ViewModelFactory;
 import com.example.win.easy.repository.SongListRepository;
-import com.example.win.easy.repository.deprecated.repo.__SongRepository;
-import com.example.win.easy.repository.repo.Repo;
-import com.example.win.easy.value_object.VOUtil;
 import com.example.win.easy.viewmodel.SongListViewModel;
 import com.example.win.easy.viewmodel.SongListViewModelImpl;
-import com.example.win.easy.viewmodel.SongViewModel;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
@@ -36,16 +32,9 @@ public class ViewModelModule {
 
     @Provides
     @IntoMap
-    @ViewModelKey(SongViewModel.class)
-    static ViewModel songViewModel(__SongRepository songRepository){
-        return new SongViewModel(null,songRepository,new VOUtil());
-    }
-
-    @Provides
-    @IntoMap
     @ViewModelKey(SongListViewModel.class)
-    static ViewModel provideSongListViewModel(SongListRepository songListRepository,Repo repo, VOUtil voUtil){
-        return new SongListViewModelImpl(songListRepository,repo,voUtil);
+    static ViewModel provideSongListViewModel(SongListRepository songListRepository){
+        return new SongListViewModelImpl(songListRepository);
     }
 
     @Provides

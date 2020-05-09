@@ -14,9 +14,6 @@ import com.example.win.easy.display.interfaces.DisplayService;
 import com.example.win.easy.parser.filter.FilterStrategy;
 import com.example.win.easy.recognization.interfaces.RecognitionService;
 import com.example.win.easy.repository.SongListRepository;
-import com.example.win.easy.repository.deprecated.repo.__SongRepository;
-import com.example.win.easy.repository.repo.Repo;
-import com.example.win.easy.value_object.VOUtil;
 import com.example.win.easy.web.DTOUtil;
 import com.example.win.easy.web.service.LoginService;
 
@@ -44,13 +41,7 @@ public interface AppComponent {
 
     DisplayService getDisplayManager();
 
-    __SongRepository getSongRepository();
-
-    Repo getRepo();
-
     SongListRepository getSongListRepository();
-
-    VOUtil getVOUtil();
 
     DTOUtil getDTOUtil();
 

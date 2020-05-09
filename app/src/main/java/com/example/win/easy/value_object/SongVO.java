@@ -22,7 +22,4 @@ public class SongVO {
     String avatarPath;
 
     DataSource source;
-
-    public boolean songFileHasBeenDownloaded(){return songFilePath!=null;}
-    public boolean songFileCanBeDownloaded(){return songFileUrl!=null;}
 }

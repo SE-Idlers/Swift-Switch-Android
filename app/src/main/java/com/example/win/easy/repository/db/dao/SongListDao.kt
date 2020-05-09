@@ -7,13 +7,19 @@ import com.example.win.easy.repository.db.data_object.SongListDO
 
 @Dao
 interface SongListDao {
+    @Query("SELECT * FROM SongListDO")
+    fun loadAll(): LiveData<List<SongListDO>>
+
+    @Query("SELECT * FROM SongListDO join SongXSongListDO WHERE  songId=:songId")
+    suspend fun loadBySong(songId: Long): List<SongListDO>
+
+    //以下为Repo涉及方法
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(songListDO: SongListDO?): Long?
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(songListDOs: Collection<SongListDO?>?): Array<Long?>?
 
-    //以下为Repo涉及方法
     @Query("SELECT * FROM SongListDO")
     fun allSongList(): List<SongListDO?>?
 
@@ -30,9 +36,6 @@ interface SongListDao {
     fun findSongsInSongList(songListId: Long): LiveData<List<SongDO>?>
 
     /** */
-    @Query("SELECT * FROM SongListDO")
-    fun loadAll(): LiveData<List<SongListDO>>
-
     @Query("SELECT * FROM SongListDO WHERE id=:songListId")
     fun  //    SongListDO findById(Long songListId);
             findById(songListId: Long?): LiveData<SongListDO?>?

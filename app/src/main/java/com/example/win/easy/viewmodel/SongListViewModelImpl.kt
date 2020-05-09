@@ -5,17 +5,12 @@ import com.example.win.easy.enumeration.DataSource
 import com.example.win.easy.repository.SongListRepository
 import com.example.win.easy.repository.db.data_object.SongDO
 import com.example.win.easy.repository.db.data_object.SongListDO
-import com.example.win.easy.repository.repo.Repo
 import com.example.win.easy.value_object.SongListVO
 import com.example.win.easy.value_object.SongVO
-import com.example.win.easy.value_object.VOUtil
 import com.example.win.easy.view.main.SongListToCreateAlreadyExistLocallyException
 import kotlinx.coroutines.launch
-import java.util.*
 
-class SongListViewModelImpl(private val songListRepository: SongListRepository,
-                            private val repo: Repo,
-                            private val voUtil: VOUtil) : SongListViewModel() {
+class SongListViewModelImpl(private val songListRepository: SongListRepository) : SongListViewModel() {
 
     private val allSongList= songListRepository.allLiveData
     private lateinit var songsInList: MutableLiveData<List<SongDO>?>
@@ -78,16 +73,6 @@ class SongListViewModelImpl(private val songListRepository: SongListRepository,
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    override fun songsOf(songListVO: SongListVO?): List<SongVO?>? {
-        //获取，避免空值，转化类型
-        var songsInRepo = repo.songsOf(voUtil.toDO(songListVO))
-        songsInRepo = avoidNullSongs(songsInRepo)
-        return toSongsVO(songsInRepo)
-    }
-
     override fun songsNotIn(songListVO: SongListVO?): List<SongVO?>? {
         return null
     }
@@ -98,34 +83,9 @@ class SongListViewModelImpl(private val songListRepository: SongListRepository,
     override fun create(songListVO: SongListVO?) {
     }
 
-    private fun initAllSongListLiveData(): LiveData<List<SongListVO>> {
-        val allSongListDOLiveData = repo.allSongList
-
-        //空值避免，类型转换
-        return Transformations.map(allSongListDOLiveData) { allSongListFromRepo: List<SongListDO>? ->
-            val allSongListDO = avoidNullSongLists(allSongListFromRepo)
-            toAllSongListVO(allSongListDO)
+    override fun launchLoadSongListsBySong(songDO: SongDO, block: (songs: List<SongListDO>) -> Unit){
+        viewModelScope.launch {
+            block(songListRepository.loadSongListBySong(songDO))
         }
     }
-
-    private fun avoidNullSongLists(songListDOs: List<SongListDO>?): List<SongListDO> {
-        return songListDOs ?: ArrayList()
-    }
-
-    private fun toAllSongListVO(songListDOs: List<SongListDO>): List<SongListVO> {
-        val allSongListVO: MutableList<SongListVO> = ArrayList()
-        for (songListDO in songListDOs) allSongListVO.add(voUtil.toVO(songListDO))
-        return allSongListVO
-    }
-
-    private fun avoidNullSongs(songDOs: List<SongDO>?): List<SongDO> {
-        return songDOs ?: ArrayList()
-    }
-
-    private fun toSongsVO(songDOs: List<SongDO>): List<SongVO?> {
-        val songsVO: MutableList<SongVO?> = ArrayList()
-        for (songDO in songDOs) songsVO.add(voUtil.toVO(songDO))
-        return songsVO
-    }
-
 }

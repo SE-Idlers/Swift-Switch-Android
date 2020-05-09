@@ -47,7 +47,9 @@ class SongListRepository(private val songListDto: SongListDto,
      *  对本地歌单：加载全部歌曲
      *  对网络歌单：加载本地缓存的全部歌曲，应当尽快刷新、同步
      */
-    fun loadSongsIn(songListDO: SongListDO)=songListDao.findSongsInSongList(songListDO.id)
+    fun loadSongsIn(songListDO: SongListDO)=songListDao.findSongsInSongList(songListDO.id!!)
+
+    suspend fun loadSongListBySong(songDO: SongDO)=songListDao.loadBySong(songDO.id!!)
 
     suspend fun loadOnlineSongsIn(songListDO: SongListDO): List<SongDO>{
         throw NotImplementedError()

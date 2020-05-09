@@ -9,8 +9,6 @@ import com.example.win.easy.exception.TimeoutException
 import com.example.win.easy.repository.SongListRepository
 import com.example.win.easy.repository.db.data_object.SongDO
 import com.example.win.easy.repository.db.data_object.SongListDO
-import com.example.win.easy.repository.repo.Repo
-import com.example.win.easy.value_object.VOUtil
 import com.example.win.easy.viewmodel.SongListViewModelImpl
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
@@ -35,8 +33,6 @@ class _SongListViewModelTest {
 
     @InjectMockKs lateinit var songListViewModel: SongListViewModelImpl
     private val songListRepository: SongListRepository= mockkClass(SongListRepository::class)
-    @MockK lateinit var repo: Repo // dummy mock
-    @MockK lateinit var voUtil: VOUtil // dummy mock
 
     val testDispatcher=TestCoroutineDispatcher()
 

@@ -10,9 +10,7 @@ import com.example.win.easy.repository.db.dao.SongDao;
 import com.example.win.easy.repository.db.dao.SongListDao;
 import com.example.win.easy.repository.db.dao.SongXSongListDao;
 import com.example.win.easy.repository.db.database.OurDatabase;
-import com.example.win.easy.repository.repo.Repo;
 import com.example.win.easy.web.service.LoginService;
-import com.example.win.easy.web.service.SongListWebService;
 
 import javax.inject.Singleton;
 
@@ -45,13 +43,6 @@ public class RepositoryModule {
 
     @Provides @Singleton static SongXSongListDao provideSongXSongListDao(OurDatabase ourDatabase){
         return ourDatabase.songXSongListDao();
-    }
-
-    @Provides @Singleton static Repo provideRepo(SongDao songDao,
-                                                 SongListDao songListDao,
-                                                 SongXSongListDao songXSongListDao,
-                                                 SongListWebService songListWebService){
-        return new Repo(songDao,songListDao,songXSongListDao,songListWebService);
     }
 
     @Provides@Singleton static SongListRepository provideSongListRepository(SongListDto songListDto,

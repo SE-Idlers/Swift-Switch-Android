@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import com.example.win.easy.repository.db.data_object.SongDO
 import com.example.win.easy.repository.db.data_object.SongListDO
+import com.example.win.easy.tool.SongListWithSongs
 import com.example.win.easy.value_object.SongListVO
 import com.example.win.easy.value_object.SongVO
 import com.example.win.easy.view.main.SongListToCreateAlreadyExistLocallyException
@@ -22,11 +23,12 @@ abstract class SongListViewModel : ViewModel() {
      * @param songListVO 要获取的歌单
      * @return 这个歌单里的歌曲列表
      */
-    abstract fun songsOf(songListVO: SongListVO?): List<SongVO?>?
     abstract fun songsNotIn(songListVO: SongListVO?): List<SongVO?>?
     abstract fun addSongsTo(songVOs: List<SongVO>, songListVO: SongListVO)
 
     abstract fun loadSongsIn(songListDO: SongListDO): LiveData<List<SongDO>?>
     @Throws(SongListToCreateAlreadyExistLocallyException::class)
     abstract fun create(songListVO: SongListVO?)
+
+    abstract fun launchLoadSongListsBySong(songDO: SongDO, block: (songs: List<SongListDO>)->Unit)
 }

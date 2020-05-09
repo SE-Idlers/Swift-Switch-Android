@@ -81,7 +81,7 @@ class SongListFragmentTest {
         // 本地歌单以及界面元素测试
         every { songListViewModel.loadSongsIn(selectedSongList) } returns songsInSelectedSongList
         scenario.recreate()
-        Espresso.onView(CoreMatchers.allOf(ViewMatchers.isDescendantOfA(CoreMatchers.instanceOf(QMUITopBar::class.java)), ViewMatchers.withText(selectedSongList.getName()))).check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
+        Espresso.onView(CoreMatchers.allOf(ViewMatchers.isDescendantOfA(CoreMatchers.instanceOf(QMUITopBar::class.java)), ViewMatchers.withText(selectedSongList.name))).check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
         Espresso.onView(CoreMatchers.instanceOf(QMUIAlphaImageButton::class.java)).check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
         checkItemWithName(downloadedSong.name)
         checkItemWithName(nonDownloadedSongWithUrl.name)

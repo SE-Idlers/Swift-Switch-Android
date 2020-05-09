@@ -94,8 +94,10 @@ public class FileServiceTest {
         String songListAvatarUrl=songListAvatarUrlPrefix+songListAvatarUri;
 
         //用于测试的歌曲和歌单对象
-        testSong =SongDO.builder().uid(uid).name(songName).songUrl(songUrl).avatarUrl(songAvatarUrl).build();
-        testSongList = SongListDO.builder().uid(uid).source(songListSource).avatarUrl(songListAvatarUrl).build();
+        testSong =null;
+//    SongDO.builder().uid(uid).name(songName).songUrl(songUrl).avatarUrl(songAvatarUrl).build();
+        testSongList =null;
+//                SongListDO.builder().uid(uid).source(songListSource).avatarUrl(songListAvatarUrl).build();
 
 
         //{rootDir}/{songDir}/{uid}/{songFilename}{songExtension}
