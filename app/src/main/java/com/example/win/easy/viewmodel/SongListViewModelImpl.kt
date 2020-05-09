@@ -73,12 +73,6 @@ class SongListViewModelImpl(private val songListRepository: SongListRepository) 
         }
     }
 
-    override fun songsNotIn(songListVO: SongListVO?): List<SongVO?>? {
-        return null
-    }
-
-    override fun addSongsTo(songVOs: List<SongVO>, songListVO: SongListVO) {}
-
     @Throws(SongListToCreateAlreadyExistLocallyException::class)
     override fun create(songListVO: SongListVO?) {
     }

@@ -25,6 +25,10 @@ class SongViewModel(
 
     }
 
+    fun launchLoadSongsExclude(songListDO: SongListDO,block: (songs: List<SongDO>) -> Unit){
+
+    }
+
     fun launchLoadSongsBySongLists(songLists: List<SongListDO>, block: (songs: List<List<SongDO>>) -> Unit){
         viewModelScope.launch {
             ArrayList<List<SongDO>>().run {

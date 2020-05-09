@@ -20,13 +20,11 @@ abstract class SongListViewModel : ViewModel() {
     /**
      *
      * 获取某个歌单内的所有歌曲
-     * @param songListVO 要获取的歌单
+     * @param songListDO 要获取的歌单
      * @return 这个歌单里的歌曲列表
      */
-    abstract fun songsNotIn(songListVO: SongListVO?): List<SongVO?>?
-    abstract fun addSongsTo(songVOs: List<SongVO>, songListVO: SongListVO)
-
     abstract fun loadSongsIn(songListDO: SongListDO): LiveData<List<SongDO>?>
+
     @Throws(SongListToCreateAlreadyExistLocallyException::class)
     abstract fun create(songListVO: SongListVO?)
 
