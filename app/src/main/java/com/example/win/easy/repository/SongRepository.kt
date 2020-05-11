@@ -9,7 +9,11 @@ class SongRepository(private val songDao: SongDao) {
     val allLocalData=songDao.loadAllLocal()
     val allData=songDao.loadAll()
 
+    suspend fun loadSongsExclude(songListDO: SongListDO) = songDao.loadExcludeSongList(songListDO.id!!)
+
     suspend fun loadSongsBySongList(songListDO: SongListDO)=songDao.loadBySongLists(songListDO.id!!)
+
+    suspend fun loadSongsBySeq(sequence: List<Char>) = songDao.loadBySeq(String(sequence.toCharArray()))
 
     suspend fun insertOnUniquePath(songDO: SongDO){
         if (songDao.findByPath(songDO.songPath!!).isEmpty())

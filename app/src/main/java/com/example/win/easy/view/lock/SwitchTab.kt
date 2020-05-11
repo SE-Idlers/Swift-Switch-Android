@@ -10,7 +10,6 @@ import com.example.win.easy.R
 import com.example.win.easy.repository.db.data_object.SongDO
 import com.example.win.easy.repository.db.data_object.SongListDO
 import com.example.win.easy.tool.SongListWithSongs
-import com.example.win.easy.value_object.SongVO
 import com.example.win.easy.view.OnClickFunc
 import com.qmuiteam.qmui.layout.QMUILinearLayout
 import com.qmuiteam.qmui.widget.QMUITabSegment

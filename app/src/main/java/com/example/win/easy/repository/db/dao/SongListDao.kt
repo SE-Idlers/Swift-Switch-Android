@@ -13,10 +13,10 @@ interface SongListDao {
     @Query("SELECT * FROM SongListDO join SongXSongListDO WHERE  songId=:songId")
     suspend fun loadBySong(songId: Long): List<SongListDO>
 
-    //以下为Repo涉及方法
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(songListDO: SongListDO?): Long?
+    @Insert(onConflict = OnConflictStrategy.ABORT)
+    suspend fun insert(songListDO: SongListDO): Long
 
+    //以下为Repo涉及方法
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(songListDOs: Collection<SongListDO?>?): Array<Long?>?
 

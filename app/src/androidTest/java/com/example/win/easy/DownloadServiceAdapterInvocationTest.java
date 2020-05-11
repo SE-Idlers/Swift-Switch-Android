@@ -12,9 +12,7 @@ import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner;
 
 import com.example.win.easy.download.DownloadService;
 import com.example.win.easy.download.DownloadServiceAdapter;
-import com.example.win.easy.repository.UpdateService;
 import com.example.win.easy.repository.db.data_object.SongDO;
-import com.example.win.easy.value_object.SongVO;
 import com.example.win.easy.web.callback.OnReadyFunc;
 
 import org.junit.Before;

@@ -24,6 +24,12 @@ interface SongDao {
     @Query("SELECT * FROM SongDO join SongXSongListDO WHERE songListId=:songListId")
     suspend fun loadBySongLists(songListId :Long): List<SongDO>
 
+    @Query("SELECT DISTINCT * FROM SongDO INNER join SongXSongListDO ON songDO.id=songXSongListDO.songId WHERE songListId!=:songListId")
+    suspend fun loadExcludeSongList(songListId :Long): List<SongDO>
+
+    @Query("SELECT DISTINCT * FROM SongDO WHERE sequence LIKE :sequence || '%'")
+    suspend fun loadBySeq(sequence: String): List<SongDO>
+
     //以下为Repo涉及方法
     @Query("SELECT * FROM SongDO WHERE remoteId=:RemoteId")
     fun findByRemoteId(RemoteId: Long?): SongDO?

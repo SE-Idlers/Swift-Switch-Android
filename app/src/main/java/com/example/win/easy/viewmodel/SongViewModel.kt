@@ -17,16 +17,16 @@ class SongViewModel(
         songRepository.insertOnUniquePath(songDO)
     }
 
-    fun update(songDO: SongDO)=viewModelScope.launch {
-        songRepository.update(songDO)
-    }
-
     fun launchLoadSongsBySeq(sequence: List<Char>, block: (songs: List<SongDO>)->Unit){
-
+        viewModelScope.launch {
+            block(songRepository.loadSongsBySeq(sequence))
+        }
     }
 
     fun launchLoadSongsExclude(songListDO: SongListDO,block: (songs: List<SongDO>) -> Unit){
-
+        viewModelScope.launch {
+            block(songRepository.loadSongsExclude(songListDO))
+        }
     }
 
     fun launchLoadSongsBySongLists(songLists: List<SongListDO>, block: (songs: List<List<SongDO>>) -> Unit){

@@ -9,17 +9,13 @@ import java.io.IOException
 import javax.inject.Inject
 import javax.inject.Singleton
 
-@Singleton
-class DisplayServiceImpl @Inject constructor(private var mediaPlayer: MediaPlayer) : DisplayService {
+class DisplayServiceImpl(private var mediaPlayer: MediaPlayer) : DisplayService {
 
     private var currentSongList: SongListDO? = null
     private lateinit var displayList: List<SongDO>
     private var displayMode: DisplayMode? = null
     private var currentSong: SongDO? = null
     private var currentSongIndex = 0
-    fun setMediaPlayer(mediaPlayer: MediaPlayer) {
-        this.mediaPlayer = mediaPlayer
-    }
 
     override fun next() {
         next(mediaPlayer)

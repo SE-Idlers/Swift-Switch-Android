@@ -49,6 +49,8 @@ class SongListRepository(private val songListDto: SongListDto,
      */
     fun loadSongsIn(songListDO: SongListDO)=songListDao.findSongsInSongList(songListDO.id!!)
 
+    suspend fun insert(songListDO: SongListDO)=songListDao.insert(songListDO)
+
     suspend fun loadSongListBySong(songDO: SongDO)=songListDao.loadBySong(songDO.id!!)
 
     suspend fun loadOnlineSongsIn(songListDO: SongListDO): List<SongDO>{

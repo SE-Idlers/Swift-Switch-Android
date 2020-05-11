@@ -27,21 +27,13 @@ import org.junit.runner.RunWith
 class SongRepositoryTest {
 
     @get:Rule val instantTaskExecutorRule=InstantTaskExecutorRule()
+    @get:Rule val databaseRule=DatabaseRule()
     @InjectMockKs lateinit var songRepository: SongRepository
-    @SpyK lateinit var songDao: SongDao
-    private lateinit var db: OurDatabase
+    @SpyK var songDao: SongDao = databaseRule.songDao
 
     @Before
     fun setUp() {
-        val context=ApplicationProvider.getApplicationContext<Context>()
-        db= Room.inMemoryDatabaseBuilder(context,OurDatabase::class.java).build()
-        songDao=db.songDao()
         MockKAnnotations.init(this)
-    }
-
-    @After
-    fun tearDown(){
-        db.close()
     }
 
     private val mSong=SongDO(songPath="path")

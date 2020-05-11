@@ -11,8 +11,6 @@ import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner;
 
 import com.example.win.easy.repository.db.data_object.SongDO;
 import com.example.win.easy.repository.db.data_object.SongListDO;
-import com.example.win.easy.value_object.SongListVO;
-import com.example.win.easy.value_object.SongVO;
 
 import org.junit.Before;
 import org.junit.Rule;

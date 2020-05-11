@@ -1,4 +1,4 @@
-package com.example.win.easy.view.main;
+package com.example.win.easy.exception;
 
 public class SongListToCreateAlreadyExistLocallyException extends Exception {
 }

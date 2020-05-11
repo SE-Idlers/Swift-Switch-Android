@@ -2,12 +2,10 @@ package com.example.win.easy.viewmodel
 
 import androidx.lifecycle.*
 import com.example.win.easy.enumeration.DataSource
+import com.example.win.easy.exception.SongListToCreateAlreadyExistLocallyException
 import com.example.win.easy.repository.SongListRepository
 import com.example.win.easy.repository.db.data_object.SongDO
 import com.example.win.easy.repository.db.data_object.SongListDO
-import com.example.win.easy.value_object.SongListVO
-import com.example.win.easy.value_object.SongVO
-import com.example.win.easy.view.main.SongListToCreateAlreadyExistLocallyException
 import kotlinx.coroutines.launch
 
 class SongListViewModelImpl(private val songListRepository: SongListRepository) : SongListViewModel() {
@@ -49,6 +47,18 @@ class SongListViewModelImpl(private val songListRepository: SongListRepository) 
         }
     }
 
+    @Throws(SongListToCreateAlreadyExistLocallyException::class)
+    override fun insert(songListDO: SongListDO) {
+        allSongList.value?.let {
+            for (existedSongList in it)
+                if (existedSongList.name==songListDO.name&&existedSongList.source==DataSource.Local)
+                    throw SongListToCreateAlreadyExistLocallyException()
+        }
+        viewModelScope.launch {
+            songListRepository.insert(songListDO)
+        }
+    }
+
     /**
      * 刷新歌单内的歌曲（仅网络歌单应当使用）
      */
@@ -71,10 +81,6 @@ class SongListViewModelImpl(private val songListRepository: SongListRepository) 
         }finally {
             _spinner.postValue(false)
         }
-    }
-
-    @Throws(SongListToCreateAlreadyExistLocallyException::class)
-    override fun create(songListVO: SongListVO?) {
     }
 
     override fun launchLoadSongListsBySong(songDO: SongDO, block: (songs: List<SongListDO>) -> Unit){
