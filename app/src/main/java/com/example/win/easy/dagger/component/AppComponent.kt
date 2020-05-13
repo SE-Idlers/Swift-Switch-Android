@@ -10,7 +10,6 @@ import com.example.win.easy.repository.RelationRepository
 import com.example.win.easy.repository.SongListRepository
 import com.example.win.easy.repository.SongRepository
 import com.example.win.easy.view.ImageService
-import com.example.win.easy.web.DTOUtil
 import com.example.win.easy.web.service.LoginService
 import dagger.Component
 import javax.inject.Singleton
@@ -20,7 +19,6 @@ import javax.inject.Singleton
             ThreadModule::class,
             BackendRequestModule::class,
             LoginModule::class,
-            UtilModule::class,
             WebSongListModule::class,
             DisplayModule::class,
             RepositoryModule::class,
@@ -33,7 +31,6 @@ interface AppComponent {
     fun requireSongRepository(): SongRepository
     fun requireSongListRepository(): SongListRepository
     fun requireRelationRepository(): RelationRepository
-    fun requireDTOUtil(): DTOUtil
     fun requireImageService(): ImageService
     fun requireRecognitionService(): RecognitionService
     fun requireFilterStrategy(): FilterStrategy<List<Char>>

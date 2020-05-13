@@ -17,7 +17,6 @@ import com.example.win.easy.R
 import com.example.win.easy.repository.db.data_object.SongListDO
 import com.example.win.easy.view.ImageService
 import com.example.win.easy.viewmodel.SongListViewModel
-import com.example.win.easy.web.callback.OnReadyFunc
 import com.qmuiteam.qmui.alpha.QMUIAlphaImageButton
 import io.mockk.MockKAnnotations
 import io.mockk.every
@@ -29,8 +28,6 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.*
-import java.util.*
 
 @RunWith(AndroidJUnit4ClassRunner::class)
 class AllSongListsFragmentTest {
@@ -52,7 +49,7 @@ class AllSongListsFragmentTest {
      */
     @Test
     fun testAvatarDecode() {
-        verify(exactly = 1) { imageService.decode(songList1.avatarPath,any()) }
+        verify(exactly = 1) { imageService.decode(songList1.avatarPath) }
     }
 
     /**

@@ -5,6 +5,7 @@ import androidx.room.*
 import com.example.win.easy.repository.db.data_object.SongDO
 
 @Dao
+@SuppressWarnings(RoomWarnings.CURSOR_MISMATCH)
 interface SongDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(songDO: SongDO): Long

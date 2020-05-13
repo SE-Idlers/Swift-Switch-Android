@@ -26,5 +26,5 @@ object BackendRequestModule {
     @JvmStatic
     @Provides
     @Named("serverUrl")
-    fun provideServerUrl() = "http://106.53.93.41:9000/"
+    fun provideServerUrl() = "http://127.0.0.1:9000/"
 }

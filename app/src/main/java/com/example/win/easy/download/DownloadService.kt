@@ -4,7 +4,6 @@ import com.example.win.easy.exception.FailToDownloadException
 import com.example.win.easy.repository.SongRepository
 import com.example.win.easy.repository.db.data_object.SongDO
 import com.example.win.easy.repository.db.data_object.SongListDO
-import com.example.win.easy.web.callback.OnReadyFunc
 import kotlinx.coroutines.*
 import java.io.BufferedInputStream
 import java.io.File
@@ -37,7 +36,7 @@ class DownloadService(
         }
     }
 
-    fun download(songListDO: SongListDO?, onReadyFunc: OnReadyFunc<SongDO?>?) {
+    fun download(songListDO: SongListDO?) {
         TODO()
     }
 

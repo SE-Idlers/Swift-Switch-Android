@@ -12,6 +12,7 @@ import com.example.win.easy.web.service.LoginService
 import kotlinx.coroutines.withTimeout
 
 class SongListRepository(private val songListDto: SongListDto,
+                         private val songDto: SongDto,
                          private val songListDao: SongListDao,
                          private val loginService: LoginService) {
 
@@ -53,9 +54,8 @@ class SongListRepository(private val songListDto: SongListDto,
 
     suspend fun loadSongListBySong(songDO: SongDO)=songListDao.loadBySong(songDO.id!!)
 
-    suspend fun loadOnlineSongsIn(songListDO: SongListDO): List<SongDO>{
-        throw NotImplementedError()
-    }
+    suspend fun loadOnlineSongsIn(songListDO: SongListDO) = songDto.loadBySongList(songListDO)
+
     /**
      * 刷新网络歌单
      */

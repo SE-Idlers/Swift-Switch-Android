@@ -1,10 +1,7 @@
 package com.example.win.easy.view.main
 
-import android.graphics.Bitmap
-import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -78,9 +75,7 @@ class AllSongListsFragment(private val factory: ViewModelProvider.Factory, priva
             setImageDrawable(resources.getDrawable(R.drawable.ase16)) // 默认头像
             accessoryType = QMUICommonListItemView.ACCESSORY_TYPE_CHEVRON // item最右侧显示">"
             entity.avatarPath?.let { // 如果头像已下载，发起解码，成功后设置头像
-                imageService.decode(it) { bitmap: Bitmap? ->
-                    setImageDrawable(BitmapDrawable(resources, bitmap))
-                }
+                imageService.decode(it)
             }
         }
     }

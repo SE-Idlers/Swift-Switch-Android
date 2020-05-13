@@ -7,6 +7,7 @@ import com.example.win.easy.repository.db.data_object.SongListDO
 import com.example.win.easy.repository.db.data_object.SongXSongListDO
 
 @Dao
+@SuppressWarnings(RoomWarnings.CURSOR_MISMATCH)
 interface SongXSongListDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(songXSongListDOs: Collection<SongXSongListDO>): List<Long>

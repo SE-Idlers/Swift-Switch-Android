@@ -6,6 +6,7 @@ import com.example.win.easy.repository.db.data_object.SongDO
 import com.example.win.easy.repository.db.data_object.SongListDO
 
 @Dao
+@SuppressWarnings(RoomWarnings.CURSOR_MISMATCH)
 interface SongListDao {
     @Query("SELECT * FROM SongListDO")
     fun loadAll(): LiveData<List<SongListDO>>

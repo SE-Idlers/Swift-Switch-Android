@@ -2,12 +2,10 @@ package com.example.win.easy.view;
 
 import android.graphics.Bitmap;
 
-import com.example.win.easy.web.callback.OnReadyFunc;
-
 public class ImageService {
 
 
-    public void decode(String imagePath, OnReadyFunc<Bitmap> onReadyFunc){
+    public void decode(String imagePath){
         //TODO 解码图片的服务
     }
 /////**
