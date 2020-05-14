@@ -2,7 +2,7 @@ package com.example.win.easy.dagger.module
 
 import android.media.MediaPlayer
 import com.example.win.easy.display.DisplayServiceImpl
-import com.example.win.easy.display.interfaces.DisplayService
+import com.example.win.easy.display.DisplayService
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton

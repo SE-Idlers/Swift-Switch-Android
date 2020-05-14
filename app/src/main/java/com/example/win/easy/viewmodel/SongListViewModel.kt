@@ -2,8 +2,8 @@ package com.example.win.easy.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
-import com.example.win.easy.repository.db.data_object.SongDO
-import com.example.win.easy.repository.db.data_object.SongListDO
+import com.example.win.easy.db.SongDO
+import com.example.win.easy.db.SongListDO
 
 abstract class SongListViewModel : ViewModel() {
     /**

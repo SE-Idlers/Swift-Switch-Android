@@ -1,16 +1,22 @@
-package com.example.win.easy.repository.db.dao
+package com.example.win.easy.dao
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
-import com.example.win.easy.repository.db.data_object.SongDO
-import com.example.win.easy.repository.db.data_object.SongListDO
-import com.example.win.easy.repository.db.data_object.SongXSongListDO
+import com.example.win.easy.db.SongDO
+import com.example.win.easy.db.SongListDO
+import com.example.win.easy.db.SongXSongListDO
 
 @Dao
 @SuppressWarnings(RoomWarnings.CURSOR_MISMATCH)
 interface SongXSongListDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(songXSongListDOs: Collection<SongXSongListDO>): List<Long>
+    suspend fun insert(songXSongListDOs: Collection<SongXSongListDO>)
+
+    @Delete
+    suspend fun deleteAll(songXSongListDOs: Collection<SongXSongListDO>)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertAll(songXSongListDOs: Collection<SongXSongListDO>)
 
     //以下为Repo涉及方法
     @Insert(onConflict = OnConflictStrategy.REPLACE)

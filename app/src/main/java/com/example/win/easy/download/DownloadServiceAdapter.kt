@@ -2,7 +2,7 @@ package com.example.win.easy.download
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.example.win.easy.repository.db.data_object.SongDO
+import com.example.win.easy.db.SongDO
 import kotlinx.coroutines.*
 
 /**

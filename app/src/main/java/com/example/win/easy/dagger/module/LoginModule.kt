@@ -1,7 +1,7 @@
 package com.example.win.easy.dagger.module
 
-import com.example.win.easy.web.request.BackendRequestService
-import com.example.win.easy.web.service.LoginService
+import com.example.win.easy.network.BackendRequestService
+import com.example.win.easy.network.LoginService
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton

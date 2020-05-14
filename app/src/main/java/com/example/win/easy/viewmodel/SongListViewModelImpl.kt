@@ -4,11 +4,14 @@ import androidx.lifecycle.*
 import com.example.win.easy.enumeration.DataSource
 import com.example.win.easy.exception.SongListToCreateAlreadyExistLocallyException
 import com.example.win.easy.repository.SongListRepository
-import com.example.win.easy.repository.db.data_object.SongDO
-import com.example.win.easy.repository.db.data_object.SongListDO
+import com.example.win.easy.db.SongDO
+import com.example.win.easy.db.SongListDO
+import com.example.win.easy.repository.SongRepository
 import kotlinx.coroutines.launch
 
-class SongListViewModelImpl(private val songListRepository: SongListRepository) : SongListViewModel() {
+class SongListViewModelImpl(
+        private val songRepository: SongRepository,
+        private val songListRepository: SongListRepository) : SongListViewModel() {
 
     private val allSongList= songListRepository.allLiveData
     private lateinit var songsInList: MutableLiveData<List<SongDO>?>
@@ -29,7 +32,12 @@ class SongListViewModelImpl(private val songListRepository: SongListRepository) 
      */
     override fun loadAll(): LiveData<List<SongListDO>>{
         launchLoading {
-            songListRepository.refreshOnline()
+            val newSongLists=songListRepository.loadOnline()!!
+            val oldSongLists=songListRepository.onlineLiveData.value?.toList()?: emptyList()
+            viewModelScope.launch {
+                songListRepository.syncSongLists(oldSongLists,newSongLists)
+            }
+            songListRepository.onlineLiveData.value=newSongLists
         }
         return allSongList
     }
@@ -65,6 +73,9 @@ class SongListViewModelImpl(private val songListRepository: SongListRepository) 
     private fun refreshOnlineSongList(songListDO: SongListDO){
         launchLoading {
             songsInList.value=songListRepository.loadOnlineSongsIn(songListDO)
+            viewModelScope.launch {
+                songRepository.syncSongsInSongList(songListDO,songsInList.value!!)
+            }
         }
     }
 

@@ -1,4 +1,4 @@
-package com.example.win.easy.repository.db.data_object
+package com.example.win.easy.db
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
@@ -47,4 +47,13 @@ data class SongListDO(
      * 网络歌单本身的id
      */
     var remoteId: Long?=null
-): Serializable
+): Serializable{
+    override fun equals(other: Any?): Boolean =
+            if (other !is SongListDO || source!= other.source)
+                false
+            else
+                when(source){
+                    DataSource.Local -> super.equals(other)
+                    else -> uid==other.uid && remoteId==other.remoteId
+                }
+}

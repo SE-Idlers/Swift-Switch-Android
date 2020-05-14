@@ -1,14 +1,11 @@
 package com.example.win.easy
 
-import android.content.Context
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
-import com.example.win.easy.repository.db.dao.SongDao
-import com.example.win.easy.repository.db.dao.SongListDao
-import com.example.win.easy.repository.db.dao.SongXSongListDao
-import com.example.win.easy.repository.db.database.OurDatabase
-import io.mockk.MockKAnnotations
-import org.junit.Before
+import com.example.win.easy.dao.SongDao
+import com.example.win.easy.dao.SongListDao
+import com.example.win.easy.dao.SongXSongListDao
+import com.example.win.easy.dao.OurDatabase
 import org.junit.rules.TestRule
 import org.junit.runner.Description
 import org.junit.runners.model.Statement

@@ -1,8 +1,7 @@
-package com.example.win.easy.web.request
+package com.example.win.easy.network
 
-import com.example.win.easy.web.dto.SongDTO
-import com.example.win.easy.web.dto.SongListDTO
-import retrofit2.Call
+import com.example.win.easy.db.SongDTO
+import com.example.win.easy.db.SongListDTO
 import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Query

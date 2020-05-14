@@ -7,14 +7,15 @@ import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner
 import com.example.win.easy.enumeration.DataSource
 import com.example.win.easy.exception.TimeoutException
 import com.example.win.easy.repository.SongListRepository
-import com.example.win.easy.repository.db.data_object.SongDO
-import com.example.win.easy.repository.db.data_object.SongListDO
+import com.example.win.easy.db.SongDO
+import com.example.win.easy.db.SongListDO
+import com.example.win.easy.repository.SongRepository
 import com.example.win.easy.viewmodel.SongListViewModelImpl
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.impl.annotations.InjectMockKs
-import io.mockk.impl.annotations.MockK
+import io.mockk.impl.annotations.RelaxedMockK
 import io.mockk.mockkClass
 import kotlinx.coroutines.*
 import kotlinx.coroutines.test.TestCoroutineDispatcher
@@ -32,6 +33,7 @@ import org.junit.runner.RunWith
 class _SongListViewModelTest {
 
     @InjectMockKs lateinit var songListViewModel: SongListViewModelImpl
+    @RelaxedMockK lateinit var songRepository: SongRepository
     private val songListRepository: SongListRepository= mockkClass(SongListRepository::class)
 
     val testDispatcher=TestCoroutineDispatcher()
@@ -57,7 +59,7 @@ class _SongListViewModelTest {
     @Test
     fun testLoadAllTimeout()= runBlockingTest{
         setUpLocalOnlyAllData()
-        coEvery { songListRepository.refreshOnline() } throws Throwable("Test")
+        coEvery { songListRepository.loadOnline() } throws Throwable("Test")
 
         songListViewModel.loadAll().let {
             it.observeForever{}
@@ -71,7 +73,7 @@ class _SongListViewModelTest {
         }
     }
 
-    private val mSongListDO=SongListDO()
+    private val mSongListDO= SongListDO()
     private val localSongsLiveData=MutableLiveData(listOf(SongDO(), SongDO()))
     private val onlineSongs=listOf(SongDO(), SongDO(), SongDO())
 
@@ -155,8 +157,8 @@ class _SongListViewModelTest {
         }
     }
 
-    private val mLocalData=MutableLiveData(listOf(SongListDO(),SongListDO()))
-    private val mOnlineData=MutableLiveData(listOf(SongListDO(),SongListDO(), SongListDO()))
+    private val mLocalData=MutableLiveData(listOf(SongListDO(), SongListDO()))
+    private val mOnlineData=MutableLiveData(listOf(SongListDO(), SongListDO(), SongListDO()))
     private val mAllData=MediatorLiveData<List<SongListDO>>()
 
 

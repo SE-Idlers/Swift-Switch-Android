@@ -12,10 +12,10 @@ import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner
 import com.example.win.easy.R
 import com.example.win.easy.TestCoroutineRule
-import com.example.win.easy.display.interfaces.DisplayService
+import com.example.win.easy.display.DisplayService
 import com.example.win.easy.enumeration.DataSource
-import com.example.win.easy.repository.db.data_object.SongDO
-import com.example.win.easy.repository.db.data_object.SongListDO
+import com.example.win.easy.db.SongDO
+import com.example.win.easy.db.SongListDO
 import com.example.win.easy.tool.SongListWithSongs
 import com.example.win.easy.viewmodel.SongListViewModel
 import com.example.win.easy.viewmodel.SongViewModel
@@ -26,7 +26,10 @@ import io.mockk.impl.annotations.InjectMockKs
 import io.mockk.impl.annotations.MockK
 import io.mockk.impl.annotations.RelaxedMockK
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.runBlocking
 import org.junit.Assert
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -37,12 +40,13 @@ import kotlin.collections.ArrayList
 @RunWith(AndroidJUnit4ClassRunner::class)
 class SearchFragmentTest {
     @Test
-    fun testNormalSelection() {
+    fun testNormalSelection()= runBlocking {
         search(testSequence)
         verifySongListDisplayed(mLocalMatchedSongsC, mOnlineMatchedSongsC)
         clickTab(mOnlineMatchedSongsC)
         clickSong(songInHateAndNormal)
-        verifySongListDisplayed(mHateC, mNormalC)
+        verifySongListDisplayed(mNormalC,mHateC)
+        clickTab(mHateC)
         verifyMediaIsPlaying(songInHateAndNormal, mHateC)
         clickTab(mNormalC)
         verifyMediaIsPlaying(songInHateAndNormal, mNormalC)
@@ -64,13 +68,12 @@ class SearchFragmentTest {
         verifySongListDisplayed(mLocalMatchedSongsC, mOnlineMatchedSongsC)
         clickSong(songNotInAnySongList)
         verifySongListDisplayed(mAllSongsC)
-        verifyMediaIsPlaying(songNotInAnySongList, mAllSongsC)
     }
 
     private fun verifyMediaIsPlaying(beingPlayedSong: SongDO, beingPlayedSongList: SongListWithSongs) {
-        Assert.assertEquals(beingPlayedSong, displayService.currentSong())
-        Assert.assertEquals(beingPlayedSongList.songList, displayService.currentSongList())
-        Assert.assertEquals(beingPlayedSongList.songs, displayService.currentSongs())
+        assertEquals(beingPlayedSong, displayService.currentSong())
+        assertEquals(beingPlayedSongList.songList, displayService.currentSongList())
+        assertEquals(beingPlayedSongList.songs, displayService.currentSongs())
     }
 
     private fun search(sequence: List<Char>) {
@@ -124,9 +127,6 @@ class SearchFragmentTest {
     }
 
     private val songDOCap=CapturingSlot<(List<SongDO>)->Unit>()
-    private val emptySongCap=CapturingSlot<(List<SongDO>)->Unit>()
-
-    private val emptySongListCap=CapturingSlot<(t: List<SongListDO>)->Unit>()
     private val hateCap=CapturingSlot<(List<SongListDO>)->Unit>()
     private val hateAndNormalCap=CapturingSlot<(List<SongListDO>)->Unit>()
     private val normalAndLoveCap=CapturingSlot<(List<SongListDO>)->Unit>()
@@ -186,17 +186,17 @@ class SearchFragmentTest {
 
     private lateinit var scenario: FragmentScenario<SearchFragment>
 
-    private val songNotInAnySongList = SongDO(name="无法地带",source=DataSource.Local)
-    private val songOnlyInHate = SongDO(name="只在讨厌里",source=DataSource.Local)
-    private val songInHateAndNormal = SongDO(name="在讨厌和一般般里",source=DataSource.WangYiYun)
-    private val songInNormalAndLove = SongDO(name="在一般般和喜欢里",source=DataSource.WangYiYun)
+    private val songNotInAnySongList = SongDO(name = "无法地带", source = DataSource.Local)
+    private val songOnlyInHate = SongDO(name = "只在讨厌里", source = DataSource.Local)
+    private val songInHateAndNormal = SongDO(name = "在讨厌和一般般里", source = DataSource.WangYiYun,uid=1,remoteId = 3)
+    private val songInNormalAndLove = SongDO(name = "在一般般和喜欢里", source = DataSource.WangYiYun,uid=1,remoteId = 4)
 
-    private val mAllSongsC = SongListWithSongs(songList= SongListDO(name="所有歌曲",source = DataSource.Local),songs= listOf(songNotInAnySongList,songOnlyInHate,songInHateAndNormal,songInNormalAndLove))
-    private val mLocalMatchedSongsC = SongListWithSongs(songList=SongListDO(name=DataSource.Local.name,source=DataSource.Local),songs= listOf(songNotInAnySongList,songOnlyInHate))
-    private val mOnlineMatchedSongsC = SongListWithSongs(songList=SongListDO(name=DataSource.WangYiYun.name,source=DataSource.WangYiYun),songs= listOf(songInHateAndNormal,songInNormalAndLove))
-    private val mHateC = SongListWithSongs(songList=SongListDO(name="讨厌",source=DataSource.Local),songs= listOf(songOnlyInHate,songInHateAndNormal))
-    private val mNormalC = SongListWithSongs(songList=SongListDO(name="一般般",source=DataSource.WangYiYun),songs= listOf(songInHateAndNormal,songInNormalAndLove))
-    private val mLoveC = SongListWithSongs(songList=SongListDO(name="喜欢！",source=DataSource.WangYiYun),songs= listOf(songInNormalAndLove))
+    private val mAllSongsC = SongListWithSongs(songList= SongListDO(name = "所有歌曲", source = DataSource.Local),songs= listOf(songNotInAnySongList,songOnlyInHate,songInHateAndNormal,songInNormalAndLove))
+    private val mLocalMatchedSongsC = SongListWithSongs(songList= SongListDO(name = DataSource.Local.name, source = DataSource.Local),songs= listOf(songNotInAnySongList,songOnlyInHate))
+    private val mOnlineMatchedSongsC = SongListWithSongs(songList= SongListDO(name = DataSource.WangYiYun.name, source = DataSource.WangYiYun),songs= listOf(songInHateAndNormal,songInNormalAndLove))
+    private val mHateC = SongListWithSongs(songList= SongListDO(name = "讨厌", source = DataSource.Local),songs= listOf(songOnlyInHate,songInHateAndNormal))
+    private val mNormalC = SongListWithSongs(songList= SongListDO(name = "一般般", source = DataSource.WangYiYun,uid=1,remoteId = 1),songs= listOf(songInHateAndNormal,songInNormalAndLove))
+    private val mLoveC = SongListWithSongs(songList= SongListDO(name = "喜欢！", source = DataSource.WangYiYun,uid=1,remoteId = 2),songs= listOf(songInNormalAndLove))
 
 
     private val allSongsInRepoLiveData = MutableLiveData<List<SongDO>>().apply { postValue(mAllSongsC.songs) }

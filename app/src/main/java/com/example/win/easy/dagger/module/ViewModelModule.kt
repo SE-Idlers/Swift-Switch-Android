@@ -30,7 +30,7 @@ object ViewModelModule {
     @Provides
     @IntoMap
     @ViewModelKey(SongListViewModel::class)
-    fun provideSongListViewModel(songListRepository: SongListRepository): ViewModel = SongListViewModelImpl(songListRepository)
+    fun provideSongListViewModel(songRepository: SongRepository,songListRepository: SongListRepository): ViewModel = SongListViewModelImpl(songRepository,songListRepository)
 
     @JvmStatic
     @Provides

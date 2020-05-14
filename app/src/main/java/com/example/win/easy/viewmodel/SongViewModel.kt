@@ -3,8 +3,8 @@ package com.example.win.easy.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.win.easy.repository.SongRepository
-import com.example.win.easy.repository.db.data_object.SongDO
-import com.example.win.easy.repository.db.data_object.SongListDO
+import com.example.win.easy.db.SongDO
+import com.example.win.easy.db.SongListDO
 import kotlinx.coroutines.launch
 import kotlin.collections.ArrayList
 
@@ -23,7 +23,7 @@ class SongViewModel(
         }
     }
 
-    fun launchLoadSongsExclude(songListDO: SongListDO,block: (songs: List<SongDO>) -> Unit){
+    fun launchLoadSongsExclude(songListDO: SongListDO, block: (songs: List<SongDO>) -> Unit){
         viewModelScope.launch {
             block(songRepository.loadSongsExclude(songListDO))
         }

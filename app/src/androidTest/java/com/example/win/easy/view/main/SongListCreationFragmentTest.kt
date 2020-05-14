@@ -12,7 +12,7 @@ import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner
 import com.example.win.easy.R
 import com.example.win.easy.enumeration.DataSource
 import com.example.win.easy.exception.SongListToCreateAlreadyExistLocallyException
-import com.example.win.easy.repository.db.data_object.SongListDO
+import com.example.win.easy.db.SongListDO
 import com.example.win.easy.viewmodel.SongListViewModel
 import io.mockk.MockKAnnotations
 import io.mockk.every
@@ -128,9 +128,9 @@ class SongListCreationFragmentTest {
 
     private val newSongListName = "乐队有很多"
     private val existedSongListName = "但新裤子只有一条"
-    private var newSongList = SongListDO(name = newSongListName,source = DataSource.Local)
-    private var existedSongList = SongListDO(name = existedSongListName,source = DataSource.Local)
-    private var emptySongList = SongListDO(name = "",source = DataSource.Local)
+    private var newSongList = SongListDO(name = newSongListName, source = DataSource.Local)
+    private var existedSongList = SongListDO(name = existedSongListName, source = DataSource.Local)
+    private var emptySongList = SongListDO(name = "", source = DataSource.Local)
     private val newSongListCreationHint = "我的新歌单已经饥渴难耐了"
     private val textOnNewSongListCreationButton = "给我建他娘的！"
 }

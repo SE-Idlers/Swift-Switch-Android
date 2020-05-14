@@ -1,40 +1,11 @@
 package com.example.win.easy;
 
-import android.test.UiThreadTest;
-
-import androidx.annotation.NonNull;
-import androidx.lifecycle.Lifecycle;
-import androidx.lifecycle.LifecycleOwner;
-import androidx.lifecycle.LifecycleRegistry;
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
-import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner;
-
-import com.example.win.easy.download.DownloadService;
-import com.example.win.easy.download.DownloadServiceAdapter;
-import com.example.win.easy.repository.db.data_object.SongDO;
-import com.example.win.easy.web.callback.OnReadyFunc;
-
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import org.mockito.Spy;
-
-import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
-
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.spy;
-import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 //@RunWith(AndroidJUnit4ClassRunner.class)
 @Deprecated

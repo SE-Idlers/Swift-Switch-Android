@@ -8,12 +8,11 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.Navigation
 import com.example.win.easy.R
-import com.example.win.easy.repository.db.data_object.SongDO
-import com.example.win.easy.repository.db.data_object.SongListDO
+import com.example.win.easy.db.SongDO
+import com.example.win.easy.db.SongListDO
 import com.example.win.easy.view.EntityItem
 import com.example.win.easy.view.OnClickFunc
 import com.example.win.easy.viewmodel.RelationViewModel
-import com.example.win.easy.viewmodel.SongListViewModel
 import com.example.win.easy.viewmodel.SongViewModel
 import com.qmuiteam.qmui.widget.grouplist.QMUICommonListItemView
 import java.util.*

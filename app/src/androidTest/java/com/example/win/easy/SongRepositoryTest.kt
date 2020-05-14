@@ -1,20 +1,15 @@
 package com.example.win.easy
 
-import android.content.Context
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import androidx.room.Room
-import androidx.test.core.app.ApplicationProvider
 import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner
 import com.example.win.easy.repository.SongRepository
-import com.example.win.easy.repository.db.dao.SongDao
-import com.example.win.easy.repository.db.data_object.SongDO
-import com.example.win.easy.repository.db.database.OurDatabase
+import com.example.win.easy.dao.SongDao
+import com.example.win.easy.db.SongDO
 import io.mockk.MockKAnnotations
 import io.mockk.impl.annotations.InjectMockKs
 import io.mockk.impl.annotations.SpyK
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking
-import org.junit.After
 import org.junit.Before
 import org.junit.Test
 
@@ -30,13 +25,14 @@ class SongRepositoryTest {
     @get:Rule val databaseRule=DatabaseRule()
     @InjectMockKs lateinit var songRepository: SongRepository
     @SpyK var songDao: SongDao = databaseRule.songDao
+    @SpyK var relationDao= databaseRule.songXSongListDao
 
     @Before
     fun setUp() {
         MockKAnnotations.init(this)
     }
 
-    private val mSong=SongDO(songPath="path")
+    private val mSong= SongDO(songPath = "path")
 
     /**
      * 测试本地歌曲插入，只有数据库中当前没有（没有相同文件路径）的歌曲才会触发插入

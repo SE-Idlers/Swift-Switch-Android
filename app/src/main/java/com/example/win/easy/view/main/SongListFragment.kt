@@ -11,10 +11,10 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.Navigation
 import com.example.win.easy.R
-import com.example.win.easy.display.interfaces.DisplayService
+import com.example.win.easy.display.DisplayService
 import com.example.win.easy.download.DownloadServiceAdapter
-import com.example.win.easy.repository.db.data_object.SongDO
-import com.example.win.easy.repository.db.data_object.SongListDO
+import com.example.win.easy.db.SongDO
+import com.example.win.easy.db.SongListDO
 import com.example.win.easy.view.EntityItem
 import com.example.win.easy.view.OnClickFunc
 import com.example.win.easy.viewmodel.SongListViewModelImpl
@@ -58,9 +58,9 @@ open class SongListFragment(
     protected open fun initCreateView(){
         // 歌单、进度条、提示框分别注册监听
         songListViewModel.spinner.observe(this, Observer { show-> spinner.visibility=if (!show) ProgressBar.VISIBLE else ProgressBar.GONE })
-        songListViewModel.snackbar.observe(this, Observer { hint-> Snackbar.make(rootLayout,hint!!,Snackbar.LENGTH_SHORT) })
+        songListViewModel.snackbar.observe(this, Observer { hint-> Snackbar.make(rootLayout,hint!!,Snackbar.LENGTH_SHORT).show() })
         downloadServiceAdapter.spinner.observe(this, Observer { show-> spinner.visibility=if (!show) ProgressBar.VISIBLE else ProgressBar.GONE })
-        downloadServiceAdapter.snackbar.observe(this, Observer { hint-> Snackbar.make(rootLayout,hint!!,Snackbar.LENGTH_SHORT) })
+        downloadServiceAdapter.snackbar.observe(this, Observer { hint-> Snackbar.make(rootLayout,hint!!,Snackbar.LENGTH_SHORT).show() })
 
         initSongList()
 

@@ -2,8 +2,8 @@ package com.example.win.easy.download
 
 import com.example.win.easy.exception.FailToDownloadException
 import com.example.win.easy.repository.SongRepository
-import com.example.win.easy.repository.db.data_object.SongDO
-import com.example.win.easy.repository.db.data_object.SongListDO
+import com.example.win.easy.db.SongDO
+import com.example.win.easy.db.SongListDO
 import kotlinx.coroutines.*
 import java.io.BufferedInputStream
 import java.io.File

@@ -9,7 +9,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.Navigation
 import butterknife.BindString
 import com.example.win.easy.R
-import com.example.win.easy.repository.db.data_object.SongListDO
+import com.example.win.easy.db.SongListDO
 import com.example.win.easy.view.EntityItem
 import com.example.win.easy.view.ImageService
 import com.example.win.easy.view.OnClickFunc

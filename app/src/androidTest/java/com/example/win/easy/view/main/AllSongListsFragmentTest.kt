@@ -14,7 +14,7 @@ import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner
 import androidx.test.rule.ActivityTestRule
 import com.example.win.easy.R
-import com.example.win.easy.repository.db.data_object.SongListDO
+import com.example.win.easy.db.SongListDO
 import com.example.win.easy.view.ImageService
 import com.example.win.easy.viewmodel.SongListViewModel
 import com.qmuiteam.qmui.alpha.QMUIAlphaImageButton
@@ -115,8 +115,8 @@ class AllSongListsFragmentTest {
     private val name1 = "背心尊者大战美国队长"
     private val name2 = "从何时开始怕遥望星辰"
     private val newName = "享受却不知情"
-    private var songList1 = SongListDO(id=1,name=name1,avatarPath="/data/user/0")
-    private var songList2 = SongListDO(id=2,name=name2)
+    private var songList1 = SongListDO(id = 1, name = name1, avatarPath = "/data/user/0")
+    private var songList2 = SongListDO(id = 2, name = name2)
     private var allSongLists = arrayListOf(songList1,songList2)
     private val allSongListsLiveData = MutableLiveData<List<SongListDO>>().apply { postValue(allSongLists) }
 }

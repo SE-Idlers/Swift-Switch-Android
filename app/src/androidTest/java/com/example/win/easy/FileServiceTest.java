@@ -8,8 +8,8 @@ import androidx.test.rule.GrantPermissionRule;
 
 import com.example.win.easy.download.FileService;
 import com.example.win.easy.enumeration.DataSource;
-import com.example.win.easy.repository.db.data_object.SongDO;
-import com.example.win.easy.repository.db.data_object.SongListDO;
+import com.example.win.easy.db.SongDO;
+import com.example.win.easy.db.SongListDO;
 
 import org.junit.After;
 import org.junit.Before;

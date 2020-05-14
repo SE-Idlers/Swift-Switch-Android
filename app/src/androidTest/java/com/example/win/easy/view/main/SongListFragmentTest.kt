@@ -1,7 +1,6 @@
 package com.example.win.easy.view.main
 
 import android.os.Bundle
-import android.util.Log
 import android.widget.ProgressBar
 import androidx.fragment.app.FragmentFactory
 import androidx.fragment.app.testing.FragmentScenario
@@ -13,13 +12,12 @@ import androidx.test.espresso.Espresso
 import androidx.test.espresso.action.ViewActions
 import androidx.test.espresso.assertion.ViewAssertions
 import androidx.test.espresso.matcher.ViewMatchers
-import com.example.win.easy.BooleanSemaphore
 import com.example.win.easy.R
 import com.example.win.easy.TestCoroutineRule
-import com.example.win.easy.display.interfaces.DisplayService
+import com.example.win.easy.display.DisplayService
 import com.example.win.easy.download.DownloadServiceAdapter
-import com.example.win.easy.repository.db.data_object.SongDO
-import com.example.win.easy.repository.db.data_object.SongListDO
+import com.example.win.easy.db.SongDO
+import com.example.win.easy.db.SongListDO
 import com.example.win.easy.viewmodel.SongListViewModelImpl
 import com.qmuiteam.qmui.alpha.QMUIAlphaImageButton
 import com.qmuiteam.qmui.widget.QMUITopBar
@@ -28,18 +26,12 @@ import io.mockk.impl.annotations.InjectMockKs
 import io.mockk.impl.annotations.MockK
 import io.mockk.impl.annotations.RelaxedMockK
 import kotlinx.coroutines.*
-import kotlinx.coroutines.test.TestCoroutineDispatcher
-import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runBlockingTest
-import kotlinx.coroutines.test.setMain
 import org.hamcrest.CoreMatchers
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import java.util.logging.Level
-import java.util.logging.Logger
-import kotlin.coroutines.CoroutineContext
 
 @ExperimentalCoroutinesApi
 class SongListFragmentTest {
@@ -168,7 +160,7 @@ class SongListFragmentTest {
     }
 
     //下载的数据
-    private var downloadedSongFromUrl=SongDO().apply {
+    private var downloadedSongFromUrl= SongDO().apply {
         name=nonDownloadedSongWithUrl.name
         songUrl=nonDownloadedSongWithUrl.songUrl
         avatarPath=nonDownloadedSongWithUrl.avatarPath

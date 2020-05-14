@@ -1,9 +1,10 @@
-package com.example.win.easy.repository.db.dao
+package com.example.win.easy.dao
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
-import com.example.win.easy.repository.db.data_object.SongDO
-import com.example.win.easy.repository.db.data_object.SongListDO
+import com.example.win.easy.db.SongDO
+import com.example.win.easy.db.SongListDO
+import com.example.win.easy.enumeration.DataSource
 
 @Dao
 @SuppressWarnings(RoomWarnings.CURSOR_MISMATCH)
@@ -17,10 +18,16 @@ interface SongListDao {
     @Insert(onConflict = OnConflictStrategy.ABORT)
     suspend fun insert(songListDO: SongListDO): Long
 
-    //以下为Repo涉及方法
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(songListDOs: Collection<SongListDO?>?): Array<Long?>?
+    @Query("SELECT * FROM SongListDO WHERE  source!=:source")
+    suspend fun loadBySourceExclude(source: DataSource): List<SongListDO>
 
+    @Delete
+    suspend fun deleteAll(songListDOs: Collection<SongListDO>)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertAll(songListDOs: Collection<SongListDO>): List<Long>
+
+    //以下为Repo涉及方法
     @Query("SELECT * FROM SongListDO")
     fun allSongList(): List<SongListDO?>?
 

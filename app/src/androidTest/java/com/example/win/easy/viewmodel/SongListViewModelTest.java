@@ -1,35 +1,12 @@
 package com.example.win.easy.viewmodel;
 
-import androidx.annotation.NonNull;
-import androidx.arch.core.executor.testing.InstantTaskExecutorRule;
-import androidx.lifecycle.Lifecycle;
-import androidx.lifecycle.LifecycleOwner;
-import androidx.lifecycle.LifecycleRegistry;
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
 import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner;
 
-import com.example.win.easy.repository.db.data_object.SongDO;
-import com.example.win.easy.repository.db.data_object.SongListDO;
-
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import kotlin.NotImplementedError;
-
-import static com.example.win.easy.enumeration.DataSource.Local;
-import static com.example.win.easy.enumeration.DataSource.WangYiYun;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.when;
 
 @RunWith(AndroidJUnit4ClassRunner.class)
 public class SongListViewModelTest {

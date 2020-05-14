@@ -1,4 +1,4 @@
-package com.example.win.easy.web.dto
+package com.example.win.easy.db
 
 import com.example.win.easy.enumeration.DataSource
 import lombok.AllArgsConstructor

@@ -1,10 +1,9 @@
-package com.example.win.easy.repository
+package com.example.win.easy.dto
 
-import androidx.room.util.StringUtil
 import com.example.win.easy.enumeration.DataSource
-import com.example.win.easy.repository.db.data_object.SongListDO
-import com.example.win.easy.web.dto.SongListDTO
-import com.example.win.easy.web.request.BackendRequestService
+import com.example.win.easy.db.SongListDO
+import com.example.win.easy.db.SongListDTO
+import com.example.win.easy.network.BackendRequestService
 
 class SongListDto(private val apiService: BackendRequestService) {
 
@@ -18,6 +17,6 @@ class SongListDto(private val apiService: BackendRequestService) {
             SongListDO(name = dto.name,
                     source = DataSource.Local,
                     avatarUrl = dto.avatarUrl,
-                    uid =  dto.uid.toLong(),
+                    uid = dto.uid.toLong(),
                     remoteId = dto.remoteId.toLong())
 }

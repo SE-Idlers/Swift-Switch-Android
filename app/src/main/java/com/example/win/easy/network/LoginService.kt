@@ -1,10 +1,8 @@
-package com.example.win.easy.web.service
+package com.example.win.easy.network
 
 import com.example.win.easy.enumeration.LoginType
-import com.example.win.easy.web.request.BackendRequestService
-import retrofit2.Call
+import com.example.win.easy.network.BackendRequestService
 import retrofit2.Callback
-import retrofit2.Response
 
 /**
  *

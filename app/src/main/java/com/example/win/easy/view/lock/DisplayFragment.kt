@@ -9,7 +9,7 @@ import androidx.fragment.app.Fragment
 import butterknife.BindView
 import butterknife.ButterKnife
 import com.example.win.easy.R
-import com.example.win.easy.display.interfaces.DisplayService
+import com.example.win.easy.display.DisplayService
 
 class DisplayFragment(private val displayService: DisplayService) : Fragment() {
 

@@ -1,12 +1,10 @@
-package com.example.win.easy.repository.db.data_object
+package com.example.win.easy.db
 
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.Index
-import lombok.AllArgsConstructor
-import lombok.Builder
-import lombok.Data
-import lombok.NoArgsConstructor
+import com.example.win.easy.db.SongDO
+import com.example.win.easy.db.SongListDO
 
 /**
  * 用于表示Song与SongList多对多关系的表

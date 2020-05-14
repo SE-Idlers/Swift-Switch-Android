@@ -12,10 +12,9 @@ import androidx.test.espresso.assertion.ViewAssertions
 import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner
 import com.example.win.easy.R
-import com.example.win.easy.repository.db.data_object.SongDO
-import com.example.win.easy.repository.db.data_object.SongListDO
+import com.example.win.easy.db.SongDO
+import com.example.win.easy.db.SongListDO
 import com.example.win.easy.viewmodel.RelationViewModel
-import com.example.win.easy.viewmodel.SongListViewModel
 import com.example.win.easy.viewmodel.SongViewModel
 import com.qmuiteam.qmui.alpha.QMUIAlphaImageButton
 import io.mockk.*
@@ -25,8 +24,6 @@ import org.hamcrest.CoreMatchers
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.*
-import java.util.*
 
 @RunWith(AndroidJUnit4ClassRunner::class)
 class AddSongToSongListFragmentTest {
@@ -124,10 +121,10 @@ class AddSongToSongListFragmentTest {
 
     private lateinit var scenario: FragmentScenario<AddSongToSongListFragment>
     private val topBarTitle = "选择要添加的歌曲"
-    private val song1 = SongDO(name="球球你了")
-    private val song2 = SongDO(name="我他妈实在是")
-    private val song3 = SongDO(name="编不出来啦i-i")
-    private val testSongList = SongListDO(name="艰难的人生")
+    private val song1 = SongDO(name = "球球你了")
+    private val song2 = SongDO(name = "我他妈实在是")
+    private val song3 = SongDO(name = "编不出来啦i-i")
+    private val testSongList = SongListDO(name = "艰难的人生")
     private val songsNotInTestSongList: MutableList<SongDO> = arrayListOf(song1,song2,song3)
     private val bundleToPass = Bundle().apply { putSerializable("songListSongsAddedTo", testSongList) }
 }

@@ -10,7 +10,7 @@ import androidx.navigation.Navigation;
 import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner;
 
 import com.example.win.easy.R;
-import com.example.win.easy.web.service.LoginService;
+import com.example.win.easy.network.LoginService;
 
 import org.junit.Before;
 import org.junit.Test;

@@ -1,13 +1,10 @@
 package com.example.win.easy.display
 
 import android.media.MediaPlayer
-import com.example.win.easy.display.interfaces.DisplayService
 import com.example.win.easy.exception.DisplayStateInconsistentException
-import com.example.win.easy.repository.db.data_object.SongDO
-import com.example.win.easy.repository.db.data_object.SongListDO
+import com.example.win.easy.db.SongDO
+import com.example.win.easy.db.SongListDO
 import java.io.IOException
-import javax.inject.Inject
-import javax.inject.Singleton
 
 class DisplayServiceImpl(private var mediaPlayer: MediaPlayer) : DisplayService {
 
@@ -42,7 +39,7 @@ class DisplayServiceImpl(private var mediaPlayer: MediaPlayer) : DisplayService 
     }
 
     @Throws(DisplayStateInconsistentException::class)
-    override fun configDisplayList(songListDO: SongListDO,songDOs: List<SongDO>){
+    override fun configDisplayList(songListDO: SongListDO, songDOs: List<SongDO>){
         if(!songDOs.contains(currentSong))
             throw DisplayStateInconsistentException("Wrong SongList")
         displayList = songDOs

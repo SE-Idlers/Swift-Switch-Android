@@ -1,7 +1,6 @@
 package com.example.win.easy.dagger.module
 
-import com.example.win.easy.repository.SongListDto
-import com.example.win.easy.web.request.BackendRequestService
+import com.example.win.easy.network.BackendRequestService
 import dagger.Module
 import dagger.Provides
 import retrofit2.Retrofit
@@ -26,5 +25,5 @@ object BackendRequestModule {
     @JvmStatic
     @Provides
     @Named("serverUrl")
-    fun provideServerUrl() = "http://127.0.0.1:9000/"
+    fun provideServerUrl() = "http://10.0.2.2:9000/"
 }

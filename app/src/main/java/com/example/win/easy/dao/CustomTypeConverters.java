@@ -1,8 +1,8 @@
-package com.example.win.easy.repository.db;
+package com.example.win.easy.dao;
 
 import androidx.room.TypeConverter;
 
-import com.example.win.easy.repository.db.database.OurDatabase;
+import com.example.win.easy.dao.OurDatabase;
 import com.example.win.easy.enumeration.DataSource;
 
 import java.util.ArrayList;

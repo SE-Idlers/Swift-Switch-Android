@@ -4,7 +4,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentFactory
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.NavHostFragment
-import com.example.win.easy.display.interfaces.DisplayService
+import com.example.win.easy.display.DisplayService
 import com.example.win.easy.download.DownloadServiceAdapter
 import com.example.win.easy.enumeration.LoginType
 import com.example.win.easy.factory.DaggerFragmentFactory
@@ -15,7 +15,7 @@ import com.example.win.easy.view.lock.DisplayFragment
 import com.example.win.easy.view.lock.HandWritingFragment
 import com.example.win.easy.view.lock.SearchFragment
 import com.example.win.easy.view.main.*
-import com.example.win.easy.web.service.LoginService
+import com.example.win.easy.network.LoginService
 import dagger.MapKey
 import dagger.Module
 import dagger.Provides
@@ -85,7 +85,7 @@ object FragmentModule {
     @Provides
     @IntoMap
     @FragmentKey(SongListFragment::class)
-    fun provideSongListFragment(displayService: DisplayService,downloadServiceAdapter: DownloadServiceAdapter,factory: ViewModelProvider.Factory): Fragment = SongListFragment(displayService, downloadServiceAdapter, factory)
+    fun provideSongListFragment(displayService: DisplayService, downloadServiceAdapter: DownloadServiceAdapter, factory: ViewModelProvider.Factory): Fragment = SongListFragment(displayService, downloadServiceAdapter, factory)
 
     @JvmStatic
     @Provides

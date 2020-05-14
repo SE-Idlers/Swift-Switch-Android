@@ -1,16 +1,12 @@
-package com.example.win.easy.repository.db.database;
+package com.example.win.easy.dao;
 
 import androidx.room.Database;
 import androidx.room.RoomDatabase;
 import androidx.room.TypeConverters;
 
-import com.example.win.easy.repository.db.CustomTypeConverters;
-import com.example.win.easy.repository.db.dao.SongDao;
-import com.example.win.easy.repository.db.dao.SongListDao;
-import com.example.win.easy.repository.db.dao.SongXSongListDao;
-import com.example.win.easy.repository.db.data_object.SongDO;
-import com.example.win.easy.repository.db.data_object.SongListDO;
-import com.example.win.easy.repository.db.data_object.SongXSongListDO;
+import com.example.win.easy.db.SongDO;
+import com.example.win.easy.db.SongListDO;
+import com.example.win.easy.db.SongXSongListDO;
 
 @Database(
         entities = {

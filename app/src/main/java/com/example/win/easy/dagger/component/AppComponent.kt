@@ -1,7 +1,7 @@
 package com.example.win.easy.dagger.component
 
 import com.example.win.easy.dagger.module.*
-import com.example.win.easy.display.interfaces.DisplayService
+import com.example.win.easy.display.DisplayService
 import com.example.win.easy.download.DownloadServiceAdapter
 import com.example.win.easy.parser.filter.FilterStrategy
 import com.example.win.easy.parser.interfaces.FilenameParser
@@ -10,7 +10,7 @@ import com.example.win.easy.repository.RelationRepository
 import com.example.win.easy.repository.SongListRepository
 import com.example.win.easy.repository.SongRepository
 import com.example.win.easy.view.ImageService
-import com.example.win.easy.web.service.LoginService
+import com.example.win.easy.network.LoginService
 import dagger.Component
 import javax.inject.Singleton
 

@@ -1,9 +1,8 @@
-package com.example.win.easy.display.interfaces
+package com.example.win.easy.display
 
 import com.example.win.easy.display.DisplayMode
-import com.example.win.easy.repository.db.data_object.SongDO
-import com.example.win.easy.repository.db.data_object.SongListDO
-import com.example.win.easy.tool.SongListWithSongs
+import com.example.win.easy.db.SongDO
+import com.example.win.easy.db.SongListDO
 
 interface DisplayService {
     operator fun next()

@@ -12,12 +12,10 @@ import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner
 import androidx.test.rule.ActivityTestRule
 import com.example.win.easy.R
 import com.example.win.easy.enumeration.LoginType
-import com.example.win.easy.web.callback.OnReadyFunc
-import com.example.win.easy.web.request.BackendRequestService
-import com.example.win.easy.web.service.LoginService
+import com.example.win.easy.network.BackendRequestService
+import com.example.win.easy.network.LoginService
 import io.mockk.*
 import io.mockk.impl.annotations.InjectMockKs
-import io.mockk.impl.annotations.MockK
 import io.mockk.impl.annotations.RelaxedMockK
 import io.mockk.impl.annotations.SpyK
 import junit.framework.TestCase
@@ -27,9 +25,6 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.*
-import org.mockito.invocation.InvocationOnMock
-import org.mockito.stubbing.Answer
 
 @RunWith(AndroidJUnit4ClassRunner::class)
 class LoginFragmentTest {

@@ -11,10 +11,10 @@ import butterknife.BindString
 import butterknife.BindView
 import butterknife.ButterKnife
 import com.example.win.easy.R
-import com.example.win.easy.display.interfaces.DisplayService
+import com.example.win.easy.display.DisplayService
 import com.example.win.easy.enumeration.DataSource
-import com.example.win.easy.repository.db.data_object.SongDO
-import com.example.win.easy.repository.db.data_object.SongListDO
+import com.example.win.easy.db.SongDO
+import com.example.win.easy.db.SongListDO
 import com.example.win.easy.tool.SongListWithSongs
 import com.example.win.easy.view.OnClickFunc
 import com.example.win.easy.viewmodel.SongListViewModel
@@ -76,7 +76,7 @@ class SearchFragment(private val viewModelFactory: ViewModelProvider.Factory, pr
         }
     }
 
-    private fun combine(songLists: List<SongListDO>,songsInLists: List<List<SongDO>>) =
+    private fun combine(songLists: List<SongListDO>, songsInLists: List<List<SongDO>>) =
             ArrayList<SongListWithSongs>().apply {
                 for(i in songLists.indices)
                     add(SongListWithSongs(songList = songLists[i],songs = songsInLists[i]))
@@ -90,7 +90,7 @@ class SearchFragment(private val viewModelFactory: ViewModelProvider.Factory, pr
 
     private fun ableToReplaceSongList()= displayService.currentSong() == lastSelectedSong
     private fun defaultSongListWithSongs()=SongListWithSongs(songList = defaultSongList(),songs = songViewModel.allSongs.value!!)
-    private fun defaultSongList()=SongListDO(name = defaultSongListName,source = DataSource.Local)
+    private fun defaultSongList()= SongListDO(name = defaultSongListName, source = DataSource.Local)
     private fun tabOnClickFuncWhenSearching() = OnClickFunc { _: SongListWithSongs, _: QMUICommonListItemView? -> }
 
 
@@ -106,7 +106,7 @@ class SearchFragment(private val viewModelFactory: ViewModelProvider.Factory, pr
         return ArrayList<SongListWithSongs>().apply {
             for (source in songSources)
                 if (source2ListMap[source]!!.isNotEmpty())
-                    add(SongListWithSongs(songList=SongListDO().apply { name=source.name; this.source =source },songs=source2ListMap[source]!!))
+                    add(SongListWithSongs(songList= SongListDO().apply { name=source.name; this.source =source },songs=source2ListMap[source]!!))
         }
     }
 }

@@ -1,24 +1,21 @@
 package com.example.win.easy
 
-import android.util.Log
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.MutableLiveData
 import com.example.win.easy.exception.NonLoginException
 import com.example.win.easy.exception.TimeoutException
-import com.example.win.easy.repository.SongListDto
+import com.example.win.easy.dto.SongListDto
 import com.example.win.easy.repository.SongListRepository
-import com.example.win.easy.repository.db.dao.SongListDao
-import com.example.win.easy.repository.db.data_object.SongListDO
-import com.example.win.easy.web.service.LoginService
+import com.example.win.easy.dao.SongListDao
+import com.example.win.easy.db.SongListDO
+import com.example.win.easy.dto.SongDto
+import com.example.win.easy.network.LoginService
 import io.mockk.*
 import io.mockk.impl.annotations.InjectMockKs
 import io.mockk.impl.annotations.MockK
 import io.mockk.impl.annotations.RelaxedMockK
-import io.mockk.impl.annotations.SpyK
 import kotlinx.coroutines.*
-import kotlinx.coroutines.test.TestCoroutineDispatcher
 import kotlinx.coroutines.test.runBlockingTest
-import kotlinx.coroutines.test.setMain
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Rule
@@ -30,6 +27,7 @@ class _SongListRepositoryTest {
     private val songListDao= mockkClass(SongListDao::class)
     @MockK lateinit var songListDto: SongListDto
     @RelaxedMockK lateinit var loginService: LoginService
+    @MockK lateinit var songDto: SongDto
 
     /**
      * 测试网络超时
@@ -38,7 +36,7 @@ class _SongListRepositoryTest {
     @Test(expected = TimeoutException::class)
     fun testRefreshOnlineTimeout()= runBlockingTest{
         every { loginService.hasLogin() } returns true
-        songListRepository.refreshOnline()
+        songListRepository.loadOnline()
     }
 
     /**
@@ -48,7 +46,7 @@ class _SongListRepositoryTest {
     @Test(expected = NonLoginException::class)
     fun testRefreshOnlineNonLogin()= runBlockingTest {
         every { loginService.hasLogin() } returns false
-        songListRepository.refreshOnline()
+        songListRepository.loadOnline()
     }
 
     /**
@@ -65,9 +63,6 @@ class _SongListRepositoryTest {
 
         localMockLiveData.value=listOf(SongListDO(), SongListDO())
         assertEquals(2,songListRepository.allLiveData.value!!.size)
-
-        launch { songListRepository.refreshOnline() }.join()
-        assertEquals(4,songListRepository.allLiveData.value!!.size)
     }
 
     /**

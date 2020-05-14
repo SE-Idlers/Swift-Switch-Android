@@ -1,12 +1,10 @@
 package com.example.win.easy
 
-import androidx.room.Query
-import com.example.win.easy.repository.db.data_object.SongDO
-import com.example.win.easy.repository.db.data_object.SongListDO
-import com.example.win.easy.repository.db.data_object.SongXSongListDO
+import com.example.win.easy.db.SongDO
+import com.example.win.easy.db.SongListDO
+import com.example.win.easy.db.SongXSongListDO
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.test.runBlockingTest
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Rule
@@ -30,8 +28,8 @@ class SongDaoTest {
         val listId1=songListDao.insert(songList1)
         val listId2=songListDao.insert(songList2)
 
-        relationDao.insert(SongXSongListDO(songId,listId1))
-        relationDao.insert(SongXSongListDO(songId,listId2))
+        relationDao.insert(SongXSongListDO(songId, listId1))
+        relationDao.insert(SongXSongListDO(songId, listId2))
 
         songList1.id=listId1
         songList2.id=listId2
@@ -48,9 +46,9 @@ class SongDaoTest {
         assertEquals("song",result[0].name)
     }
 
-    private val seq1 = SongDO(name="seq1",sequence = listOf('A'))
-    private val seq2 = SongDO(name="seq2",sequence = listOf('A','B'))
-    private val seq3 = SongDO(name="seq3",sequence = listOf('-','A'))
+    private val seq1 = SongDO(name = "seq1", sequence = listOf('A'))
+    private val seq2 = SongDO(name = "seq2", sequence = listOf('A', 'B'))
+    private val seq3 = SongDO(name = "seq3", sequence = listOf('-', 'A'))
 
     @Test
     fun testLoadBySeq()= runBlocking{

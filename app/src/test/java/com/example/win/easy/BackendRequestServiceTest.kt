@@ -1,12 +1,11 @@
 package com.example.win.easy
 
-import com.example.win.easy.web.request.BackendRequestService
+import com.example.win.easy.network.BackendRequestService
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertNotEquals
 import org.junit.Test
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import javax.inject.Named
 
 class BackendRequestServiceTest {
 

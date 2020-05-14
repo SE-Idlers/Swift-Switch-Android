@@ -1,7 +1,7 @@
 package com.example.win.easy.repository
 
-import com.example.win.easy.repository.db.dao.SongXSongListDao
-import com.example.win.easy.repository.db.data_object.SongXSongListDO
+import com.example.win.easy.dao.SongXSongListDao
+import com.example.win.easy.db.SongXSongListDO
 
 class RelationRepository(private val songXSongListDao: SongXSongListDao) {
 

@@ -3,11 +3,13 @@ package com.example.win.easy.dagger.module
 import android.content.Context
 import androidx.room.Room
 import com.example.win.easy.repository.*
-import com.example.win.easy.repository.db.dao.SongDao
-import com.example.win.easy.repository.db.dao.SongListDao
-import com.example.win.easy.repository.db.dao.SongXSongListDao
-import com.example.win.easy.repository.db.database.OurDatabase
-import com.example.win.easy.web.service.LoginService
+import com.example.win.easy.dao.SongDao
+import com.example.win.easy.dao.SongListDao
+import com.example.win.easy.dao.SongXSongListDao
+import com.example.win.easy.dao.OurDatabase
+import com.example.win.easy.dto.SongDto
+import com.example.win.easy.dto.SongListDto
+import com.example.win.easy.network.LoginService
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
@@ -36,7 +38,7 @@ class RepositoryModule(private val applicationContext: Context) {
 
     @Provides
     @Singleton
-    fun provideSongRepository(songDao: SongDao): SongRepository = SongRepository(songDao)
+    fun provideSongRepository(songDao: SongDao,relationDao: SongXSongListDao): SongRepository = SongRepository(songDao,relationDao)
 
 
     @Provides

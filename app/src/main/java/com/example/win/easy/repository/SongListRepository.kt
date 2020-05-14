@@ -1,14 +1,16 @@
 package com.example.win.easy.repository
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.win.easy.exception.NonLoginException
 import com.example.win.easy.exception.TimeoutException
-import com.example.win.easy.repository.db.dao.SongListDao
-import com.example.win.easy.repository.db.data_object.SongDO
-import com.example.win.easy.repository.db.data_object.SongListDO
-import com.example.win.easy.web.service.LoginService
+import com.example.win.easy.dao.SongListDao
+import com.example.win.easy.db.SongDO
+import com.example.win.easy.db.SongListDO
+import com.example.win.easy.db.SongXSongListDO
+import com.example.win.easy.dto.SongDto
+import com.example.win.easy.dto.SongListDto
+import com.example.win.easy.network.LoginService
 import kotlinx.coroutines.withTimeout
 
 class SongListRepository(private val songListDto: SongListDto,
@@ -16,8 +18,9 @@ class SongListRepository(private val songListDto: SongListDto,
                          private val songListDao: SongListDao,
                          private val loginService: LoginService) {
 
-    private val onlineLiveData=MutableLiveData<List<SongListDO>>()
+    val onlineLiveData=MutableLiveData<List<SongListDO>>()
     private val localLiveData=songListDao.loadAll()
+
     private val _allLiveData=MediatorLiveData<List<SongListDO>>()
     val allLiveData
         get() = _allLiveData
@@ -61,11 +64,12 @@ class SongListRepository(private val songListDto: SongListDto,
      */
     @Throws(TimeoutException::class,NonLoginException::class)
     suspend fun refreshOnline(){
-        onlineLiveData.postValue(loadOnline())
+        val newSongLists=loadOnline()
+        onlineLiveData.postValue(newSongLists)
     }
 
     @Throws(Throwable::class)
-    private suspend fun loadOnline(): List<SongListDO>?{
+    suspend fun loadOnline(): List<SongListDO>?{
         var uid:String?=null
         synchronized(loginService){
             if (!loginService.hasLogin())
@@ -83,6 +87,11 @@ class SongListRepository(private val songListDto: SongListDto,
             }
         }
         return onlineData
+    }
+
+    suspend fun syncSongLists(oldSongLists: List<SongListDO>,newSongLists: List<SongListDO>){
+        songListDao.deleteAll(oldSongLists.filterNot { it in newSongLists })
+        songListDao.insertAll(newSongLists.filterNot { it in oldSongLists })
     }
 }
 

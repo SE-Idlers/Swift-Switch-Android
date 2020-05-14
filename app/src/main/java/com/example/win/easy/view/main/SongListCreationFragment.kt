@@ -15,7 +15,7 @@ import butterknife.ButterKnife
 import com.example.win.easy.R
 import com.example.win.easy.enumeration.DataSource
 import com.example.win.easy.exception.SongListToCreateAlreadyExistLocallyException
-import com.example.win.easy.repository.db.data_object.SongListDO
+import com.example.win.easy.db.SongListDO
 import com.example.win.easy.viewmodel.SongListViewModel
 import com.qmuiteam.qmui.alpha.QMUIAlphaButton
 import com.qmuiteam.qmui.widget.QMUITopBar
@@ -51,7 +51,7 @@ class SongListCreationFragment(private val viewModelFactory: ViewModelProvider.F
             buttonToCreateNewSongList.setOnClickListener {
                 newSongListEditText.text.toString().let {
                     if(it!="")
-                        tryToCreate(SongListDO(name=it,source = DataSource.Local))
+                        tryToCreate(SongListDO(name = it, source = DataSource.Local))
                     else
                         temporarilyShowUnsuccessfulCreationTip(emptyTip, showTimeInMillis)
                 }

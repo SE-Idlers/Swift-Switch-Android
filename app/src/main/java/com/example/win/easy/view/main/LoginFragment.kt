@@ -7,25 +7,27 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.ProgressBar
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
+import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import butterknife.BindString
 import butterknife.BindView
 import butterknife.ButterKnife
 import com.example.win.easy.R
 import com.example.win.easy.enumeration.LoginType
-import com.example.win.easy.web.service.LoginService
+import com.example.win.easy.network.LoginService
 import com.google.android.material.snackbar.Snackbar
 import com.qmuiteam.qmui.alpha.QMUIAlphaButton
 import com.qmuiteam.qmui.widget.QMUITopBar
-import com.qmuiteam.qmui.widget.dialog.QMUITipDialog
 import kotlinx.coroutines.*
 
 class LoginFragment(private val loginService: LoginService, private val defaultLoginType: LoginType)
     : Fragment(),
         CoroutineScope by CoroutineScope(Dispatchers.Main){
+    @BindView(R.id.login_fragment_root_layout) lateinit var rootLayout: ConstraintLayout
     @BindView(R.id.loginTopBar) lateinit var topBar: QMUITopBar
     @BindView(R.id.accountEditText) lateinit var accountEditText: EditText
     @BindView(R.id.passwordEditText) lateinit var passwordEditText: EditText
@@ -82,12 +84,12 @@ class LoginFragment(private val loginService: LoginService, private val defaultL
                 withTimeout(5000){
                     loginService.login(account, password,loginType)
                 }
-                Snackbar.make(view!!, successfulLoginTipWord, Snackbar.LENGTH_SHORT)
+                Snackbar.make(rootLayout, successfulLoginTipWord, Snackbar.LENGTH_SHORT).show()
                 Navigation.findNavController(view!!).navigateUp()
             } catch (t: Throwable) {
-                Snackbar.make(view!!, "登录失败：" + t.message, Snackbar.LENGTH_SHORT)
+                Snackbar.make(rootLayout, "登录失败：" + t.message, Snackbar.LENGTH_SHORT).show()
             } finally {
-                spinner.visibility = ProgressBar.VISIBLE
+                spinner.visibility = ProgressBar.GONE
             }
         }
     }
